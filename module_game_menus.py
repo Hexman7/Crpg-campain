@@ -50,7 +50,7 @@ game_menus = [
          (change_screen_quit),
        ]),
     ]  
-  ),
+  ),  
 
   ("start_phase_2",mnf_disable_all_keys,
     "You hear about Calradia, a land torn between rival kingdoms battling each other for supremacy,\

@@ -4140,11 +4140,11 @@ simple_triggers = [
    # ]),
    
    
-   
-   
-  (0.1,
-   [
-	(try_begin),
+   (0,
+    [
+	
+	
+   	(try_begin),
 	(eq,"$troops_have_to_be_copied_after_saveload",1),
 	
 		(assign, reg5, -1),
@@ -4156,6 +4156,8 @@ simple_triggers = [
 		(assign,"$troops_have_to_be_copied_after_saveload",0),
     (try_end),
    ]),
+   
+
    
    
    

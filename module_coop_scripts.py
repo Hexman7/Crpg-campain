@@ -4084,7 +4084,12 @@ coop_scripts = [
 # Called each time after savegame is loaded successfully
  ("wse_savegame_loaded", [
 	
-	(assign,"$troops_have_to_be_copied_after_saveload",1),
+	(store_current_day,":day"),
+	
+	# (assign,reg0,":day"),
+	# (display_message,"@ Day of game:{reg0}"),
+	(gt,":day", -1),
+		(assign,"$troops_have_to_be_copied_after_saveload",1),
 		
 ]),
 

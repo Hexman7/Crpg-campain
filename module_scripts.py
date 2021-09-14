@@ -894,7 +894,7 @@ scripts = [
 	  
 		(assign,"$factions_takes_lands",1),
 		(assign,"$there_are_lands_to_take",1), 
-
+		(assign,"$troops_have_to_be_copied_after_saveload",0),
 
 	  
 		(try_for_range,":faction_no", npc_kingdoms_begin, npc_kingdoms_end),	## 09.05.2018

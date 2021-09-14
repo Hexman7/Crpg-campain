@@ -113,11 +113,11 @@ knows_tracker_npc = knows_weapon_master_1|knows_athletics_2|knows_spotting_2|kno
 
 lord_attrib = str_20|agi_20|int_20|cha_20|level(38)
 
-knight_attrib_1 = str_15|agi_14|int_8|cha_16|level(22)
-knight_attrib_2 = str_16|agi_16|int_10|cha_18|level(26)
-knight_attrib_3 = str_18|agi_17|int_12|cha_20|level(30)
-knight_attrib_4 = str_19|agi_19|int_13|cha_22|level(35)
-knight_attrib_5 = str_22|agi_20|int_15|cha_25|level(41)
+knight_attrib_1 = str_20|agi_14|int_8|cha_16|level(22)
+knight_attrib_2 = str_21|agi_16|int_10|cha_18|level(26)
+knight_attrib_3 = str_23|agi_17|int_12|cha_20|level(30)
+knight_attrib_4 = str_24|agi_19|int_13|cha_22|level(35)
+knight_attrib_5 = str_27|agi_20|int_15|cha_25|level(41)
 knight_skills_1 = knows_riding_3|knows_shield_6|knows_ironflesh_2|knows_power_strike_3|knows_athletics_2|knows_tactics_2|knows_prisoner_management_1|knows_leadership_3
 knight_skills_2 = knows_riding_4|knows_shield_6|knows_ironflesh_3|knows_power_strike_4|knows_athletics_3|knows_tactics_3|knows_prisoner_management_2|knows_leadership_5|knows_trainer_2
 knight_skills_3 = knows_riding_5|knows_shield_6|knows_ironflesh_4|knows_power_strike_5|knows_athletics_4|knows_tactics_4|knows_prisoner_management_2|knows_leadership_6|knows_trainer_4
