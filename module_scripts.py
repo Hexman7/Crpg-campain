@@ -1252,6 +1252,44 @@ scripts = [
 	 
 	 
 	 
+	 ### SET LORDS STR IF HE HAS NOT ENOUGH STR TO CARRY WEAPON
+	 (try_for_range,":lord",kings_begin,lords_end),
+		
+		(assign,":highest_weapon_diff",-1),
+		(store_attribute_level,":lord_str",":lord",ca_strength),
+		
+		
+		(try_for_range,":slot",0,15),
+			(troop_get_inventory_slot,":item_id",":lord",":slot"),
+			(item_get_type, ":item_type", ":item_id"),
+			
+			(try_begin),### if item type is item that requires str
+			(this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+			(this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+			(this_or_next|eq,":item_type",itp_type_polearm),
+			(this_or_next|eq,":item_type",itp_type_head_armor),
+			(this_or_next|eq,":item_type",itp_type_body_armor),
+			(this_or_next|eq,":item_type",itp_type_foot_armor),
+			(this_or_next|eq,":item_type",itp_type_hand_armor),
+			(this_or_next|eq,":item_type",itp_type_foot_armor),
+			(eq,":item_type",itp_type_foot_armor),
+				(item_get_difficulty,":item_difficulty",":item_id"),
+				(try_begin),
+				(gt,":item_difficulty",":highest_weapon_diff"),
+					(assign,":highest_weapon_diff",":item_difficulty"),
+				(try_end),
+					
+			
+			(try_end),
+			
+		(try_end),
+		
+		(gt,":highest_weapon_diff",":lord_str"),
+			(troop_set_attribute, ":lord", ca_strength, ":highest_weapon_diff"),
+		
+	 (try_end),
+	 
+	 
 	 
 	  ##mod end
 	  

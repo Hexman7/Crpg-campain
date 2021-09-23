@@ -113,11 +113,11 @@ knows_tracker_npc = knows_weapon_master_1|knows_athletics_2|knows_spotting_2|kno
 
 lord_attrib = str_20|agi_20|int_20|cha_20|level(38)
 
-knight_attrib_1 = str_20|agi_14|int_8|cha_16|level(22)
-knight_attrib_2 = str_21|agi_16|int_10|cha_18|level(26)
-knight_attrib_3 = str_23|agi_17|int_12|cha_20|level(30)
-knight_attrib_4 = str_24|agi_19|int_13|cha_22|level(35)
-knight_attrib_5 = str_27|agi_20|int_15|cha_25|level(41)
+knight_attrib_1 = str_12|agi_12|int_8|cha_16|level(22)
+knight_attrib_2 = str_15|agi_15|int_10|cha_18|level(26)
+knight_attrib_3 = str_18|agi_18|int_12|cha_20|level(30)
+knight_attrib_4 = str_21|agi_21|int_13|cha_22|level(35)
+knight_attrib_5 = str_24|agi_24|int_15|cha_25|level(41)
 knight_skills_1 = knows_riding_3|knows_shield_6|knows_ironflesh_2|knows_power_strike_3|knows_athletics_2|knows_tactics_2|knows_prisoner_management_1|knows_leadership_3
 knight_skills_2 = knows_riding_4|knows_shield_6|knows_ironflesh_3|knows_power_strike_4|knows_athletics_3|knows_tactics_3|knows_prisoner_management_2|knows_leadership_5|knows_trainer_2
 knight_skills_3 = knows_riding_5|knows_shield_6|knows_ironflesh_4|knows_power_strike_5|knows_athletics_4|knows_tactics_4|knows_prisoner_management_2|knows_leadership_6|knows_trainer_4
@@ -1917,7 +1917,7 @@ troops = [
 #                                                                               Horse                   Bodywear                Armor                               Footwear_in                 Footwear_out                        Headwear                    Weapon               Shield
   #Swadian civilian clothes: itm_courtly_outfit itm_gambeson itm_blue_gambeson itm_red_gambeson itm_nobleman_outfit itm_rich_outfit itm_short_tunic itm_tabard
   #Older knights with higher skills moved to top
-  ["knight_1_1", "Count Radon", "Radon", tf_hero, 0, reserved,  fac_kingdom_1, [	      itm_courtly_outfit,      itm_kuyak_a,   itm_nomad_boots, itm_rus_cav_boots,       itm_novogrod_helmet,   itm_hourglass_gauntlets_b,        itm_warhammer_b         ,itm_tab_shield_heater_cav_b],   																					knight_attrib_4|str_19,wp(260),knight_skills_4, 0x0000000c3e08601414ab4dc6e39296b200000000001e231b0000000000000000, swadian_face_older_2],
+  ["knight_1_1", "Count Radon", "Radon", tf_hero, 0, reserved,  fac_kingdom_1, [	      itm_courtly_outfit,      itm_kuyak_a,   itm_nomad_boots, itm_rus_cav_boots,       itm_novogrod_helmet,   itm_hourglass_gauntlets_b,        itm_warhammer_b         ,itm_tab_shield_heater_cav_b],   																					knight_attrib_4,wp(260),knight_skills_4, 0x0000000c3e08601414ab4dc6e39296b200000000001e231b0000000000000000, swadian_face_older_2],
   ["knight_1_2", "Count Cahir", "Cahir", tf_hero, 0, reserved,  fac_kingdom_1, [		itm_red_gambeson,      itm_brigandine_red, itm_nomad_boots,  itm_splinted_greaves,   itm_byzantion_helmet_g,  itm_wisby_gauntlets_red,        itm_khergit_sword_two_handed_b,itm_tab_shield_heater_cav_b],       																						knight_attrib_5,wp(300),knight_skills_5, 0x0000000c0f0c320627627238dcd6599400000000001c573d0000000000000000, swadian_face_young_2],
   ["knight_1_3", "Count Dariusz", "Dariusz", tf_hero, 0, reserved,  fac_kingdom_1, [itm_courser,          itm_nobleman_outfit,     itm_surcoa_over_mail_and_plate_black,                 itm_leather_boots,          itm_splinted_greaves_spurs,        itm_visored_sallet_with_coif_b, itm_wisby_gauntlets_black,itm_cav_sword,itm_great_lance,	   itm_norman_shield_3],  	knight_attrib_4,wp(260),knight_skills_4, 0x0000000cb700210214ce89db276aa2f400000000001d36730000000000000000, swadian_face_young_2],
   ["knight_1_4", "Count Juras", "Juras", tf_hero, 0, reserved,  fac_kingdom_1, [itm_hunter,      itm_short_tunic,       itm_polish_transitional_armor,           itm_leather_boots,          itm_iron_greaves,                   itm_zitta_bascinet, itm_heavy_plate_gloves,       itm_nobleman_sword_b,  itm_heavy_lance,  itm_tab_shield_heater_cav_b],    					knight_attrib_4,wp(260),knight_skills_4, 0x0000000c370c1194546469ca6c4e450e00000000001ebac40000000000000000, swadian_face_older_2],
