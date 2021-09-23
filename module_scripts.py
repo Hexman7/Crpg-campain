@@ -1252,7 +1252,7 @@ scripts = [
 	 
 	 
 	 
-	 ### SET LORDS STR IF HE HAS NOT ENOUGH STR TO CARRY WEAPON
+	 ### SET LORDS STR IF HE HAS NOT ENOUGH STR TO CARRY WEAPON		## 23.09.2021
 	 (try_for_range,":lord",kings_begin,lords_end),
 		
 		(assign,":highest_weapon_diff",-1),
