@@ -14622,7 +14622,8 @@ presentations = [
 	  (position_set_x, pos1, 163),
 	  (position_set_y, pos1, 660),
 	  (overlay_set_position, "$g_presentation_list_of_items", pos1),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Horses"),	## 0
+	  (overlay_add_item, "$g_presentation_list_of_items", "@None"),	## 0
+	  (overlay_add_item, "$g_presentation_list_of_items", "@Horses"),	## 1
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Boots"),	 
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Gloves"),
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Armors"),
@@ -14637,7 +14638,7 @@ presentations = [
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Shields"),
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Polearm Weapons"),
 	  (overlay_add_item, "$g_presentation_list_of_items", "@Two Handed Weapons"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@One Handed Weapons"),  ## 15
+	  (overlay_add_item, "$g_presentation_list_of_items", "@One Handed Weapons"),  ## 16
 	  
 	  
 	  (overlay_set_val, "$g_presentation_list_of_items", "$selected_items"),	
@@ -14680,7 +14681,7 @@ presentations = [
 	  
 	  
 	  (try_for_range_backwards,":slot_no",0,99),
-	  
+		  (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
 		  (try_begin),
 		  (eq,":licznik",3),
 			(assign,":current_x_pos",":starting_x_pos"),
@@ -14700,7 +14701,7 @@ presentations = [
 		  (overlay_set_position, reg1, pos1),
 		 
 		  (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
-		  (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),
+		  (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":item_slot"),	## mod edited 22.10.2021
 			 
 		    (try_begin),
 		    (gt,":i_slot",-1),
@@ -14884,66 +14885,66 @@ presentations = [
 		
 		(try_begin),
           (eq, ":object", "$g_presentation_list_of_items"),
-			
+			  (troop_clear_inventory,"trp_temp_items_troop"),
 			  (try_begin),
+			  (eq,":value",16),
+				(call_script,"script_add_items_to_temp_troop_beta",one_handed_swords_begin ,one_handed_sabres_end ),  
+			  (else_try),	
 			  (eq,":value",15),
-				(call_script,"script_add_items_to_temp_troop",one_handed_swords_begin ,one_handed_sabres_end ),  
+				(call_script,"script_add_items_to_temp_troop_beta",two_handed_swords_begin ,bastard_weapons_end ),
 			  (else_try),	
 			  (eq,":value",14),
-				(call_script,"script_add_items_to_temp_troop",two_handed_swords_begin ,bastard_weapons_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",spears_and_pikes_begin ,lances_end ),
 			  (else_try),	
 			  (eq,":value",13),
-				(call_script,"script_add_items_to_temp_troop",spears_and_pikes_begin ,lances_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",shields_begin ,shields_end ),
 			  (else_try),	
-			  (eq,":value",12),
-				(call_script,"script_add_items_to_temp_troop",shields_begin ,shields_end ),
+			  (eq,":value",12),		  
+				(call_script,"script_add_items_to_temp_troop_beta",throwings_begin ,throwings_end ),	  
 			  (else_try),	
-			  (eq,":value",11),		  
-				(call_script,"script_add_items_to_temp_troop",throwings_begin ,throwings_end ),	  
+			  (eq,":value",11),
+				(call_script,"script_add_items_to_temp_troop_beta",bows_begin ,bows_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",arrows_begin ,arrows_end ),
 			  (else_try),	
-			  (eq,":value",10),
-				(call_script,"script_add_items_to_temp_troop",bows_begin ,bows_end ),
-				(call_script,"script_add_items_to_temp_troop",arrows_begin ,arrows_end ),
+			  (eq,":value",10),		
+				(call_script,"script_add_items_to_temp_troop_beta",crossbows_begin ,crossbows_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",bolts_begin ,bolts_end ),	
 			  (else_try),	
-			  (eq,":value",9),		
-				(call_script,"script_add_items_to_temp_troop",crossbows_begin ,crossbows_end ),
-				(call_script,"script_add_items_to_temp_troop",bolts_begin ,bolts_end ),	
+			  (eq,":value",9),
+				(call_script,"script_add_items_to_temp_troop_beta",light_helmets_begin ,light_helmets_end ),
 			  (else_try),	
-			  (eq,":value",8),
-				(call_script,"script_add_items_to_temp_troop",light_helmets_begin ,light_helmets_end ),
+			  (eq,":value",8), 
+				(call_script,"script_add_items_to_temp_troop_beta",medium_helmets_begin ,medium_helmets_end ),
 			  (else_try),	
-			  (eq,":value",7), 
-				(call_script,"script_add_items_to_temp_troop",medium_helmets_begin ,medium_helmets_end ),
+			  (eq,":value",7),
+				(call_script,"script_add_items_to_temp_troop_beta",heavy_helmets_begin ,heavy_helmets_end ),
 			  (else_try),	
 			  (eq,":value",6),
-				(call_script,"script_add_items_to_temp_troop",heavy_helmets_begin ,heavy_helmets_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",light_armors_begin ,light_armors_end ),
 			  (else_try),	
 			  (eq,":value",5),
-				(call_script,"script_add_items_to_temp_troop",light_armors_begin ,light_armors_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",medium_armors_begin ,"itm_arabian_armor_b" ),
 			  (else_try),	
 			  (eq,":value",4),
-				(call_script,"script_add_items_to_temp_troop",medium_armors_begin ,"itm_arabian_armor_b" ),
+				(call_script,"script_add_items_to_temp_troop_beta","itm_arabian_armor_b", heavy_armors_end ),
 			  (else_try),	
 			  (eq,":value",3),
-				(call_script,"script_add_items_to_temp_troop","itm_arabian_armor_b", heavy_armors_end ),
+				(call_script,"script_add_items_to_temp_troop_beta", gloves_begin ,gloves_end ),
 			  (else_try),	
 			  (eq,":value",2),
-				(call_script,"script_add_items_to_temp_troop",boots_begin ,boots_end ),
+				(call_script,"script_add_items_to_temp_troop_beta", boots_begin ,boots_end ),
 			  (else_try),	
 			  (eq,":value",1),
-				(call_script,"script_add_items_to_temp_troop",gloves_begin ,gloves_end ),
-			  (else_try),	
-			  (eq,":value",0),
-				(call_script,"script_add_items_to_temp_troop",horses_begin ,horses_end ),
+				(call_script,"script_add_items_to_temp_troop_beta",horses_begin ,horses_end ),
 			  (try_end),
-		  (assign,"$selected_items",":value"),
+		  (assign,"$selected_items",":value"),  
 		  (presentation_set_duration,0),
 		  (start_presentation, "prsnt_game_equip_warriors_window"),
-		  	
+		  (presentation_set_duration,99999),
+		  (assign,reg6,"$selected_items"),
+		  (display_message,"@selected items: {reg6}"),
 		  
-		  #### creating new menu for item category every choose of category, if already created 
-		  ## set_overlay_display 1 and others to 0, so we can end up with 15 inventories but only one
-		  ## visible 
+
 		  
 		  
 		  

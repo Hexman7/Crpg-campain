@@ -54419,6 +54419,44 @@ scripts = [
 		
 	 ]),    
    
+   #### mod begin 22.10.2021
+#### script_add_items_to_temp_troop_beta	15.08.2018
+#### input: 	items_begin, items_end
+#### output:	
+	("add_items_to_temp_troop_beta",
+	 [		 
+		(store_script_param_1,":items_begin"),
+		(store_script_param_2,":items_end"),
+
+		
+		
+		(assign,":begin_item",0),
+		(store_add,":begin_item",":begin_item",":items_begin"),
+		(troop_get_inventory_capacity,":capacity_temp","trp_temp_items_troop"),
+		
+		
+		(try_for_range,":slot_no",9, ":capacity_temp"),		### chosing items which will be showed
+			(call_script,"script_check_troop_ability","$troop_selected",":begin_item"),
+			(store_add,":slot_no",":slot_no",0),
+			(try_begin),
+			(le,reg4,reg3),
+				(troop_add_items, "trp_temp_items_troop", ":begin_item", 1),
+				(store_add,":begin_item",":begin_item",1),
+			(else_try),
+				(store_add,":begin_item",":begin_item",1),
+			(try_end),
+			
+			(try_begin),
+			(ge,":begin_item",":items_end"),
+				(assign,":capacity_temp",-1),
+			(try_end),
+		(try_end),
+
+		
+	 ]),  
+	 
+## mod end
+   
 #### script_prepare_file_on_server	22.02.2020
 #### input: 	
 #### output:	
@@ -54487,7 +54525,7 @@ scripts = [
 	
 	 ]),
 	 
-#### script_send_file_to_server	22.02.2020
+#### script_multiplayer_send_file_to_player	22.02.2020
 #### input: 	
 #### output:	
 	("multiplayer_send_file_to_player",
