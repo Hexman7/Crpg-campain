@@ -14681,7 +14681,7 @@ presentations = [
 	  
 	  
 	  (try_for_range_backwards,":slot_no",0,99),
-		  (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
+		 # (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
 		  (try_begin),
 		  (eq,":licznik",3),
 			(assign,":current_x_pos",":starting_x_pos"),
@@ -14701,32 +14701,70 @@ presentations = [
 		  (overlay_set_position, reg1, pos1),
 		 
 		  (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
-		  (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":item_slot"),	## mod edited 22.10.2021
+		  # (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":item_slot"),	## mod edited 22.10.2021
 			 
-		    (try_begin),
-		    (gt,":i_slot",-1),
-			   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   (position_set_x, pos1, 900),
-			   (position_set_y, pos1, 900),
+		    # (try_begin),
+		    # (gt,":i_slot",-1),
+			   # (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
+			   # (position_set_x, pos1, 900),
+			   # (position_set_y, pos1, 900),
 			   
-			   (store_add,":item_x",":current_x_pos",40),
-			   (store_add,":item_y",":starting_y_pos",220),
-			   (overlay_set_size, "$g_presentation_item", pos1),
-			   (position_set_x, pos1, ":item_x"),
-			   (position_set_y, pos1, ":item_y"),
-			   (overlay_set_position, "$g_presentation_item", pos1),
+			   # (store_add,":item_x",":current_x_pos",40),
+			   # (store_add,":item_y",":starting_y_pos",220),
+			   # (overlay_set_size, "$g_presentation_item", pos1),
+			   # (position_set_x, pos1, ":item_x"),
+			   # (position_set_y, pos1, ":item_y"),
+			   # (overlay_set_position, "$g_presentation_item", pos1),
 			 
-				(overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
-		    (try_end),
+				# (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
+		    # (try_end),
 		  
 		  (val_add,":licznik",1),
 	  
 	  (try_end),
 	  
-	  (set_container_overlay, -1),
+	  (assign,":licznik",0),
+	  (assign,":starting_x_pos",0),	
+	  (assign,":current_x_pos",0),	
 
 	  
+	  (try_for_range,":slot_no",9,99),
 	  
+
+	  
+		   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
+	  
+		   (try_begin),
+		   (gt,":i_slot",-1),
+			 
+			  (try_begin),
+			  (eq,":licznik",3),
+				(assign,":current_x_pos",":starting_x_pos"),
+				(val_sub,":starting_y_pos",90),
+				(val_sub,":licznik",":licznik"),
+			  (else_try),
+			  (gt,":licznik",0),
+				(val_add,":current_x_pos",90),
+			  (try_end),
+			  
+			   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
+			   (position_set_x, pos1, 900),
+			   (position_set_y, pos1, 900),
+			   
+			   (store_add,":item_x",":current_x_pos",45),
+			   (store_add,":item_y",":starting_y_pos",45),
+			   (overlay_set_size, "$g_presentation_item", pos1),
+			   (position_set_x, pos1, ":item_x"),
+			   (position_set_y, pos1, ":item_y"),	   
+			   (overlay_set_position, "$g_presentation_item", pos1),
+			   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
+
+			   (val_add,":licznik",1),
+			(try_end),  
+		  
+
+	  (try_end),
+      (set_container_overlay, -1),
 	  
 
 	  

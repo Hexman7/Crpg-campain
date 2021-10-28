@@ -54419,7 +54419,7 @@ scripts = [
 		
 	 ]),    
    
-   #### mod begin 22.10.2021
+#### mod begin 22.10.2021
 #### script_add_items_to_temp_troop_beta	15.08.2018
 #### input: 	items_begin, items_end
 #### output:	
