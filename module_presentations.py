@@ -15050,6 +15050,7 @@ presentations = [
 	   
 	    (try_begin),
 		(gt,":object",209),
+		(lt,"$mouse_item_clicked",1),
 			(position_set_x,pos1, 1500),
 			(position_set_y,pos1, 1500),
 		#	(overlay_set_size,":object",pos1),
