@@ -9495,7 +9495,7 @@ game_menus = [
                        (neg|party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
                        (store_faction_of_party, ":center_faction", "$current_town"),
                        (store_relation, ":reln", "fac_player_supporters_faction", ":center_faction"),
-                       (lt, ":reln", 5),##28.04.2018
+                       (lt, ":reln", 5),##28.04.2018 mod edited
                        ],
        "Loot and burn this village.",
        [
@@ -10234,6 +10234,10 @@ game_menus = [
 			(store_relation, ":relation", "$players_kingdom", ":village_faction"),
 			(ge, ":relation", 0),
 			(call_script, "script_diplomacy_party_attacks_neutral", "p_main_party", "$current_town"),
+			
+			(eq,":village_faction","fac_neutrals"),
+				(call_script, "script_change_player_relation_with_faction", ":village_faction", -5),
+
 		  (try_end),	
 		  
           (rest_for_hours, 3, 5, 1), #rest while attackable (3 hours will be extended by the trigger)

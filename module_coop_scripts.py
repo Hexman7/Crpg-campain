@@ -1203,6 +1203,7 @@ coop_scripts = [
 	### mod begin
       (else_try),
         (eq, ":event_type", multiplayer_event_mod_send_file_to_player_request),
+		(multiplayer_is_dedicated_server),
 		#(call_script,"script_multiplayer_send_file"),
 		(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@requesting file"),
 		(call_script,"script_multiplayer_send_file_to_player",":player_no"),

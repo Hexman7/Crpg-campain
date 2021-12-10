@@ -1612,7 +1612,8 @@ triggers = [
 		 
 		
 		(try_begin),
-		(ge,"$players_kingdom","fac_kingdom_1"),
+		(is_between,"$players_kingdom",npc_kingdoms_begin,npc_kingdoms_end),
+		
 			(str_store_faction_name,s1,"$character_faction"),
 			
 			(display_message,"@faction name: {s1}"),

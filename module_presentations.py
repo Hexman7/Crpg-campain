@@ -2755,13 +2755,16 @@ presentations = [
 	  
 	  
 #### MOD BEGIN
-      (create_button_overlay, "$g_presentation_obj_admin_panel_45", "str_send_data", tf_center_justify),
-      (position_set_x, pos1, 825),
-      (position_set_y, pos1, 170),
-      (overlay_set_position, "$g_presentation_obj_admin_panel_45", pos1),
-      (position_set_x, pos1, 1500),
-      (position_set_y, pos1, 1500),
-      (overlay_set_size, "$g_presentation_obj_admin_panel_45", pos1),
+	  (try_begin),
+	  (neq, "$coop_battle_state", coop_battle_state_setup_sp),
+		  (create_button_overlay, "$g_presentation_obj_admin_panel_45", "str_send_data", tf_center_justify),
+		  (position_set_x, pos1, 825),
+		  (position_set_y, pos1, 170),
+		  (overlay_set_position, "$g_presentation_obj_admin_panel_45", pos1),
+		  (position_set_x, pos1, 1500),
+		  (position_set_y, pos1, 1500),
+		  (overlay_set_size, "$g_presentation_obj_admin_panel_45", pos1),
+	  (try_end),
 	  
 #### MOD BEGIN
       # (create_button_overlay, "$g_presentation_obj_admin_panel_46", "str_prepare_file", tf_center_justify),
@@ -3010,10 +3013,10 @@ presentations = [
 		(eq, ":object", "$g_presentation_obj_admin_panel_45"),
 		(multiplayer_send_message_to_server, multiplayer_event_mod_send_file_to_server_prepare),
 		#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@Sending file..."),
-		(display_message,"@Sending file..."),
 	    (call_script,"script_multiplayer_send_file"),
-		(presentation_set_duration, 1),
-		(start_presentation, "prsnt_game_multiplayer_admin_panel"),
+		(presentation_set_duration, 0),
+		(display_message,"@Sending file..."),
+		#(start_presentation, "prsnt_game_multiplayer_admin_panel"),
 	  # (else_try),
 		# (eq, ":object", "$g_presentation_obj_admin_panel_46"),
 		#(multiplayer_send_message_to_server, multiplayer_event_mod_send_file_to_server_prepare),

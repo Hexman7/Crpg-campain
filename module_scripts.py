@@ -1261,27 +1261,28 @@ scripts = [
 		
 		(try_for_range,":slot",0,15),
 			(troop_get_inventory_slot,":item_id",":lord",":slot"),
-			(item_get_type, ":item_type", ":item_id"),
-			
-			(try_begin),### if item type is item that requires str
-			(this_or_next|eq,":item_type",itp_type_one_handed_wpn),
-			(this_or_next|eq,":item_type",itp_type_two_handed_wpn),
-			(this_or_next|eq,":item_type",itp_type_polearm),
-			(this_or_next|eq,":item_type",itp_type_head_armor),
-			(this_or_next|eq,":item_type",itp_type_body_armor),
-			(this_or_next|eq,":item_type",itp_type_foot_armor),
-			(this_or_next|eq,":item_type",itp_type_hand_armor),
-			(this_or_next|eq,":item_type",itp_type_foot_armor),
-			(eq,":item_type",itp_type_foot_armor),
-				(item_get_difficulty,":item_difficulty",":item_id"),
-				(try_begin),
-				(gt,":item_difficulty",":highest_weapon_diff"),
-					(assign,":highest_weapon_diff",":item_difficulty"),
+			(try_begin),
+			(gt,":item_id",-1),
+				(item_get_type, ":item_type", ":item_id"),
+				(try_begin),### if item type is item that requires str
+				(this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+				(this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+				(this_or_next|eq,":item_type",itp_type_polearm),
+				(this_or_next|eq,":item_type",itp_type_head_armor),
+				(this_or_next|eq,":item_type",itp_type_body_armor),
+				(this_or_next|eq,":item_type",itp_type_foot_armor),
+				(this_or_next|eq,":item_type",itp_type_hand_armor),
+				(this_or_next|eq,":item_type",itp_type_foot_armor),
+				(eq,":item_type",itp_type_foot_armor),
+					(item_get_difficulty,":item_difficulty",":item_id"),
+					(try_begin),
+					(gt,":item_difficulty",":highest_weapon_diff"),
+						(assign,":highest_weapon_diff",":item_difficulty"),
+					(try_end),
+						
+				
 				(try_end),
-					
-			
 			(try_end),
-			
 		(try_end),
 		
 		(gt,":highest_weapon_diff",":lord_str"),
@@ -54569,6 +54570,7 @@ scripts = [
 
 			(try_end),
 			(dict_free, "$coop_dict"),
+			(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@File transfer completed"),
 		(try_end),
 
 	
