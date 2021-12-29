@@ -5222,6 +5222,22 @@ game_menus = [
         (assign, "$g_battle_result", 0),
         (assign, "$g_engaged_enemy", 1),
         
+		
+				
+		########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
         (party_get_template_id, ":encountered_party_template", "$g_encountered_party"),		
         (try_begin),
 		  (eq, ":encountered_party_template", "pt_village_farmers"),
@@ -10235,9 +10251,8 @@ game_menus = [
 			(ge, ":relation", 0),
 			(call_script, "script_diplomacy_party_attacks_neutral", "p_main_party", "$current_town"),
 			
-			(eq,":village_faction","fac_neutrals"),
-				(call_script, "script_change_player_relation_with_faction", ":village_faction", -5),
-
+			
+			(call_script, "script_change_player_relation_with_faction", ":village_faction", -5),	#mod 10.12.2021
 		  (try_end),	
 		  
           (rest_for_hours, 3, 5, 1), #rest while attackable (3 hours will be extended by the trigger)
