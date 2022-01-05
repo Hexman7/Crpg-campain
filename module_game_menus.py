@@ -5654,7 +5654,7 @@ game_menus = [
 
   (
     "battle_debrief",mnf_scale_picture|mnf_disable_all_keys,
-    "{s11}^^Your Casualties:{s8}{s10}^^Enemy Casualties:{s9}",
+    "{s11}^^Your Casualties:{s8}{s10}^^Enemy Casualties:{s9}^^Your Party Kills:{s13}",
     "none",
     [
      (try_begin),
@@ -5785,6 +5785,9 @@ game_menus = [
        (call_script, "script_print_casualties_to_s0", "p_ally_casualties", 0),
        (str_store_string, s10, "@^^Ally Casualties:{s0}"),
      (try_end),
+	 (str_clear, s11),
+	 (call_script,"script_print_kills_to_s0"),
+	 (str_store_string, s13, "@{s0}"),
      ],
     [
       ("continue",[],"Continue...",[(jump_to_menu, "$g_next_menu"),]),

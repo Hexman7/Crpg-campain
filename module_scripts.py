@@ -54989,7 +54989,39 @@ scripts = [
  ]),
  
 
- 
+  
+#script_print_casualties_to_s0:
+# INPUT:
+# param1: 
+
+#OUTPUT:
+# string register 0.
+  
+	("print_kills_to_s0",[
+		(str_clear,s0),
+		(array_get_dim_size, ":array_size", "$kills_array", 0),
+		(try_for_range,":i_stack",0,":array_size"),
+			(array_get_val, ":troop_id", "$kills_array", 0, ":i_stack"),
+			(party_stack_get_size, ":stack_size","p_main_party",":i_stack"),
+			
+			
+			(str_clear,s5),
+			(try_begin),
+			(gt,":stack_size",1),
+				(str_store_troop_name_plural,s5,":troop_id"),
+			(else_try),
+				(str_store_troop_name,s5,":troop_id"),
+			(try_end),
+			
+			(array_get_val, ":kills", "$kills_array",1, ":i_stack"),
+			
+			(assign,reg7,":kills"),
+			(str_store_string, s0,"@{s0}^{s5} got: {reg7} kills"),
+			
+		(try_end),
+
+]),
+	
 	 
 	 
 #COOP BEGIN ###################
