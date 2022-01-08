@@ -2455,10 +2455,10 @@ mission_templates = [
     "lead_charge",mtf_battle_mode|mtf_synch_inventory,charge,
     "You lead your men to battle.",
     [
-     (1,mtef_defenders|mtef_team_0,af_override_weapons,aif_start_alarmed,12,[]),
-     (0,mtef_defenders|mtef_team_0,af_override_weapons,aif_start_alarmed,0,[]),
-     (4,mtef_attackers|mtef_team_1,af_override_weapons,aif_start_alarmed,12,[]),
-     (4,mtef_attackers|mtef_team_1,af_override_weapons,aif_start_alarmed,0,[]),
+     (1,mtef_defenders|mtef_team_0,0,aif_start_alarmed,12,[]),
+     (0,mtef_defenders|mtef_team_0,0,aif_start_alarmed,0,[]),
+     (4,mtef_attackers|mtef_team_1,0,aif_start_alarmed,12,[]),
+     (4,mtef_attackers|mtef_team_1,0,aif_start_alarmed,0,[]),
      ],
     [
       (ti_on_agent_spawn, 0, 0, [],

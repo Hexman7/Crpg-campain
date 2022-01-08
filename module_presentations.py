@@ -2865,10 +2865,10 @@ presentations = [
         (eq, ":object", "$g_presentation_obj_admin_panel_12"),
         #INVASION MODE START
         (try_begin),
-          (eq, ":value", 6),
+          (eq, ":value", 9),
           (assign, "$g_multiplayer_next_team_2_faction", "fac_outlaws"),
         (else_try),
-          (eq, ":value", 7),
+          (eq, ":value", 10),
           (assign, "$g_multiplayer_next_team_2_faction", "fac_ccoop_all_stars"),
         (else_try),
           (store_add, "$g_multiplayer_next_team_2_faction", ":value", npc_kingdoms_begin),
