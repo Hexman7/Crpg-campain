@@ -6454,6 +6454,21 @@ game_menus = [
       ],
       "Charge the enemy.",
       [
+	  	########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
+	  
         (assign, "$g_joined_battle_to_help", 1),
         (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
         (assign, "$g_battle_result", 0),
@@ -7684,6 +7699,20 @@ game_menus = [
              (party_get_slot, ":battle_scene", "$g_encountered_party", slot_castle_exterior),
            (try_end),
 
+			########				MOD BEGIN
+			########		Counting troops kills
+			########
+			(party_get_num_companion_stacks,":stacks","p_main_party"),
+			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(display_message,"@ array created"),
+			(array_set_val_all, "$kills_array", 0),
+			
+			(try_for_range,":x",0,":stacks"),
+				(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+				(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+			
+			(try_end),
+			#### 					MOD ENDa
            (call_script, "script_calculate_renown_value"),            
            (call_script, "script_calculate_battle_advantage"),
            (assign, ":battle_advantage", reg0),
