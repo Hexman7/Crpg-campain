@@ -1469,7 +1469,46 @@ lance_breaking = (
 
 	
     ])
+	
+########				MOD BEGIN
+########		Counting troops kills
+########
+	
+counting_kills = (
+	ti_on_agent_killed_or_wounded, 0, 0, [],
+   [
+       # (store_trigger_param_1, ":dead_agent_no"),
+        (store_trigger_param, ":killer_agent_no",2),
+        #(store_trigger_param_3, ":is_wounded"),	
 
+		(array_get_dim_size, ":array_size", "$kills_array", 0),
+		
+		(agent_get_troop_id,":troop_id", ":killer_agent_no"),
+		
+		(try_for_range, ":array_agent_id", 0, ":array_size"),
+			
+			(array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
+			
+			 (try_begin),
+			 (eq,":array_troop_id",":troop_id"),
+				(array_get_val, ":kills", "$kills_array", 1, ":array_agent_id"),
+				(val_add,":kills",1),
+				
+				
+				### debug
+				# (assign,reg6,":kills"),
+				# (assign,reg7,":array_troop_id"),
+				# (display_message,"@ agent ID: {reg7} kills: {reg6}"),
+				
+				(array_set_val, "$kills_array", ":kills", 1, ":array_agent_id"),
+				(val_add,":array_agent_id",":array_size"),
+			(try_end),
+		(try_end),
+		
+	])
+		
+#### 					MOD END
+	
 #### MOD BEGIN    
 lance_breaking_multiplayer = (
   ti_on_agent_hit, 0, 0, [],
@@ -2799,41 +2838,11 @@ mission_templates = [
           (eq, ":is_wounded", 1),
           (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), 
         (try_end),
-		
-		########				MOD BEGIN
-		########		Counting troops kills
-		########
-		(array_get_dim_size, ":array_size", "$kills_array", 0),
-		
-		(agent_get_troop_id,":troop_id", ":killer_agent_no"),
-		
-		(try_for_range, ":array_agent_id", 0, ":array_size"),
-			
-			(array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
-			
-			 (try_begin),
-			 (eq,":array_troop_id",":troop_id"),
-				(array_get_val, ":kills", "$kills_array", 1, ":array_agent_id"),
-				(val_add,":kills",1),
-				
-				
-				### debug
-				# (assign,reg6,":kills"),
-				# (assign,reg7,":array_troop_id"),
-				# (display_message,"@ agent ID: {reg7} kills: {reg6}"),
-				
-				(array_set_val, "$kills_array", ":kills", 1, ":array_agent_id"),
-				(val_add,":array_agent_id",":array_size"),
-			(try_end),
-		(try_end),
-		
-		
-		
-		#### 					MOD END
-
         (call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
        ]),
+	   counting_kills,
 ## MadVader deathcam begin
+	  
       common_init_deathcam,
       common_start_deathcam,
       common_move_deathcam,
@@ -2994,6 +3003,7 @@ mission_templates = [
      (1,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
      ],
     [
+	  counting_kills,
       common_battle_tab_press,
       common_battle_init_banner,
 ## MadVader deathcam begin
@@ -3113,6 +3123,8 @@ mission_templates = [
 
         (call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
        ]),
+	   
+	  counting_kills,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3413,6 +3425,7 @@ mission_templates = [
 
       common_battle_tab_press,
       common_battle_init_banner,
+	  counting_kills,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3484,6 +3497,7 @@ mission_templates = [
 
       common_battle_tab_press,
       common_battle_init_banner,
+	  counting_kills,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3560,7 +3574,7 @@ mission_templates = [
          (call_script, "script_change_banners_and_chest"),
          (call_script, "script_remove_siege_objects"),
          ]),
-
+	  counting_kills,
       common_battle_tab_press,
       common_battle_init_banner,
 ## MadVader deathcam begin
@@ -3673,6 +3687,7 @@ mission_templates = [
       common_music_situation_update,
       common_siege_ai_trigger_init,
       common_siege_ai_trigger_init_2,
+	  counting_kills,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3773,6 +3788,7 @@ mission_templates = [
       common_battle_order_panel_tick,
       common_inventory_not_available,
 	  lance_breaking,
+	  counting_kills,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -15735,6 +15751,8 @@ mission_templates = [
         #(call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
        ]),
 
+	   counting_kills,
+	   
       (0, 0, ti_once, [],
        [
          (call_script, "script_music_set_situation_with_culture", mtf_sit_ambushed),
