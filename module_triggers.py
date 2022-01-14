@@ -1715,8 +1715,29 @@ triggers = [
   ]),
    
    
+#######	 SCRIPT FOR REDUCING WPF POINTS 
+####### DECREASING RATE DEPENDING ON WEAPON MASTER SKILL
+  (24, 0, 0, [],		
+  [    
+	
+	(assign,":troop_no","trp_player"),
+	
+	(call_script,"script_decrease_wpf",":troop_no",wpt_one_handed_weapon),
+	
+	# (store_proficiency_level,":one_handed_wpf","trp_player",wpt_one_handed_weapon),
+	# (store_proficiency_level,":two_handed_wpf","trp_player",wpt_two_handed_weapon),
+	# (store_proficiency_level,":polearm_wpf","trp_player",wpt_polearm),
+	# (store_proficiency_level,":xbow_wpf","trp_player",wpt_crossbow),
+	# (store_proficiency_level,":throwing_wpf","trp_player",wpt_throwing),
+	# (store_proficiency_level,":archery_wpf","trp_player",wpt_archery),   
+	
+	
+	
+	
    
    
+
+  ]), 
    
    
 ## MOD END

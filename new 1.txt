@@ -1,1 +1,0 @@
-coop_copy_file_to_parties_sp

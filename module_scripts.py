@@ -55023,7 +55023,38 @@ scripts = [
 		(try_end),
 
 ]),
+
+
+#script_decrease_wpf:
+# INPUT:
+# param1: troop_no 
+# param2: wpt_attrib
+#OUTPUT:
+# 
+
+("decrease_wpf",[	
 	
+    (store_script_param_1, ":troop_no"),
+    (store_script_param_2, ":wpt_attrib"),
+
+	
+	(store_proficiency_level,":wpt_points",":troop_no",":wpt_attrib"),
+	(store_skill_level,":weapon_master", "skl_weapon_master", ":troop_no"),
+	
+	
+	(store_sub,":decrease_val", 600, ":wpt_points"),
+	(store_div,":decrease_val",":decrease_val",30),
+	
+	(try_begin),
+	(gt,":weapon_master",0),
+		(store_div,":decrease_val",":decrease_val",":weapon_master"),
+	(try_end),
+
+	
+	(store_sub,":new_wpt_points",":wpt_points",":decrease_val"),
+	(troop_set_proficiency, ":troop_no", ":wpt_attrib", ":new_wpt_points"),
+
+]),
 	 
 	 
 #COOP BEGIN ###################
