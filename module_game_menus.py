@@ -6885,6 +6885,20 @@ game_menus = [
                                 (change_screen_map_conversation, ":siege_leader_id")]),
       ("join_siege_with_allies",[(neg|troop_is_wounded, "trp_player")], "Join the next assault.",
        [
+	   		########				MOD BEGIN
+			########		Counting troops kills
+			########
+			(party_get_num_companion_stacks,":stacks","p_main_party"),
+			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(display_message,"@ array created"),
+			(array_set_val_all, "$kills_array", 0),
+			
+			(try_for_range,":x",0,":stacks"),
+				(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+				(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+			
+			(try_end),
+			#### 					MOD END
            (assign, "$g_joined_battle_to_help", 1), 
            (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
            (try_begin),
@@ -9368,7 +9382,24 @@ game_menus = [
 
       ("village_attack_bandits",[(party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),],
        "Attack the bandits.",
-       [(party_get_slot, ":bandit_troop", "$current_town", slot_village_infested_by_bandits),
+       [
+		########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
+	   
+	   
+	   (party_get_slot, ":bandit_troop", "$current_town", slot_village_infested_by_bandits),
         (party_get_slot, ":scene_to_use", "$current_town", slot_castle_exterior),
         (modify_visitors_at_site,":scene_to_use"),
         (reset_visitors),
@@ -10166,6 +10197,20 @@ game_menus = [
     ],
     [
       ("village_raid_attack",[],"Charge them.",[
+		########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
           (store_random_in_range, ":enmity", -10, -5),
           (call_script, "script_change_player_relation_with_center", "$current_town", ":enmity"),
           (try_begin),

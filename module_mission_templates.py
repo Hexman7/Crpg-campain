@@ -3003,9 +3003,10 @@ mission_templates = [
      (1,mtef_visitor_source|mtef_team_0,0,aif_start_alarmed,1,[]),
      ],
     [
-	  counting_kills,
+	  
       common_battle_tab_press,
       common_battle_init_banner,
+	  counting_kills,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
