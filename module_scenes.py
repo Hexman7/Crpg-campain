@@ -1319,11 +1319,11 @@ scenes = [
 	
   ("bridge_scene_1",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000004a078b0cc006f1c20000409c80002dd100006705",
     [],[],"outer_terrain_snow"),
-  ("bridge_scene_2",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000004261c9884006adac000019b70000051400005545",
+  ("bridge_scene_2",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000004261c9884006adac000019b70000051400005545",			## MOD ready
     [],[],"outer_terrain_snow"),
-  ("bridge_scene_3",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000004a078b0cc006f1c200001302800028c800006705",
+  ("bridge_scene_3",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000004261c9884006adac000019b70000051400005545",
     [],[],"outer_terrain_snow"),
-  ("bridge_scene_4",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x00000000ca058c8c800741d3000025cc0000792f00000593",
+  ("bridge_scene_4",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x00000000ca058c8c800741d3000025cc0000792f00000593",			## MOD ready (?)
     [],[],"outer_terrain_snow"),
   ("bridge_scene_5",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x00000000ca058c8c800741d3000078da0000566400000593",
     [],[],"outer_terrain_snow"),

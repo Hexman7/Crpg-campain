@@ -1696,7 +1696,7 @@ maximum_price_factor = 10000
 village_prod_min = 0 #was -5
 village_prod_max = 20 #was 20
 
-trade_goods_begin = "itm_oil"
+trade_goods_begin = "itm_pottery"		# was oil but oil was moved to food 31.03.2022
 trade_goods_end = "itm_siege_supply"
 food_begin = "itm_smoked_fish"
 food_end = "itm_siege_supply"

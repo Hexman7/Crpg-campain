@@ -8232,6 +8232,8 @@ scripts = [
 	  #Spices
 	  (item_set_slot, "itm_spice", slot_item_food_bonus, 12),	## 10.08.2018
 	  (item_set_slot, "itm_salt", slot_item_food_bonus, 8),	## 19.09.2018
+	 
+ 	  (item_set_slot, "itm_oil", slot_item_food_bonus, 8),	## 19.09.2018
 
 	  #Item economic settings	  
 	  (item_set_slot, "itm_grain", slot_item_urban_demand, 20),

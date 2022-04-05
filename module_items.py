@@ -173,7 +173,6 @@ items = [
 
  #["flour","Flour", [("salt_sack",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 40,weight(50)|abundance(100)|food_quality(45)|max_ammo(50),imodbits_none],
  #other trade goods (first one is spice)
- ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable, 0, 450,weight(50)|abundance(60)|max_ammo(50),imodbits_none],
 
  ["pottery","Pottery", [("jug",0)], itp_merchandise|itp_type_goods, 0, 100,weight(50)|abundance(90),imodbits_none],
 
@@ -211,7 +210,8 @@ items = [
 
  ["spice","Spice", [("spice_sack",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 880,weight(40)|food_quality(70)|abundance(25)|max_ammo(50),imodbits_none],
  ["salt","Salt", [("salt_sack",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 255,weight(50)|food_quality(10)|max_ammo(40)|abundance(120),imodbits_none],
- 
+ ["oil","Oil", [("oil",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 450,weight(50)|food_quality(20)|abundance(60)|max_ammo(50),imodbits_none],
+
  
  ["wine","Wine", [("amphora_slim",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 220,weight(30)|food_quality(30)|abundance(60)|max_ammo(50),imodbits_none],## 30.04.2018	wasnt between food.
  ["ale","Ale", [("ale_barrel",0)], itp_merchandise|itp_type_goods|itp_consumable|itp_food, 0, 120,weight(30)|food_quality(30)|abundance(70)|max_ammo(50),imodbits_none],## 30.04.2018

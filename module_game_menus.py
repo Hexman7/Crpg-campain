@@ -4460,6 +4460,28 @@ game_menus = [
 			],
 		),
 		
+		("block_oil",
+		   [
+			(item_get_slot,":goods_is_blocked","itm_oil",slot_item_is_blocked),
+			(try_begin),
+			(eq,":goods_is_blocked",0),
+				(str_store_string, s1, "@Block"),
+			(else_try),
+				(str_store_string, s1, "@Unlock"),
+			(try_end),
+		   ], "{s1} Oil.",
+		   [
+			(item_get_slot,":goods_is_blocked","itm_oil",slot_item_is_blocked),
+			
+			(try_begin),
+			(eq,":goods_is_blocked",0),
+				(item_set_slot,"itm_oil",slot_item_is_blocked,1),
+			(else_try),
+				(item_set_slot,"itm_oil",slot_item_is_blocked,0),
+			(try_end),
+			],
+		),
+		
 		
 		("go_back",
 		   [], "Go back.",
@@ -10055,8 +10077,10 @@ game_menus = [
       (else_try),
         (assign, reg17, ":random_value"),
         (store_sub, reg12, ":random_value", 1),
+		(store_faction_of_party, ":village_faction", "$current_town"),
         (try_begin),
           (gt, ":lord", 0),
+		  (neq, ":village_faction","fac_neutrals"),
           (call_script, "script_change_player_relation_with_troop", ":lord", -3),
           (call_script, "script_add_log_entry", logent_player_stole_cattles_from_village, "trp_player",  "$current_town", ":lord", "$g_encountered_party_faction"),
         (try_end),
@@ -10131,8 +10155,10 @@ game_menus = [
            (try_end),
          (try_end),
          (party_get_slot, ":village_lord", "$current_town", slot_town_lord),
+		 (store_faction_of_party, ":village_faction", "$current_town"),
          (try_begin),
            (gt,  ":village_lord", 1),
+		   (neq, ":village_faction","fac_neutrals"),
           (call_script, "script_change_player_relation_with_troop", ":village_lord", -1),
           (try_end),
          (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
@@ -10186,7 +10212,9 @@ game_menus = [
            (store_random_in_range, ":enmity", -30, -15),
            (call_script, "script_change_player_relation_with_center", "$current_town", ":enmity"),
            (party_get_slot, ":town_lord", "$current_town", slot_town_lord),
+		   (store_faction_of_party, ":village_faction", "$current_town"),
            (gt, ":town_lord", 0),
+		   (neq, ":village_faction","fac_neutrals"),
            (call_script, "script_change_player_relation_with_troop", ":town_lord", -3),
          (try_end),
          (jump_to_menu, "mnu_village_loot_no_resist"),
@@ -10210,12 +10238,15 @@ game_menus = [
 			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
 		
 		(try_end),
+		
+		(store_faction_of_party, ":village_faction", "$current_town"),
 		#### 					MOD END
           (store_random_in_range, ":enmity", -10, -5),
           (call_script, "script_change_player_relation_with_center", "$current_town", ":enmity"),
           (try_begin),
             (party_get_slot, ":town_lord", "$current_town", slot_town_lord),
             (gt, ":town_lord", 0),
+			(neq, ":village_faction","fac_neutrals"),
             (call_script, "script_change_player_relation_with_troop", ":town_lord", -3),
           (try_end),
           (call_script, "script_calculate_battle_advantage"),
@@ -10272,12 +10303,13 @@ game_menus = [
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
       ],"Use multiplayer battle results.", 
       [
-
+		  (store_faction_of_party, ":village_faction", "$current_town"),
           (store_random_in_range, ":enmity", -10, -5),
           (call_script, "script_change_player_relation_with_center", "$current_town", ":enmity"),
           (try_begin),
             (party_get_slot, ":town_lord", "$current_town", slot_town_lord),
             (gt, ":town_lord", 0),
+			(neq, ":village_faction","fac_neutrals"),
             (call_script, "script_change_player_relation_with_troop", ":town_lord", -3),
           (try_end),
 
@@ -10328,7 +10360,6 @@ game_menus = [
 			(ge, ":relation", 0),
 			(call_script, "script_diplomacy_party_attacks_neutral", "p_main_party", "$current_town"),
 			
-			
 			(call_script, "script_change_player_relation_with_faction", ":village_faction", -5),	#mod 10.12.2021
 		  (try_end),	
 		  
@@ -10354,10 +10385,12 @@ game_menus = [
           (ge, ":number_of_caravan_raids", 3),
           (unlock_achievement, ACHIEVEMENT_THE_BANDIT),
         (try_end),
-    
+		
+		(store_faction_of_party, ":village_faction", "$current_town"),
         (party_get_slot, ":village_lord", "$current_town", slot_town_lord),
         (try_begin),
           (gt,  ":village_lord", 0),
+		  (neq, ":village_faction","fac_neutrals"),
           (call_script, "script_change_player_relation_with_troop", ":village_lord", -5),
         (try_end),
         (store_random_in_range, ":enmity", -35, -25),
