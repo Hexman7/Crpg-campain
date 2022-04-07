@@ -3549,6 +3549,30 @@ game_menus = [
 		(change_screen_mission),
 	   ]
        ),	   
+   	  ("edit_scene11",[], "Edit Scene Bridge 11",
+       [(set_jump_mission,"mt_lead_charge"),
+		(jump_to_scene,"scn_bridge_scene_11"),
+		(change_screen_mission),
+	   ]
+       ),	   
+   	  ("edit_scene12",[], "Edit Scene Bridge 12",
+       [(set_jump_mission,"mt_lead_charge"),
+		(jump_to_scene,"scn_bridge_scene_12"),
+		(change_screen_mission),
+	   ]
+       ),	   
+   	  ("edit_scene13",[], "Edit Scene Bridge 13",
+       [(set_jump_mission,"mt_lead_charge"),
+		(jump_to_scene,"scn_bridge_scene_13"),
+		(change_screen_mission),
+	   ]
+       ),	   
+   	  ("edit_scene14",[], "Edit Scene Bridge 14",
+       [(set_jump_mission,"mt_lead_charge"),
+		(jump_to_scene,"scn_bridge_scene_14"),
+		(change_screen_mission),
+	   ]
+       ),	   
 	   ("back_to_camp_menu",[],"{!}Back to camp menu.",
        [
          (jump_to_menu, "mnu_camp"),
