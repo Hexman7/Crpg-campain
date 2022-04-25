@@ -4401,5 +4401,12 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
   #mod end
   
+  
+  ### mod begin 23.04.2022
+  
+  ("lord_s1_votes_reg3","{s1} - Votes: {reg3}"),
+  
+  ### mod end
+  
 
 ]

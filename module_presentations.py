@@ -15938,7 +15938,96 @@ presentations = [
 	  ]),
     ]),
 		
+	("present_lord_votes", prsntf_manual_end_only, mesh_load_window, [		#19.03.2019
+    (ti_on_presentation_load, [      
+      (set_fixed_point_multiplier, 1000),
+	    
+      (assign,":y_pos", 10),
 		
+	  (str_clear, s0),
+      (create_text_overlay, "$g_presentation_obj_votes_container", s0, tf_scrollable),
+      (position_set_x, pos1, 59),
+      (position_set_y, pos1, 50),
+      (overlay_set_position, "$g_presentation_obj_votes_container", pos1),
+      (position_set_x, pos1, 640),
+      (position_set_y, pos1, 520),
+      (overlay_set_area_size, "$g_presentation_obj_votes_container", pos1),
+      (set_container_overlay, "$g_presentation_obj_votes_container"),
+		
+		
+		(try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
+			(troop_set_slot, ":active_npc", slot_troop_temp_slot, 0),
+		(try_end),
+		
+		(try_for_range,":active_npc", active_npcs_begin, pretenders_begin),
+			(store_faction_of_troop, ":active_npc_faction", ":active_npc"),
+			(eq, ":active_npc_faction", "$players_kingdom"),
+			(troop_get_slot, ":selected_npc", ":active_npc", slot_troop_stance_on_faction_issue),
+			(ge, ":selected_npc", 0),
+			
+			(troop_get_slot, ":votes_accumulated", ":selected_npc", slot_troop_temp_slot),
+			(val_add, ":votes_accumulated", 1),
+			(troop_set_slot, ":selected_npc", slot_troop_temp_slot, ":votes_accumulated"),
+
+		(try_end),
+		
+		(try_for_range,":active_npc", active_npcs_begin, pretenders_begin),		### !!!(pretenders_begin) prenders not gonna show in votes: TO BE CHANGED
+			(store_faction_of_troop, ":active_npc_faction", ":active_npc"),
+			#(eq, ":active_npc_faction", "fac_player_supporters_faction"),
+			(eq, ":active_npc_faction", "$players_kingdom"),
+		
+			
+			(troop_get_slot, ":votes", ":active_npc", slot_troop_temp_slot),
+			(assign,reg3,":votes"),
+			(str_clear,s1),
+			(str_store_troop_name,s1,":active_npc"),
+			(create_text_overlay,reg0, "str_lord_s1_votes_reg3"),
+		    (position_set_x, pos1, 50),
+			(position_set_y, pos1, ":y_pos"),
+			(overlay_set_position, reg0, pos1),
+			#(overlay_set_container_overlay, reg0, "$g_presentation_obj_votes_container"),
+			
+			(store_add,":y_pos",":y_pos",30),
+		(try_end),
+		
+		(create_game_button_overlay, "$g_presentation_obj_go_back_btn", "str_back",0),
+		(position_set_x, pos1, 500),
+		(position_set_y, pos1, 10),
+		(overlay_set_position, "$g_presentation_obj_go_back_btn", pos1),
+		
+		
+		(presentation_set_duration, 999999),
+     ]),
+	  (ti_on_presentation_run, [
+        (set_fixed_point_multiplier, 1000),
+        (presentation_set_duration, 1000000),
+	  
+	    (try_begin),
+          (key_clicked, key_escape),
+          (presentation_set_duration, 0),
+        (try_end),
+	  
+	  
+	  
+      ]),    
+	  
+	  (ti_on_presentation_event_state_change, [
+		  (store_trigger_param_1, ":object"),
+		  (store_trigger_param_2, ":value"),
+	
+			(try_begin),
+				(eq,":object","$g_presentation_obj_go_back_btn"),
+				(presentation_set_duration, 0),
+			(try_end),
+
+		   
+		   
+		  # (presentation_set_duration, 0),
+		
+		
+		 
+	  ]),
+    ]),		
 		
 	  
   

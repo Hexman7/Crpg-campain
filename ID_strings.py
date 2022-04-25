@@ -3439,5 +3439,6 @@ str_yellow = 3437
 str_blue = 3438
 str_violet = 3439
 str_grey = 3440
+str_lord_s1_votes_reg3 = 3441
 
 

@@ -571,6 +571,11 @@ game_menus = [
       ("view_morale_report",[],"View party morale report.",
        [(jump_to_menu, "mnu_morale_report"),
         ]
+       ),      
+	   
+	   ("view_faction_report",[],"View faction report.",
+       [(jump_to_menu, "mnu_faction_report"),
+        ]
        ),
 
 #NPC companion changes begin
@@ -2404,6 +2409,34 @@ game_menus = [
     ]
   ),
 
+  ### mod begin 23.04.2022 Faction report
+   ("faction_report",0,
+   "What information do you need?",
+   "none",
+   [],
+    [
+	   ("faction_report_votes",
+       [
+			#(faction_slot_eq, "$players_kingdom", slot_faction_leader, "trp_player"),
+	   ], "Lords Votes",
+       [(start_presentation, "prsnt_present_lord_votes"),
+        ],
+       ),
+	   ("go_back",
+		   [], "Go back.",
+		   [
+			(jump_to_menu,"mnu_reports"),
+			],
+		),
+		
+	 ]
+	),
+  
+  
+  
+  ### mod end 
+  
+  
 
   ("courtship_relations",0,
    "{s1}",
@@ -3400,8 +3433,8 @@ game_menus = [
 		(display_message,"@reserved {reg5}"),
 		
         ],
-       ),		  
-
+       ),		  	
+	   
 	   ("camp_edit_scene",
        [(eq,"$cheat_mode",1)
         ], "CHEAT!: Edit scene",
