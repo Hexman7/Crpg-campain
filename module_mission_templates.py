@@ -1155,7 +1155,7 @@ common_rotate_deathcam = (
         (convert_to_fixed_point, ":shift"),
         (store_sqrt, ":shift", ":shift"),
         (convert_from_fixed_point, ":shift"),
-        (val_clamp, ":shift", 1, 6), #limit rotation speed
+        (val_clamp, ":shift", 2, 6), #limit rotation speed		## mod edited was 1,6
         (val_mul, ":shift", ":sign"),
         (try_begin),
           (eq, ":pass", 0), # rotate around z (left/right)

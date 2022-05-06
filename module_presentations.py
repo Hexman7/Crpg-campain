@@ -14769,7 +14769,7 @@ presentations = [
 	  
 	  
 	  
-	  ### generating inventory slots temp troop
+	  ### generating inventory slots temp troop	LHS
 	  
 	  
 	  (set_container_overlay, "$g_presentation_inventory_slots"),
@@ -14805,7 +14805,7 @@ presentations = [
 	  
 	  
 	  
-	### generating slots for troops
+	### generating slots for troops			RHS
 	  
 	  
 	  
@@ -15049,7 +15049,7 @@ presentations = [
      (ti_on_presentation_mouse_press,
      [
        (store_trigger_param_1, ":object"),
-       (store_trigger_param_2, ":mouse_button"),
+       #(store_trigger_param_2, ":mouse_button"),
 	   
 	    (try_begin),
 		(gt,":object",209),
@@ -15811,7 +15811,7 @@ presentations = [
 		(position_set_x, pos1, 800),
 		(position_set_y, pos1, 800),
 		(overlay_set_size, reg2, pos1),
-		(position_set_x, pos1, 500),
+		(position_set_x, pos1, 300),
 		(position_set_y, pos1, 500),
 		(overlay_set_position, reg2, pos1),
 	 
@@ -16013,7 +16013,7 @@ presentations = [
 	  
 	  (ti_on_presentation_event_state_change, [
 		  (store_trigger_param_1, ":object"),
-		  (store_trigger_param_2, ":value"),
+		 # (store_trigger_param_2, ":value"),
 	
 			(try_begin),
 				(eq,":object","$g_presentation_obj_go_back_btn"),

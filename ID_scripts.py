@@ -685,7 +685,7 @@ script_coop_read_eq_from_file = 683
 script_coop_read_eq_from_file_to_troops = 684
 script_coop_check_player_troops_status = 685
 script_coop_read_eq_from_troop = 686
-script_wse_savegame_loaded = 687
+script_cf_wse_savegame_loaded = 687
 script_cf_check_file_exist = 688
 script_cf_wse_window_opened = 689
 

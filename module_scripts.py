@@ -24407,7 +24407,14 @@ scripts = [
         (store_div, ":prosperity_added", ":gold", 3000),
         (store_mul, ":gold_removed", ":prosperity_added", 3000),
         (troop_remove_gold, ":merchant_troop", ":gold_removed"),
-        (call_script, "script_change_center_prosperity", ":village_no", ":prosperity_added"),        
+        (call_script, "script_change_center_prosperity", ":village_no", ":prosperity_added"), 
+	  ## mod begin  25.04.2022		## adding 300 gold to villagers making easier to trade with villages
+	  (else_try),
+		(lt,":gold", 300),
+		(store_random_in_range,":new_gold",200,300),
+		(call_script, "script_troop_add_gold", ":merchant_troop", ":new_gold"),
+		
+		## mod end 
       (try_end),
   ]),
 
@@ -34051,6 +34058,10 @@ scripts = [
        (assign, "$number_of_report_to_army_quest_notes", 8),
        (faction_get_slot, ":faction_ai_state", "$players_kingdom", slot_faction_ai_state),
        (call_script, "script_update_report_to_army_quest_note", "$players_kingdom", ":faction_ai_state", -1),     
+	   ### mod begin 25.04.2022
+	   (troop_get_slot, ":troop_party", ":giver_troop_no", slot_troop_leaded_party),
+	   (party_set_flags, ":troop_party", pf_always_visible, 1),
+	   ### mod end  
      (try_end),  
 	 
      (display_message, "str_quest_log_updated"),
@@ -34133,7 +34144,7 @@ scripts = [
       (try_begin),
         (is_between, ":quest_no", mayor_quests_begin, mayor_quests_end),
         (assign, "$merchant_quest_last_offerer", -1),
-        (assign, "$merchant_offered_quest", -1),
+        (assign, "$merchant_offered_quest", -1),   
       (try_end),
     ]),
 
@@ -54788,6 +54799,7 @@ scripts = [
    ### copying equipment
    (call_script,"script_copy_items_from_troop_to_troop","$current_hero","trp_player"),
    
+   ## setting lordly modifier
 	(troop_get_inventory_capacity,":capacity","trp_player"),
 	(try_for_range,":slot_no",0,":capacity"),	
 		(troop_get_inventory_slot,":i_slot","trp_player",":slot_no"),
@@ -54826,8 +54838,6 @@ scripts = [
 		(assign, "$g_invite_offered_center", -1),
 		(call_script,"script_player_join_faction","$character_faction"),
 	
-		(call_script, "script_add_log_entry", logent_pledged_allegiance,   "trp_player",  -1, ":faction_leader", "$character_faction"),
-
 		(assign, "$player_has_homage" ,1),
 		(assign, "$g_player_banner_granted", 1),
 		(assign, "$g_invite_faction", 0),
@@ -54875,9 +54885,15 @@ scripts = [
 		(try_end),
 		
 		(try_for_range,":hero",":begin",":end"),
-			(store_random_in_range,":relation",-10,100),
+			(troop_set_slot,":hero",slot_troop_met,1),
+			(store_random_in_range,":relation",-30,100),
 			(call_script, "script_troop_change_relation_with_troop", "trp_player", ":hero", ":relation"),
 		(try_end),
+		
+		(faction_get_slot,":faction_leader","$character_faction",slot_faction_leader),
+		(troop_set_slot,":faction_leader",slot_troop_met,1),
+		  
+		
 		
 	(try_end),
   

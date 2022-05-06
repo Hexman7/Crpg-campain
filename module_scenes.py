@@ -1343,7 +1343,7 @@ scenes = [
     [],[], "outer_terrain_plain"),
   ("bridge_scene_13",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000003c634826c0091e3a000010708000769e00003160",
     [],[], "outer_terrain_plain"),
-  ("bridge_scene_14",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x0000000030078906c0077de90000107080000066000035f5",
+  ("bridge_scene_14",sf_generate,"none", "none", (0,0),(100,100),-0.5,"0x000000003c634826c0091e3a000010708000769e00003160",		### 0x0000000030078906c0077de90000107080000066000035f5		- nice scene terrain code
     [],[], "outer_terrain_plain"),
 
 ]

@@ -7333,6 +7333,10 @@ dialogs = [
 	(quest_set_slot, "qst_report_to_army", slot_quest_giver_troop, "$g_talk_troop"),
      #TODO: Change this value
     (call_script, "script_change_player_relation_with_troop", "$g_talk_troop", 1),
+	## mod begin
+	(troop_get_slot, ":troop_party", "$g_talk_troop", slot_troop_leaded_party),
+	(party_set_flags, ":troop_party", pf_always_visible, 0),	
+	## mod end
    ]],
 
   [anyone,"lord_start",[
@@ -7365,6 +7369,10 @@ dialogs = [
      (call_script, "script_start_quest", "qst_follow_army", "$g_talk_troop"),
      (assign, "$g_player_follow_army_warnings", 0),
      (assign, "$g_leave_encounter", 1),
+	 ## mod begin
+	 (troop_get_slot, ":troop_party", "$g_talk_troop", slot_troop_leaded_party),
+	 (party_set_flags, ":troop_party", pf_always_visible, 0),	
+	 ## mod end
    ]],
 
   [anyone,"lord_report_to_army_continue", [], "Then you'd better hurry. We'll be moving out soon against the enemy and I need every able hand we can muster.", "close_window",

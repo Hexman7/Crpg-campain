@@ -4083,7 +4083,7 @@ coop_scripts = [
 
 #script_wse_savegame_loaded
 # Called each time after savegame is loaded successfully
- ("wse_savegame_loaded", [
+ ("cf_wse_savegame_loaded", [
 	
 	(store_current_day,":day"),
 	
@@ -4164,8 +4164,8 @@ coop_scripts = [
 # trigger result = presentation that replaces the window (if not set or negative, window will open normally)
 ("cf_wse_window_opened", [
 	(store_script_param, ":window_no", 1),
-	(store_script_param, ":window_param_1", 2),
-	(store_script_param, ":window_param_2", 3),
+	#(store_script_param, ":window_param_1", 2),
+	#(store_script_param, ":window_param_2", 3),
 	
 	(eq,"$cheat_mode",1),
 		(assign,reg0,":window_no"),

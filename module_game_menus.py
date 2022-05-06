@@ -1763,6 +1763,7 @@ game_menus = [
         (troop_raise_skill, "trp_player",skl_riding,1),
         (troop_raise_skill, "trp_player",skl_tactics,1),
         (troop_raise_skill, "trp_player",skl_leadership,1),
+		(troop_raise_skill, "trp_player",skl_shield,1),	## mod added
         (troop_raise_proficiency, "trp_player",wpt_one_handed_weapon,10),
         (troop_raise_proficiency, "trp_player",wpt_two_handed_weapon,10),
         (troop_raise_proficiency, "trp_player",wpt_polearm,10),
@@ -1787,7 +1788,8 @@ game_menus = [
         (troop_raise_skill, "trp_player",skl_wound_treatment,1),
         (troop_raise_skill, "trp_player",skl_riding,2),
         (troop_raise_skill, "trp_player",skl_first_aid,1),
-        (troop_raise_skill, "trp_player",skl_leadership,1),
+        (troop_raise_skill, "trp_player",skl_leadership,1),  
+		(troop_raise_skill, "trp_player",skl_shield,1),	## mod added
         (troop_raise_proficiency, "trp_player",wpt_one_handed_weapon,20),
 
         (troop_set_slot, "trp_player", slot_troop_renown, 50),
@@ -1838,6 +1840,7 @@ game_menus = [
         (troop_raise_skill, "trp_player","skl_weapon_master",1),
         (troop_raise_skill, "trp_player","skl_leadership",1),
         (troop_raise_skill, "trp_player","skl_trainer",1),
+        (troop_raise_skill, "trp_player","skl_shield",2),	## mod added
         (troop_raise_proficiency, "trp_player",wpt_one_handed_weapon,10),
         (troop_raise_proficiency, "trp_player",wpt_two_handed_weapon,15),
         (troop_raise_proficiency, "trp_player",wpt_polearm,20),
@@ -5418,6 +5421,9 @@ game_menus = [
 		
 		(call_script,"script_coop_check_player_troops_status"),
 		## mod end, player troops script 
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		 
  
@@ -5864,8 +5870,13 @@ game_menus = [
        (call_script, "script_print_casualties_to_s0", "p_ally_casualties", 0),
        (str_store_string, s10, "@^^Ally Casualties:{s0}"),
      (try_end),
-	 (str_clear, s11),
-	 (call_script,"script_print_kills_to_s0"),
+	 (try_begin),
+	 (eq,"$coop_multiplayer_battle_result",0),
+		 (str_clear, s11),
+		 (call_script,"script_print_kills_to_s0"),
+	 (else_try),
+		(assign,"$coop_multiplayer_battle_result",0),
+	 (try_end),
 	 (str_store_string, s13, "@{s0}"),
      ],
     [
@@ -6615,6 +6626,9 @@ game_menus = [
       #change these for menu
         (assign, "$g_next_menu", "mnu_join_battle"),
         (assign, "$g_joined_battle_to_help", 1),
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
       ]),		 
       ("encounter_save",[],"Give me time to save.",
       [
@@ -7097,6 +7111,9 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
 
@@ -7919,6 +7936,9 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
 
@@ -9058,6 +9078,9 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
 
       ]),		  
@@ -9546,6 +9569,9 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
  
@@ -10380,7 +10406,10 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),
 		
-		## mod end, player troops script 		
+		## mod end, player troops script 
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end		
         (jump_to_menu, "mnu_battle_debrief"),
 
       ]),		  
@@ -12967,6 +12996,9 @@ game_menus = [
 		## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
         (jump_to_menu, "mnu_battle_debrief"),
 
       ]),		  
@@ -16345,6 +16377,9 @@ game_menus = [
 	  	## mod begin, player troops script 		
 		(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 
+		## mod begin
+		(assign, "$coop_multiplayer_battle_result", 1),
+		## mod end
       (try_begin),
         (eq, "$g_battle_result", 1), #player won
         (party_set_slot, "$g_encountered_party", slot_party_ai_substate, 2),
