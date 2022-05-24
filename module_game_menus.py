@@ -3645,15 +3645,21 @@ game_menus = [
       ("add_swadian_troops",[], "Add Swadian Troops",
        [
 		 (party_add_members,"p_main_party","trp_swadian_recruit",20),
+		 (party_add_members,"p_main_party","trp_polanie_kingsguard",1),
 		 (display_message,"@ You get 20 Swadian recruits"),
-         (jump_to_menu, "mnu_camp_add_troops"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_f"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_f"),   
+		 (jump_to_menu, "mnu_camp_add_troops"),
 	   ]
        ),	   
 
       ("add_vaegir_troops",[], "Add Vaegir Troops",
        [
 		 (party_add_members,"p_main_party","trp_vaegir_recruit",20),
+		 (party_add_members,"p_main_party","trp_grey_kingsguard",1),
 		 (display_message,"@ You get 20 Vaegir recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_b"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_b"),
          (jump_to_menu, "mnu_camp_add_troops"),
 	   ]
        ),	   
@@ -3661,7 +3667,10 @@ game_menus = [
       ("add_khergit_troops",[],"Add Khergit Troops",
        [
 		 (party_add_members,"p_main_party","trp_khergit_tribesman",20),
+		 (party_add_members,"p_main_party","trp_tengri_kingsguard",1),
 		 (display_message,"@ You get 20 Khergits recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_c"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_c"),
          (jump_to_menu, "mnu_camp_add_troops"),
         ]
        ),
@@ -3669,7 +3678,10 @@ game_menus = [
       ("add_nord_troops",[],"Add Nord Troops",      
        [
 		 (party_add_members,"p_main_party","trp_nord_recruit",20),
+		 (party_add_members,"p_main_party","trp_kalmarunionen_kingsguard",1),
 		 (display_message,"@ You get 20 nord recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_a"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_a"),
          (jump_to_menu, "mnu_camp_add_troops"),
         ]
        ),
@@ -3677,7 +3689,10 @@ game_menus = [
       ("add_rhodok_troops",[],"Add Rhodok Troops",
        [
 		 (party_add_members,"p_main_party","trp_rhodok_tribesman",20),
+		 (party_add_members,"p_main_party","trp_druzhina_kingsguard",1),
 		 (display_message,"@ You get 20 rhodok recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_d"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_d"),
          (jump_to_menu, "mnu_camp_add_troops"),	
         ]
        ),	   
@@ -3685,7 +3700,10 @@ game_menus = [
       ("add_sarranid_troops",[],"Add Sarranid Troops",
        [
 		 (party_add_members,"p_main_party","trp_sarranid_recruit",20),
+		 (party_add_members,"p_main_party","trp_templar_kingsguard",1),
 		 (display_message,"@ You get 20 sarranid recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_e"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_e"),   
          (jump_to_menu, "mnu_camp_add_troops"),		
         ]
        ),	   
@@ -3693,23 +3711,32 @@ game_menus = [
 	  ("add_eques_troops",[],"Add Eques Troops",
        [
 		 (party_add_members,"p_main_party","trp_eques_tribesman",20),
+		 (party_add_members,"p_main_party","trp_eques_kingsguard",1),
 		 (display_message,"@ You get 20 eques recruits"),
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_g"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_g"),
          (jump_to_menu, "mnu_camp_add_troops"),		
         ]
        ),	
 	  ("add_norse_troops",[],"Add Norse Troops",
        [
 		 (party_add_members,"p_main_party","trp_norse_recruit",20),
+		 (party_add_members,"p_main_party","trp_norse_kingsguard",1),
 		 (display_message,"@ You get 20 norse recruits"),
-         #(jump_to_menu, "mnu_camp_add_troops"),		
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_h"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_h"),
+         (jump_to_menu, "mnu_camp_add_troops"),		
         ]
        ),
 	   
 	  ("add_ode_troops",[],"Add ODE Troops",
        [
 		 (party_add_members,"p_main_party","trp_order_recruit",20),
+		 (party_add_members,"p_main_party","trp_order_kingsguard",1),
 		 (display_message,"@ You get 20 ode recruits"),
-         #(jump_to_menu, "mnu_camp_add_troops"),		
+		 (troop_set_slot, "trp_player", slot_troop_banner_scene_prop, "spr_banner_kingdom_i"),
+         (party_set_banner_icon, "p_main_party", "icon_map_flag_kingdom_i"),
+         (jump_to_menu, "mnu_camp_add_troops"),		
         ]
        ),
 	   

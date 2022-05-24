@@ -2394,7 +2394,22 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Snowball (Russia)^Pinnacle (UK)^Porto Editora (Portugal)^Hell-Tech (Greece)^CD Projekt (Poland, Czech Republic, Slovakia & Hungary)\
 ^Paradox Scandinavian Distribution (Scandinavia)\
 "),
+### mod begin
+("credits_13","Models with textures \
+^Shredzors\
+^Faradon\
+^Jan Tumans\
+^Mackie\
+^Joe Horan\
+^Narf of Picklestink\
+^Dejawolf\
+^Frell - kazakh pack\
+^Yamabushi\
+^DRZ_Kopcap_osa\
+"), 
 
+
+## mod end
 #### Warband added texts
 
 #multiplayer scene names

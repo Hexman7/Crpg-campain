@@ -14847,70 +14847,70 @@ presentations = [
 	  
 	  
 	  
-	  (set_container_overlay, "$g_presentation_inventory_slots"),
+	  # (set_container_overlay, "$g_presentation_inventory_slots"),
 	  
 	  
-	  ### adding items to slots of temp troop
+	  # ### adding items to slots of temp troop
 	  
 	  
-	  (assign,":licznik",0),
-	  (assign,":starting_x_pos",0),	
-	  (assign,":current_x_pos",0),	
+	  # (assign,":licznik",0),
+	  # (assign,":starting_x_pos",0),	
+	  # (assign,":current_x_pos",0),	
 
-	  (array_create, "$inventory_items_array", 2, 99),
-	  (assign,":array_index",0),
+	  # (array_create, "$inventory_items_array", 2, 99),
+	  # (assign,":array_index",0),
 	  
-	  (try_for_range,":slot_no",9,99),
+	  # (try_for_range,":slot_no",9,99),
 	  
-		   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
+		   # (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
 	  
-		   (try_begin),
-		   (gt,":i_slot",-1),
+		   # (try_begin),
+		   # (gt,":i_slot",-1),
 			 
-			  (try_begin),
-			  (eq,":licznik",3),
-				(assign,":current_x_pos",":starting_x_pos"),
-				(val_sub,":starting_y_pos",90),
-				(val_sub,":licznik",":licznik"),
-			  (else_try),
-			  (gt,":licznik",0),
-				(val_add,":current_x_pos",90),
-			  (try_end),
+			  # (try_begin),
+			  # (eq,":licznik",3),
+				# (assign,":current_x_pos",":starting_x_pos"),
+				# (val_sub,":starting_y_pos",90),
+				# (val_sub,":licznik",":licznik"),
+			  # (else_try),
+			  # (gt,":licznik",0),
+				# (val_add,":current_x_pos",90),
+			  # (try_end),
 			  
-			   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   
-			   (assign,reg10,"$g_presentation_item"),
-			   #(display_message,"@obj id: {reg10}"),
-			   
-			   (position_set_x, pos1, "$g_presentation_item"),
-			   (position_set_y, pos1, ":i_slot"),
-			   (array_set_val, "$inventory_items_array", pos1, ":array_index"),
-			   (val_add,":array_index",1),
-			   
-			   (position_set_x, pos1, 900),
-			   (position_set_y, pos1, 900),
-			   
-
-			   
+			   # (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
 			   
 			   # (assign,reg10,"$g_presentation_item"),
-			   # (display_message,"@ presentation item: {reg10}"),
+			   # #(display_message,"@obj id: {reg10}"),
 			   
-			   (store_add,":item_x",":current_x_pos",45),
-			   (store_add,":item_y",":starting_y_pos",45),
-			   (overlay_set_size, "$g_presentation_item", pos1),
-			   (position_set_x, pos1, ":item_x"),
-			   (position_set_y, pos1, ":item_y"),	   
-			   (overlay_set_position, "$g_presentation_item", pos1),
-			   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
+			   # (position_set_x, pos1, "$g_presentation_item"),
+			   # (position_set_y, pos1, ":i_slot"),
+			   # (array_set_val, "$inventory_items_array", pos1, ":array_index"),
+			   # (val_add,":array_index",1),
+			   
+			   # (position_set_x, pos1, 900),
+			   # (position_set_y, pos1, 900),
+			   
 
 			   
-			   (val_add,":licznik",1),
-			(try_end),  
+			   
+			   # # (assign,reg10,"$g_presentation_item"),
+			   # # (display_message,"@ presentation item: {reg10}"),
+			   
+			   # (store_add,":item_x",":current_x_pos",45),
+			   # (store_add,":item_y",":starting_y_pos",45),
+			   # (overlay_set_size, "$g_presentation_item", pos1),
+			   # (position_set_x, pos1, ":item_x"),
+			   # (position_set_y, pos1, ":item_y"),	   
+			   # (overlay_set_position, "$g_presentation_item", pos1),
+			   # (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
+
+			   
+			   # (val_add,":licznik",1),
+			# (try_end),  
 		  
 
-	  (try_end),
-      (set_container_overlay, -1),
+	  # (try_end),
+      # (set_container_overlay, -1),
 	  
 
 
@@ -15148,8 +15148,71 @@ presentations = [
 		  (assign,reg6,"$selected_items"),
 		  (display_message,"@selected items: {reg6}"),
 		  
-
+		  (set_container_overlay, "$g_presentation_inventory_slots"),
 		  
+		  
+		  ### adding items to slots of temp troop
+		  
+		  (assign,":starting_y_pos",0),
+		  (assign,":licznik",0),
+		  (assign,":starting_x_pos",0),	
+		  (assign,":current_x_pos",0),	
+
+		  (array_create, "$inventory_items_array", 2, 99),
+		  (assign,":array_index",0),
+		  
+		  (try_for_range,":slot_no",9,99),
+		  
+			   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
+		  
+			   (try_begin),
+			   (gt,":i_slot",-1),
+				 
+				  (try_begin),
+				  (eq,":licznik",3),
+					(assign,":current_x_pos",":starting_x_pos"),
+					(val_sub,":starting_y_pos",90),
+					(val_sub,":licznik",":licznik"),
+				  (else_try),
+				  (gt,":licznik",0),
+					(val_add,":current_x_pos",90),
+				  (try_end),
+				  
+				   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
+				   
+				   (assign,reg10,"$g_presentation_item"),
+				   #(display_message,"@obj id: {reg10}"),
+				   
+				   (position_set_x, pos1, "$g_presentation_item"),
+				   (position_set_y, pos1, ":i_slot"),
+				   (array_set_val, "$inventory_items_array", pos1, ":array_index"),
+				   (val_add,":array_index",1),
+				   
+				   (position_set_x, pos1, 900),
+				   (position_set_y, pos1, 900),
+				   
+
+				   
+				   
+				   # (assign,reg10,"$g_presentation_item"),
+				   # (display_message,"@ presentation item: {reg10}"),
+				   
+				   (store_add,":item_x",":current_x_pos",45),
+				   (store_add,":item_y",":starting_y_pos",45),
+				   (overlay_set_size, "$g_presentation_item", pos1),
+				   (position_set_x, pos1, ":item_x"),
+				   (position_set_y, pos1, ":item_y"),	   
+				   (overlay_set_position, "$g_presentation_item", pos1),
+				   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
+
+				   
+				   (val_add,":licznik",1),
+				(try_end),  
+			  
+
+		  (try_end),
+		  (set_container_overlay, -1),
+			  
 		#### Troop choose
 		(else_try),
 		(eq, ":object", "$g_presentation_list_of_troops"),

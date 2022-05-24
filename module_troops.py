@@ -1228,7 +1228,7 @@ troops = [
    
    
    ###########################################################
-   ####################		Norse
+   ####################		Norse			12
    ############################################################
   ["norse_recruit","Norse Recruit","Norse Recruits",tf_guarantee_boots|tf_guarantee_armor,0,0,fac_kingdom_8,
    [itm_axe,itm_hatchet,itm_wooden_shield,itm_tab_shield_round_a,itm_club,
@@ -1314,7 +1314,7 @@ troops = [
    str_24 | agi_21 | int_21 | cha_9|level(35),wp_one_handed(300)|wp_two_handed(300)|wp_polearm(300)|wp_archery(150)|wp_crossbow(150)|wp_throwing(190),knows_common|knows_power_throw_7|knows_power_strike_9|knows_ironflesh_10|knows_shield_8|knows_athletics_8|knows_riding_10,swadian_face_young_1, swadian_face_old_2],
    
    ############
-   ############## ODE
+   ############## ODE			12
    ###########
   ["order_recruit","ODE Recruit","ODE Recruits",tf_guarantee_boots|tf_guarantee_armor,0,0,fac_kingdom_9,
    [itm_pitch_fork,itm_club,itm_cleaver,itm_tab_shield_heater_a,itm_stones,
