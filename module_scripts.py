@@ -55075,6 +55075,42 @@ scripts = [
 ]),
 	 
 	 
+#script_decrease_wpf:
+# INPUT:
+# param1: troop_no 
+# param2: wpt_attrib
+#OUTPUT:
+# 
+
+("find_overlay_id",[	
+	
+    (store_script_param_1, ":array"),
+    (store_script_param_2, ":object"),
+
+	
+	(assign,":value", -1),
+	(assign,":item", -1),
+
+	(array_get_dim_size, ":array_size", ":array", 0), 
+	(try_for_range,":x",0,":array_size"),
+	
+		(try_begin),
+		# (array_eq, ":array", ":object", ":x", 0),
+			# (array_get_val, ":value", ":array", ":x", 0),
+			# (array_get_val, ":item", ":array", ":x", 2),
+			# (val_sub,":array_size",":array_size"), ### break loop
+		# (else_try),
+		(array_eq, ":array", ":object", ":x", 1),
+			(array_get_val, ":value", ":array", ":x", 1),
+			(array_get_val, ":item", ":array", ":x", 2),
+			(val_sub,":array_size",":array_size"), ### break loop
+		(try_end),
+		(assign, reg1, ":value"),
+		(assign, reg2, ":item"),
+	(try_end),
+
+]),
+	 
 #COOP BEGIN ###################
 ] + coop_scripts 
 #COOP END####################
