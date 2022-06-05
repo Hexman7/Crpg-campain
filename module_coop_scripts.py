@@ -3694,15 +3694,11 @@ coop_scripts = [
 #### Save equipment for player troops in file so they will be equipped in multiplayer battle
 #### 
 ####	 
-	 
-	 
 	("coop_save_eq_to_file",
 	 [		 
 		(try_begin),
 			(neg|is_vanilla_warband),
 			(dict_create, "$troop_dict"),
-		#	(str_store_troop_name,reg1,"trp_player"),
-			#(display_message,"@name of player is {reg1}"),
 			(dict_save, "$troop_dict", "@coop_troops"), ## Clear file
 			## loop for player troops
 			(try_for_range,reg1,player_troops_begin,player_troops_end),
@@ -3716,7 +3712,7 @@ coop_scripts = [
 					(neg|eq,":i_slot",-1),
 						(dict_set_int,"$troop_dict","@troop_{reg1}_{reg2}",reg3),
 					(try_end),
-					#(display_message,"@jednostka {reg1}, nrSlota{reg2}, wartoscSlota{reg3}"),
+					#(display_message,"@jednostka {reg1}, nrSlota{reg2}, wartoscSlota{reg3}"),	## DEBUG
 				(try_end),
 			(try_end),
 			(dict_save, "$troop_dict", "@coop_troops"), ## save file
@@ -3741,8 +3737,6 @@ coop_scripts = [
 			(neg|is_vanilla_warband),
 			(dict_create, ":dict"),
 			(dict_load_file, ":dict","@coop_troops"),
-		
-			
 			##variables to count items of given type
 			(assign,":1h_count",10),
 			(assign,":2h_count",15),
@@ -3759,15 +3753,6 @@ coop_scripts = [
 			(assign,":bolts_count",70),
 			(assign,":throwings_count",75),
 			## loop for player troops
-			
-			
-			## TO DO:
-			## wincyj pyntli zamiast 1 po 100 slotach , 5 po nazwach w pliku.
-			## zapis do pliku wedlug typu itema
-			##
-			##
-			
-			
 			(try_for_range,":slot_no",0,101),
 				(assign,reg12,":slot_no"),
 				(dict_get_int,":item_no",":dict","@troop_{reg11}_{reg12}"),
@@ -3882,24 +3867,17 @@ coop_scripts = [
 #### copy eq from file to troops
 #### input: 
 #### output: 
-		 
-	 
-	 
 	("coop_read_eq_from_file_to_troops",
 	 [		
-		
-		
+
 		(try_for_range,":troop_no",player_troops_begin,player_troops_end),
 			(call_script,"script_coop_read_eq_from_file",":troop_no"),
-			#(call_script,"script_clear_troops_item_slots",":troop_no"),
 			(troop_clear_inventory,":troop_no"),
 			(try_for_range,":slot_no",0,101),
 				(troop_get_inventory_slot,":itm","trp_added_items_temp",":slot_no"),
 				(troop_set_inventory_slot,":troop_no",":slot_no",":itm"),	
 			(try_end),
 		(try_end),
-		 
- 
 	  ]),
 	  
 	  

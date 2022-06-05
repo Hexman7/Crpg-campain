@@ -54492,9 +54492,9 @@ scripts = [
 	]), 
 	
 	
-#### script_send_file_to_server	22.02.2020
-#### input: 	
-#### output:	
+#### script_multiplayer_send_file	22.02.2020
+#### input: 
+#### output: s0 - file saved as string	
 	("multiplayer_send_file",
 	  [		 
 	  	(str_clear, s5),
@@ -54504,40 +54504,24 @@ scripts = [
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"), 
 			(dict_load_file, "$coop_dict", "@coop_battle", 2),
-			       
 			(dict_get_size, ":num_of_keys","$coop_dict"),
-
-			
 			(assign,":key",0),
 			(try_for_range,":key", 0, ":num_of_keys"),
 				(dict_get_key_by_iterator, s5, "$coop_dict", ":key"),
-
-				
 				 (try_begin),
 				 (str_contains,s5,"@name"),
 					 (dict_get_str, s2, "$coop_dict", s5),
 					 (str_store_string,s0,"@{s5};{s2}"),
-					 
-				      
 				 (else_try),
 					 (dict_get_int, reg1, "$coop_dict", s5),
 					 (str_store_string,s0,"@{s5};{reg1}"),
-					
 				 (try_end),
-				
-				
-				
-			#	(display_message,"@{s5}"),
-			#	(display_message,"@{s0}"),
-
+			#	(display_message,"@{s5}"),	##DEBUG
+			#	(display_message,"@{s0}"),  ##DEBUG
 				(multiplayer_send_string_to_server, multiplayer_event_mod_send_file_to_server_key, s0),
-
-
 			(try_end),
 			(dict_free, "$coop_dict"),
 		(try_end),
-
-	
 	 ]),
 	 
 #### script_multiplayer_send_file_to_player	22.02.2020
@@ -54553,35 +54537,21 @@ scripts = [
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"), 
 			(dict_load_file, "$coop_dict", "@coop_battle", 2),
-			       
 			(dict_get_size, ":num_of_keys","$coop_dict"),
-
-			
 			(assign,":key",0),
 			(try_for_range,":key", 0, ":num_of_keys"),
 				(dict_get_key_by_iterator, s5, "$coop_dict", ":key"),
-
-				
 				 (try_begin),
 				 (str_contains,s5,"@name"),
 					 (dict_get_str, s2, "$coop_dict", s5),
 					 (str_store_string,s0,"@{s5};{s2}"),
-					 
-				      
 				 (else_try),
 					 (dict_get_int, reg1, "$coop_dict", s5),
 					 (str_store_string,s0,"@{s5};{reg1}"),
-					
 				 (try_end),
-				
-				
-				
 			#	(display_message,"@{s5}"),
 			#	(display_message,"@{s0}"),
-
 				(multiplayer_send_string_to_player,":player_no", multiplayer_event_mod_send_file_to_player_key, s0),
-
-
 			(try_end),
 			(dict_free, "$coop_dict"),
 			(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@File transfer completed"),
@@ -54594,10 +54564,10 @@ scripts = [
    
    
 
-   ##"@coop_battle"
+   ##"@coop_battle" 20.02.2020
    
-#### script_save_file_keys_on_server	20.02.2020
-# #### input: 	items_begin, items_end
+#### script_multiplayer_save_file_keys	
+# #### input: 	:file_no
 # #### output:	
 	("multiplayer_save_file_keys",
 	 [		 
@@ -54607,29 +54577,20 @@ scripts = [
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"),
 			(dict_load_file, "$coop_dict", ":file_no", 1), 
-			
 			(str_split, reg5, s5, s0, "@;"),
-			#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@{s5} ; {s6}"),
-
+			#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@{s5} ; {s6}"),	## DEBUG
 			(str_to_num, reg0, s6),
-			
-			#(multiplayer_send_string_to_player,":player_no",multiplayer_event_show_server_message,"@to num: {reg0}"),
-			
+			#(multiplayer_send_string_to_player,":player_no",multiplayer_event_show_server_message,"@to num: {reg0}"),	## DEBUG
 			(try_begin),
 			(str_contains,s5,"@name"),
 				(dict_set_str, "$coop_dict", s5, s6),
 			(else_try),
 				(dict_set_int, "$coop_dict", s5, reg0),
 			(try_end),
-			
 			(dict_save, "$coop_dict", ":file_no"), #save new data
 			(dict_free, "$coop_dict"),
-			
-			#(display_message,"@{s5}{s6}"),
-		    #(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@Key saved."),
-			
-			#(str_split, <destination>, <string_register>, <string_1>, <delimiter>, [<skip_empty>], [<max>]),
-		
+			#(display_message,"@{s5}{s6}"),	## DEBUG
+		    #(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@Key saved."),	## DEBUG
 		(try_end),
 	]),    
    
@@ -55077,19 +55038,20 @@ scripts = [
 	 
 #script_decrease_wpf:
 # INPUT:
-# param1: troop_no 
-# param2: wpt_attrib
-#OUTPUT:
+# param1: array 
+# param2: object
+# param3: return_x
+#OUTPUT:	reg1,reg2,reg3
 # 
 
 ("find_overlay_id",[	
 	
     (store_script_param_1, ":array"),
     (store_script_param_2, ":object"),
-
 	
 	(assign,":value", -1),
 	(assign,":item", -1),
+	(assign,":index", -1),
 
 	(array_get_dim_size, ":array_size", ":array", 0), 
 	(try_for_range,":x",0,":array_size"),
@@ -55103,10 +55065,16 @@ scripts = [
 		(array_eq, ":array", ":object", ":x", 1),
 			(array_get_val, ":value", ":array", ":x", 1),
 			(array_get_val, ":item", ":array", ":x", 2),
+			(assign,":index", ":x"),
 			(val_sub,":array_size",":array_size"), ### break loop
 		(try_end),
 		(assign, reg1, ":value"),
 		(assign, reg2, ":item"),
+		
+
+		(assign, reg3, ":index"),
+		(assign, reg4, ":array"),
+		
 	(try_end),
 
 ]),
