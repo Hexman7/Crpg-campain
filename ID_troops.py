@@ -1390,3 +1390,4 @@ trp_coop_companion_equipment_ui_1 = 1388
 trp_coop_companion_equipment_ui_1_f = 1389
 trp_coop_companion_equipment_sets_end = 1390
 trp_kingdom_neutral_lord = 1391
+trp_player_test_troop = 1392

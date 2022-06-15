@@ -3747,6 +3747,12 @@ troops = [
 
    ["kingdom_neutral_lord",  "King Neutral",  "Neutral",  tf_hero, 0,reserved,  fac_neutrals,[ itm_saddle_horse,  itm_nord_nobleman_outfit,    itm_leather_boots,              itm_iron_greaves,                 itm_french_plate,   itm_hourglass_gauntlets_b,    itm_french_longsword,   itm_heavy_lance,        itm_tab_shield_heater_cav_b,    itm_visored_sallet_coif],            knight_attrib_5,wp(360),knight_skills_5, 0x0000000189080005549c575aea691962000000000011dd270000000000000000, nord_face_older_2],
 
+  ["player_test_troop","Player Test Troop 1","Player Test Troop 1",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  [itm_padded_leather,itm_nomad_boots, itm_crossbow, itm_bolts, itm_pickaxe],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+   
+   
+   
 ]
 
 
