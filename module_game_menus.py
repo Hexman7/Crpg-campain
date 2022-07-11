@@ -3469,7 +3469,9 @@ game_menus = [
 		(party_add_xp, "p_main_party", 1000000),
 	   (jump_to_menu, "mnu_camp"),
         ],
-       ),
+       ),	   
+       
+
 	   
 
 	   ("camp_save_items",
@@ -3762,6 +3764,26 @@ game_menus = [
          (jump_to_menu, "mnu_camp_add_troops"),	
         ]
        ),	
+       
+       ("camp_add_itm_to_test_trp",
+       [(eq,"$cheat_mode",1)
+        ], "CHEAT!: ADD Danish to Test trp",
+       [
+       
+        (troop_add_items,"trp_player_test_troop","itm_danish_greatsword",1),
+        (troop_add_items,"trp_player_test_troop","itm_helmet_with_neckguard",1),
+        (troop_add_items,"trp_player_test_troop","itm_pepperpot_helmet_f",1),
+        (troop_add_items,"trp_player_test_troop","itm_scale_armor",1),
+        (troop_add_items,"trp_player_test_troop","itm_palace_guard",1),
+        (troop_add_items,"trp_player_test_troop","itm_mail_chausses",1),
+        (troop_add_items,"trp_player_test_troop","itm_military_fork",1),
+        (troop_add_items,"trp_player_test_troop","itm_sledgehammer",1),
+        (troop_add_items,"trp_player_test_troop","itm_fighting_pick",1),
+        (troop_add_items,"trp_player_test_troop","itm_fauchard_fork",1),
+
+	    (jump_to_menu, "mnu_camp_add_troops"),
+        ],
+       ),
 	   	   
       ("back_to_camp_menu",[],"{!}Back to camp menu.",
        [

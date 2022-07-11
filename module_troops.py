@@ -3750,7 +3750,72 @@ troops = [
   ["player_test_troop","Player Test Troop 1","Player Test Troop 1",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
   [itm_padded_leather,itm_nomad_boots, itm_crossbow, itm_bolts, itm_pickaxe],
    def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+ 
+  ["player_temp_recruit","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_club,itm_spiked_club,itm_cleaver,itm_tab_shield_round_a,
+	itm_felt_hat,itm_straw_hat,itm_shirt,itm_linen_shirt_a,itm_wrapping_boots,itm_hide_boots],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_footman","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_sword_medieval_a,itm_spiked_club,itm_one_handed_war_axe_a,itm_shortened_spear,itm_spear,itm_tab_shield_round_b,
+    itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_trained_footman","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_war_axe_b,itm_sword_medieval_b,itm_sword_medieval_c,itm_fighting_pick,itm_war_spear,itm_spear,itm_long_hafted_knobbed_mace,itm_javelin,itm_tab_shield_round_c,itm_tab_shield_round_b,
+	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_infantry","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_war_spear,itm_long_bardiche,itm_longsword_b,itm_long_hafted_spiked_mace,itm_ashwood_pike,itm_tab_shield_round_c,itm_tab_shield_round_d,itm_javelin,itm_throwing_spears,
+	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_elite_footman","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_war_spear,itm_long_bardiche,itm_longsword_b,itm_long_hafted_spiked_mace,itm_ashwood_pike,itm_tab_shield_round_c,itm_tab_shield_round_d,itm_javelin,itm_throwing_spears,
+	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_sergeant","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_warhammer,itm_one_handed_battle_axe_c,itm_steel_pick,itm_sword_two_handed_a,itm_great_bardiche,itm_warhammer,itm_great_long_bardiche,itm_ashwood_pike,itm_tab_shield_round_d,itm_tab_shield_round_e,itm_throwing_spears,
+	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_skirmisher","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_fighting_pick,itm_one_handed_war_axe_a,itm_hunting_bow,itm_arrows,itm_short_bow,itm_barbed_arrows,
+   	itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_archer","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_war_axe_b,itm_sword_medieval_a,itm_long_bow,itm_barbed_arrows,itm_short_bow,itm_bodkin_arrows,
+    itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_master_archer","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_war_axe_b,itm_military_hammer,itm_long_bow,itm_barbed_arrows,itm_bodkin_arrows,
+	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_horseman","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_sword_medieval_a,itm_sword_medieval_b,itm_light_lance,itm_lance,itm_tab_shield_small_round_a,itm_tab_shield_small_round_b,itm_javelin,
+	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_saddle_horse,itm_courser],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_nobleman","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_longsword_b,itm_lance,itm_heavy_lance,itm_tab_shield_round_c,itm_tab_shield_small_round_b,
+	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves,itm_courser,itm_hunter],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
+  ["player_temp_knight","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_warhammer,itm_one_handed_battle_axe_c,itm_steel_pick,itm_sword_two_handed_a,itm_heavy_lance,itm_great_lance,itm_tab_shield_small_round_c,
+	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
    
+  ["player_temp_kingsguard","Player Temp ","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+   [itm_one_handed_battle_axe_b,itm_tab_shield_small_round_c,
+	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
+   def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
+  
    
    
 ]

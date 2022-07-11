@@ -14692,6 +14692,9 @@ presentations = [
 		(str_store_troop_name,s0,":troop"),
 		(overlay_add_item, "$g_presentation_list_of_troops", s0),
 	  (try_end),
+      
+      (str_store_troop_name,s0,"trp_player_test_troop"),
+      (overlay_add_item, "$g_presentation_list_of_troops", s0),
 	  (overlay_set_val,"$g_presentation_list_of_troops","$troop_overlay_val"),
 	
 
@@ -15262,8 +15265,8 @@ presentations = [
 				# (display_message,"@ X {reg6},Y {reg5}"),
 				 (display_message,"@ X {reg5}"),
 				 
-			    # (position_set_x, pos2, ":current_x_pos"),
-			    # (position_set_y, pos2, ":current_y_pos"),
+			     (position_set_x, pos2, 0),
+			     (position_set_y, pos2, 0),
 				
 				 
 				 
@@ -15479,11 +15482,23 @@ presentations = [
 			(overlay_get_val, "$troop_overlay_val", "$g_presentation_list_of_troops"),
 			(assign,"$selected_troop_m","$troop_overlay_val"),
 			(val_add,"$selected_troop_m",player_troops_begin),
+            
+            (try_begin),
+            (ge,"$selected_troop_m",player_troops_end),
+                (assign,"$selected_troop_m","trp_player_test_troop"),
+            (try_end),
+            
 			(presentation_set_duration,0),
 			(start_presentation, "prsnt_game_equip_warriors_window"),
 			(presentation_set_duration,99999),
 			(assign,reg6,"$selected_troop_m"),
-			(display_message,"@selected troop: {reg6}"),
+			(assign,reg7,"$troop_overlay_val"),
+            
+			(display_message,"@selected troop: {reg6} menu val: {reg7}"),
+           
+               
+
+            
 		  
 		(else_try),		
 		(eq,":object","$g_party_window_done_btn"),		##Done btn
