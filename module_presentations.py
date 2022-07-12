@@ -14693,10 +14693,10 @@ presentations = [
 		(overlay_add_item, "$g_presentation_list_of_troops", s0),
 	  (try_end),
       
-     # (str_store_troop_name,s0,"trp_player_test_troop"),
-     # (overlay_add_item, "$g_presentation_list_of_troops", s0),
+
 	  (overlay_set_val,"$g_presentation_list_of_troops","$troop_overlay_val"),
-	
+      (assign,"$selected_troop_m","$troop_overlay_val"),
+      (val_add,"$selected_troop_m",player_temp_troops_begin),
 
 	  
 	  
@@ -14766,7 +14766,8 @@ presentations = [
 	  
 	  (array_create, "$inventory_item_types_array",0, 99, 3),
 	  (array_set_val_all, "$inventory_item_types_array", -1),
-
+      
+	  (array_create, "$inventory_items_positions_array",2, 99), ### TEST
 
 	  (array_create, "$inventory_troop_equipment_array",0, 99, 3),
 	  (array_set_val_all, "$inventory_troop_equipment_array", -1),
@@ -14800,6 +14801,8 @@ presentations = [
 		  (overlay_set_position, reg1, pos1),
 		 
 		  (array_set_val, "$inventory_item_types_array", reg1, ":slot_no",0),
+          
+		  (array_set_val, "$inventory_items_positions_array", pos1,":slot_no"),
 		 
 		  (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
 
@@ -15115,7 +15118,7 @@ presentations = [
 
 			  
 			  (assign,reg1,":object"),
-			  (display_message,"@overlay  ID {reg1}"),
+			  #(display_message,"@overlay  ID {reg1}"),
 			  (call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
 			  
 			  (try_begin),
@@ -15150,6 +15153,15 @@ presentations = [
      [
        (store_trigger_param_1, ":object"),
        #(store_trigger_param_2, ":mouse_button"),
+
+        (overlay_get_position, pos3, ":object"),
+        (position_get_x, ":cur_x",pos3 ),
+        (position_get_y, ":cur_y",pos3 ),
+        
+        
+	    (assign, reg4, ":cur_x"),
+	    (assign, reg5, ":cur_y"),
+        (display_message,"@ Cur X: {reg4} cur Y: {reg5}"),
 
 	   	(assign, reg1, -1),
 	    (assign, reg2, -1),
@@ -15212,8 +15224,7 @@ presentations = [
 			(neq,":object","$object_item_id"),			
 				(assign,":temp_itm_id","$g_prst_item_attached_to_mouse"), # storing current item to temp variable
 				(assign,":temp_obj","$object_item_id"),	# storing current item overlay to temp_obj variable
-				(assign,"$g_prst_item_attached_to_mouse",reg2),
-				(assign,"$object_item_id",":object"),
+
 			
 				
 				
@@ -15247,34 +15258,43 @@ presentations = [
 			#	(array_set_val, ":array",  ":temp_obj", reg3, 1),	## clearing overlay id from array 
 		#		(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
 				
+                	## setting position
+				(overlay_get_position, pos3, reg1),
+                
 				(set_container_overlay, ":overlay"),
 				(overlay_set_container_overlay, ":temp_obj", ":overlay"),
 			
-				## setting position
-				 (overlay_get_position, pos3, reg1),
+			
 				
-				 
+				 (array_get_val, pos5, "$inventory_items_positions_array", reg3),
 	
-				# (position_get_x,":current_x_pos",pos2),
-				# (position_get_y,":current_y_pos",pos2),
-				 
-				# (assign,reg6,":current_x_pos"),
-				 (assign,reg5,pos2),
+				 (position_get_x,":current_x_pos",pos5),
+				 (position_get_y,":current_y_pos",pos5),
+				 (val_add,":current_x_pos",45),
+				 (val_add,":current_y_pos",45),
+                 
+                 
+				 (assign,reg6,":current_x_pos"),
+				 (assign,reg5,":current_y_pos"),
 				# (position_get_x,reg6,pos2),
 				# (position_get_y,reg5,pos2),
 				# (display_message,"@ X {reg6},Y {reg5}"),
-				 (display_message,"@ X {reg5}"),
+				 (display_message,"@ X {reg6} Y {reg5}"),
 				 
-			     (position_set_x, pos2, 0),
-			     (position_set_y, pos2, 0),
+				 (position_set_x,pos4,5),   # po 9
+				 (position_set_y,pos4,293), #297        9x 33
+			 
 				
 				 
 				 
 				 (position_set_x, pos1, 90),
 				 (position_set_y, pos1, 90),
 				 (overlay_set_size, ":temp_obj", pos1),
-				 (overlay_set_position, ":temp_obj", pos2),
+                 (overlay_animate_to_position, ":temp_obj", 3000, pos5),
+				# (overlay_set_position, ":temp_obj", pos4),
 				 
+                 (assign,"$g_prst_item_attached_to_mouse",reg2),
+				 (assign,"$object_item_id",":object"),
 				 
 				 (set_container_overlay, -1),
 				 
@@ -15482,11 +15502,7 @@ presentations = [
 			(overlay_get_val, "$troop_overlay_val", "$g_presentation_list_of_troops"),
 			(assign,"$selected_troop_m","$troop_overlay_val"),
 			(val_add,"$selected_troop_m",player_temp_troops_begin),
-            
-            (try_begin),
-            (ge,"$selected_troop_m",player_temp_troops_end),
-                (assign,"$selected_troop_m","trp_player_test_troop"),
-            (try_end),
+
             
 			(presentation_set_duration,0),
 			(start_presentation, "prsnt_game_equip_warriors_window"),
