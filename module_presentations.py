@@ -14688,13 +14688,13 @@ presentations = [
 	  (position_set_y, pos1, 660),
 	  (overlay_set_position, "$g_presentation_list_of_troops", pos1),
 	  
-	  (try_for_range,":troop",player_troops_begin,player_troops_end),
+	  (try_for_range,":troop",player_temp_troops_begin,player_temp_troops_end),
 		(str_store_troop_name,s0,":troop"),
 		(overlay_add_item, "$g_presentation_list_of_troops", s0),
 	  (try_end),
       
-      (str_store_troop_name,s0,"trp_player_test_troop"),
-      (overlay_add_item, "$g_presentation_list_of_troops", s0),
+     # (str_store_troop_name,s0,"trp_player_test_troop"),
+     # (overlay_add_item, "$g_presentation_list_of_troops", s0),
 	  (overlay_set_val,"$g_presentation_list_of_troops","$troop_overlay_val"),
 	
 
@@ -15481,10 +15481,10 @@ presentations = [
 		(eq, ":object", "$g_presentation_list_of_troops"),
 			(overlay_get_val, "$troop_overlay_val", "$g_presentation_list_of_troops"),
 			(assign,"$selected_troop_m","$troop_overlay_val"),
-			(val_add,"$selected_troop_m",player_troops_begin),
+			(val_add,"$selected_troop_m",player_temp_troops_begin),
             
             (try_begin),
-            (ge,"$selected_troop_m",player_troops_end),
+            (ge,"$selected_troop_m",player_temp_troops_end),
                 (assign,"$selected_troop_m","trp_player_test_troop"),
             (try_end),
             

@@ -1683,7 +1683,8 @@ player_cav_end = "trp_player_prison_guard"
 troops_not_matching_begin = "trp_player"
 troops_not_matching_end = "trp_kingdom_heroes_including_player_begin"
 
-
+player_temp_troops_begin = "trp_player_temp_recruit"
+player_temp_troops_end = "trp_player_test_troop"
 
 ############  MOD END
 
