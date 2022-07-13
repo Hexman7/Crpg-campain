@@ -14802,7 +14802,7 @@ presentations = [
 		 
 		  (array_set_val, "$inventory_item_types_array", reg1, ":slot_no",0),
           
-		  (array_set_val, "$inventory_items_positions_array", pos1,":slot_no"),
+
 		 
 		  (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
 
@@ -14812,9 +14812,9 @@ presentations = [
 	  
 	  
 	  
-	  
-	  
-	  
+
+      
+      
 	### generating slots for troops			RHS
 	
 	  (assign,":starting_x_pos",0),	  
@@ -14865,8 +14865,40 @@ presentations = [
 	  (set_container_overlay, "$g_presentation_inventory_slots"),
 	  
 	  
+      #### generating pos for item types slots
+                  
+      (assign,":licznik",0),
+	  (assign,":starting_x_pos",0),	
+	  (assign,":current_x_pos",0),	
+      
+      (try_for_range,":slot_no",9,99),
+
+          (try_begin),
+          (eq,":licznik",3),
+            (assign,":current_x_pos",":starting_x_pos"),
+            (val_sub,":starting_y_pos",90),
+            (val_sub,":licznik",":licznik"),
+          (else_try),
+          (gt,":licznik",0),
+            (val_add,":current_x_pos",90),
+          (try_end),
+
+
+
+
+        ## Saving position with 45points move
+          (store_add,":cur_x",45,":current_x_pos"),
+          (store_add,":cur_y",45,":starting_y_pos"),
+          (position_set_x, pos2, ":cur_x"),
+          (position_set_y, pos2, ":cur_y"),
+          (array_set_val, "$inventory_items_positions_array", pos2,":slot_no"),
+          
+          (val_add,":licznik",1),
+      (try_end),
+      
+      (assign,":starting_y_pos",":starting_y_pos2"),	
+      
 	  ### adding items to slots of temp troop
-	  
 	  
 	  (assign,":licznik",0),
 	  (assign,":starting_x_pos",0),	
@@ -15270,9 +15302,6 @@ presentations = [
 	
 				 (position_get_x,":current_x_pos",pos5),
 				 (position_get_y,":current_y_pos",pos5),
-				 (val_add,":current_x_pos",45),
-				 (val_add,":current_y_pos",45),
-                 
                  
 				 (assign,reg6,":current_x_pos"),
 				 (assign,reg5,":current_y_pos"),
@@ -15281,9 +15310,7 @@ presentations = [
 				# (display_message,"@ X {reg6},Y {reg5}"),
 				 (display_message,"@ X {reg6} Y {reg5}"),
 				 
-				 (position_set_x,pos4,5),   # po 9
-				 (position_set_y,pos4,293), #297        9x 33
-			 
+
 				
 				 
 				 
