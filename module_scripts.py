@@ -54451,7 +54451,7 @@ scripts = [
 		
 		
 		(try_for_range,":slot_no",9, ":capacity_temp"),		### chosing items which will be showed
-			(call_script,"script_check_troop_ability","$troop_selected",":begin_item"),
+			(call_script,"script_check_troop_ability","$selected_troop_m",":begin_item"),
 			(store_add,":slot_no",":slot_no",0),
 			(try_begin),
 			(le,reg4,reg3),
