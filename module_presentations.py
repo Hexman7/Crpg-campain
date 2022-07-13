@@ -14904,9 +14904,10 @@ presentations = [
 	  (assign,":starting_x_pos",0),	
 	  (assign,":current_x_pos",0),	
 	  
-	  (try_for_range,":slot_no",9,99),
+	  (try_for_range,":slot_no",9,98),
 	  
-		   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
+           (store_add,":item_slot",":slot_no",1),
+		   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":item_slot"),	## mod edited 22.10.2021
 	  
 		   (try_begin),
 		   (gt,":i_slot",-1),
@@ -14942,6 +14943,9 @@ presentations = [
 			   (overlay_set_position, "$g_presentation_item", pos1),
 			   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
 
+
+               (assign, reg9, ":slot_no"),
+               (display_message,"@ assigning slot: {reg9}"),
 			   (array_set_val, "$inventory_item_types_array",  "$g_presentation_item", ":slot_no",1),
 			   (array_set_val, "$inventory_item_types_array",  ":i_slot", ":slot_no" , 2),
 			   
@@ -15286,6 +15290,8 @@ presentations = [
 					(assign,":overlay",-1),
 				(try_end),
 				
+                (call_script,"script_print_items_array",":array"),
+                
 				(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
 				(array_set_val, ":array",  -1, reg3, 2), ## clearing item id from array 
 				(array_get_val, ":slot_overlay", ":array", reg3, 0),

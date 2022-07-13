@@ -55087,9 +55087,9 @@ scripts = [
 ("save_array_to_file",[	
 	
     (store_script_param_1, ":array"),
-	(array_get_dim_size, ":array_size", ":array", 0),
+	#(array_get_dim_size, ":array_size", ":array", 0),
        
-    (try_for_range,":index",0,":array_size"),
+    (try_for_range,":index",0,20),
     
     
         (array_get_val, pos6, ":array", ":index"),
@@ -55102,7 +55102,28 @@ scripts = [
 
 ]),
 	    
-     
+ #script_save_array_to_file:
+# INPUT:
+# param1: array 
+# 
+
+("print_items_array",[	
+	
+    (store_script_param_1, ":array"),
+
+       
+    (try_for_range,":index",0,20),
+    
+    
+        (array_get_val, reg5, ":array", ":index",1),
+        (array_get_val, reg6, ":array", ":index",2),
+
+        (assign,reg7,":index"),
+        (display_message,"@array index {reg7} overlayId {reg5} ItemId{reg6}"),
+    
+    (try_end),
+
+]),    
      
      
      
