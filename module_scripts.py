@@ -55079,6 +55079,36 @@ scripts = [
 
 ]),
 	 
+#script_save_array_to_file:
+# INPUT:
+# param1: array 
+# 
+
+("save_array_to_file",[	
+	
+    (store_script_param_1, ":array"),
+	(array_get_dim_size, ":array_size", ":array", 0),
+       
+    (try_for_range,":index",0,":array_size"),
+    
+    
+        (array_get_val, pos6, ":array", ":index"),
+        (position_get_x,reg5, pos6),
+        (position_get_y, reg6, pos6),
+        (assign,reg7,":index"),
+        (display_message,"@array index {reg7} X {reg5} Y{reg6}"),
+    
+    (try_end),
+
+]),
+	    
+     
+     
+     
+     
+     
+     
+     
 #COOP BEGIN ###################
 ] + coop_scripts 
 #COOP END####################

@@ -15115,6 +15115,9 @@ presentations = [
 			(try_end),
 		(try_end),
 	  
+      
+      
+      (call_script,"script_save_array_to_file","$inventory_items_positions_array"),
 	 
 	  
       (presentation_set_duration, 999999),
@@ -15310,7 +15313,7 @@ presentations = [
 				# (display_message,"@ X {reg6},Y {reg5}"),
 				 (display_message,"@ X {reg6} Y {reg5}"),
 				 
-
+                 (display_message,"@ INDEX {reg3}"),
 				
 				 
 				 
