@@ -14768,6 +14768,7 @@ presentations = [
 	  (array_set_val_all, "$inventory_item_types_array", -1),
       
 	  (array_create, "$inventory_items_positions_array",2, 99), ### TEST
+	  (array_create, "$troop_items_positions_array",2, 99), ### TEST
 
 	  (array_create, "$inventory_troop_equipment_array",0, 99, 3),
 	  (array_set_val_all, "$inventory_troop_equipment_array", -1),
@@ -14961,7 +14962,38 @@ presentations = [
 	  ##	1 - item mesh id
 	  ##	2 - item id
 
-	  
+
+      (assign,":starting_y_pos",":starting_y_pos2"),
+      (assign,":licznik",0),
+      (assign,":starting_x_pos",0),	
+      (assign,":current_x_pos",0),
+      
+      (try_for_range,":slot_no",9,99),
+
+          (try_begin),
+          (eq,":licznik",3),
+            (assign,":current_x_pos",":starting_x_pos"),
+            (val_sub,":starting_y_pos",90),
+            (val_sub,":licznik",":licznik"),
+          (else_try),
+          (gt,":licznik",0),
+            (val_add,":current_x_pos",90),
+          (try_end),
+
+
+
+
+        ## Saving position with 45points move
+          (store_add,":cur_x",45,":current_x_pos"),
+          (store_add,":cur_y",45,":starting_y_pos"),
+          (position_set_x, pos2, ":cur_x"),
+          (position_set_y, pos2, ":cur_y"),
+          (array_set_val, "$troop_items_positions_array", pos2,":slot_no"),
+          
+          (val_add,":licznik",1),
+      (try_end),
+      
+      #(assign,":starting_y_pos2",":starting_y_pos"),
 	  
 	  ### adding items to troop inventory slots
 	  (try_begin),
@@ -14975,9 +15007,10 @@ presentations = [
 		  
 		  (set_container_overlay, "$g_presentation_troops_inventory_slots"),
 		  
-		  (try_for_range,":slot_no",9,99),
+		  (try_for_range,":slot_no",9,98),
 		  
-			   (troop_get_inventory_slot,":i_slot","$selected_troop_m",":slot_no"),	## mod edited 22.10.2021
+               (store_add,":item_slot",":slot_no",1),
+			   (troop_get_inventory_slot,":i_slot","$selected_troop_m",":item_slot"),	## mod edited 22.10.2021
 		  
 			   (try_begin),
 			   (gt,":i_slot",-1),
@@ -15271,6 +15304,7 @@ presentations = [
 				(eq,reg4,"$inventory_item_types_array"),	## when we are clicking categorized items
 					# #(display_message,"@im clicking items on the left"),	#Debug
 					(assign,":array","$inventory_item_types_array"),
+                    (array_get_val, pos5, "$inventory_items_positions_array", reg3),    ## getting position of slot
 				   ## (array_set_val, "$inventory_item_types_array",  -1, reg3, 1),	## clearing overlay id from array 
 				    #(array_set_val, "$inventory_item_types_array",  -1, reg3, 2), ## clearing item id from array 
 					(assign,":overlay","$g_presentation_inventory_slots"),
@@ -15278,6 +15312,7 @@ presentations = [
 				(eq,reg4,"$inventory_troop_equipment_array"),
 					# #(display_message,"@im clicking items on the right"),#Debug
 					(assign,":array","$inventory_troop_equipment_array"),
+                    (array_get_val, pos5, "$troop_items_positions_array", reg3),### getting position of slot
 				  #  (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 1),	## clearing overlay id from array 
 				#	(array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 2), ## clearing item id from array 
 					(assign,":overlay","$g_presentation_troops_inventory_slots"),
@@ -15307,13 +15342,13 @@ presentations = [
 			
 			
 				
-				 (array_get_val, pos5, "$inventory_items_positions_array", reg3),
+				 
 	
-				 (position_get_x,":current_x_pos",pos5),
-				 (position_get_y,":current_y_pos",pos5),
+				 # (position_get_x,":current_x_pos",pos5),
+				 # (position_get_y,":current_y_pos",pos5),
                  
-				 (assign,reg6,":current_x_pos"),
-				 (assign,reg5,":current_y_pos"),
+				 # (assign,reg6,":current_x_pos"),
+				 # (assign,reg5,":current_y_pos"),
 				# (position_get_x,reg6,pos2),
 				# (position_get_y,reg5,pos2),
 				# (display_message,"@ X {reg6},Y {reg5}"),
