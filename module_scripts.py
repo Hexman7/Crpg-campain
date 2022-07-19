@@ -41162,7 +41162,7 @@ scripts = [
         (assign, ":result", mtf_culture_1),
 	  (else_try),
         (eq, ":faction_no", "fac_kingdom_8"),
-        (assign, ":result", mtf_culture_2),
+        (assign, ":result", mtf_culture_6),
 	  (else_try),
         (eq, ":faction_no", "fac_kingdom_9"),
         (assign, ":result", mtf_culture_3),
@@ -55052,6 +55052,8 @@ scripts = [
 	(assign,":value", -1),
 	(assign,":item", -1),
 	(assign,":index", -1),
+	
+	(assign,":empty_slot", -1),
 
 	(array_get_dim_size, ":array_size", ":array", 0), 
 	(try_for_range,":x",0,":array_size"),
@@ -55068,17 +55070,48 @@ scripts = [
 			(assign,":index", ":x"),
 			(val_sub,":array_size",":array_size"), ### break loop
 		(try_end),
+		
+		(try_begin),
+		(array_eq, ":array", ":object", ":x", 0),
+			(array_get_val, ":empty_slot", ":array", ":x", 0),
+			(assign,":index", ":x"),
+			(assign,reg9,":index"),
+			(display_message,"@ X id: {reg9"),
+		(try_end),
+		
 		(assign, reg1, ":value"),
 		(assign, reg2, ":item"),
 		
 
 		(assign, reg3, ":index"),
 		(assign, reg4, ":array"),
-		
+		(assign, reg5, ":empty_slot"),
 	(try_end),
 
 ]),
 	 
+	 
+#script_find_overlay_id_in_arrays:
+# INPUT:
+# param1: array 
+# param2: object
+# param3: return_x
+#OUTPUT:	reg1,reg2,reg3
+# 
+
+("find_overlay_id_in_arrays",[	
+	(store_script_param_1, ":object"),
+	
+	(assign, reg1, -1),
+	(assign, reg2, -1),
+	(assign, reg3, -1),
+	(assign, reg4, -1),
+	(assign, reg5, -1),
+	
+	(call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
+	(call_script,"script_find_overlay_id","$inventory_troop_equipment_array",":object"),
+	(call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
+]),	 
 #script_save_array_to_file:
 # INPUT:
 # param1: array 
