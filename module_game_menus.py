@@ -3420,7 +3420,7 @@ game_menus = [
 	   ("game_equip_warriors_menu",
        [(eq,"$cheat_mode",1)
         ], "CHEAT!: game equip warriors window",
-       [(start_presentation, "prsnt_game_equip_warriors_window"),
+       [(start_presentation, "prsnt_game_equip_warriors_window_new"),		### TESting 2022
         ],
        ),		   
 	   

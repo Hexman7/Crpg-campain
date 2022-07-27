@@ -55049,40 +55049,29 @@ scripts = [
     (store_script_param_1, ":array"),
     (store_script_param_2, ":object"),
 	
-	(assign,":value", -1),
-	(assign,":item", -1),
-	(assign,":index", -1),
-	
-	(assign,":empty_slot", -1),
+	(assign,":value", reg1),
+	(assign,":item", reg2),
+	(assign,":index", reg3),
+	(assign,":empty_slot", reg5),
 
 	(array_get_dim_size, ":array_size", ":array", 0), 
 	(try_for_range,":x",0,":array_size"),
 	
 		(try_begin),
-		# (array_eq, ":array", ":object", ":x", 0),
-			# (array_get_val, ":value", ":array", ":x", 0),
-			# (array_get_val, ":item", ":array", ":x", 2),
-			# (val_sub,":array_size",":array_size"), ### break loop
-		# (else_try),
 		(array_eq, ":array", ":object", ":x", 1),
 			(array_get_val, ":value", ":array", ":x", 1),
 			(array_get_val, ":item", ":array", ":x", 2),
 			(assign,":index", ":x"),
 			(val_sub,":array_size",":array_size"), ### break loop
-		(try_end),
-		
-		(try_begin),
+		(else_try),
 		(array_eq, ":array", ":object", ":x", 0),
 			(array_get_val, ":empty_slot", ":array", ":x", 0),
 			(assign,":index", ":x"),
-			(assign,reg9,":index"),
-			(display_message,"@ X id: {reg9"),
+			(val_sub,":array_size",":array_size"), ### break loop
 		(try_end),
 		
 		(assign, reg1, ":value"),
 		(assign, reg2, ":item"),
-		
-
 		(assign, reg3, ":index"),
 		(assign, reg4, ":array"),
 		(assign, reg5, ":empty_slot"),
@@ -55108,9 +55097,18 @@ scripts = [
 	(assign, reg4, -1),
 	(assign, reg5, -1),
 	
-	(call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
-	(call_script,"script_find_overlay_id","$inventory_troop_equipment_array",":object"),
-	(call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
+	(call_script,"script_find_overlay_id","$categorized_items_inventory_slots_array",":object"),	
+	(try_begin),	### if :object is not in earlier array then check next one
+	(eq, reg1, -1),
+	(eq, reg5, -1),
+		(call_script,"script_find_overlay_id","$troops_items_inventory_slots_array",":object"),
+    (try_end),
+	
+	# (try_begin),### if :object is not in earlier array then check next one
+	# (eq, reg1, -1),
+	# (eq, reg5, -1),
+		# (call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
+	# (try_end),
 ]),	 
 #script_save_array_to_file:
 # INPUT:
@@ -55147,12 +55145,12 @@ scripts = [
        
     (try_for_range,":index",0,20),
     
-    
-        (array_get_val, reg5, ":array", ":index",1),
-        (array_get_val, reg6, ":array", ":index",2),
+		(array_get_val, reg6, ":array", ":index",0),
+        (array_get_val, reg7, ":array", ":index",1),
+        (array_get_val, reg8, ":array", ":index",2),
 
-        (assign,reg7,":index"),
-        (display_message,"@array index {reg7} overlayId {reg5} ItemId{reg6}"),
+        (assign,reg9,":index"),
+        (display_message,"@array index {reg9} slot overlayId {reg6} overlayId {reg7} ItemId{reg8}"),
     
     (try_end),
 
