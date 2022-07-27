@@ -14716,6 +14716,7 @@ presentations = [
 		  (position_set_y, pos1, 20),
 		  (overlay_set_position, "$g_presentation_troop_mesh", pos1),
 		  
+	####################################################################################################
 		  
 		  ## Armor stats and weight
 		  (position_set_x, pos1, 900),
@@ -14734,7 +14735,7 @@ presentations = [
 		  (overlay_set_size, "$g_presentation_encumbrance", pos1),
 
 
-		  (position_set_x, pos1, 520),
+		  (position_set_x, pos1, 500),
 		  (position_set_y, pos1, 180),
 		  (overlay_set_position, "$g_presentation_head_armor", pos1),
 		  
@@ -14757,16 +14758,87 @@ presentations = [
 		  (assign,":current_y_pos",2880), 
 		  
 		  
-		  (array_create, "$categorized_items_inventory_slots_array",0, 99, 3),
+		  (array_create, "$categorized_items_inventory_slots_array",0, 99, 4),
 		  (array_set_val_all, "$categorized_items_inventory_slots_array", -1),
 		  
-		  (array_create, "$troops_items_inventory_slots_array",0, 99, 3),
+		  (array_create, "$troops_items_inventory_slots_array",0, 99, 4),
 		  (array_set_val_all, "$troops_items_inventory_slots_array", -1),
 		  
 		  (array_create, "$items_inventory_slots_positions_array",2, 99), 
+		  (array_create, "$troop_nine_items_positions_array",2, 9), 
 		  (array_create, "$locking_array",0, 99), 
 		  (array_set_val_all, "$locking_array", -1),
+
 		  
+		  
+		  
+			(array_create, "$inventory_nine_items_array",0, 9, 4),
+			(array_set_val_all, "$inventory_nine_items_array", -1),
+			(assign,":licznik",0),
+			(assign,":item_id",-1),
+			  
+			(try_for_range,":slot",0,9),			
+			  ####### GENERATING SLOTS
+				(try_begin),
+				(lt,":slot",4),
+					(store_mul,":item_y_sub",":licznik",90),
+					(store_sub,":slot_y", 610, ":item_y_sub"),
+				(else_try),
+				(lt,":slot",7),
+				(gt,":slot",3),
+					(store_mul,":item_y_sub",":licznik",90),
+					(store_sub,":slot_y", 610, ":item_y_sub"),
+				(try_end),
+				
+				
+				(create_mesh_overlay, reg1, "mesh_inventory_slot"),
+				(position_set_x, pos1, 900),
+				(position_set_y, pos1, 900),
+				(overlay_set_size, reg1, pos1),
+				
+				  (try_begin),
+				  (lt,":slot",4),
+					(position_set_x, pos2, 550),
+					(position_set_y, pos2, ":slot_y"),
+				  (else_try),
+				  (lt,":slot",7),
+				  (gt,":slot",3),
+					(position_set_x, pos2, 450),
+					(position_set_y, pos2, ":slot_y"),
+				  (else_try),
+				  (eq,":slot",7),
+					(position_set_x, pos2, 360),
+					(position_set_y, pos2, 515),
+				  (else_try),
+				  (eq,":slot",8),
+					(position_set_x, pos2, 363),
+					(position_set_y, pos2, 315),
+				  (try_end),
+				
+				(overlay_set_position, reg1, pos2),
+				
+				(position_get_x,":cur_x",pos2),
+				(position_get_y,":cur_y",pos2),
+				(val_add,":cur_x",45),
+				(val_add,":cur_y",45),
+				(position_set_x, pos3, ":cur_x"),
+				(position_set_y, pos3, ":cur_y"),
+				(array_set_val, "$troop_nine_items_positions_array", pos3,":slot"),
+				
+				(array_set_val, "$inventory_nine_items_array",  reg1, ":slot",0),
+			  
+				(val_add,":licznik",1),
+				
+				(try_begin),
+				(eq,":slot",3),
+					(val_sub,":licznik",":licznik"),
+				(try_end),
+			(try_end),	
+			(set_container_overlay, -1),
+			
+			
+		  (assign,":licznik",0),
+		  (assign,":item_id",-1),
 		  (try_for_range,":slot_no",0,99),
 			  (try_begin),
 			  (eq,":licznik",3),
@@ -14845,28 +14917,80 @@ presentations = [
 				(val_add,":categorized_items_array_slot",1),
 			(try_end),
 		   
-		    (troop_get_inventory_slot,":item_id","$selected_troop_m",":index"),	## mod edited 22.10.2021
-			
+		   
+		    
+		    (troop_get_inventory_slot,":item_id","$selected_troop_m",":index"),	
 			
 			(try_begin),
-			(gt,":item_id",-1),
-				(set_container_overlay, "$g_presentation_troops_inventory_slots"),
-				(create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
-			    (position_set_x, pos1, 900),
-			    (position_set_y, pos1, 900),				
-				(overlay_set_size, "$g_presentation_item", pos1),
-				(array_get_val, pos1, "$items_inventory_slots_positions_array", ":troop_inventory_array_slot"),
-				(overlay_set_position, "$g_presentation_item", pos1),
-			    (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_troops_inventory_slots"),
-			    (array_set_val, "$troops_items_inventory_slots_array", "$g_presentation_item", ":troop_inventory_array_slot",1),
-			    (array_set_val, "$troops_items_inventory_slots_array", ":item_id", ":troop_inventory_array_slot",2),
-				(val_add,":troop_inventory_array_slot",1),
+			(ge,":index",9),
+				(try_begin),
+				(gt,":item_id",-1),
+					(set_container_overlay, "$g_presentation_troops_inventory_slots"),
+					(create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
+					(position_set_x, pos1, 900),
+					(position_set_y, pos1, 900),				
+					(overlay_set_size, "$g_presentation_item", pos1),
+					(array_get_val, pos1, "$items_inventory_slots_positions_array", ":troop_inventory_array_slot"),
+					(overlay_set_position, "$g_presentation_item", pos1),
+					(overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_troops_inventory_slots"),
+					(array_set_val, "$troops_items_inventory_slots_array", "$g_presentation_item", ":troop_inventory_array_slot",1),
+					(array_set_val, "$troops_items_inventory_slots_array", ":item_id", ":troop_inventory_array_slot",2),
+					(val_add,":troop_inventory_array_slot",1),
+				(try_end),
 			(try_end),
 		  (try_end),
+		  
+		  
+	#######################################################################################
+	##########		GENERATING NINE ITEMS OVERLAYS AND  ITEMS OVERLAYS 				#######
+	#######################################################################################
+	    (set_container_overlay, -1),
+
+			
+		(try_for_range,":slot",0,9),
+
+			
+			####### GETTING ITEMS OVERLAYS
+
+			(troop_get_inventory_slot,":item_id","$selected_troop_m",":slot"),
+			(try_begin),
+			(gt,":item_id",-1),
+			  (create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
+			  (position_set_x, pos1, 900),
+			  (position_set_y, pos1, 900),
+
+			  (overlay_set_size, "$g_presentation_item", pos1),
+			  
+			  (array_set_val, "$inventory_nine_items_array",  "$g_presentation_item", ":slot",1),
+			  (array_set_val, "$inventory_nine_items_array",  ":item_id", ":slot" , 2),		
+			
+			  (array_get_val, pos1, "$troop_nine_items_positions_array", ":slot"),
+			  (overlay_set_position, "$g_presentation_item", pos1),			  
+			(try_end),
+
+	
+		(try_end),  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 		  ########  DEBUG
-		  (call_script,"script_print_items_array","$troops_items_inventory_slots_array"),
+	#	  (call_script,"script_print_items_array","$troops_items_inventory_slots_array"),
 	#	  (call_script,"script_print_items_array","$categorized_items_inventory_slots_array"),
-	#	  (call_script,"script_save_array_to_file","$items_inventory_slots_positions_array"),
+		  (call_script,"script_print_items_array","$inventory_nine_items_array"),
+	#	  (call_script,"script_save_array_to_file","$troop_nine_items_positions_array"),
 
 		  (set_container_overlay, -1),
 
@@ -14917,6 +15041,7 @@ presentations = [
 		   (neg|eq,":object","$g_presentation_leg_armor"),
 		   (neg|eq,":object","$g_presentation_encumbrance"),
 		   (neg|eq,":object","$object_item_id"),
+		   (neg|eq,":object","$g_presentation_troop_mesh"),
 		   
 			   
 			   
@@ -14924,7 +15049,8 @@ presentations = [
 				(assign,reg0,":object"),
 				(display_message,"@ Obiekt klikany {reg0}"),
 				(try_begin),
-				(array_eq, "$locking_array", -1, reg3),
+				(gt,reg4,-1),
+				(array_eq, reg4, -1, reg3, 3),
 					(try_begin),		### we click empty slot
 					(eq, reg1, -1),
 					(eq, reg2, -1),						
@@ -14948,14 +15074,16 @@ presentations = [
 							   (array_set_val, "$troops_items_inventory_slots_array",  "$object_item_id", reg3, 1),	## clearing overlay id from array 
 							   (array_set_val, "$troops_items_inventory_slots_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## clearing item id from array 				
 							   (assign,":overlay","$g_presentation_troops_inventory_slots"),
-							   # (else_try),			
-							# (eq,reg4,"$inventory_nine_items_array"),
-								# #(display_message,"@im clicking items on the right"),#Debug
-							   # (array_set_val, "$inventory_nine_items_array",  -1, reg3, 1),	## clearing overlay id from array 
-							   # (array_set_val, "$inventory_nine_items_array",  -1, reg3, 2), ## clearing item id from array 
+						    (else_try),			
+							(eq,reg4,"$inventory_nine_items_array"),
+								 #(display_message,"@im clicking items on the right"),#Debug
+							    (array_set_val, "$inventory_nine_items_array",  "$object_item_id", reg3, 1),	## clearing overlay id from array 
+							    (array_set_val, "$inventory_nine_items_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## clearing item id from array 
+								(assign,":overlay",-1),
+								(array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
 							(try_end),
 							
-							(array_set_val, "$locking_array", 0, reg3), ## locking item overlay				
+							(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
 							
 							(set_container_overlay, ":overlay"),
 							(overlay_set_container_overlay, "$object_item_id", ":overlay"),
@@ -15013,25 +15141,26 @@ presentations = [
 							(display_message,"@klikam item z itemkiem"),
 							(assign,":temp_itm_id","$g_prst_item_attached_to_mouse"), # storing current item to temp variable
 							(assign,"$temp_obj","$object_item_id"),	# storing current item overlay to temp_obj variable
+							
+							(array_get_val, pos5, "$items_inventory_slots_positions_array", reg3),### getting position of slot
 
+							
 							(try_begin),
 							(eq,reg4,"$categorized_items_inventory_slots_array"),	## when we are clicking categorized items
 								# #(display_message,"@im clicking items on the left"),	#Debug
 								(assign,":array","$categorized_items_inventory_slots_array"), #getting position
-								(array_get_val, pos5, "$items_inventory_slots_positions_array", reg3),    ## getting position of slot
 								(assign,":overlay","$g_presentation_categorized_items_slots_container"),
 							(else_try),			
 							(eq,reg4,"$troops_items_inventory_slots_array"),
 								# #(display_message,"@im clicking items on the right"),#Debug
 								(assign,":array","$troops_items_inventory_slots_array"),	#getting position
-								(array_get_val, pos5, "$items_inventory_slots_positions_array", reg3),### getting position of slot
 								(assign,":overlay","$g_presentation_troops_inventory_slots"),
-							#(else_try),			
-							# (eq,reg4,"$inventory_nine_items_array"),
-								# # #(display_message,"@im clicking items on the right"),#Debug
-								# (assign,":array","$inventory_nine_items_array"),
-								# (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
-								# (assign,":overlay",-1),
+							(else_try),			
+							 (eq,reg4,"$inventory_nine_items_array"),
+								 # #(display_message,"@im clicking items on the right"),#Debug
+								 (assign,":array","$inventory_nine_items_array"),
+								 (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+								 (assign,":overlay",-1),
 							 (try_end),
 
 							(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
@@ -15044,7 +15173,7 @@ presentations = [
 							(overlay_set_size, "$temp_obj", pos1),
 							(overlay_animate_to_position, "$temp_obj", 1, pos5),
 							
-							(array_set_val, "$locking_array", 0, reg3), ## locking item overlay				
+							(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
 
 							(array_set_val, ":array",  "$temp_obj", reg3, 1),	## clearing overlay id from array 
 							(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
@@ -15064,8 +15193,9 @@ presentations = [
 						(try_end),
 					(try_end),
 				(else_try),
-				(array_eq, "$locking_array", 0, reg3),
-					(array_set_val,"$locking_array",-1,reg3),
+				(gt,reg4,-1),
+				(array_eq, reg4, 0, reg3, 3),
+					(array_set_val, reg4,-1,reg3, 3),
 		   (try_end),
 			
 		 ]),

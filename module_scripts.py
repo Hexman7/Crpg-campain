@@ -55104,11 +55104,11 @@ scripts = [
 		(call_script,"script_find_overlay_id","$troops_items_inventory_slots_array",":object"),
     (try_end),
 	
-	# (try_begin),### if :object is not in earlier array then check next one
-	# (eq, reg1, -1),
-	# (eq, reg5, -1),
-		# (call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
-	# (try_end),
+	(try_begin),### if :object is not in earlier array then check next one
+	(eq, reg1, -1),
+	(eq, reg5, -1),
+		(call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
+	(try_end),
 ]),	 
 #script_save_array_to_file:
 # INPUT:
@@ -55143,7 +55143,7 @@ scripts = [
     (store_script_param_1, ":array"),
 
        
-    (try_for_range,":index",0,20),
+    (try_for_range,":index",0,9),
     
 		(array_get_val, reg6, ":array", ":index",0),
         (array_get_val, reg7, ":array", ":index",1),
