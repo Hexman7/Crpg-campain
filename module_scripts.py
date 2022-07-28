@@ -55158,7 +55158,70 @@ scripts = [
      
      
      
-     
+#script_warriors_eq_prsnt_get_item_type:
+# INPUT:
+# param1: item_type 
+# out: reg9	- 1 if its ok 0 if not
+
+("warriors_eq_prsnt_get_item_type",[	
+	
+    (store_script_param_1, ":item_type"),    
+
+    (assign,":result",0),  
+    (assign,reg9,0),  
+	   
+	(try_begin), ### weapons slots slot
+	(ge,reg3,0),
+	(lt,reg3,4),
+		(try_begin),
+		(this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+		(this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+		(this_or_next|eq,":item_type",itp_type_polearm),
+		(this_or_next|eq,":item_type",itp_type_arrows),
+		(this_or_next|eq,":item_type",itp_type_bolts),
+		(this_or_next|eq,":item_type",itp_type_shield),
+		(this_or_next|eq,":item_type",itp_type_bow),
+		(this_or_next|eq,":item_type",itp_type_crossbow),
+		(this_or_next|eq,":item_type",itp_type_thrown),
+		(this_or_next|eq,":item_type",itp_type_pistol),
+		(this_or_next|eq,":item_type",itp_type_bullets),
+		(eq,":item_type",itp_type_musket),
+			(assign,":result",1), 
+		(try_end),
+	(else_try),	### helmet slot
+	(eq,reg3,4),
+		(try_begin),
+		(eq,":item_type",itp_type_head_armor),
+				(assign,":result",1), 
+		(try_end),
+	(else_try),	### body armor slot
+	(eq,reg3,5),
+		(try_begin),
+		(eq,":item_type",itp_type_body_armor),
+				(assign,":result",1), 
+		(try_end),
+	(else_try),	### leg armor slot
+	(eq,reg3,6),
+		(try_begin),
+		(eq,":item_type",itp_type_foot_armor),
+				(assign,":result",1), 
+		(try_end),	
+	(else_try),	### hand armor slot
+	(eq,reg3,7),
+		(try_begin),
+		(eq,":item_type",itp_type_hand_armor),
+				(assign,":result",1), 
+		(try_end),	
+	(else_try),	### horse slot
+	(eq,reg3,8),
+		(try_begin),
+		(eq,":item_type",itp_type_horse),
+				(assign,":result",1), 
+		(try_end),	
+	(try_end),
+	
+	(assign,reg9,":result"),  
+]),     
      
      
 #COOP BEGIN ###################

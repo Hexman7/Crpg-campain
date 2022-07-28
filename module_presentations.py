@@ -15077,23 +15077,38 @@ presentations = [
 						    (else_try),			
 							(eq,reg4,"$inventory_nine_items_array"),
 								 #(display_message,"@im clicking items on the right"),#Debug
-							    (array_set_val, "$inventory_nine_items_array",  "$object_item_id", reg3, 1),	## clearing overlay id from array 
-							    (array_set_val, "$inventory_nine_items_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## clearing item id from array 
+								
+								(item_get_type, ":item_type", "$g_prst_item_attached_to_mouse"),
+								(call_script,"script_warriors_eq_prsnt_get_item_type",":item_type"),
+								
+								(try_begin),
+								(eq, reg9, 1),
+								(array_set_val, "$inventory_nine_items_array",  "$object_item_id", reg3, 1),	## assigning overlay ID to array slot
+							    (array_set_val, "$inventory_nine_items_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## assigning item ID to array slot
 								(assign,":overlay",-1),
 								(array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+								(else_try),
+									(display_message,"@Wrong item type"),
+								(try_end),
 							(try_end),
 							
-							(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
 							
-							(set_container_overlay, ":overlay"),
-							(overlay_set_container_overlay, "$object_item_id", ":overlay"),
-							(position_set_x, pos1, 90),
-							(position_set_y, pos1, 90),
-							(overlay_set_size, "$object_item_id", pos1),
-							(overlay_animate_to_position, "$object_item_id", 1, pos5),
 							
-							(assign,"$g_prst_item_attached_to_mouse",-1),
-							(assign,"$object_item_id",-1),
+							(try_begin),			
+							(this_or_next|neq,reg4,"$inventory_nine_items_array"),
+							(eq,reg9,1),
+								(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
+								
+								(set_container_overlay, ":overlay"),
+								(overlay_set_container_overlay, "$object_item_id", ":overlay"),
+								(position_set_x, pos1, 90),
+								(position_set_y, pos1, 90),
+								(overlay_set_size, "$object_item_id", pos1),
+								(overlay_animate_to_position, "$object_item_id", 1, pos5),
+								
+								(assign,"$g_prst_item_attached_to_mouse",-1),
+								(assign,"$object_item_id",-1),
+							(try_end),
 						(else_try), #### we click empty slot
 						(eq,"$g_prst_item_attached_to_mouse",-1),
 						(array_eq, reg4, -1, reg3,1),	
@@ -15158,36 +15173,50 @@ presentations = [
 							(else_try),			
 							 (eq,reg4,"$inventory_nine_items_array"),
 								 # #(display_message,"@im clicking items on the right"),#Debug
-								 (assign,":array","$inventory_nine_items_array"),
-								 (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
-								 (assign,":overlay",-1),
+								 
+								(item_get_type, ":item_type", "$g_prst_item_attached_to_mouse"),
+								(call_script,"script_warriors_eq_prsnt_get_item_type",":item_type"),
+								
+								(try_begin),
+								(eq, reg9, 1),
+									 (assign,":array","$inventory_nine_items_array"),
+									 (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+									 (assign,":overlay",-1),
+								(else_try),
+									(display_message,"@Wrong item type"),
+								(try_end),
 							 (try_end),
 
-							(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
-							(array_set_val, ":array",  -1, reg3, 2), ## clearing item id from array 
+							 
+							 
+							(try_begin),			
+							(this_or_next|neq,reg4,"$inventory_nine_items_array"),
+							(eq,reg9,1),
+								(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
+								(array_set_val, ":array",  -1, reg3, 2), ## clearing item id from array 
 
-							(set_container_overlay, ":overlay"),
-							(overlay_set_container_overlay, "$temp_obj", ":overlay"),
-							(position_set_x, pos1, 90),
-							(position_set_y, pos1, 90),
-							(overlay_set_size, "$temp_obj", pos1),
-							(overlay_animate_to_position, "$temp_obj", 1, pos5),
-							
-							(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
+								(set_container_overlay, ":overlay"),
+								(overlay_set_container_overlay, "$temp_obj", ":overlay"),
+								(position_set_x, pos1, 90),
+								(position_set_y, pos1, 90),
+								(overlay_set_size, "$temp_obj", pos1),
+								(overlay_animate_to_position, "$temp_obj", 1, pos5),
+								
+								(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
 
-							(array_set_val, ":array",  "$temp_obj", reg3, 1),	## clearing overlay id from array 
-							(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
-							
-							(assign,"$g_prst_item_attached_to_mouse",reg2),
-							(assign,"$object_item_id",":object"),
-						 
-							(set_container_overlay, -1),		
-							
-							(overlay_set_container_overlay, ":object", -1),
-							(position_set_x,pos1, 200),
-							(position_set_y,pos1, 200),
-							(overlay_set_size,":object",pos1),
-							
+								(array_set_val, ":array",  "$temp_obj", reg3, 1),	## clearing overlay id from array 
+								(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
+								
+								(assign,"$g_prst_item_attached_to_mouse",reg2),
+								(assign,"$object_item_id",":object"),
+							 
+								(set_container_overlay, -1),		
+								
+								(overlay_set_container_overlay, ":object", -1),
+								(position_set_x,pos1, 200),
+								(position_set_y,pos1, 200),
+								(overlay_set_size,":object",pos1),
+							(try_end),
 						
 							
 						(try_end),
@@ -15293,6 +15322,10 @@ presentations = [
 			  
 			(else_try),		
 			(eq,":object","$g_party_window_done_btn"),		##Done btn
+			
+				
+			
+			
 				(presentation_set_duration,0),
 			(try_end),
 		]),
