@@ -14970,23 +14970,7 @@ presentations = [
 
 	
 		(try_end),  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  ########  DEBUG
+    ########  DEBUG
 	#	  (call_script,"script_print_items_array","$troops_items_inventory_slots_array"),
 	#	  (call_script,"script_print_items_array","$categorized_items_inventory_slots_array"),
 		  (call_script,"script_print_items_array","$inventory_nine_items_array"),

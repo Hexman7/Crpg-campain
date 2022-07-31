@@ -55222,7 +55222,30 @@ scripts = [
 	
 	(assign,reg9,":result"),  
 ]),     
-     
+  
+#script_warriors_eq_prsnt_get_item_type:
+# INPUT:
+# param1: item_type 
+# out: reg9	- 1 if its ok 0 if not
+
+("warriors_eq_prsnt_get_item_type",[	
+	
+    (store_script_param_1, ":array"), 
+    (store_script_param_2, ":troop_no"), 
+    
+    (troop_get_inventory_capacity,":capacity",":troop_no"),
+    (store_sub,":array_dim",":troop_no",player_temp_troops_begin),
+    
+    (assign,reg11,":capacity"),
+    (display_message,"@ Capacity for troop: {reg11}"),
+    (troop_clear_inventory,":troop_no"),
+    
+    (try_for_range,":slot",0,"capacity"),
+        (array_get_val,":item_id",":array_dim",":slot"),
+        (troop_set_inventory_slot,":troop_no",":slot",":item_id"),
+    (try_end),
+
+  ]),    
      
 #COOP BEGIN ###################
 ] + coop_scripts 
