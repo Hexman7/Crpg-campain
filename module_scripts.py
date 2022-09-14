@@ -55223,6 +55223,33 @@ scripts = [
 	(assign,reg9,":result"),  
 ]),     
      
+	 
+	 
+	 
+#### script_save_troops_eq
+##	params: array_to_read_nine_items, array_to_read, array_to_save, troop_no
+##	out: 
+##	
+("save_troops_eq",[
+	(store_script_param_1,":array_to_read_nine_items"),
+	(store_script_param_2,":array_to_read"),
+	(store_script_param,":array_to_save", 3),
+	(store_script_param,":troop_no", 4),
+	
+	(store_sub,":array_index", ":troop_no", player_temp_troops_begin),
+	(array_get_dim_size,":dimension_size",":array_to_save",0), ###? 
+	
+	(try_for_range,":slot",0,":dimension_size"),
+		(try_begin),
+		(lt,":slot",9),
+			(array_get_val,":value",":array_to_read_nine_items",":slot", 2),
+		(else_try),
+			(array_get_val,":value",":array_to_read",":slot", 2),
+		(try_end),
+		(array_set_val,":array_to_save",":value",":array_index",":slot"),
+	(try_end),
+	
+]),	 
      
 #COOP BEGIN ###################
 ] + coop_scripts 
