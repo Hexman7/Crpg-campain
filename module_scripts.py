@@ -53493,17 +53493,20 @@ scripts = [
 		 (store_script_param,":item_no",2),
 		 
 		 (item_get_difficulty, ":item_dif", ":item_no"),
+		 
+		 (item_get_type, ":item_type", ":item_no"),
+		 
 	     (try_begin),
-			(eq,"$type_of_difficulty",1),#shields
+			(eq,":item_type",itp_type_shield),#shields
 			(store_skill_level,":troop_str","skl_shield",":troop_no"),
 		 (else_try),
-			(eq,"$type_of_difficulty",2),#horses
+			(eq,":item_type",itp_type_horse),#horses
 			(store_skill_level,":troop_str","skl_riding",":troop_no"),
 		 (else_try),
-			(eq,"$type_of_difficulty",3),#bows
+			(eq,":item_type",itp_type_bow),#bows
 			(store_skill_level,":troop_str","skl_power_draw",":troop_no"),		 
 		 (else_try),
-			(eq,"$type_of_difficulty",4),#throwings
+			(eq,":item_type",itp_type_thrown),#throwings
 			(store_skill_level,":troop_str","skl_power_throw",":troop_no"),
 		 (else_try),
 			(store_attribute_level,":troop_str",":troop_no",ca_strength),
@@ -55250,6 +55253,75 @@ scripts = [
 	(try_end),
 	
 ]),	 
+
+
+#### script_warriors_eq_menu_setting_available_items_for_troop
+##	params: value
+##	out: 
+##	
+("warriors_eq_menu_setting_available_items_for_troop",[
+	  (store_script_param_1,":value"),
+
+	  (troop_clear_inventory,"trp_temp_items_troop"),
+		  (try_begin),
+		  (eq,":value",16),
+			(call_script,"script_add_items_to_temp_troop_beta",one_handed_swords_begin ,one_handed_sabres_end ),  
+		  (else_try),	
+		  (eq,":value",15),
+			(call_script,"script_add_items_to_temp_troop_beta",two_handed_swords_begin ,bastard_weapons_end ),
+		  (else_try),	
+		  (eq,":value",14),
+			(call_script,"script_add_items_to_temp_troop_beta",spears_and_pikes_begin ,lances_end ),
+		  (else_try),	
+		  (eq,":value",13),
+			(call_script,"script_add_items_to_temp_troop_beta",shields_begin ,shields_end ),
+		  (else_try),	
+		  (eq,":value",12),		  
+			(call_script,"script_add_items_to_temp_troop_beta",throwings_begin ,throwings_end ),	  
+		  (else_try),	
+		  (eq,":value",11),
+			(call_script,"script_add_items_to_temp_troop_beta",bows_begin ,bows_end ),
+			(call_script,"script_add_items_to_temp_troop_beta",arrows_begin ,arrows_end ),
+		  (else_try),	
+		  (eq,":value",10),		
+			(call_script,"script_add_items_to_temp_troop_beta",crossbows_begin ,crossbows_end ),
+			(call_script,"script_add_items_to_temp_troop_beta",bolts_begin ,bolts_end ),	
+		  (else_try),	
+		  (eq,":value",9),
+			(call_script,"script_add_items_to_temp_troop_beta",light_helmets_begin ,light_helmets_end ),
+		  (else_try),	
+		  (eq,":value",8), 
+			(call_script,"script_add_items_to_temp_troop_beta",medium_helmets_begin ,medium_helmets_end ),
+		  (else_try),	
+		  (eq,":value",7),
+			(call_script,"script_add_items_to_temp_troop_beta",heavy_helmets_begin ,heavy_helmets_end ),
+		  (else_try),	
+		  (eq,":value",6),
+			(call_script,"script_add_items_to_temp_troop_beta",light_armors_begin ,light_armors_end ),
+		  (else_try),	
+		  (eq,":value",5),
+			(call_script,"script_add_items_to_temp_troop_beta",medium_armors_begin ,"itm_arabian_armor_b" ),
+		  (else_try),	
+		  (eq,":value",4),
+			(call_script,"script_add_items_to_temp_troop_beta","itm_arabian_armor_b", heavy_armors_end ),
+		  (else_try),	
+		  (eq,":value",3),
+			(call_script,"script_add_items_to_temp_troop_beta", gloves_begin ,gloves_end ),
+		  (else_try),	
+		  (eq,":value",2),
+			(call_script,"script_add_items_to_temp_troop_beta", boots_begin ,boots_end ),
+		  (else_try),	
+		  (eq,":value",1),
+			(call_script,"script_add_items_to_temp_troop_beta",horses_begin ,horses_end ),
+		  (try_end),
+
+	
+]),	 
+
+
+
+
+
      
 #COOP BEGIN ###################
 ] + coop_scripts 
