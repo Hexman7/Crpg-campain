@@ -53493,9 +53493,7 @@ scripts = [
 		 (store_script_param,":item_no",2),
 		 
 		 (item_get_difficulty, ":item_dif", ":item_no"),
-		 
 		 (item_get_type, ":item_type", ":item_no"),
-		 
 	     (try_begin),
 			(eq,":item_type",itp_type_shield),#shields
 			(store_skill_level,":troop_str","skl_shield",":troop_no"),
@@ -55152,6 +55150,8 @@ scripts = [
         (array_get_val, reg7, ":array", ":index",1),
         (array_get_val, reg8, ":array", ":index",2),
 
+		
+			
         (assign,reg9,":index"),
         (display_message,"@array index {reg9} slot overlayId {reg6} overlayId {reg7} ItemId{reg8}"),
     
@@ -55319,6 +55319,58 @@ scripts = [
 ]),	 
 
 
+#### script_save_choosen_items_to_temp_troop
+##	params: array_to_read_nine_items, array_to_read, troop_no
+##	out: 
+##	
+("save_choosen_items_to_temp_troop",[
+	(store_script_param_1,":array_to_read_nine_items"),
+	(store_script_param_2,":array_to_read"),
+	(store_script_param,":troop_id", 3),
+
+	(array_get_dim_size, ":array_size", ":array_to_read", 0),
+	
+	(try_for_range,":slot",0,9),
+		(array_get_val, ":val", ":array_to_read_nine_items", ":slot", 2),
+		(troop_set_inventory_slot,":troop_id",":slot",":val"),
+	(try_end),
+
+	(assign,":index",9),
+	(try_for_range,":slot",0,":array_size"),
+		(array_get_val, ":val", ":array_to_read", ":slot", 2),
+		(troop_set_inventory_slot,":troop_id",":index",":val"),
+		(val_add,":index",1),
+	(try_end),	
+]),	
+
+
+#### script_warriors_eq_menu_reset_all_troops_inventories
+##	params: ":option"
+##	out: 
+##	if option = 0 then its resetting, 1 = saving
+("warriors_eq_menu_reset_done_all_troops_inventories",[
+
+	(store_script_param_1,":option"),
+	(try_for_range,":troop",player_temp_troops_begin,player_temp_troops_end),
+		(store_sub, ":val", player_temp_troops_end, ":troop"),
+	###	(assign,reg6,":val"),####### DEBUG
+		
+		(store_sub, ":troop_id", player_troops_end, ":val"),
+		(store_sub, ":troop_id", ":troop_id", 2),
+	####### DEBUG
+		# (assign,reg7,":troop_id"),
+		# (assign,reg8,":troop"),
+		
+		# (display_message,"@ odjete {reg6}, id plyrTrp {reg7}, selectedTrp {reg8}"),
+	####### DEBUG	
+		(try_begin),
+		(eq,":option",0),
+			(call_script,"script_copy_items_from_troop_to_troop",":troop_id",":troop"),
+		(else_try),
+			(call_script,"script_copy_items_from_troop_to_troop",":troop",":troop_id"),
+		(try_end),
+	(try_end),
+]),	
 
 
 
