@@ -23087,7 +23087,7 @@ scripts = [
         (try_end),
         (try_for_range, ":unused", 0, ":garrison_strength"),
 		#### DEBUG
-		  (display_message,"@ ADDING TROOPS TO LOCATION"),
+		 # (display_message,"@ ADDING TROOPS TO LOCATION"),
           (call_script, "script_cf_reinforce_party", ":center_no"),
         (try_end),
         ## ADD some XP initially
@@ -23785,6 +23785,7 @@ scripts = [
       (try_begin),
         (gt, ":party_template", 0),
         (party_add_template, ":party_no", ":party_template"),
+		(display_message,"@TEmplate"),
       (try_end),
   ]),
   
