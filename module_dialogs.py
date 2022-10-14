@@ -289,7 +289,7 @@ dialogs = [
 		(faction_slot_eq, "$players_kingdom", slot_faction_political_issue, -1),
 		(faction_set_slot, "$players_kingdom", slot_faction_political_issue, "$g_center_taken_by_player_faction"),
 	 (try_end),	 
-	 (call_script, "script_give_center_to_lord", "$g_center_taken_by_player_faction", -1, 0), #-1 for the faction lord in this script is used exclusively in this context
+	 (call_script, "script_give_center_to_lord", "$g_center_taken_by_player_faction", -1, 1), #-1 for the faction lord in this script is used exclusively in this context
 	 #It is only used because script_give_center_to_faction does not reset the town lord if fac_player_supporters_faction is the attacker
 
      (assign, "$g_center_taken_by_player_faction", -1),

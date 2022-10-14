@@ -23086,6 +23086,8 @@ scripts = [
           (assign, ":garrison_strength", 9),
         (try_end),
         (try_for_range, ":unused", 0, ":garrison_strength"),
+		#### DEBUG
+		  (display_message,"@ ADDING TROOPS TO LOCATION"),
           (call_script, "script_cf_reinforce_party", ":center_no"),
         (try_end),
         ## ADD some XP initially
