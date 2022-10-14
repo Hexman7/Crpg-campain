@@ -4146,14 +4146,13 @@ simple_triggers = [
 	
    	(try_begin),
 	(eq,"$troops_have_to_be_copied_after_saveload",1),
+		# (assign, reg5, -1),
 	
-		(assign, reg5, -1),
-	
-		(call_script,"script_cf_check_file_exist"),#17.02.2020
-		(eq,reg5,-1),
-			(call_script,"script_coop_read_eq_from_file_to_troops"),#28.12.2018
-		
+		# (call_script,"script_cf_check_file_exist"),#17.02.2020
+		# (eq,reg5,-1),
+			# (call_script,"script_coop_read_eq_from_file_to_troops"),#28.12.2018
 		(assign,"$troops_have_to_be_copied_after_saveload",0),
+		(call_script,"script_warriors_eq_menu_reset_done_all_troops_inventories",1),
     (try_end),
    ]),
    

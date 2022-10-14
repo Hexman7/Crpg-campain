@@ -55372,8 +55372,67 @@ scripts = [
 	(try_end),
 ]),	
 
+#### script_warrior_eq_menu_get_all_armor_parts_stats
+##	params: ":array", 4 x ":label_id"
+##	out: 
+##	
+("warrior_eq_menu_get_all_armor_parts_stats",[
+	(store_script_param_1,":array"),
+	(store_script_param_2,":head_armor_label"),
+	(store_script_param,":body_armor_label", 3),
+	(store_script_param,":leg_armor_label", 4),
+	(store_script_param,":encumbrance_label", 5),
+	
+	(set_fixed_point_multiplier,10),
+	(assign,":head_armor",0),
+	(assign,":body_armor",0),
+	(assign,":leg_armor",0),
+	(assign,":encumbrance",0),
+	
+	
+	(try_for_range,":index",4,8),
+		(array_get_val, ":item", ":array", ":index", 2),
+		
+		(try_begin),
+		(gt,":item",-1),
+			(item_get_head_armor, ":head_val", ":item"),
+			(item_get_body_armor, ":body_val", ":item"),
+			(item_get_leg_armor, ":leg_val", ":item"),
+			(item_get_weight, ":weight_val", ":item"),
+			
+			(val_add,":head_armor",":head_val"),
+			(val_add,":body_armor",":body_val"),
+			(val_add,":leg_armor",":leg_val"),
+			(val_add,":encumbrance",":weight_val"),
+	
+		(try_end),
+	(try_end),
 
-
+	
+	
+	
+	# (store_div,":weight_a",":encumbrance",10),
+#	 (assign,reg25,":encumbrance"),
+#	 (display_message,"@{reg25}"),
+	 (store_div,":weight_c",":encumbrance",10),
+	 (store_mul,":val",":weight_c",10),	
+	 (store_sub,":weight_d",":encumbrance",":val"),
+	
+	(assign,reg20,":head_armor"),
+	(assign,reg21,":body_armor"),
+	(assign,reg22,":leg_armor"),
+    (assign,reg23,":weight_c"),
+	(assign,reg24,":weight_d"),
+	# (assign,reg23,":encumbrance"),
+	
+	(overlay_set_text, ":head_armor_label", "@{reg20}"),
+	(overlay_set_text, ":body_armor_label", "@{reg21}"),
+	(overlay_set_text, ":leg_armor_label", "@{reg22}"),
+	(overlay_set_text, ":encumbrance_label", "@{reg23}.{reg24}"),
+#	(overlay_set_text, ":encumbrance_label", "@{reg23}"),
+	
+	(set_fixed_point_multiplier,100),
+]),	
      
 #COOP BEGIN ###################
 ] + coop_scripts 

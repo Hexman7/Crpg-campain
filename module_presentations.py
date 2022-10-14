@@ -14742,29 +14742,60 @@ presentations = [
 		  
 		  (create_text_overlay, "$g_presentation_head_armor", "@Head Armor: "),
 		  (overlay_set_size, "$g_presentation_head_armor", pos1),
-
+		  
+		  (create_text_overlay, "$g_presentation_head_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_head_armor_val", pos1),
+		  
 		  (create_text_overlay, "$g_presentation_body_armor", "@Body Armor: "),
 		  (overlay_set_size, "$g_presentation_body_armor", pos1),
-
+		  
+		  (create_text_overlay, "$g_presentation_body_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_body_armor_val", pos1),
+		  
 		  (create_text_overlay, "$g_presentation_leg_armor", "@Leg Armor: "),
 		  (overlay_set_size, "$g_presentation_leg_armor", pos1),	 
 
+		  (create_text_overlay, "$g_presentation_leg_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_leg_armor_val", pos1),
+		  
 		  (create_text_overlay, "$g_presentation_encumbrance", "@Encumbrance: "),
 		  (overlay_set_size, "$g_presentation_encumbrance", pos1),
 
-
+		  (create_text_overlay, "$g_presentation_encumbrance_val", "@0"),
+		  (overlay_set_size, "$g_presentation_encumbrance_val", pos1),
+		  
+		  
 		  (position_set_x, pos1, 500),
 		  (position_set_y, pos1, 180),
 		  (overlay_set_position, "$g_presentation_head_armor", pos1),
 		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 180),
+		  (overlay_set_position, "$g_presentation_head_armor_val", pos1),
+		  
+		  (position_set_x, pos1, 500),
 		  (position_set_y, pos1, 150),
 		  (overlay_set_position, "$g_presentation_body_armor", pos1),
 		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 150),
+		  (overlay_set_position, "$g_presentation_body_armor_val", pos1),
+		  
+		  (position_set_x, pos1, 500),
 		  (position_set_y, pos1, 120),
 		  (overlay_set_position, "$g_presentation_leg_armor", pos1),	 
 		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 120),
+		  (overlay_set_position, "$g_presentation_leg_armor_val", pos1),	 
+		  
+		  (position_set_x, pos1, 500),
 		  (position_set_y, pos1, 90),
 		  (overlay_set_position, "$g_presentation_encumbrance", pos1),
+		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 90),
+		  (overlay_set_position, "$g_presentation_encumbrance_val", pos1),
 		  
 	###################################################################################################	
 	########	 	GENERATING SLOTS FOR CATEGORIZED ITEMS 		######
@@ -14997,6 +15028,8 @@ presentations = [
 		  (set_container_overlay, -1),
 
 		  
+		  (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+		  
 		  (presentation_set_duration, 999999),
 		]),
 		
@@ -15046,6 +15079,10 @@ presentations = [
 		   (neg|eq,":object","$g_presentation_encumbrance"),
 		   (neg|eq,":object","$object_item_id"),
 		   (neg|eq,":object","$g_presentation_troop_mesh"),
+		   (neg|eq,":object","$g_presentation_head_armor_val"),
+		   (neg|eq,":object","$g_presentation_body_armor_val"),
+		   (neg|eq,":object","$g_presentation_leg_armor_val"),
+		   (neg|eq,":object","$g_presentation_encumbrance_val"),
 		   
 			   
 			   
@@ -15091,6 +15128,9 @@ presentations = [
 							    (array_set_val, "$inventory_nine_items_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## assigning item ID to array slot
 								(assign,":overlay",-1),
 								(array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+								### refresh armor stats
+								(call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+
 								(else_try),
 									(display_message,"@Wrong item type"),
 								(try_end),
@@ -15144,6 +15184,9 @@ presentations = [
 								#(display_message,"@im clicking items on the right"),#Debug
 							   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 1),	## clearing overlay id from array 
 							   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 2), ## clearing item id from array 
+							   ### refresh armor stats
+							   (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+
 							(try_end),
 							(set_container_overlay, -1),
 							(overlay_set_container_overlay, ":object", -1),
@@ -15186,6 +15229,9 @@ presentations = [
 									 (assign,":array","$inventory_nine_items_array"),
 									 (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
 									 (assign,":overlay",-1),
+									 ### refresh armor stats
+									 (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+
 								(else_try),
 									(display_message,"@Wrong item type"),
 								(try_end),

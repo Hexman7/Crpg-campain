@@ -3894,7 +3894,6 @@ coop_scripts = [
 		(try_begin),
 		(eq,"$troops_have_to_be_copied",1),
 			(call_script,"script_coop_read_eq_from_file_to_troops"),
-			#(display_message,"@chuj"),
 			(assign,"$troops_have_to_be_copied",0),
 		(try_end),
 		 
@@ -4061,15 +4060,18 @@ coop_scripts = [
 
 #script_wse_savegame_loaded
 # Called each time after savegame is loaded successfully
- ("cf_wse_savegame_loaded", [
+ ("wse_savegame_loaded", [
+	
+
 	
 	(store_current_day,":day"),
 	
-	# (assign,reg0,":day"),
-	# (display_message,"@ Day of game:{reg0}"),
+	(assign,reg0,":day"),
+	(display_message,"@ Day of game:{reg0}"),
 	(gt,":day", -1),
 		(assign,"$troops_have_to_be_copied_after_saveload",1),
 		
+	
 ]),
 
 #script_cf_check_file_exist		17.02.2020
