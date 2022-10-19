@@ -23739,10 +23739,12 @@ scripts = [
 		  (try_end),
 		  ### mod end 30.04.2018
         (else_try),
-          (party_get_slot, ":party_faction", ":party_no", slot_center_original_faction),
+         # (party_get_slot, ":party_faction", ":party_no", slot_center_original_faction),
+		   (assign, ":party_faction", "fac_player_faction"),
         (try_end),
       (try_end),
-      
+	  
+	  
       (faction_get_slot, ":party_template_a", ":party_faction", slot_faction_reinforcements_a),
       (faction_get_slot, ":party_template_b", ":party_faction", slot_faction_reinforcements_b),
       (faction_get_slot, ":party_template_c", ":party_faction", slot_faction_reinforcements_c),
@@ -23756,16 +23758,18 @@ scripts = [
         (try_begin),
           (lt, ":rand", 65),
           (assign, ":party_template", ":party_template_a"),
+		  (assign, reg16, ":party_template"),	#### DEBUG
+		  (display_message,"@ TEMPLATE {reg16}"),
         (else_try),
           (assign, ":party_template", ":party_template_b"),
         (try_end),
       (else_try),
-        (eq, ":party_type", spt_kingdom_hero_party),
+      (eq, ":party_type", spt_kingdom_hero_party),
         (try_begin),
 #MOD BEGIN
 			(try_begin),
-				(party_stack_get_troop_id, ":leader", ":party_no", 0),
-				(faction_slot_eq, ":party_faction", slot_faction_leader, ":leader"),
+			(party_stack_get_troop_id, ":leader", ":party_no", 0),
+			(faction_slot_eq, ":party_faction", slot_faction_leader, ":leader"),
 				(party_count_members_of_type,":ilu",":party_no",":faction_kingsguard"),
 				(lt,":ilu",20),
 				(party_add_members,":party_no",":faction_kingsguard",1),
@@ -23779,9 +23783,11 @@ scripts = [
         (else_try),
           (assign, ":party_template", ":party_template_c"),
         (try_end),
-      (else_try),
+      #(else_try),
       (try_end),
 
+	  (assign, reg16, ":party_template"),
+	  (display_message,"@ party template {reg16}"),
       (try_begin),
         (gt, ":party_template", 0),
         (party_add_template, ":party_no", ":party_template"),
