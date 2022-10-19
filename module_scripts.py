@@ -23758,8 +23758,10 @@ scripts = [
         (try_begin),
           (lt, ":rand", 65),
           (assign, ":party_template", ":party_template_a"),
-		  (assign, reg16, ":party_template"),	#### DEBUG
-		  (display_message,"@ TEMPLATE {reg16}"),
+		  #### DEBUG
+		  # (assign, reg16, ":party_template"),	
+		  # (display_message,"@ TEMPLATE {reg16}"),
+		  #### DEBUG
         (else_try),
           (assign, ":party_template", ":party_template_b"),
         (try_end),
@@ -23785,13 +23787,13 @@ scripts = [
         (try_end),
       #(else_try),
       (try_end),
-
-	  (assign, reg16, ":party_template"),
-	  (display_message,"@ party template {reg16}"),
+		##### DEBUG
+	  # (assign, reg16, ":party_template"),
+	  # (display_message,"@ party template {reg16}"),
+	  		##### DEBUG
       (try_begin),
         (gt, ":party_template", 0),
         (party_add_template, ":party_no", ":party_template"),
-		(display_message,"@TEmplate"),
       (try_end),
   ]),
   
