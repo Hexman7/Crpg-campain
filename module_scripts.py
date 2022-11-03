@@ -11398,7 +11398,7 @@ scripts = [
 	### mod begin 20.02.2020
 	  (else_try),
 		(eq, ":event_type", multiplayer_event_mod_send_file_to_server_prepare),		
-		(call_script,"script_multiplayer_prepare_file"),
+		(call_script,"script_multiplayer_prepare_file",0),
 		### mod begin 20.02.2020
 	  (else_try),
 		(eq, ":event_type", multiplayer_event_mod_send_file_to_server_key),
@@ -54509,12 +54509,16 @@ scripts = [
 #### output:	
 	("multiplayer_prepare_file",
 	  [		 
-		 #(store_script_param,":player_no",1),
+		 (store_script_param,":file_name",1),
 		 (try_begin), 
 		 (neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"),
-			(dict_save, "$coop_dict", "@coop_battle"), #clear battle file
-			
+			(try_begin),
+			(eq,":file_name",0),
+				(dict_save, "$coop_dict", "@coop_battle"), #clear battle file
+			(else_try),
+				(dict_save, "$coop_dict", "@coop_troops"), #clear troops file
+			(try_end),
 			(dict_free, "$coop_dict"),
 			
 			

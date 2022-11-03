@@ -3417,13 +3417,7 @@ game_menus = [
         ],
        ),		 
 
-	   ("game_equip_warriors_menu",
-       [(eq,"$cheat_mode",1)
-        ], "CHEAT!: game equip warriors window",
-       [(start_presentation, "prsnt_game_equip_warriors_window_new"),		### TESting 2022
-        ],
-       ),		   
-	   
+
 	   ("camp_get_upgrade",
        [(eq,"$cheat_mode",1)
         ], "CHEAT!: Get Upgrade",
@@ -4646,6 +4640,16 @@ game_menus = [
            #(start_presentation, "prsnt_custom_banner"),
         ]
        ),
+	   
+	   ("game_equip_warriors_menu",
+       [
+	   (eq,"$players_kingdom","fac_player_supporters_faction"),
+        ], "Equip Warriors",
+       [(start_presentation, "prsnt_game_equip_warriors_window"),		### TESting 2022
+        ],
+       ),		   
+	   
+	   
 	  ("reset_stats",[],"Reset your character stats.",
        [(jump_to_menu, "mnu_reset_stats_menu"),
         ]
@@ -5445,13 +5449,19 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+		
+		### MOD BEGIN - Saving player troops to file	03.11.2022
+	    (call_script, "script_coop_save_troops_equipment_to_file"), # set coop_battle_state to 1
+		
+		
+		### MOD END
       ]),	
 
       ("quit",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 	#MOD BEGIN	
-		(assign,"$troops_have_to_be_copied",1),
+	#	(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -5468,7 +5478,7 @@ game_menus = [
         (assign, "$g_next_menu", "mnu_simple_encounter"),
 		## mod begin, player troops script 
 		
-		(call_script,"script_coop_check_player_troops_status"),
+		#(call_script,"script_coop_check_player_troops_status"),
 		## mod end, player troops script 
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -6654,7 +6664,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 	##MOD BEGIN	
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -6669,7 +6679,7 @@ game_menus = [
         (call_script, "script_calculate_renown_value"),
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 
         (jump_to_menu, "mnu_battle_debrief"),
       #change these for menu
@@ -7125,7 +7135,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -7158,7 +7168,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -7960,7 +7970,7 @@ game_menus = [
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
         (ge, "$g_siege_method", 1),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),	
+		#(assign,"$troops_have_to_be_copied",1),	
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -7983,7 +7993,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -9108,7 +9118,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -9125,7 +9135,7 @@ game_menus = [
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
         (assign, "$g_next_menu", "mnu_siege_started_defender"),
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -9600,7 +9610,7 @@ game_menus = [
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
         (party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -9616,7 +9626,7 @@ game_menus = [
         (assign, "$g_next_menu", "mnu_village_infest_bandits_result"),
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -10424,7 +10434,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -10453,7 +10463,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),
+		#(call_script,"script_coop_check_player_troops_status"),
 		
 		## mod end, player troops script 
 		## mod begin
@@ -13028,7 +13038,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -13043,7 +13053,7 @@ game_menus = [
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
         (assign, "$g_next_menu", "mnu_train_peasants_against_bandits_attack_result"),
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -16403,7 +16413,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -16424,7 +16434,7 @@ game_menus = [
       (party_add_members, "$g_encountered_party", ":bandit_type", 1), #add one to remember what type
 
 	  	## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),

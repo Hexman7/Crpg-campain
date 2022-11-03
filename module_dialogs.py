@@ -3554,15 +3554,31 @@ dialogs = [
    "Nevermind.", "minister_pretalk",[ ]],
  
    #### TEST V2
-  [anyone|plyr,"minister_talk", [],
-   "I want to change equipment of our warriors.", "minister_choose_troopsV2",[
-   (try_begin),
-	(call_script, "script_copy_items_from_troop_to_troop","trp_player","trp_player_items_backup"),
-	(call_script, "script_set_troop_skills_to_other_troop","trp_player","trp_player_items_backup"),
-   (try_end),
-   (troop_clear_inventory,"trp_player"),
+  # [anyone|plyr,"minister_talk", [],
+   # "I want to change equipment of our warriors.", "minister_choose_troops_menu_open",[
+   # (try_begin),
+	# (call_script, "script_copy_items_from_troop_to_troop","trp_player","trp_player_items_backup"),
+	# (call_script, "script_set_troop_skills_to_other_troop","trp_player","trp_player_items_backup"),
+   # (try_end),
+   # (troop_clear_inventory,"trp_player"),
    
-   ]],
+   # ]],
+   
+   
+  #### NOWE
+  # [anyone,"minister_choose_troops_menu_open", [],
+   # "Yes Sir(!).", "minister_pretalk",[    
+    # (start_presentation,"prsnt_game_equip_warriors_window"),
+   # # (change_screen_return),
+   # ]],
+   
+   # [anyone|plyr,"minister_choose_troops_end",
+   # [],
+     # "OK", "minister_pretalk",[ 
+   # ]],
+   #######################
+   
+   
    
   [anyone,"minister_choose_troopsV2", [],
    "Ok, wich troop should change equipment?.", "minister_choose_troops_showV2",[
