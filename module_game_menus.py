@@ -1190,12 +1190,17 @@ game_menus = [
 		(assign,"$background_answer_2", cb2_page),
 		(assign,"$background_answer_3",cb3_squire),
 		(assign,"$background_answer_4",cb4_greed),
-			
+		### setting troop to lord	MOD - 03.11.2022
+	    (call_script,"script_cf_character_player_substitute"),
+		
+		###
 	    (troop_set_attribute_points, "trp_player", 0),
 		(troop_set_proficiency_points, "trp_player", 0),
 		(troop_set_skill_points, "trp_player",0),
 		(assign,"$character_choose",0),
-	
+		
+
+		
 		(jump_to_menu, "mnu_auto_return"),
 		(start_presentation, "prsnt_banner_selection"),
 		(set_show_messages, 1),

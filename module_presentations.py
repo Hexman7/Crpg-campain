@@ -15544,7 +15544,7 @@ presentations = [
 		 #  (assign, reg1,"fac_kingdom_1"),
 		  # (display_message,"@ fac1: {reg1}"),
 		   
-		   (call_script,"script_cf_character_player_substitute"),
+		#   (call_script,"script_cf_character_player_substitute"),
 		   
 		   
 
