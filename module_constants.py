@@ -342,6 +342,12 @@ slot_bridge_scene = 72  ### mod begin end
 
 slot_castle_exterior    = slot_town_center
 
+
+
+slot_center_native_faction = 73	## crpg-campaign: center slot for setting it's native faction
+
+
+
 #slot_town_rebellion_contact   = 76
 #trs_not_yet_approached  = 0
 #trs_approached_before   = 1
