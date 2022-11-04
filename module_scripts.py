@@ -22945,6 +22945,270 @@ scripts = [
       (try_end),
       ]),
 
+	  
+	  #### NATIVE SCRIPT
+  # # script_give_center_to_lord
+  # # Input: arg1 = center_no, arg2 = lord_troop, arg3 = add_garrison_to_center
+  # ("give_center_to_lord",
+    # [
+      # (store_script_param, ":center_no", 1),
+      # (store_script_param, ":lord_troop_id", 2), #-1 only in the case of a player deferring ownership of a center
+      # (store_script_param, ":add_garrison", 3),
+
+	  # (try_begin),
+	    # (eq, "$cheat_mode", 1),
+		# (ge, ":lord_troop_id", 0),
+		# (str_store_party_name, s4, ":center_no"),
+		# (str_store_troop_name, s5, ":lord_troop_id"),
+		# (display_message, "@{!}DEBUG -- {s4} awarded to {s5}"),
+	  # (try_end),
+	  
+	  # (try_begin),
+	    # (eq, ":lord_troop_id", "trp_player"),
+	    # (unlock_achievement, ACHIEVEMENT_ROYALITY_PAYMENT),
+	    
+	    # (assign, ":number_of_fiefs_player_have", 1),
+	    # (try_for_range, ":cur_center", centers_begin, centers_end),
+	      # (neq, ":cur_center", ":center_no"),
+	      # (party_slot_eq, ":cur_center", slot_town_lord, "trp_player"),
+	      # (val_add, ":number_of_fiefs_player_have", 1),
+	    # (try_end),
+	    
+	    # (ge, ":number_of_fiefs_player_have", 5),
+	    # (unlock_achievement, ACHIEVEMENT_MEDIEVAL_EMLAK),	    
+	  # (try_end),
+	  
+      # (party_get_slot, ":old_lord_troop_id", ":center_no", slot_town_lord),
+      
+	  # (try_begin), #This script is ONLY called with lord_troop_id = -1 when it is the player faction 
+	    # (eq, ":lord_troop_id", -1),
+	    # (assign, ":lord_troop_faction", "fac_player_supporters_faction"),
+        # (party_set_banner_icon, ":center_no", 0),#Removing banner
+		
+      # (else_try),	
+	    # (eq, ":lord_troop_id", "trp_player"),
+	    # (assign, ":lord_troop_faction", "$players_kingdom"), #was changed on Apr 27 from fac_plyr_sup_fac
+
+      # (else_try),	  
+		# (store_troop_faction, ":lord_troop_faction", ":lord_troop_id"),
+	  # (try_end),	
+	  # (faction_get_slot, ":faction_leader", ":lord_troop_faction", slot_faction_leader),
+
+	  # (try_begin),
+	    # (eq, ":faction_leader", "trp_player"),
+
+        # (try_begin),
+            # (troop_get_type, ":is_female", "trp_player"),
+            # (eq, ":is_female", 1),
+            # (unlock_achievement, ACHIEVEMENT_QUEEN),
+        # (try_end),
+	  # (try_end),
+	  
+	  # (try_begin),
+		# (eq, ":faction_leader", ":old_lord_troop_id"),
+		# (call_script, "script_add_log_entry", logent_liege_grants_fief_to_vassal, ":faction_leader", ":center_no", ":lord_troop_id", ":lord_troop_faction"),
+        # (troop_set_slot, ":lord_troop_id", slot_troop_promised_fief, 0),		
+	  # (try_end),
+
+      # (try_begin),
+	    # (eq, ":lord_troop_id", -1), #Lord troop ID -1 is only used when a player is deferring assignment of a fief
+        # (party_set_faction, ":center_no", "$players_kingdom"),
+	  # (else_try),
+        # (eq, ":lord_troop_id", "trp_player"),
+        # (gt, "$players_kingdom", 0),
+        # (party_set_faction, ":center_no", "$players_kingdom"),
+      # (else_try),
+        # (eq, ":lord_troop_id", "trp_player"),
+        # (neg|is_between, "$players_kingdom", kingdoms_begin, kingdoms_end),
+        # (party_set_faction, ":center_no", "fac_player_supporters_faction"),
+      # (else_try),
+        # (party_set_faction, ":center_no", ":lord_troop_faction"),
+      # (try_end),
+      # (party_set_slot, ":center_no", slot_town_lord, ":lord_troop_id"),
+
+      # (try_begin),
+        # (party_slot_eq, ":center_no", slot_party_type, spt_village),
+        # (party_get_slot, ":farmer_party_no", ":center_no", slot_village_farmer_party),
+        # (gt, ":farmer_party_no", 0),
+        # (party_is_active, ":farmer_party_no"),
+        # (store_faction_of_party, ":center_faction", ":center_no"),
+        # (party_set_faction, ":farmer_party_no", ":center_faction"),
+      # (try_end),
+
+    # (try_begin),
+        # (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+			# (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+		# (gt, ":lord_troop_id", -1),
+		
+# #normal_banner_begin
+        # (troop_get_slot, ":cur_banner", ":lord_troop_id", slot_troop_banner_scene_prop),
+        # (gt, ":cur_banner", 0),
+        # (val_sub, ":cur_banner", banner_scene_props_begin),
+        # (val_add, ":cur_banner", banner_map_icons_begin),
+        # (party_set_banner_icon, ":center_no", ":cur_banner"),
+# # custom_banner_begin
+# #        (troop_get_slot, ":flag_icon", ":lord_troop_id", slot_troop_custom_banner_map_flag_type),
+# #        (ge, ":flag_icon", 0),
+# #        (val_add, ":flag_icon", custom_banner_map_icons_begin),
+# #        (party_set_banner_icon, ":center_no", ":flag_icon"),
+    # (try_end),
+
+# #    (try_begin),
+# #		(eq, 1, 0),
+ # #       (eq, ":lord_troop_id", "trp_player"),
+ # #       (neq, ":old_lord_troop_id", "trp_player"),
+ # #       (party_get_slot, ":center_relation", ":center_no", slot_center_player_relation),
+ # #       (is_between, ":center_relation", -4, 5),
+ # #       (call_script, "script_change_player_relation_with_center", ":center_no", 5),
+ # #       (gt, ":old_lord_troop_id", 0),
+ # #       (call_script, "script_change_player_relation_with_troop", ":old_lord_troop_id", -25),
+ # #   (try_end),
+	# (try_begin),
+		# (gt, ":lord_troop_id", -1),
+		# (call_script, "script_update_troop_notes", ":lord_troop_id"),
+	# (try_end),
+	
+    # (call_script, "script_update_center_notes", ":center_no"),
+    
+    # (try_begin),
+      # (gt, ":lord_troop_faction", 0),
+      # (call_script, "script_update_faction_notes", ":lord_troop_faction"),
+    # (try_end),  
+    
+    # (try_begin),
+        # (ge, ":old_lord_troop_id", 0),
+        # (call_script, "script_update_troop_notes", ":old_lord_troop_id"),
+        # (store_troop_faction, ":old_lord_troop_faction", ":old_lord_troop_id"),
+        # (call_script, "script_update_faction_notes", ":old_lord_troop_faction"),
+    # (try_end),
+
+    # (try_begin),
+        # (eq, ":add_garrison", 1),
+        # (this_or_next|party_slot_eq, ":center_no", slot_party_type, spt_town),
+			# (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+        # (assign, ":garrison_strength", 3), 
+        # (try_begin),
+          # (party_slot_eq, ":center_no", slot_party_type, spt_town),
+          # (assign, ":garrison_strength", 9),
+        # (try_end),
+        # (try_for_range, ":unused", 0, ":garrison_strength"),
+		# #### DEBUG
+		 # # (display_message,"@ ADDING TROOPS TO LOCATION"),
+          # (call_script, "script_cf_reinforce_party", ":center_no"),
+        # (try_end),
+        # ## ADD some XP initially
+        # (try_for_range, ":unused", 0, 7),
+          # (store_mul, ":xp_range_min", 150, ":garrison_strength"),
+          # (store_mul, ":xp_range_max", 200, ":garrison_strength"),
+          # (store_random_in_range, ":xp", ":xp_range_min", ":xp_range_max"),
+          # (party_upgrade_with_xp, ":center_no", ":xp", 0),
+        # (try_end),
+    # (try_end),
+
+	# (faction_get_slot, ":faction_leader", ":lord_troop_faction", slot_faction_leader),
+	# (store_current_hours, ":hours"),
+	
+	# #the next block handles gratitude, objections and jealousies
+	# (try_begin),
+	  	# (gt, ":hours", 0),
+		# (gt, ":lord_troop_id", 0),
+		
+    	# (call_script, "script_troop_change_relation_with_troop", ":lord_troop_id", ":faction_leader", 10),
+		# (val_add, "$total_promotion_changes", 10),
+		
+		# #smaller factions are more dramatically influenced by internal jealousies
+		# #Disabled as of NOV 2010
+# #		(try_begin),
+# #			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 4),
+# #			(assign, ":faction_size_multiplier", 6),
+# #		(else_try),
+# #			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 8),
+# #			(assign, ":faction_size_multiplier", 5),
+# #		(else_try),
+# #			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 16),
+# #			(assign, ":faction_size_multiplier", 4),
+# #		(else_try),
+# #			(neg|faction_slot_ge, ":lord_troop_faction", slot_faction_number_of_parties, 32),
+# #			(assign, ":faction_size_multiplier", 3),
+# #		(else_try),	
+# #			(assign, ":faction_size_multiplier", 2),
+# #		(try_end),
+		
+		# #factional politics -- each lord in the faction adjusts his relation according to the relation with the lord receiving the faction
+		# (try_for_range, ":other_lord", active_npcs_begin, active_npcs_end),
+			# (troop_slot_eq, ":other_lord", slot_troop_occupation, slto_kingdom_hero),
+			# (neq, ":other_lord", ":lord_troop_id"),
+			
+		    # (store_troop_faction, ":other_troop_faction", ":other_lord"),
+		    # (eq, ":lord_troop_faction", ":other_troop_faction"),
+
+		    # (neq, ":other_lord", ":faction_leader"),
+			
+	        # (call_script, "script_troop_get_relation_with_troop", ":other_lord", ":lord_troop_id"),
+			# (assign, ":relation_with_troop", reg0),
+
+			# #relation reduction = relation/10 minus 2. So,0 = -2, 8 = -1, 16+ = no change or bonus, 24+ gain one point
+		    # (store_div, ":relation_with_liege_change", ":relation_with_troop", 8), #changed from 16
+		    # (val_sub, ":relation_with_liege_change", 2),
+
+		    # (val_clamp, ":relation_with_liege_change", -5, 3),
+			
+			# (try_begin),
+				# #upstanding and goodnatured lords will not lose relation unless they actively dislike the other lord
+				# (this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_upstanding),
+					# (troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_goodnatured),
+				# (ge, ":relation_with_troop", 0),
+				# (val_max, ":relation_with_liege_change", 0),
+			# (else_try),
+				# #penalty is increased for lords who have the more unpleasant reputation types
+				# (this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_selfrighteous),
+				# (this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_debauched),
+					# (troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_quarrelsome),
+				# (lt, ":relation_with_liege_change", 0),
+				# (val_mul, ":relation_with_liege_change", 3),
+				# (val_div, ":relation_with_liege_change", 2),
+			# (try_end),
+
+			
+		    # (neq, ":relation_with_liege_change", 0),
+			# #removed Nov 2010
+# #		  	(val_mul, ":relation_reduction", ":faction_size_multiplier"),
+# #		  	(val_div, ":relation_reduction", 2),
+			# #removed Nov 2010
+			
+			# (try_begin),
+				# (troop_slot_eq, ":other_lord", slot_troop_stance_on_faction_issue, ":lord_troop_id"),
+				# (val_add, ":relation_with_liege_change", 1),
+				# (val_max, ":relation_with_liege_change", 1),
+			# (try_end),
+			
+ 	        # (call_script, "script_troop_change_relation_with_troop", ":other_lord", ":faction_leader", ":relation_with_liege_change"),
+			# (val_add, "$total_promotion_changes", ":relation_with_liege_change"),
+			
+		    # (try_begin),
+				# (this_or_next|le, ":relation_with_liege_change", -4), #Nov 2010 - changed from -8
+				# (this_or_next|troop_slot_eq, ":other_lord", slot_troop_promised_fief, 1), #1 is any fief
+					# (troop_slot_eq, ":other_lord", slot_troop_promised_fief, ":center_no"),
+				# (call_script, "script_add_log_entry", logent_troop_feels_cheated_by_troop_over_land, ":other_lord", ":center_no", ":lord_troop_id", ":lord_troop_faction"),
+		    # (try_end),
+		  
+		# (try_end),
+	# (try_end),
+	
+	# #Villages from another faction will also be transferred along with a fortress
+    # (try_begin),
+		# (is_between, ":center_no", walled_centers_begin, walled_centers_end),
+        # (try_for_range, ":cur_village", villages_begin, villages_end),
+			# (party_slot_eq, ":cur_village", slot_village_bound_center, ":center_no"),
+			# (store_faction_of_party, ":cur_village_faction", ":cur_village"),
+			# (neq, ":cur_village_faction", ":lord_troop_faction"),
+			
+			# (call_script, "script_give_center_to_lord", ":cur_village", ":lord_troop_id", 0),
+        # (try_end),
+    # (try_end),       
+  # ]),
+  
+  #### NEW SCRIPT - thanks to Woyeyeh
   # script_give_center_to_lord
   # Input: arg1 = center_no, arg2 = lord_troop, arg3 = add_garrison_to_center
   ("give_center_to_lord",
@@ -23090,8 +23354,6 @@ scripts = [
           (assign, ":garrison_strength", 9),
         (try_end),
         (try_for_range, ":unused", 0, ":garrison_strength"),
-		#### DEBUG
-		 # (display_message,"@ ADDING TROOPS TO LOCATION"),
           (call_script, "script_cf_reinforce_party", ":center_no"),
         (try_end),
         ## ADD some XP initially
@@ -23106,13 +23368,23 @@ scripts = [
 	(faction_get_slot, ":faction_leader", ":lord_troop_faction", slot_faction_leader),
 	(store_current_hours, ":hours"),
 	
-	#the next block handles gratitude, objections and jealousies
+	#the next block handles gratitude, objections and jealousies; BELOW THIS PART ARE THE MAIN CHANGES I MADE TO THE SCRIPT
 	(try_begin),
 	  	(gt, ":hours", 0),
-		(gt, ":lord_troop_id", 0),
-		
-    	(call_script, "script_troop_change_relation_with_troop", ":lord_troop_id", ":faction_leader", 10),
-		(val_add, "$total_promotion_changes", 10),
+		(gt, ":lord_troop_id", 0), # lord_troop_id is the lord being granted the center
+		# change gratitude based on fief type
+	    (try_begin), # town
+		  (party_slot_eq, ":center_no", slot_party_type, spt_town),
+		  (call_script, "script_troop_change_relation_with_troop", ":lord_troop_id", ":faction_leader", 50),
+		  (val_add, "$total_promotion_changes", 50), # total_promotion_changes measures how popular a fief deferment is within a faction 
+	    (else_try), # castle
+		  (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+		  (call_script, "script_troop_change_relation_with_troop", ":lord_troop_id", ":faction_leader", 30),
+		  (val_add, "$total_promotion_changes", 30),
+	    (else_try), # village
+		  (call_script, "script_troop_change_relation_with_troop", ":lord_troop_id", ":faction_leader", 10),
+		  (val_add, "$total_promotion_changes", 10), 
+	  (try_end),
 		
 		#smaller factions are more dramatically influenced by internal jealousies
 		#Disabled as of NOV 2010
@@ -23145,25 +23417,33 @@ scripts = [
 	        (call_script, "script_troop_get_relation_with_troop", ":other_lord", ":lord_troop_id"),
 			(assign, ":relation_with_troop", reg0),
 
-			#relation reduction = relation/10 minus 2. So,0 = -2, 8 = -1, 16+ = no change or bonus, 24+ gain one point
-		    (store_div, ":relation_with_liege_change", ":relation_with_troop", 8), #changed from 16
-		    (val_sub, ":relation_with_liege_change", 2),
+			#relation reduction = relation/4 minus 2. So,0 = -2, 8 = 0, 16 = +2, 24 = +4
+		    (store_div, ":relation_with_liege_change", ":relation_with_troop", 4), #changed from 8
+		    (val_sub, ":relation_with_liege_change", 2), # add some base ingratitude because center could've gone to self
 
-		    (val_clamp, ":relation_with_liege_change", -5, 3),
+		    (val_clamp, ":relation_with_liege_change", -10, 10),
 			
 			(try_begin),
-				#upstanding and goodnatured lords will not lose relation unless they actively dislike the other lord
+				#upstanding and goodnatured lords will not lose relation unless they actively dislike the other lord and lose less relation even if center is given to disliked lord
 				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_upstanding),
 					(troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_goodnatured),
-				(ge, ":relation_with_troop", 0),
-				(val_max, ":relation_with_liege_change", 0),
+				(try_begin), # relation is at least 1 and liege relation change is negative
+				  (ge, ":relation_with_troop", 0),
+				  (lt, ":relation_with_liege_change", 0),
+				  (val_max, ":relation_with_liege_change", 0),
+				(try_end),
+				(try_begin),
+				  (lt, ":relation_with_liege_change", 0),
+			  	  (val_mul, ":relation_with_liege_change", 2), # -33% relation loss
+				  (val_div, ":relation_with_liege_change", 3),
+				(try_end),
 			(else_try),
 				#penalty is increased for lords who have the more unpleasant reputation types
 				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_selfrighteous),
 				(this_or_next|troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_debauched),
 					(troop_slot_eq, ":other_lord", slot_lord_reputation_type, lrep_quarrelsome),
 				(lt, ":relation_with_liege_change", 0),
-				(val_mul, ":relation_with_liege_change", 3),
+				(val_mul, ":relation_with_liege_change", 3), # +33% relation loss
 				(val_div, ":relation_with_liege_change", 2),
 			(try_end),
 
@@ -23184,9 +23464,9 @@ scripts = [
 			(val_add, "$total_promotion_changes", ":relation_with_liege_change"),
 			
 		    (try_begin),
-				(this_or_next|le, ":relation_with_liege_change", -4), #Nov 2010 - changed from -8
+				(this_or_next|le, ":relation_with_liege_change", -8), #changed from -4 because clamp was changed from (-5 to +3) to (-10 to +10)
 				(this_or_next|troop_slot_eq, ":other_lord", slot_troop_promised_fief, 1), #1 is any fief
-					(troop_slot_eq, ":other_lord", slot_troop_promised_fief, ":center_no"),
+					(troop_slot_eq, ":other_lord", slot_troop_promised_fief, ":center_no"), # Lord will feel cheated if fief was promised to them or given to someone they hate
 				(call_script, "script_add_log_entry", logent_troop_feels_cheated_by_troop_over_land, ":other_lord", ":center_no", ":lord_troop_id", ":lord_troop_faction"),
 		    (try_end),
 		  
@@ -23205,6 +23485,10 @@ scripts = [
         (try_end),
     (try_end),       
   ]),
+  
+  
+  
+  
   
 ##  # script_give_town_to_besiegers
 ##  # Input: arg1 = center_no, arg2 = besieger_party
@@ -33362,14 +33646,68 @@ scripts = [
     ]),
 
 	
-	
-  # script_calculate_troop_score_for_center
+	##### NATIVE SCRIPT
+  # # script_calculate_troop_score_for_center
+  # # Input: arg1 = troop_no, arg2 = center_no
+  # # Output: reg0 = score
+  # ("calculate_troop_score_for_center",
+   # [(store_script_param, ":troop_no", 1),
+    # (store_script_param, ":center_no", 2),
+    # (assign, ":num_center_points", 1),
+    # (try_for_range, ":cur_center", centers_begin, centers_end),
+      # (assign, ":center_owned", 0),
+      # (try_begin),
+        # (eq, ":troop_no", "trp_player"),
+        # (party_slot_eq, ":cur_center", slot_town_lord, stl_reserved_for_player),
+        # (assign, ":center_owned", 1),
+      # (try_end),
+      # (this_or_next|party_slot_eq, ":cur_center", slot_town_lord, ":troop_no"),
+		# (eq, ":center_owned", 1),
+      # (try_begin),
+        # (party_slot_eq, ":cur_center", slot_party_type, spt_town),
+        # (val_add, ":num_center_points", 4),
+      # (else_try),
+        # (party_slot_eq, ":cur_center", slot_party_type, spt_castle),
+        # (val_add, ":num_center_points", 2),
+      # (else_try),
+        # (val_add, ":num_center_points", 1),
+      # (try_end),
+    # (try_end),
+    # (troop_get_slot, ":troop_renown", ":troop_no", slot_troop_renown),
+    # (store_add, ":score", 500, ":troop_renown"),
+    # (val_div, ":score", ":num_center_points"),
+    # (store_random_in_range, ":random", 50, 100),
+    # (val_mul, ":score", ":random"),
+    # (try_begin),
+      # (party_slot_eq, ":center_no", slot_center_last_taken_by_troop, ":troop_no"),
+      # (val_mul, ":score", 3),
+      # (val_div, ":score", 2),
+    # (try_end),
+    # (try_begin),
+      # (eq, ":troop_no", "trp_player"),
+      # (faction_get_slot, ":faction_leader", "$players_kingdom"),
+      # (call_script, "script_troop_get_player_relation", ":faction_leader"),
+      # (assign, ":leader_relation", reg0),
+      # #(troop_get_slot, ":leader_relation", ":faction_leader", slot_troop_player_relation),
+      # (val_mul, ":leader_relation", 2),
+      # (val_add, ":score", ":leader_relation"),
+    # (try_end),
+    # (assign, reg0, ":score"),
+    # ]),
+  
+  
+  ### NEW - Thanks to Woyeyeh
+# script_calculate_troop_score_for_center
   # Input: arg1 = troop_no, arg2 = center_no
   # Output: reg0 = score
   ("calculate_troop_score_for_center",
    [(store_script_param, ":troop_no", 1),
     (store_script_param, ":center_no", 2),
     (assign, ":num_center_points", 1),
+	(assign, ":num_centers_owned", 0),
+	(assign, ":num_walled_centers_owned", 0),
+	(store_faction_of_troop, ":troop_faction", ":troop_no"),
+	(faction_get_slot, ":faction_leader", ":troop_faction", slot_faction_leader),
     (try_for_range, ":cur_center", centers_begin, centers_end),
       (assign, ":center_owned", 0),
       (try_begin),
@@ -33379,38 +33717,115 @@ scripts = [
       (try_end),
       (this_or_next|party_slot_eq, ":cur_center", slot_town_lord, ":troop_no"),
 		(eq, ":center_owned", 1),
-      (try_begin),
+      (try_begin), # town
         (party_slot_eq, ":cur_center", slot_party_type, spt_town),
-        (val_add, ":num_center_points", 4),
-      (else_try),
+        (val_add, ":num_center_points", 20), # (used to be 3) center pts greatly increased for towns to avoid emergence of "super-lords" that control multiple towns and get ultra rich
+		(val_add, ":num_centers_owned", 1),
+		(val_add, ":num_walled_centers_owned", 1),
+      (else_try), # castle
         (party_slot_eq, ":cur_center", slot_party_type, spt_castle),
-        (val_add, ":num_center_points", 2),
-      (else_try),
-        (val_add, ":num_center_points", 1),
+        (val_add, ":num_center_points", 8), # used to be 2
+		(val_add, ":num_centers_owned", 1),
+		(val_add, ":num_walled_centers_owned", 1),
+      (else_try), # village
+        (val_add, ":num_center_points", 2), # used to be 1
+		(val_add, ":num_centers_owned", 1),
       (try_end),
     (try_end),
-    (troop_get_slot, ":troop_renown", ":troop_no", slot_troop_renown),
-    (store_add, ":score", 500, ":troop_renown"),
+    (troop_get_slot, ":troop_renown", ":troop_no", slot_troop_renown), # all of these checks are mutually exclusive, whichever one applies first, gets applied and no more
+	(try_begin), # increase score for lords with no walled centers if fief is a castle
+	  (eq, ":num_walled_centers_owned", 0),
+	  (party_slot_eq, ":cur_center", slot_party_type, spt_castle),
+	  (store_add, ":score", ":troop_renown", 1000), # castles get more renown boost over towns (wouldn't want to give a town to some random lord with little renown)
+	(else_try), # very slightly increase score for lords with no walled centers if fief is a town
+	  (eq, ":num_walled_centers_owned", 0),
+	  (party_slot_eq, ":cur_center", slot_party_type, spt_town),
+	  (store_add, ":score", ":troop_renown", 600), # walled center checks come before landless check to ensure walled centers are distributed equitably
+	(else_try), # massively increase score for landless lords
+	  (eq, ":num_centers_owned", 0),
+	  (store_add, ":score", ":troop_renown", 2000), # landless check comes before faction leader check so if faction leader is fiefless it's almost certain they will give fief to themselves
+	(else_try), # reduce score for faction leaders to prevent fief hogging
+	  (eq, ":troop_no", ":faction_leader"),
+	  (store_sub, ":score", ":troop_renown", 300), # faction leaders generally get ~1000 renown so this makes them less selfish (no more King Harlaus has decided to grant Sargoth to King Harlaus when there's 2 fiefless lords)
+	(else_try), # landed lords still get a bonus
+	  (store_add, ":score", ":troop_renown", 500),
+    (try_end),
+	(try_begin), # divide faction leader's score by 2 to make them even less selfish
+	  (eq, ":troop_no", ":faction_leader"),
+	  (val_div, ":score", 2),
+    (try_end),
     (val_div, ":score", ":num_center_points"),
-    (store_random_in_range, ":random", 50, 100),
+	(try_begin),
+	  (ge, ":num_centers_owned", 1), # avoid dividing by 0
+	  (val_div, ":score", ":num_centers_owned"), # new - divide score even further by flat number of centers owned to discourage lords hoarding villages and encourage equal distribution of fiefs
+	(try_end),
+    (store_random_in_range, ":random", 75, 100), # changed from 50-100 to 75-100 to make it more deterministic
+	(try_begin), # don't get relation with self if faction leader
+	  (neq, ":troop_no", ":faction_leader"),
+	  (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
+	  (assign, ":leader_relation", reg0),
+	  (val_mul, ":leader_relation", 1), # of course, faction leaders are human, so they will tend to give fiefs to lords they like and keep them from lords they dislike
+	  (val_div, ":leader_relation", 10), # only 10% of relation with faction leader influences score to avoid faction leaders picking favorites and to let them give fiefs to unfriendly lords to build back relations
+      (val_add, ":random", ":leader_relation"),
+    (try_end),
     (val_mul, ":score", ":random"),
-    (try_begin),
+    (try_begin), # boost score if lord captured the center
       (party_slot_eq, ":center_no", slot_center_last_taken_by_troop, ":troop_no"),
-      (val_mul, ":score", 3),
-      (val_div, ":score", 2),
+      (val_mul, ":score", 12), # +20% score, down from +50% to prevent marshal from getting all the land
+      (val_div, ":score", 10),
     (try_end),
-    (try_begin),
-      (eq, ":troop_no", "trp_player"),
-      (faction_get_slot, ":faction_leader", "$players_kingdom"),
-      (call_script, "script_troop_get_player_relation", ":faction_leader"),
-      (assign, ":leader_relation", reg0),
-      #(troop_get_slot, ":leader_relation", ":faction_leader", slot_troop_player_relation),
-      (val_mul, ":leader_relation", 2),
-      (val_add, ":score", ":leader_relation"),
-    (try_end),
+    #(try_begin), # deprecated, relation with faction leader applied to ALL lords in above script
+    #  (eq, ":troop_no", "trp_player"),
+    #  (faction_get_slot, ":faction_leader", "$players_kingdom"),
+    #  (call_script, "script_troop_get_player_relation", ":faction_leader"),
+    #  (assign, ":leader_relation", reg0),
+    #  #(troop_get_slot, ":leader_relation", ":faction_leader", slot_troop_player_relation),
+    #  (val_mul, ":leader_relation", 2),
+    #  (val_add, ":score", ":leader_relation"),
+    #(try_end),
     (assign, reg0, ":score"),
     ]),
-  
+# You don't have to copy the examples, but it could help!
+# Example: Swadia captures a castle (+8 center pts)
+# King Harlaus has Praven and 2 villages (+24 center pts) and 1000 renown
+# Count Ryis has a castle and a village (+10 center pts) and 600 renown AND captured the castle
+# Count Grainwad has a village (+2 center pts) and 200 renown
+#
+## CALCULATIONS ##
+# King Harlaus has a walled center, taking him to the -300 renown penalty for faction leaders
+# Count Ryis has a walled center, taking him to the base +500 renown bonus
+# Count Grainwad has no walled centers, and it's a castle, so he gets +1000 renown
+# King Harlaus has 700 score, Count Ryis has 1100 score, Count Grainwad has 1200 score
+#
+# King Harlaus is the faction leader, so we divide his score by 2 (700/2=350 score)
+# King Harlaus now has 350 score, Count Ryis has 1100 score, Count Grainwad has 1200 score
+#
+# Divide scores by center points (350/24=14.58) (1100/10=110) (1200/2=600)
+# King Harlaus has 14.58 score, Count Ryis has 110 score, Count Grainwad has 600 score
+#
+# Divide scores by centers owned (14.58/3=4.86) (110/2=55) (600/1=600)
+# King Harlaus has 4.86 score, Count Ryis has 55 score, Count Grainwad has 600 score
+#
+# Let's say Count Ryis has +20 relation with King Harlaus
+# Let's say Count Grainwad has -50 relation with King Harlaus
+#
+# Count Grainwad's random score multiplier ranges from 0.7x to 0.95x
+# Count Ryis's random score multiplier ranges from 0.77x to 1.02x
+# King Harlaus's random score multiplier ranges from 0.75x to 1.00x because he's the faction leader so no changes
+#
+# Now we get the score ranges
+# King Harlaus: 3.645-4.86
+# Count Ryis: 42.35-56.1
+# Count Grainwad: 420-570
+#
+# However, Count Ryis captured the castle, which multiplies his total score by 1.2x
+# King Harlaus: 3.645-4.86
+# Count Ryis: 50.82-67.32
+# Count Grainwad: 420-570
+#
+# If these 3 were the only lords in the kingdom of Swadia, it's almost certain - no, absolutely certain, because it's proven by maths, that Count Grainwad would be granted the castle. It's fair, don't you think?
+
+
 
   # script_assign_lords_to_empty_centers
   # Input: none
