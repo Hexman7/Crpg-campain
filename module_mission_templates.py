@@ -1177,6 +1177,44 @@ common_rotate_deathcam = (
 	
 	
 ##### mod begin
+
+
+### Passable allies - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-38#post-9505318
+##  by Dalion
+passable_allies = (0, 0, 0,
+    [
+    (neg|main_hero_fallen),
+    (key_is_down, key_left_control),
+    ],
+    [
+    (set_fixed_point_multiplier, 1),
+    (get_player_agent_no, ":player"),
+    (agent_get_position, pos1, ":player"),
+    (agent_get_team, ":p_team", ":player"),
+    (try_for_agents, ":agent", pos1, 1),
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_non_player, ":agent"),
+        (agent_get_team, ":a_team", ":agent"),
+        (neg|teams_are_enemies, ":a_team", ":p_team"),
+        (agent_get_speed, pos2, ":player"),
+        (position_get_y, ":forward_momentum", pos2),
+        (position_get_x, ":sideway_momentum", pos2),
+        (convert_to_fixed_point, ":forward_momentum"),
+        (convert_to_fixed_point, ":sideway_momentum"),
+        (try_begin),
+            (lt, ":forward_momentum", 0), # backwards moving speed is higher somehow, so we divide it in half
+            (val_div, ":forward_momentum", 2),
+        (try_end),
+        (val_div, ":sideway_momentum", 2), # so is sideways moving speed
+        (position_move_y, pos1, ":forward_momentum"),
+        (position_move_x, pos1, ":sideway_momentum"),
+        (agent_set_position, ":player", pos1),      
+    (try_end),
+    ])
+
+
+
 #### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
 ## by KnowsCount
 ai_kick_enhancement =  (
@@ -2569,7 +2607,7 @@ mission_templates = [
      ],
     [
       common_inventory_not_available,
-
+	  passable_allies,
       common_battle_init_banner,
 	  ai_kick_enhancement,
       (ti_tab_pressed, 0, 0, [],
@@ -2659,7 +2697,7 @@ mission_templates = [
 	  ]),
 	
 	######
-	
+	   passable_allies,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -3170,6 +3208,7 @@ mission_templates = [
       common_battle_init_banner,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3290,6 +3329,7 @@ mission_templates = [
 	   
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3592,6 +3632,7 @@ mission_templates = [
       common_battle_init_banner,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3665,6 +3706,7 @@ mission_templates = [
       common_battle_init_banner,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3745,6 +3787,7 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3857,6 +3900,7 @@ mission_templates = [
       common_siege_ai_trigger_init_2,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3959,6 +4003,7 @@ mission_templates = [
 	  lance_breaking,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -8549,6 +8594,7 @@ mission_templates = [
       common_custom_battle_question_answered,
       common_inventory_not_available,
 	  ai_kick_enhancement,
+	  passable_allies,
       (ti_before_mission_start, 0, 0, [],
        [
          (scene_set_day_time, 15),
@@ -8632,6 +8678,7 @@ mission_templates = [
       common_battle_mission_start,
       common_battle_init_banner,
 	  ai_kick_enhancement,
+	  passable_allies,
       (0, 0, ti_once,
        [
          (assign, "$defender_team", 0),
@@ -9182,7 +9229,6 @@ mission_templates = [
      ],
     [
       common_battle_init_banner,
-
       multiplayer_server_check_polls,
 
       (ti_on_agent_spawn, 0, 0, [],

@@ -4156,9 +4156,14 @@ simple_triggers = [
     (try_end),
    ]),
    
-
-   
-   
+	
+###Script change_party_name
+# by Crossbow Pig
+ (24,
+  [
+    (call_script, "script_change_party_name"),
+  ]),
+##   
    
   (24,
    []),

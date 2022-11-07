@@ -56202,6 +56202,43 @@ scripts = [
         ]
   
     ),
+	
+	
+	
+###Script change_party_name
+# by Crossbow Pig
+  ("change_party_name",
+      [
+      (try_for_parties, ":bandit_party"),
+      (party_get_template_id, ":bandit_party_template", ":bandit_party"),
+      (is_between, ":bandit_party_template", "pt_looters", "pt_deserters"),
+      (store_party_size, ":num", ":bandit_party"),
+      (ge, ":num", 25),#if the party has more than 25 units its name will change
+      (eq, ":bandit_party_template", "pt_looters"),
+      (party_set_name, ":bandit_party", "@Scavengers"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_forest_bandits"),
+      (party_set_name, ":bandit_party", "@Forest Ambushers"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_mountain_bandits"),
+      (party_set_name, ":bandit_party", "@Highlanders"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_sea_raiders"),
+      (party_set_name, ":bandit_party", "@Vikings"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_desert_bandits"),
+      (party_set_name, ":bandit_party", "@Desert Ambushers"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_taiga_bandits"),
+      (party_set_name, ":bandit_party", "@Taiga Headhunters"),
+      (else_try),
+      (eq, ":bandit_party_template", "pt_steppe_bandits"),
+      (party_set_name, ":bandit_party", "@Steppe Raiding Party"),
+      (try_end),
+  ]),
+	
+###
+	
      
 #COOP BEGIN ###################
 ] + coop_scripts 
