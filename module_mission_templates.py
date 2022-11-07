@@ -1175,6 +1175,57 @@ common_rotate_deathcam = (
 )
 ## MadVader deathcam end	
 	
+	
+##### mod begin
+#### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
+## by KnowsCount
+ai_kick_enhancement =  (
+    2, 0, 0,
+    [], [
+    (get_player_agent_no,":player"),
+    (try_for_agents, ":agent"),
+        (neq, ":agent", ":player"),
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_active, ":agent"),
+        (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
+        ##He's an eligible human.  Now see if he's in a position to kick.
+        (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
+        (agent_get_defend_action, ":defend_action", ":agent"),
+        (this_or_next|eq,":attack_action",4),
+        (this_or_next|eq,":defend_action",1), # defend enemy
+        ##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
+        (agent_get_team, ":team", ":agent"),
+        (assign, ":maximum_distance", 100),
+        # get target
+        (agent_ai_get_look_target,":suspect",":agent"),
+        (gt,":suspect",0),
+        (agent_is_alive, ":suspect"),
+        (agent_is_human, ":suspect"),
+        (agent_is_active, ":suspect"),
+        (agent_get_team, ":suspect_team", ":suspect"),
+        (neq, ":suspect_team", ":team"),
+        (agent_get_position, pos1, ":agent"), # distance check
+        (agent_get_position, pos2, ":suspect"),
+        (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
+        (get_distance_between_positions, ":distance", pos1, pos2),
+        (le, ":distance", ":maximum_distance"),
+        (store_random_in_range,":kickchance", 1, 10),
+        (try_begin),
+            (eq,":kickchance",1),
+                (display_message, "@Agent kicks."),
+                (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+                (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
+                (agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+            (try_end),
+       (try_end),
+       ])	
+
+
+### mod end	   
+	
+	
+	
 
 tournament_triggers = [
   (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest"),
@@ -1441,6 +1492,7 @@ tournament_triggers = [
          (try_end),
        (try_end),
        ]),
+	   ai_kick_enhancement,
   ]
 
 #### MOD BEGIN    
@@ -1571,49 +1623,6 @@ pickable_items = (	  0, 0, ti_once, [],### replace static weapons
 		(try_end),
 	 ])
 	
-#### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
-## by KnowsCount
-ai_kick_enhancement =  (
-    2, 0, 0,
-    [], [
-    (get_player_agent_no,":player"),
-    (try_for_agents, ":agent"),
-        (neq, ":agent", ":player"),
-        (agent_is_alive, ":agent"),
-        (agent_is_human, ":agent"),
-        (agent_is_active, ":agent"),
-        (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
-        ##He's an eligible human.  Now see if he's in a position to kick.
-        (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
-        (agent_get_defend_action, ":defend_action", ":agent"),
-        (this_or_next|eq,":attack_action",4),
-        (this_or_next|eq,":defend_action",1), # defend enemy
-        ##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
-        (agent_get_team, ":team", ":agent"),
-        (assign, ":maximum_distance", 100),
-        # get target
-        (agent_ai_get_look_target,":suspect",":agent"),
-        (gt,":suspect",0),
-        (agent_is_alive, ":suspect"),
-        (agent_is_human, ":suspect"),
-        (agent_is_active, ":suspect"),
-        (agent_get_team, ":suspect_team", ":suspect"),
-        (neq, ":suspect_team", ":team"),
-        (agent_get_position, pos1, ":agent"), # distance check
-        (agent_get_position, pos2, ":suspect"),
-        (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
-        (get_distance_between_positions, ":distance", pos1, pos2),
-        (le, ":distance", ":maximum_distance"),
-        (store_random_in_range,":kickchance", 1, 10),
-        (try_begin),
-            (eq,":kickchance",1),
-                (display_message, "@Agent kicks."),
-                (agent_set_animation, ":agent", "anim_prepare_kick_0"),
-                (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
-                (agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
-            (try_end),
-       (try_end),
-       ])	
 
 	
 #### MOD END   
@@ -2311,7 +2320,7 @@ mission_templates = [
       (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest")]),
 
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_tab_pressed, 0, 0,
        [
          (display_message, "str_cannot_leave_now"),
@@ -2375,7 +2384,7 @@ mission_templates = [
          ]),
       
       common_inventory_not_available,
-
+	  ai_kick_enhancement,
       (1, 4, ti_once,
        [
          (this_or_next|main_hero_fallen),
@@ -2548,6 +2557,7 @@ mission_templates = [
            (try_end),
            (finish_mission),
            ]),
+		ai_kick_enhancement,
     ],
   ),
 
@@ -2561,7 +2571,7 @@ mission_templates = [
       common_inventory_not_available,
 
       common_battle_init_banner,
-
+	  ai_kick_enhancement,
       (ti_tab_pressed, 0, 0, [],
        [(question_box,"str_do_you_want_to_retreat"),
         ]),
@@ -3106,7 +3116,7 @@ mission_templates = [
 			  ]),
 
       common_battle_inventory,
-
+	  ai_kick_enhancement,
 
       #AI Triggers
       (0, 0, ti_once, [
@@ -3159,6 +3169,7 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3278,6 +3289,7 @@ mission_templates = [
        ]),
 	   
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3579,6 +3591,7 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3651,6 +3664,7 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3730,6 +3744,7 @@ mission_templates = [
 	  counting_kills,
       common_battle_tab_press,
       common_battle_init_banner,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3841,6 +3856,7 @@ mission_templates = [
       common_siege_ai_trigger_init,
       common_siege_ai_trigger_init_2,
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3942,6 +3958,7 @@ mission_templates = [
       common_inventory_not_available,
 	  lance_breaking,
 	  counting_kills,
+	  ai_kick_enhancement,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4280,7 +4297,8 @@ mission_templates = [
       (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest")]),
       
       common_arena_fight_tab_press,
-      
+      ai_kick_enhancement,
+	  
       (ti_question_answered, 0, 0, [],
        [
          (store_trigger_param_1, ":answer"),
@@ -4344,7 +4362,7 @@ mission_templates = [
          (call_script, "script_change_banners_and_chest")]),
       
       common_arena_fight_tab_press,
-      
+      ai_kick_enhancement,
       (ti_question_answered, 0, 0, [],
        [
          (store_trigger_param_1,":answer"),
@@ -4741,6 +4759,7 @@ mission_templates = [
 
 		#### Pickable Items for sneaking 
 		pickable_items,
+		ai_kick_enhancement,
 		###
 	  
 	  
@@ -4765,6 +4784,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+	  ai_kick_enhancement,
 
 ##      (0, 0, ti_once,
 ##       [
@@ -4862,6 +4882,7 @@ mission_templates = [
       (57, mtef_visitor_source|mtef_team_0, af_override_all, aif_start_alarmed, 1, [itm_practice_sword, itm_practice_shield, itm_padded_cloth, itm_segmented_helmet]),
     ],
     tournament_triggers
+	
   ),
 
   (
@@ -4929,6 +4950,8 @@ mission_templates = [
 		   (try_end),
            (finish_mission),
            ]),
+		   
+		   ai_kick_enhancement
     ],
   ),
 
@@ -4948,7 +4971,7 @@ mission_templates = [
        [
          (call_script, "script_music_set_situation_with_culture", mtf_sit_arena),
          ]),
-
+      ai_kick_enhancement,
 
       (1, 4, ti_once, [
 	  (this_or_next|main_hero_fallen),
@@ -5667,6 +5690,8 @@ mission_templates = [
         ]),
       (ti_inventory_key_pressed, 0, 0, [(display_message, "str_cant_use_inventory_tutorial")], []),
 
+	  ai_kick_enhancement,
+	  
       (ti_battle_window_opened, 0, 0, [],
        [
          (start_presentation, "prsnt_tutorial_show_mouse_movement"),
@@ -8523,7 +8548,7 @@ mission_templates = [
       common_custom_battle_tab_press,
       common_custom_battle_question_answered,
       common_inventory_not_available,
-
+	  ai_kick_enhancement,
       (ti_before_mission_start, 0, 0, [],
        [
          (scene_set_day_time, 15),
@@ -8606,7 +8631,7 @@ mission_templates = [
     [
       common_battle_mission_start,
       common_battle_init_banner,
-
+	  ai_kick_enhancement,
       (0, 0, ti_once,
        [
          (assign, "$defender_team", 0),
@@ -8780,7 +8805,6 @@ mission_templates = [
       #multiplayer_server_check_belfry_movement,      
      
       multiplayer_server_check_polls,
-
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -15636,7 +15660,7 @@ mission_templates = [
       common_battle_init_banner,
     
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),
@@ -16022,7 +16046,7 @@ mission_templates = [
       common_battle_init_banner,
     
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [              
         (store_trigger_param_1, ":agent_no"),
@@ -16366,7 +16390,7 @@ mission_templates = [
     ],
     [
       common_battle_init_banner,
-    
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),

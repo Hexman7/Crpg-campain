@@ -3305,7 +3305,29 @@ dialogs = [
    (assign, "$political_quest_object_troop", reg2),
    
  ]],
+ 
+ #Arris
+ ####### 
+   [anyone|plyr, "minister_talk",
+   [
+   (is_between, "$g_player_minister", active_npcs_begin, kingdom_ladies_end),
+   ],
+   "I wish to grant feuds to my vassals using the world map.", "minister_map",
+   [
+   ]],
+ 
+    #Arris
+   [anyone, "minister_map",
+   [ ],
+   "Certainly, my lord. Let me get the world map from the library...", "close_window",
+   [
+        (assign, "$gShowFeudalMap", 1),
+        (change_screen_map),
+   ]],
 
+   
+   ######
+   
    [anyone|plyr,"minister_talk", [
 	(check_quest_active, "qst_offer_gift"),
     (quest_slot_eq, "qst_offer_gift", slot_quest_giver_troop, "$g_talk_troop"),
