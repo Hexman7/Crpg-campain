@@ -1571,6 +1571,50 @@ pickable_items = (	  0, 0, ti_once, [],### replace static weapons
 		(try_end),
 	 ])
 	
+#### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
+## by KnowsCount
+ai_kick_enhancement =  (
+    2, 0, 0,
+    [], [
+    (get_player_agent_no,":player"),
+    (try_for_agents, ":agent"),
+        (neq, ":agent", ":player"),
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_active, ":agent"),
+        (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
+        ##He's an eligible human.  Now see if he's in a position to kick.
+        (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
+        (agent_get_defend_action, ":defend_action", ":agent"),
+        (this_or_next|eq,":attack_action",4),
+        (this_or_next|eq,":defend_action",1), # defend enemy
+        ##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
+        (agent_get_team, ":team", ":agent"),
+        (assign, ":maximum_distance", 100),
+        # get target
+        (agent_ai_get_look_target,":suspect",":agent"),
+        (gt,":suspect",0),
+        (agent_is_alive, ":suspect"),
+        (agent_is_human, ":suspect"),
+        (agent_is_active, ":suspect"),
+        (agent_get_team, ":suspect_team", ":suspect"),
+        (neq, ":suspect_team", ":team"),
+        (agent_get_position, pos1, ":agent"), # distance check
+        (agent_get_position, pos2, ":suspect"),
+        (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
+        (get_distance_between_positions, ":distance", pos1, pos2),
+        (le, ":distance", ":maximum_distance"),
+        (store_random_in_range,":kickchance", 1, 10),
+        (try_begin),
+            (eq,":kickchance",1),
+                (display_message, "@Agent kicks."),
+                (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+                (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
+                (agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+            (try_end),
+       (try_end),
+       ])	
+
 	
 #### MOD END   
   
@@ -2945,7 +2989,9 @@ mission_templates = [
           (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), 
         (try_end),
         (call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
-       ]),
+		### test if troop will faster go for the next target instead of staning for a while doing nothing
+	   (agent_force_rethink, ":killer_agent_no"),
+	   ]),
 	   counting_kills,
 ## MadVader deathcam begin
 	  
