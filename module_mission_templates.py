@@ -2558,6 +2558,54 @@ mission_templates = [
      (4,mtef_attackers|mtef_team_1,0,aif_start_alarmed,0,[]),
      ],
     [
+	
+	
+	##### trigger for started battle 
+	### by Dalion
+	 (ti_on_agent_spawn, 0, 0,
+	  [
+	   (ge, "$g_ally_party", 0), # if player has joined already started battle
+	   (eq, "$attacker_reinforcement_stage", 0), # and there hasn't been any reinforcements yet
+	   (eq, "$defender_reinforcement_stage", 0),
+	  ],
+	  [
+		(store_trigger_param_1, ":agent"),
+		(assign, ":agent_to_move", -1),
+		(try_begin),
+		  (agent_is_human, ":agent"),
+		  (agent_get_party_id, ":a_party", ":agent"),
+		  (neq, ":a_party", "p_main_party"),
+		  (agent_is_non_player, ":agent"),
+		  (assign, ":agent_to_move", ":agent"),
+		(else_try), 
+		  (neg|agent_is_human, ":agent"),
+		  (agent_get_rider, ":rider", ":agent"),
+		  (agent_get_party_id, ":r_party", ":rider"),
+		  (neq, ":r_party", "p_main_party"),
+		  (agent_is_non_player, ":rider"),
+		  (assign, ":agent_to_move", ":agent"),
+		(try_end),   
+		(neq, ":agent_to_move", -1),
+		(get_scene_boundaries, pos10, pos11),
+		(set_fixed_point_multiplier, 100),
+		(position_get_x, "$g_scene_max_x", pos11),
+		(position_get_y, "$g_scene_max_y", pos11),
+		(val_add, "$g_scene_max_x", 2400), # 2400 has been subtracted automatically because of barriers from outer terrain
+		(val_add, "$g_scene_max_y", 2400),
+		(store_div, ":pos_x", "$g_scene_max_x", 2),
+		(store_div, ":pos_y", "$g_scene_max_x", 2),
+		(init_position, pos22), # map center
+		(store_random_in_range, ":x_shift", -1000, 1000),
+		(store_random_in_range, ":y_shift", -1000, 1000),
+		(val_add, ":pos_x", ":x_shift"),
+		(val_add, ":pos_y", ":y_shift"),
+		(position_set_x, pos22, ":pos_x"),
+		(position_set_y, pos22, ":pos_y"),
+		(agent_set_position, ":agent_to_move", pos22),
+	  ]),
+	
+	######
+	
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
