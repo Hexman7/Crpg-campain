@@ -10632,7 +10632,6 @@ game_menus = [
             (val_mul, ":cur_probability", 4),
             (val_mul, ":cur_probability", average_price_factor),
             (val_div, ":cur_probability", ":cur_price"),
-
 			(val_mul, ":cur_probability", num_merchandise_goods),
 			(val_mul, ":cur_probability", 100),
 			(val_div, ":cur_probability", ":total_probability"),

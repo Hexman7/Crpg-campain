@@ -1542,6 +1542,36 @@ lance_breaking_multiplayer = (
     ])
 
 
+	
+  #### Pickable Items for sneaking 
+  ## 
+pickable_items = (	  0, 0, ti_once, [],### replace static weapons
+	  [(neg|is_edit_mode_enabled),
+		(try_for_range, ":item", one_handed_swords_begin, "itm_flintlock_pistol"), #  one_handed_swords_begin, itm_flintlock_pistol is the last weapon
+			(item_get_type, ":type", ":item"),
+			(try_begin),
+			(this_or_next|eq, ":type", itp_type_one_handed_wpn),
+			(this_or_next|eq, ":type", itp_type_two_handed_wpn),
+			(this_or_next|eq, ":type", itp_type_polearm),
+			(this_or_next|eq, ":type", itp_type_arrows),
+			(this_or_next|eq, ":type", itp_type_bolts),
+			(this_or_next|eq, ":type", itp_type_shield),
+			(this_or_next|eq, ":type", itp_type_bow),
+			(this_or_next|eq, ":type", itp_type_crossbow),
+			(eq, ":type", itp_type_thrown),
+				(scene_item_get_num_instances, ":num_instances", ":item"),
+				(try_for_range, ":number", 0, ":num_instances"),
+					(scene_item_get_instance, ":scene_item", ":item", ":number"),
+					(prop_instance_get_position, pos53, ":scene_item"),
+					(prop_instance_set_scale, ":scene_item", 0, 0, 0),
+					(set_spawn_position, pos53),
+					(spawn_item, ":item", 0),
+				(try_end),
+			(try_end),
+		(try_end),
+	 ])
+	
+	
 #### MOD END   
   
   
@@ -1883,6 +1913,10 @@ mission_templates = [
         (try_end),         
       ]),
 
+	  
+	  
+
+	  
       (ti_before_mission_start, 0, 0, [],
       [
         (assign, "$g_main_attacker_agent", 0),
@@ -2099,7 +2133,31 @@ mission_templates = [
           
        (display_message, "@You got keys of dungeon."),
      (try_end),
-   ]),     
+   ]),   
+
+	  #### ALIVE Horses - https://forums.taleworlds.com/index.php?threads/alive-horses.366769/
+	  ## by AndyYa
+	  (0, 0, ti_once, [],### replace static horse
+	  [(neg|is_edit_mode_enabled),
+		(try_for_range, ":horse", all_items_begin, all_items_end), # horses_begin, horses_end
+			(item_get_type, ":type", ":horse"),
+			(eq, ":type", itp_type_horse),
+			(scene_item_get_num_instances, ":num_instances", ":horse"),
+			(try_for_range, ":number", 0, ":num_instances"),
+				(scene_item_get_instance, ":scene_item", ":horse", ":number"),
+				(prop_instance_get_position, pos53, ":scene_item"),
+				(prop_instance_set_scale, ":scene_item", 0, 0, 0),
+				(set_spawn_position, pos53),
+				(spawn_horse, ":horse", 0),
+			(try_end),
+		(try_end),
+	 ]),
+	 
+	  
+	#### Pickable Items for sneaking 
+	pickable_items,
+
+   
   ]),
 
   (
@@ -4586,6 +4644,12 @@ mission_templates = [
 
       (ti_inventory_key_pressed, 0, 0, [(display_message,"str_cant_use_inventory_arena")], []),
       
+
+		#### Pickable Items for sneaking 
+		pickable_items,
+		###
+	  
+	  
     ],
   ),
 
