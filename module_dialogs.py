@@ -2894,7 +2894,8 @@ dialogs = [
 		 
   [anyone, "start", [(is_between, "$g_talk_troop", companions_begin, companions_end),
                      (this_or_next|eq, "$talk_context", tc_tavern_talk),
-						(eq, "$talk_context", tc_court_talk),
+					 (this_or_next|eq, "$talk_context", tc_town_talk), #ADD THIS LINE FOR BODYGUARD CODE
+					 (eq, "$talk_context", tc_court_talk),
                      (main_party_has_troop, "$g_talk_troop")],
    "Let's leave whenever you are ready.", "close_window", []],
 
