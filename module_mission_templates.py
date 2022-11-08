@@ -1374,7 +1374,7 @@ ai_kick_enhancement =  (
         (store_random_in_range,":kickchance", 1, 10),
         (try_begin),
             (lt,":kickchance",2),
-                (display_message, "@Agent kicks."),
+               # (display_message, "@Agent kicks."),
                 (agent_set_animation, ":agent", "anim_prepare_kick_0"),
 				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
                 (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
