@@ -2867,17 +2867,19 @@ dialogs = [
 		
                 (call_script, "script_check_concilio_calradi_achievement"),
 		
-		(try_begin),
-			(troop_add_item, "$g_talk_troop", "itm_saddle_horse", 0),
-			(troop_add_item, "$g_talk_troop", "itm_courser", 0),
-			(troop_add_item, "$g_talk_troop", "itm_courtly_outfit",0),
-			(troop_add_item, "$g_talk_troop", "itm_heraldic_mail_with_tabard",0),
-			(troop_add_item, "$g_talk_troop", "itm_red_gambeson",0),
-			(troop_add_item, "$g_talk_troop", "itm_sword_medieval_c",0),
-			(troop_add_item, "$g_talk_troop", "itm_tab_shield_kite_cav_b",0),
-			(troop_add_item, "$g_talk_troop", "itm_light_lance",0),
-		(try_end),
-		(troop_equip_items, "$g_talk_troop"),
+		
+		### npcs should have items that were given to them by player
+		# (try_begin),
+			# (troop_add_item, "$g_talk_troop", "itm_saddle_horse", 0),
+			# (troop_add_item, "$g_talk_troop", "itm_courser", 0),
+			# (troop_add_item, "$g_talk_troop", "itm_courtly_outfit",0),
+			# (troop_add_item, "$g_talk_troop", "itm_heraldic_mail_with_tabard",0),
+			# (troop_add_item, "$g_talk_troop", "itm_red_gambeson",0),
+			# (troop_add_item, "$g_talk_troop", "itm_sword_medieval_c",0),
+			# (troop_add_item, "$g_talk_troop", "itm_tab_shield_kite_cav_b",0),
+			# (troop_add_item, "$g_talk_troop", "itm_light_lance",0),
+		# (try_end),
+		# (troop_equip_items, "$g_talk_troop"),
 
 		(store_div, ":relation_boost", ":npc_morale", 3),
 #		(val_add, ":relation_boost", 10),

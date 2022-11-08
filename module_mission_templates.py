@@ -1373,11 +1373,12 @@ ai_kick_enhancement =  (
         (le, ":distance", ":maximum_distance"),
         (store_random_in_range,":kickchance", 1, 10),
         (try_begin),
-            (eq,":kickchance",1),
+            (lt,":kickchance",2),
                 (display_message, "@Agent kicks."),
                 (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
                 (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
-                (agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+				#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
             (try_end),
        (try_end),
        ])	
