@@ -6170,18 +6170,6 @@ game_menus = [
           
           (gt, ":total_capture_size", 0),          
           (change_screen_exchange_with_party, "p_temp_party"),
-		  
-		  ### MOD BEGIN
-		  ### if there are allies - add freed prisoners to their parties as rescued soldiers
-		  (party_get_num_companions, ":num_rescued_prisoners", "p_temp_party"),
-		  (try_begin),
-		  (gt, "$g_ally_party", 0),
-		  (gt,":num_rescued_prisoners",0),
-			(assign,reg3,"$g_ally_party"),
-			(display_message,"@ ally party {reg3}"),
-			(distribute_party_among_party_group, "p_temp_party", "$g_ally_party"),
-		  (try_end),
-		  ### MOD END
         (else_try),          
           (eq, "$loot_screen_shown", 0),
           (assign, "$loot_screen_shown", 1),
@@ -6199,6 +6187,88 @@ game_menus = [
           (gt, reg0, 0),          
           (troop_sort_inventory, "trp_temp_troop"),
           (change_screen_loot, "trp_temp_troop"),
+		  
+		  ### MOD BEGIN
+		  ### if there are allies - add freed prisoners to their parties as rescued soldiers
+		  (party_get_num_companions, ":num_rescued_prisoners", "p_temp_party"),
+
+		  (try_begin),
+		  (gt,":num_rescued_prisoners",0),
+			  (party_get_num_companion_stacks,":stack_size","p_collective_friends"),
+			  (array_create, ":parties_array", 0, 0),
+			  (assign,":array_size",0),
+			  (assign,":counter",0),
+			  (try_for_range,":stack_no",0,":stack_size"),
+				(party_stack_get_troop_id,      ":troop_id","p_collective_friends",":stack_no"),
+				(try_begin),
+				(troop_is_hero,":troop_id"),
+					(troop_get_slot, ":troop_party", ":troop_id", slot_troop_leaded_party),
+					(assign,reg3,":troop_party"),
+					### DEBUG
+					#(display_message,"@troop_party: {reg3}"),		
+					### DEBUG
+					(try_begin),
+					(gt,":troop_party",0),
+						(val_add,":array_size",1),
+						(array_resize_dim, ":parties_array", 0, ":array_size"),
+						(array_set_val, ":parties_array", ":troop_party", ":counter"),
+						(val_add,":counter",1),
+						### DEBUG
+						#(display_message,"@adding party to array"),
+						### DEBUG
+					(try_end),
+				## iterate through	p_temp_party - and give one troop each iteration to current party
+				(try_end),
+			  (try_end),
+		   
+			  (party_get_num_companion_stacks,":stack_size","p_temp_party"),
+			  (array_get_dim_size, ":parties_in_array", ":parties_array", 0),
+			  (assign,":counter",0),
+			  ### DEBUG
+			 # (assign,reg3,":parties_in_array"),
+			  
+			  ### DEBUG
+			  #(display_message,"@Iterating through stack p temp party/ Parties in array {reg3}"),
+			  
+			  (assign,":stack_id",0),
+			 
+			  (assign,":while",9999),
+			  (try_for_range,":stack_no",0,":while"),	### iterating through stacks of freed troops
+				(party_stack_get_troop_id,      ":troop_id","p_temp_party",":stack_id"),
+				(party_remove_members,"p_temp_party",":troop_id",1),
+				(try_begin),		## if counter didnt pass through number of parties
+				(lt, ":counter",":parties_in_array"),
+					(array_get_val, ":party_no", ":parties_array", ":counter"),
+					(val_add,":counter",1),
+					### DEBUG
+					#(display_message,"@if counter didnt pass through number of parties"),
+				(else_try),	## if it did then reset counter
+					(assign,":counter",0),
+					(array_get_val, ":party_no", ":parties_array", ":counter"),
+					### DEBUG
+					#(display_message,"@if it did then reset counter"),
+				(try_end),
+				
+				(party_add_members,":party_no",":troop_id",1), 
+				(val_add,":stack_id",1),
+				#(store_sub,":stack_size_minus_one",":stack_size",1),
+				(try_begin),	## if there are any troops left, iterate through the rest of stacks
+				(ge,":stack_id",":stack_size"),
+					(party_get_num_companion_stacks,":stack_size","p_temp_party"),
+					(val_sub,":stack_id",":stack_id"),
+					(try_begin),
+					(lt,":stack_size",1),
+						(val_sub,":while",":while"),
+					(try_end),
+				(try_end),
+				### DEBUG
+				#(assign,reg3,":stack_no"),
+				#(display_message,"@ Stack NO: {reg3}"),
+			  (try_end),
+		  (try_end),
+		  ### MOD END
+		  
+		  
         (else_try),
           #finished all
           (try_begin),
