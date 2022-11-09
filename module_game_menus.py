@@ -5401,10 +5401,10 @@ game_menus = [
           (set_jump_mission,"mt_village_raid"),
           (party_get_slot, ":scene_to_use", "$g_encounter_is_in_village", slot_castle_exterior),
           (jump_to_scene, ":scene_to_use"),
-		(else_try),	## mod	begin 20.04.2018
+		(else_try),	## mod	begin 20.04.2018	## if bridge is nearby, fight on bridge
 		  (eq,reg1,1),
 		  (set_jump_mission,"mt_lead_charge"),
-		  (jump_to_scene, reg2),
+		  (jump_to_scene, reg2),	## reg2  returned from - script_check_bridge_nearby
         (else_try), ## mod end  
           (set_jump_mission,"mt_lead_charge"),
           (call_script, "script_setup_random_scene"),
@@ -5966,7 +5966,7 @@ game_menus = [
           (call_script, "script_add_routed_party"),
         (end_try),
         		
-		(try_begin),
+		(try_begin), ### track bandits quest
 			(check_quest_active, "qst_track_down_bandits"),
 			(neg|check_quest_succeeded, "qst_track_down_bandits"),
 			(neg|check_quest_failed, "qst_track_down_bandits"),
@@ -6170,6 +6170,18 @@ game_menus = [
           
           (gt, ":total_capture_size", 0),          
           (change_screen_exchange_with_party, "p_temp_party"),
+		  
+		  ### MOD BEGIN
+		  ### if there are allies - add freed prisoners to their parties as rescued soldiers
+		  (party_get_num_companions, ":num_rescued_prisoners", "p_temp_party"),
+		  (try_begin),
+		  (gt, "$g_ally_party", 0),
+		  (gt,":num_rescued_prisoners",0),
+			(assign,reg3,"$g_ally_party"),
+			(display_message,"@ ally party {reg3}"),
+			(distribute_party_among_party_group, "p_temp_party", "$g_ally_party"),
+		  (try_end),
+		  ### MOD END
         (else_try),          
           (eq, "$loot_screen_shown", 0),
           (assign, "$loot_screen_shown", 1),
