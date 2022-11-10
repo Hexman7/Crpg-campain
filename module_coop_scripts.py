@@ -4105,10 +4105,10 @@ coop_scripts = [
 	
 	(assign,reg0,":day"),
 	(display_message,"@ Day of game:{reg0}"),
+	(try_begin),
 	(gt,":day", -1),
 		(assign,"$troops_have_to_be_copied_after_saveload",1),
-		
-	
+	(try_end),
 ]),
 
 #script_cf_check_file_exist		17.02.2020

@@ -445,9 +445,9 @@ scripts = [
       (party_set_slot,"p_castle_42", slot_center_siege_with_belfry, 1),
       (party_set_slot,"p_castle_43", slot_center_siege_with_belfry, 1),
 	  
-	  
+	  ### mod begin
 	  (call_script,"script_set_center_native_factions"),
-	
+	  ### mod end
 
 	  # Villages characters
       (try_for_range, ":village_no", villages_begin, villages_end),
@@ -4900,7 +4900,6 @@ scripts = [
 #        (try_end),
 #NPC companion changes end
 
-
        (assign, "$g_last_rest_center", -1),
        (assign, "$talk_context", 0),
        (assign,"$g_player_surrenders",0),
@@ -7753,20 +7752,24 @@ scripts = [
 			(troop_set_slot, ":cur_troop", slot_troop_father, ":father"),
 			
 			#wife
-			(troop_set_slot, ":cur_troop", slot_troop_spouse, ":cur_lady"),
-			(troop_set_slot, ":cur_lady", slot_troop_spouse, ":cur_troop"),
-			(store_random_in_range, ":wife_reputation", 20, 26),
+			(troop_get_type, ":gender", ":cur_troop"),
 			(try_begin),
-				(eq, ":wife_reputation", 20),
-				(assign, ":wife_reputation", lrep_conventional),
+			(eq, ":gender", 0), #male
+				(troop_set_slot, ":cur_troop", slot_troop_spouse, ":cur_lady"),
+				(troop_set_slot, ":cur_lady", slot_troop_spouse, ":cur_troop"),
+				(store_random_in_range, ":wife_reputation", 20, 26),
+				(try_begin),
+					(eq, ":wife_reputation", 20),
+					(assign, ":wife_reputation", lrep_conventional),
+				(try_end),
+				(troop_set_slot, ":cur_lady", slot_lord_reputation_type, ":wife_reputation"),
+				
+				
+				(call_script, "script_init_troop_age", ":cur_lady", 49),
+				(call_script, "script_add_lady_items", ":cur_lady"),
+				
+				(val_add, ":cur_lady", 1),
 			(try_end),
-			(troop_set_slot, ":cur_lady", slot_lord_reputation_type, ":wife_reputation"),
-			
-			
-			(call_script, "script_init_troop_age", ":cur_lady", 49),
-			(call_script, "script_add_lady_items", ":cur_lady"),
-			
-			(val_add, ":cur_lady", 1),
 
 			#daughter
 			(troop_set_slot, ":cur_lady", slot_troop_father, ":cur_troop"),
@@ -25839,7 +25842,9 @@ scripts = [
 		(store_sub, ":hours_since_last_courtship", ":current_time", ":time_of_last_courtship"),
 		(gt, ":hours_since_last_courtship", 72),
 
+		(troop_get_type,":gender",":troop_no"),
 		(troop_slot_eq, ":troop_no", slot_troop_spouse, -1),
+		(eq,":gender",0),
 		(try_for_range, ":love_interest_slot", slot_troop_love_interest_1, slot_troop_love_interests_end),
 			(troop_get_slot, ":love_interest", ":troop_no", ":love_interest_slot"),
 			(gt, ":love_interest", 0),
@@ -33646,6 +33651,17 @@ scripts = [
       (troop_inventory_slot_get_item_amount, ":cur_amount", "trp_player", ":cur_slot"),
       (val_sub, ":cur_amount", 1),
       (troop_inventory_slot_set_item_amount, "trp_player", ":cur_slot", ":cur_amount"),
+	  
+	  ###### mod, party drinking script
+	  #Checking if item is wine or ale 
+	  (troop_get_inventory_slot,":item","trp_player",":cur_slot"),
+	  (try_begin),
+	  (this_or_next|eq,":item","itm_ale"),
+	  (eq,":item","itm_wine"),
+		(assign,"$party_was_drinking",1),
+		(display_message,"@Party was drinking"),
+	  (try_end),
+	  ### mod end
     (try_end),
     ]),
 
@@ -44029,32 +44045,41 @@ scripts = [
     [
 	(store_script_param, ":cur_troop", 1),
 
+	
+	### mod begin
+	(troop_get_type,":gender",":cur_troop"),
 	(store_faction_of_troop, ":troop_faction", ":cur_troop"),
-	(try_for_range, ":unused", 0, 50),
-		(store_random_in_range, ":cur_lady", kingdom_ladies_begin, kingdom_ladies_end),
-		(troop_slot_eq, ":cur_lady", slot_troop_spouse, -1),
-		(store_faction_of_troop, ":lady_faction", ":cur_lady"),
-		(eq, ":troop_faction", ":lady_faction"),
-		(call_script, "script_troop_get_family_relation_to_troop", ":cur_troop", ":cur_lady"),
-		(eq, reg0, 0),
 
-		(call_script, "script_troop_get_relation_with_troop", ":cur_troop", ":cur_lady"),
-		(eq, reg0, 0), #do not develop love interest if already spurned or courted
-		
-		(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_1, ":cur_lady"),
-		(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_2, ":cur_lady"),
-		(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_3, ":cur_lady"),
-		(try_begin),
-			(troop_slot_eq, ":cur_troop", slot_troop_love_interest_1, 0),
-			(troop_set_slot, ":cur_troop", slot_troop_love_interest_1, ":cur_lady"),
-		(else_try),
-			(troop_slot_eq, ":cur_troop", slot_troop_love_interest_2, 0),
-			(troop_set_slot, ":cur_troop", slot_troop_love_interest_2, ":cur_lady"),
-		(else_try),
-			(troop_slot_eq, ":cur_troop", slot_troop_love_interest_3, 0),
-			(troop_set_slot, ":cur_troop", slot_troop_love_interest_3, ":cur_lady"),
+	#(store_faction_of_troop, ":troop_faction", ":cur_troop"),
+	(try_begin),
+	(eq,":gender",0), #male
+	### mod end
+		(try_for_range, ":unused", 0, 50),
+			(store_random_in_range, ":cur_lady", kingdom_ladies_begin, kingdom_ladies_end),
+			(troop_slot_eq, ":cur_lady", slot_troop_spouse, -1),
+			(store_faction_of_troop, ":lady_faction", ":cur_lady"),
+			(eq, ":troop_faction", ":lady_faction"),
+			(call_script, "script_troop_get_family_relation_to_troop", ":cur_troop", ":cur_lady"),
+			(eq, reg0, 0),
+
+			(call_script, "script_troop_get_relation_with_troop", ":cur_troop", ":cur_lady"),
+			(eq, reg0, 0), #do not develop love interest if already spurned or courted
+			
+			(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_1, ":cur_lady"),
+			(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_2, ":cur_lady"),
+			(neg|troop_slot_eq, ":cur_troop", slot_troop_love_interest_3, ":cur_lady"),
+			(try_begin),
+				(troop_slot_eq, ":cur_troop", slot_troop_love_interest_1, 0),
+				(troop_set_slot, ":cur_troop", slot_troop_love_interest_1, ":cur_lady"),
+			(else_try),
+				(troop_slot_eq, ":cur_troop", slot_troop_love_interest_2, 0),
+				(troop_set_slot, ":cur_troop", slot_troop_love_interest_2, ":cur_lady"),
+			(else_try),
+				(troop_slot_eq, ":cur_troop", slot_troop_love_interest_3, 0),
+				(troop_set_slot, ":cur_troop", slot_troop_love_interest_3, ":cur_lady"),
+			(try_end),
 		(try_end),
-	(try_end),
+	(try_end),### mod
 	
 	]),
 	
@@ -54778,21 +54803,21 @@ scripts = [
 	 ]), 
    
    
-#### script_setup_inventories	15.08.2018
-#### input: 
-#### output:	
-	("setup_inventories",
-	 [		 
-		(troop_get_inventory_capacity,":capacity","$troop_selected"),
-		(try_for_range,":slot_no",0,":capacity"),		### we are setting items of selected troop to player troop
-			(troop_get_inventory_slot,":i_slot","$troop_selected",":slot_no"),
-			(troop_get_inventory_slot_modifier,":i_slot_mod","$troop_selected",":slot_no"),
-			(troop_set_inventory_slot,"trp_player",":slot_no",":i_slot"),
-			(troop_set_inventory_slot_modifier,"trp_player",":slot_no",":i_slot_mod"),
-		(try_end),
-		(troop_clear_inventory,"trp_temp_items_troop"),
+# #### script_setup_inventories	15.08.2018
+# #### input: 
+# #### output:	
+	# ("setup_inventories",
+	 # [		 
+		# (troop_get_inventory_capacity,":capacity","$troop_selected"),
+		# (try_for_range,":slot_no",0,":capacity"),		### we are setting items of selected troop to player troop
+			# (troop_get_inventory_slot,":i_slot","$troop_selected",":slot_no"),
+			# (troop_get_inventory_slot_modifier,":i_slot_mod","$troop_selected",":slot_no"),
+			# (troop_set_inventory_slot,"trp_player",":slot_no",":i_slot"),
+			# (troop_set_inventory_slot_modifier,"trp_player",":slot_no",":i_slot_mod"),
+		# (try_end),
+		# (troop_clear_inventory,"trp_temp_items_troop"),
 		
-	 ]), 
+	 # ]), 
    
    
    
@@ -54907,40 +54932,40 @@ scripts = [
    
    
    
-#### script_add_items_to_temp_troop	15.08.2018
-#### input: 	items_begin, items_end
-#### output:	
-	("add_items_to_temp_troop",
-	 [		 
-		(store_script_param_1,":items_begin"),
-		(store_script_param_2,":items_end"),
+### script_add_items_to_temp_troop	15.08.2018
+### input: 	items_begin, items_end
+### output:	
+	# ("add_items_to_temp_troop",
+	 # [		 
+		# (store_script_param_1,":items_begin"),
+		# (store_script_param_2,":items_end"),
 
-		#(troop_clear_inventory,"trp_temp_items_troop"),
+	##	(troop_clear_inventory,"trp_temp_items_troop"),
 		
-		(assign,":begin_item",0),
-		(store_add,":begin_item",":begin_item",":items_begin"),
-		(troop_get_inventory_capacity,":capacity_temp","trp_temp_items_troop"),
+		# (assign,":begin_item",0),
+		# (store_add,":begin_item",":begin_item",":items_begin"),
+		# (troop_get_inventory_capacity,":capacity_temp","trp_temp_items_troop"),
 		
 		
-		(try_for_range,":slot_no",9, ":capacity_temp"),		### chosing items which will be showed
-			(call_script,"script_check_troop_ability","$troop_selected",":begin_item"),
-			(store_add,":slot_no",":slot_no",0),
-			(try_begin),
-			(le,reg4,reg3),
-				(troop_add_items, "trp_temp_items_troop", ":begin_item", 1),
-				(store_add,":begin_item",":begin_item",1),
-			(else_try),
-				(store_add,":begin_item",":begin_item",1),
-			(try_end),
+		# (try_for_range,":slot_no",9, ":capacity_temp"),		### chosing items which will be showed
+			# (call_script,"script_check_troop_ability","$troop_selected",":begin_item"),
+			# (store_add,":slot_no",":slot_no",0),
+			# (try_begin),
+			# (le,reg4,reg3),
+				# (troop_add_items, "trp_temp_items_troop", ":begin_item", 1),
+				# (store_add,":begin_item",":begin_item",1),
+			# (else_try),
+				# (store_add,":begin_item",":begin_item",1),
+			# (try_end),
 			
-			(try_begin),
-			(ge,":begin_item",":items_end"),
-				(assign,":capacity_temp",-1),
-			(try_end),
-		(try_end),
+			# (try_begin),
+			# (ge,":begin_item",":items_end"),
+				# (assign,":capacity_temp",-1),
+			# (try_end),
+		# (try_end),
 
 		
-	 ]),    
+	 # ]),    
    
 #### mod begin 22.10.2021
 #### script_add_items_to_temp_troop_beta	15.08.2018

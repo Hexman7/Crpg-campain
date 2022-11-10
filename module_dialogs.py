@@ -3605,374 +3605,374 @@ dialogs = [
    
    
    
-  [anyone,"minister_choose_troopsV2", [],
-   "Ok, wich troop should change equipment?.", "minister_choose_troops_showV2",[
-   ]],
+  # [anyone,"minister_choose_troopsV2", [],
+   # "Ok, wich troop should change equipment?.", "minister_choose_troops_showV2",[
+   # ]],
   
-   [anyone|plyr|repeat_for_troops,"minister_choose_troops_showV2", 
-   [  
+   # [anyone|plyr|repeat_for_troops,"minister_choose_troops_showV2", 
+   # [  
    
-   (store_repeat_object,":troop_no"),
-   (is_between,":troop_no",player_troops_begin,player_troops_end),
-   (str_store_troop_name,s11,":troop_no"),
-   ],
-   "{s11}", "minister_choose_items_for_troopV2",[ 
-   (store_repeat_object,":troop_no"),
-   (assign,"$troop_selected",":troop_no"),
-   (call_script,"script_set_troop_skills_to_other_troop","$troop_selected","trp_player"),
-   (call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
-   ]],
-   
-   [anyone|plyr,"minister_choose_troops_showV2",[],
-   "Not now.", "minister_pretalk",[
-   
-   ######### Troops Equipment Save script
-   
-   (call_script,"script_coop_save_eq_to_file"),
-   
-   (call_script, "script_copy_items_from_troop_to_troop","trp_player_items_backup","trp_player"),
-   (call_script, "script_set_troop_skills_to_other_troop","trp_player_items_backup","trp_player"),
-   ]],
-   
-  [anyone,"minister_choose_items_for_troopV2",[ ],
-   "What type of items do you want to choose from?", "minister_choose_type_of_items_for_troops_optionsV2",[
-   (call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
-   ]],
-
-  [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Melee Weapons.", "minister_choose_items_for_troops_meleeV2",
-   []
-   ],
-
-  [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Ranged Weapons.", "minister_choose_items_for_troops_rangedV2",
-   []
-   ],
-   
-  [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Horses.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-   		(assign,"$type_of_difficulty",2),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",horses_begin ,horses_end ),
-   ]
-   ],
-   
-   [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Helmets.", "minister_choose_items_for_troops_helmetsV2",
-   []
-   ],
-
-   [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Armors.", "minister_choose_items_for_troops_armorsV2",
-   []
-   ],
-   
-  [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Boots.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",boots_begin ,boots_end ),
-   ]
-   ],
-   
-   [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
-      
-   ],
-   "Gloves.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-   		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",gloves_begin ,gloves_end ),
-   ]
-   ],
-   
-   
-  [anyone,"minister_choose_items_for_troops_meleeV2",[],
-   "What type of  melee weapons do you want to choose from?", "minister_choose_type_of_melee_itemsV2",[
-   
-   ]],
-   
- [anyone,"minister_choose_items_for_troops_rangedV2",[],
-   "What type of  ranged weapons do you want to choose from?", "minister_choose_type_of_ranged_itemsV2",[
+   # (store_repeat_object,":troop_no"),
+   # (is_between,":troop_no",player_troops_begin,player_troops_end),
+   # (str_store_troop_name,s11,":troop_no"),
+   # ],
+   # "{s11}", "minister_choose_items_for_troopV2",[ 
+   # (store_repeat_object,":troop_no"),
+   # (assign,"$troop_selected",":troop_no"),
+   # (call_script,"script_set_troop_skills_to_other_troop","$troop_selected","trp_player"),
    # (call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
-   ]], 
+   # ]],
    
-  [anyone,"minister_choose_items_for_troops_helmetsV2",[],
-   "What type of helmets do you want to choose from?", "minister_choose_type_of_helmetsV2",[
-    #(call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
-   ]],
+   # [anyone|plyr,"minister_choose_troops_showV2",[],
+   # "Not now.", "minister_pretalk",[
+   
+   # ######### Troops Equipment Save script
+   
+   # (call_script,"script_coop_save_eq_to_file"),
+   
+   # (call_script, "script_copy_items_from_troop_to_troop","trp_player_items_backup","trp_player"),
+   # (call_script, "script_set_troop_skills_to_other_troop","trp_player_items_backup","trp_player"),
+   # ]],
+   
+  # [anyone,"minister_choose_items_for_troopV2",[ ],
+   # "What type of items do you want to choose from?", "minister_choose_type_of_items_for_troops_optionsV2",[
+   # (call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
+   # ]],
+
+  # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Melee Weapons.", "minister_choose_items_for_troops_meleeV2",
+   # []
+   # ],
+
+  # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Ranged Weapons.", "minister_choose_items_for_troops_rangedV2",
+   # []
+   # ],
+   
+  # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Horses.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+   		# (assign,"$type_of_difficulty",2),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",horses_begin ,horses_end ),
+   # ]
+   # ],
+   
+   # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Helmets.", "minister_choose_items_for_troops_helmetsV2",
+   # []
+   # ],
+
+   # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Armors.", "minister_choose_items_for_troops_armorsV2",
+   # []
+   # ],
+   
+  # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Boots.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",boots_begin ,boots_end ),
+   # ]
+   # ],
+   
+   # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Gloves.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+   		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",gloves_begin ,gloves_end ),
+   # ]
+   # ],
+   
+   
+  # [anyone,"minister_choose_items_for_troops_meleeV2",[],
+   # "What type of  melee weapons do you want to choose from?", "minister_choose_type_of_melee_itemsV2",[
+   
+   # ]],
+   
+ # [anyone,"minister_choose_items_for_troops_rangedV2",[],
+   # "What type of  ranged weapons do you want to choose from?", "minister_choose_type_of_ranged_itemsV2",[
+   # # (call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
+   # ]], 
+   
+  # [anyone,"minister_choose_items_for_troops_helmetsV2",[],
+   # "What type of helmets do you want to choose from?", "minister_choose_type_of_helmetsV2",[
+    # #(call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
+   # ]],
      
-  [anyone,"minister_choose_items_for_troops_armorsV2",[],
-   "What type of armors do you want to choose from?", "minister_choose_type_of_armorsV2",[
-    #(call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
-   ]],
+  # [anyone,"minister_choose_items_for_troops_armorsV2",[],
+   # "What type of armors do you want to choose from?", "minister_choose_type_of_armorsV2",[
+    # #(call_script,"script_copy_items_from_troop_to_troop","$troop_selected","trp_player"),
+   # ]],
    
    
-   #### melee
+   # #### melee
    
-  [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
-   [
+  # [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
+   # [
       
-   ],
-   "One Handed Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",one_handed_swords_begin ,one_handed_sabres_end ),
+   # ],
+   # "One Handed Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",one_handed_swords_begin ,one_handed_sabres_end ),
 		
-		]
-   ],
+		# ]
+   # ],
 
-   [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
+   # [
       
-   ],
-   "Two Handed Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-    (assign,"$type_of_difficulty",0),
-	(call_script,"script_setup_inventories"),
-	(call_script,"script_add_items_to_temp_troop",two_handed_swords_begin ,bastard_weapons_end ),
-	]
-   ],
+   # ],
+   # "Two Handed Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+    # (assign,"$type_of_difficulty",0),
+	# (call_script,"script_setup_inventories"),
+	# (call_script,"script_add_items_to_temp_troop",two_handed_swords_begin ,bastard_weapons_end ),
+	# ]
+   # ],
    
-   [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
+   # [
       
-   ],
-   "Polearm Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-    (assign,"$type_of_difficulty",0),
-	(call_script,"script_setup_inventories"),
-	(call_script,"script_add_items_to_temp_troop",spears_and_pikes_begin ,lances_end ),
-   ]
-   ],
+   # ],
+   # "Polearm Weapons.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+    # (assign,"$type_of_difficulty",0),
+	# (call_script,"script_setup_inventories"),
+	# (call_script,"script_add_items_to_temp_troop",spears_and_pikes_begin ,lances_end ),
+   # ]
+   # ],
    
-  [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
-   [
+  # [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
+   # [
       
-   ],
-   "Shields.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-    (assign,"$type_of_difficulty",1),
-	(call_script,"script_setup_inventories"),
-	(call_script,"script_add_items_to_temp_troop",shields_begin ,shields_end ),
-   ]
-   ],
+   # ],
+   # "Shields.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+    # (assign,"$type_of_difficulty",1),
+	# (call_script,"script_setup_inventories"),
+	# (call_script,"script_add_items_to_temp_troop",shields_begin ,shields_end ),
+   # ]
+   # ],
    
-   #### ranged
-   [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
-   [
+   # #### ranged
+   # [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
+   # [
       
-   ],
-   "Bows.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",3),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",bows_begin ,bows_end ),
-		(call_script,"script_add_items_to_temp_troop",arrows_begin ,arrows_end ),
+   # ],
+   # "Bows.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",3),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",bows_begin ,bows_end ),
+		# (call_script,"script_add_items_to_temp_troop",arrows_begin ,arrows_end ),
 		
-		]
-   ],
+		# ]
+   # ],
    
-  [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
-   [
+  # [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
+   # [
       
-   ],
-   "Crossbows.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",crossbows_begin ,crossbows_end ),
-		(call_script,"script_add_items_to_temp_troop",bolts_begin ,bolts_end ),
+   # ],
+   # "Crossbows.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",crossbows_begin ,crossbows_end ),
+		# (call_script,"script_add_items_to_temp_troop",bolts_begin ,bolts_end ),
 		
-		]
-   ],
+		# ]
+   # ],
    
-   [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
+   # [
       
-   ],
-   "Throwing weapons.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",4),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",throwings_begin ,throwings_end ),
+   # ],
+   # "Throwing weapons.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",4),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",throwings_begin ,throwings_end ),
 		
-		]
-   ],  
+		# ]
+   # ],  
    
-   [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_ranged_itemsV2",
+   # [
       
-   ],
-   "Go back.", "minister_choose_items_for_troopV2",
-   []
-   ],
+   # ],
+   # "Go back.", "minister_choose_items_for_troopV2",
+   # []
+   # ],
    
-   [anyone|plyr,"minister_choose_type_of_helmetsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_helmetsV2",
+   # [
       
-   ],
-   "Light Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(troop_clear_inventory,"trp_temp_items_troop"),
-		(call_script,"script_add_items_to_temp_troop",light_helmets_begin ,light_helmets_end ),
+   # ],
+   # "Light Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (troop_clear_inventory,"trp_temp_items_troop"),
+		# (call_script,"script_add_items_to_temp_troop",light_helmets_begin ,light_helmets_end ),
 		
-		]
-   ],    
+		# ]
+   # ],    
    
-   [anyone|plyr,"minister_choose_type_of_helmetsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_helmetsV2",
+   # [
       
-   ],
-   "Medium Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",medium_helmets_begin ,medium_helmets_end ),
+   # ],
+   # "Medium Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",medium_helmets_begin ,medium_helmets_end ),
 		
-		]
-   ],   
+		# ]
+   # ],   
    
-   [anyone|plyr,"minister_choose_type_of_helmetsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_helmetsV2",
+   # [
       
-   ],
-   "Heavy Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",heavy_helmets_begin ,heavy_helmets_end ),
+   # ],
+   # "Heavy Helmets.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",heavy_helmets_begin ,heavy_helmets_end ),
 		
-		]
-   ],      
+		# ]
+   # ],      
    
-  [anyone|plyr,"minister_choose_type_of_helmetsV2",
-   [
+  # [anyone|plyr,"minister_choose_type_of_helmetsV2",
+   # [
       
-   ],
-   "Go back.", "minister_choose_items_for_troopV2",
-   []
-   ],
+   # ],
+   # "Go back.", "minister_choose_items_for_troopV2",
+   # []
+   # ],
    
-   [anyone|plyr,"minister_choose_type_of_armorsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_armorsV2",
+   # [
       
-   ],
-   "Light Armors.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",light_armors_begin ,light_armors_end ),
+   # ],
+   # "Light Armors.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",light_armors_begin ,light_armors_end ),
 		
-		]
-   ],    
+		# ]
+   # ],    
    
-   [anyone|plyr,"minister_choose_type_of_armorsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_armorsV2",
+   # [
       
-   ],
-   "Medium Armors.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop",medium_armors_begin ,"itm_arabian_armor_b" ),
+   # ],
+   # "Medium Armors.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop",medium_armors_begin ,"itm_arabian_armor_b" ),
 		
-		]
-   ],   
+		# ]
+   # ],   
 
-   [anyone|plyr,"minister_choose_type_of_armorsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_armorsV2",
+   # [
       
-   ],
-   "Heavy Armors.", "minister_choose_items_for_troops_melee_ac_V2",
-   [
-		(assign,"$type_of_difficulty",0),
-   		(call_script,"script_setup_inventories"),
-		(call_script,"script_add_items_to_temp_troop","itm_arabian_armor_b" ,heavy_armors_end ),
+   # ],
+   # "Heavy Armors.", "minister_choose_items_for_troops_melee_ac_V2",
+   # [
+		# (assign,"$type_of_difficulty",0),
+   		# (call_script,"script_setup_inventories"),
+		# (call_script,"script_add_items_to_temp_troop","itm_arabian_armor_b" ,heavy_armors_end ),
 		
-		]
-   ],   
+		# ]
+   # ],   
    
-   [anyone|plyr,"minister_choose_type_of_armorsV2",
-   [
+   # [anyone|plyr,"minister_choose_type_of_armorsV2",
+   # [
       
-   ],
-   "Go back.", "minister_choose_items_for_troopV2",
-   []
-   ],
+   # ],
+   # "Go back.", "minister_choose_items_for_troopV2",
+   # []
+   # ],
    
-
-   
-   [anyone,"minister_choose_items_for_troops_melee_ac_V2",[],
-   "You can only choose 5 items of each type.", "minister_choose_items_for_troops_meleeV2_accepted",[
-
-		(change_screen_loot, "trp_temp_items_troop"),
-   ]],
-   
-   
-  [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
-   [
-      
-   ],
-   "Go back.", "minister_choose_items_for_troopV2",
-   []
-   ],
-   
-   
-  [anyone,"minister_choose_items_for_troops_meleeV2_accepted",
-   [
-      
-   ],
-   "Items Added.", "minister_choose_items_for_troops_meleeV2_ok",
-   []
-   ], 
 
    
+   # [anyone,"minister_choose_items_for_troops_melee_ac_V2",[],
+   # "You can only choose 5 items of each type.", "minister_choose_items_for_troops_meleeV2_accepted",[
+
+		# (change_screen_loot, "trp_temp_items_troop"),
+   # ]],
    
    
-   [anyone|plyr,"minister_choose_items_for_troops_meleeV2_ok",
-   [
+  # [anyone|plyr,"minister_choose_type_of_melee_itemsV2",
+   # [
       
-   ],
-   "Good.", "minister_choose_type_of_items_for_troops_optionsV2",
-   [
-   	(call_script,"script_copy_items_from_troop_to_troop","trp_player","$troop_selected"),
-   
-   ]
-   ],
+   # ],
+   # "Go back.", "minister_choose_items_for_troopV2",
+   # []
+   # ],
    
    
-   [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
-   [
+  # [anyone,"minister_choose_items_for_troops_meleeV2_accepted",
+   # [
       
-   ],
-   "Go back.", "minister_choose_troopsV2",
-   []
-   ],
+   # ],
+   # "Items Added.", "minister_choose_items_for_troops_meleeV2_ok",
+   # []
+   # ], 
+
+   
+   
+   
+   # [anyone|plyr,"minister_choose_items_for_troops_meleeV2_ok",
+   # [
+      
+   # ],
+   # "Good.", "minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+   	# (call_script,"script_copy_items_from_troop_to_troop","trp_player","$troop_selected"),
+   
+   # ]
+   # ],
+   
+   
+   # [anyone|plyr,"minister_choose_type_of_items_for_troops_optionsV2",
+   # [
+      
+   # ],
+   # "Go back.", "minister_choose_troopsV2",
+   # []
+   # ],
    
    
    

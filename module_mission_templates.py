@@ -1336,8 +1336,46 @@ passable_allies = (0, 0, 0,
     (try_end),
     ])
 
-
-
+#### trigger for changing agents modifiers according to:		
+### kingdom building bonuses 
+### alcohol use	- ###### mod, party drinking script
+# by Rider of Rohirrim
+effects_on_troops =  (
+    ti_on_agent_spawn, 0, 0,
+    [], [
+	(store_trigger_param_1, ":agent"),
+	(agent_is_human,":agent"),
+	(agent_set_kick_allowed, ":agent", 1),
+	(agent_get_party_id,":agent_party",":agent"),
+	(try_begin),
+	(eq,":agent_party","p_main_party"),
+		(try_begin), ### if party uses alcohol - alcohol unlocked and in inventory
+		(eq,"$party_was_drinking",1),
+			## 20 % penalty in everything ( horse speed 10% penalty)
+			(agent_set_damage_modifier, ":agent", 80),
+			(agent_set_accuracy_modifier, ":agent", 80),
+			(agent_set_speed_modifier, ":agent", 80),
+			(agent_set_reload_speed_modifier, ":agent", 80),
+			(agent_set_use_speed_modifier, ":agent", 80),
+			(agent_set_ranged_damage_modifier, ":agent", 80),
+			(agent_set_horse_speed_factor, ":agent", 90),
+			#bonus to health
+			(store_agent_hit_points,":current_hp",":agent",1),
+			#(assign,reg3,":current_hp"),#DEBUG
+			#(display_message,"@ agent hp before change: {reg3}"),
+			(store_mul,":new_hp",":current_hp",3),
+			(val_div,":new_hp",2),
+			(agent_set_max_hit_points,":agent",":new_hp",1),
+			(agent_set_hit_points,":agent",":new_hp",1),
+			#(store_agent_hit_points,reg3,":agent",1), #DEBUG
+			#(assign,reg4,":new_hp"),	
+			#(display_message,"@ agent hp after change: {reg3} new: {reg4}"),
+		(try_end),
+		
+		### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
+	(try_end),
+	
+	])	
 #### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
 ## by KnowsCount
 ai_kick_enhancement =  (
@@ -2681,10 +2719,7 @@ mission_templates = [
 	  [
 		(try_begin),
 	    (neq, "$talk_context", tc_prison_break),	
-		(neq, "$g_player_court", "$current_town"),		### 30.08.2018
 			(set_trigger_result,1),
-		(else_try),
-			(display_message,"@ You can leave by talking with the guards"),		### 30.08.2018
 		(try_end),
 	  ], []),
 	  
@@ -2883,6 +2918,7 @@ mission_templates = [
 	
 	######
 	   passable_allies,
+	   effects_on_troops,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -3394,6 +3430,7 @@ mission_templates = [
 	  counting_kills,
 	  ai_kick_enhancement,
 	  passable_allies,
+	  effects_on_troops,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3515,6 +3552,7 @@ mission_templates = [
 	  counting_kills,
 	  ai_kick_enhancement,
 	  passable_allies,
+	  effects_on_troops,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3817,6 +3855,7 @@ mission_templates = [
       common_battle_init_banner,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  effects_on_troops,
 	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
@@ -3891,6 +3930,7 @@ mission_templates = [
       common_battle_init_banner,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  effects_on_troops,
 	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
@@ -3972,6 +4012,7 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  ai_kick_enhancement,
+	  effects_on_troops,
 	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
@@ -4085,6 +4126,7 @@ mission_templates = [
       common_siege_ai_trigger_init_2,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  effects_on_troops,
 	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
@@ -4188,6 +4230,7 @@ mission_templates = [
 	  lance_breaking,
 	  counting_kills,
 	  ai_kick_enhancement,
+	  effects_on_troops,
 	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,

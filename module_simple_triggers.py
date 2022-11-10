@@ -2332,6 +2332,7 @@ simple_triggers = [
     
     (assign, ":consumption_amount", ":num_men"),
     (assign, ":no_food_displayed", 0),
+	(assign,"$party_was_drinking",0), ###### mod, party drinking script
     (try_for_range, ":unused", 0, ":consumption_amount"),
       (assign, ":available_food", 0),
       (try_for_range, ":cur_food", food_begin, food_end),
