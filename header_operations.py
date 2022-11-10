@@ -657,7 +657,7 @@ party_force_add_prisoners              = 1614	# (party_force_add_prisoners,<part
 party_remove_members                   = 1615	# stores number removed to reg0
 						# (party_remove_members,<party_id>,<troop_id>,<number>),
 party_remove_prisoners                 = 1616	# stores number removed to reg0
-						# (party_remove_members,<party_id>,<troop_id>,<number>),
+						# (party_remove_prisoners,<party_id>,<troop_id>,<number>),
 party_clear                            = 1617	# (party_clear,<party_id>),
 party_wound_members                    = 1618	# (party_wound_members,<party_id>,<troop_id>,<number>),
 party_remove_members_wounded_first     = 1619	# stores number removed to reg0
@@ -699,7 +699,7 @@ party_stack_get_troop_id               = 1652   # (party_stack_get_troop_id,    
 party_stack_get_size                   = 1653   # (party_stack_get_size,          <destination>,<party_id>,<stack_no>),
 party_stack_get_num_wounded            = 1654   # (party_stack_get_num_wounded,   <destination>,<party_id>,<stack_no>),
 party_stack_get_troop_dna              = 1655   # (party_stack_get_troop_dna,     <destination>,<party_id>,<stack_no>),
-party_prisoner_stack_get_troop_id      = 1656   # (party_get_prisoner_stack_troop,<destination>,<party_id>,<stack_no>),
+party_prisoner_stack_get_troop_id      = 1656   # (party_prisoner_stack_get_troop_id,<destination>,<party_id>,<stack_no>),
 party_prisoner_stack_get_size          = 1657   # (party_get_prisoner_stack_size, <destination>,<party_id>,<stack_no>),
 party_prisoner_stack_get_troop_dna     = 1658   # (party_prisoner_stack_get_troop_dna, <destination>,<party_id>,<stack_no>),
 

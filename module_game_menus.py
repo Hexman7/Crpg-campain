@@ -6230,10 +6230,10 @@ game_menus = [
 			  ### DEBUG
 			  #(display_message,"@Iterating through stack p temp party/ Parties in array {reg3}"),
 			  
+			  
 			  (assign,":stack_id",0),
-			 
 			  (assign,":while",9999),
-			  (try_for_range,":stack_no",0,":while"),	### iterating through stacks of freed troops
+			  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
 				(party_stack_get_troop_id,      ":troop_id","p_temp_party",":stack_id"),
 				(party_remove_members,"p_temp_party",":troop_id",1),
 				(try_begin),		## if counter didnt pass through number of parties
@@ -6261,10 +6261,58 @@ game_menus = [
 						(val_sub,":while",":while"),
 					(try_end),
 				(try_end),
+				
+
 				### DEBUG
 				#(assign,reg3,":stack_no"),
 				#(display_message,"@ Stack NO: {reg3}"),
 			  (try_end),
+			  
+			  
+			  #### "while" loop for prisoners
+			  (assign,":while",9999),
+			  (party_get_num_prisoners, ":num_taken_prisoners", "p_temp_party"),
+			  (assign,":counter",0),
+			  (assign,":stack_id_p",0),
+			  (party_get_num_prisoner_stacks, ":stack_size_p","p_temp_party"),
+			   
+			  (gt,":num_taken_prisoners",0),
+			  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
+				(party_prisoner_stack_get_troop_id,      ":troop_id_p","p_temp_party",":stack_id_p"),
+				(party_remove_prisoners,"p_temp_party",":troop_id_p",1),
+				(try_begin),		## if counter didnt pass through number of parties
+				(lt, ":counter",":parties_in_array"),
+					(array_get_val, ":party_no", ":parties_array", ":counter"),
+					(val_add,":counter",1),
+					### DEBUG
+					#(display_message,"@if counter didnt pass through number of parties"),
+				(else_try),	## if it did then reset counter
+					(assign,":counter",0),
+					(array_get_val, ":party_no", ":parties_array", ":counter"),
+					### DEBUG
+					#(display_message,"@if it did then reset counter"),
+				(try_end),
+				
+				(party_add_prisoners,":party_no",":troop_id_p",1), 
+				(val_add,":stack_id_p",1),
+				#(store_sub,":stack_size_minus_one",":stack_size",1),
+				(try_begin),	## if there are any troops left, iterate through the rest of stacks
+				(ge,":stack_id_p",":stack_size_p"),
+					(party_get_num_prisoner_stacks,":stack_size_p","p_temp_party"),
+					(val_sub,":stack_id_p",":stack_id_p"),
+					(try_begin),
+					(lt,":stack_size_p",1),
+						(val_sub,":while",":while"),
+					(try_end),
+				(try_end),
+				
+
+				### DEBUG
+				#(assign,reg3,":stack_no"),
+				#(display_message,"@ Stack NO: {reg3}"),
+			  (try_end),
+			  
+			  
 		  (try_end),
 		  ### MOD END
 		  
