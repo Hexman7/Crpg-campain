@@ -1350,6 +1350,8 @@ ai_kick_enhancement =  (
         (agent_is_human, ":agent"),
         (agent_is_active, ":agent"),
         (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
+		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
+		(eq,":horse",-1),
         ##He's an eligible human.  Now see if he's in a position to kick.
         (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
         (agent_get_defend_action, ":defend_action", ":agent"),
@@ -1366,6 +1368,8 @@ ai_kick_enhancement =  (
         (agent_is_active, ":suspect"),
         (agent_get_team, ":suspect_team", ":suspect"),
         (neq, ":suspect_team", ":team"),
+		(agent_get_horse,":horse_suspect",":suspect"),	### enemy is not mounted
+		(eq,":horse_suspect",-1),
         (agent_get_position, pos1, ":agent"), # distance check
         (agent_get_position, pos2, ":suspect"),
         (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
@@ -1374,7 +1378,7 @@ ai_kick_enhancement =  (
         (store_random_in_range,":kickchance", 1, 10),
         (try_begin),
             (lt,":kickchance",2),
-               # (display_message, "@Agent kicks."),
+                (display_message, "@Agent kicks."),
                 (agent_set_animation, ":agent", "anim_prepare_kick_0"),
 				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
                 (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
