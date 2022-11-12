@@ -1787,13 +1787,13 @@ counting_kills = (
         (store_trigger_param, ":killer_agent_no",2),
         #(store_trigger_param_3, ":is_wounded"),	
 
-		(array_get_dim_size, ":array_size", "$kills_array", 0),
+		(array_get_dim_size, ":array_size", "$kills_array", 1),
 		
 		(agent_get_troop_id,":troop_id", ":killer_agent_no"),
 		
 		(try_for_range, ":array_agent_id", 0, ":array_size"),
 			
-			(array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
+			 (array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
 			
 			 (try_begin),
 			 (eq,":array_troop_id",":troop_id"),

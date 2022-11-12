@@ -55528,7 +55528,7 @@ scripts = [
  
 
   
-#script_print_casualties_to_s0:
+#script_print_kills_to_s0:
 # INPUT:
 # param1: 
 
@@ -55537,7 +55537,7 @@ scripts = [
   
 	("print_kills_to_s0",[
 		(str_clear,s0),
-		(array_get_dim_size, ":array_size", "$kills_array", 0),
+		(array_get_dim_size, ":array_size", "$kills_array", 1),
 		(try_for_range,":i_stack",0,":array_size"),
 			(array_get_val, ":troop_id", "$kills_array", 0, ":i_stack"),
 			(party_stack_get_size, ":stack_size","p_main_party",":i_stack"),

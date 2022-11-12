@@ -142,7 +142,7 @@ game_menus = [
 
 	   
      ("tutorial_cheat",[
-	  #(eq,1,0),
+	  (eq,1,0),
 	  ],"{!}CHEAT!",
        [
          (change_screen_return),
@@ -4648,7 +4648,8 @@ game_menus = [
 	   
 	   ("game_equip_warriors_menu",
        [
-	   (eq,"$players_kingdom","fac_player_supporters_faction"),
+	   (this_or_next|eq,"$players_kingdom","fac_player_supporters_faction"),
+       (eq,"$cheat_mode", 1),
         ], "Equip Warriors",
        [(start_presentation, "prsnt_game_equip_warriors_window"),		### TESting 2022
         ],
@@ -5368,8 +5369,9 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
-		(display_message,"@ array created"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
+        (assign,reg3,":stacks"),
+		(display_message,"@ array created. Stacks: {reg3}"),
 		(array_set_val_all, "$kills_array", 0),
 		
 		(try_for_range,":x",0,":stacks"),
@@ -6220,6 +6222,7 @@ game_menus = [
 				## iterate through	p_temp_party - and give one troop each iteration to current party
 				(try_end),
 			  (try_end),
+   
 		   
 			  (party_get_num_companion_stacks,":stack_size","p_temp_party"),
 			  (array_get_dim_size, ":parties_in_array", ":parties_array", 0),
@@ -6230,88 +6233,90 @@ game_menus = [
 			  ### DEBUG
 			  #(display_message,"@Iterating through stack p temp party/ Parties in array {reg3}"),
 			  
-			  
-			  (assign,":stack_id",0),
-			  (assign,":while",9999),
-			  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
-				(party_stack_get_troop_id,      ":troop_id","p_temp_party",":stack_id"),
-				(party_remove_members,"p_temp_party",":troop_id",1),
-				(try_begin),		## if counter didnt pass through number of parties
-				(lt, ":counter",":parties_in_array"),
-					(array_get_val, ":party_no", ":parties_array", ":counter"),
-					(val_add,":counter",1),
-					### DEBUG
-					#(display_message,"@if counter didnt pass through number of parties"),
-				(else_try),	## if it did then reset counter
-					(assign,":counter",0),
-					(array_get_val, ":party_no", ":parties_array", ":counter"),
-					### DEBUG
-					#(display_message,"@if it did then reset counter"),
-				(try_end),
-				
-				(party_add_members,":party_no",":troop_id",1), 
-				(val_add,":stack_id",1),
-				#(store_sub,":stack_size_minus_one",":stack_size",1),
-				(try_begin),	## if there are any troops left, iterate through the rest of stacks
-				(ge,":stack_id",":stack_size"),
-					(party_get_num_companion_stacks,":stack_size","p_temp_party"),
-					(val_sub,":stack_id",":stack_id"),
-					(try_begin),
-					(lt,":stack_size",1),
-						(val_sub,":while",":while"),
-					(try_end),
-				(try_end),
+              (try_begin),
+              (gt,":parties_in_array",0),
+                  
+                  (assign,":stack_id",0),
+                  (assign,":while",9999),
+                  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
+                    (party_stack_get_troop_id,      ":troop_id","p_temp_party",":stack_id"),
+                    (party_remove_members,"p_temp_party",":troop_id",1),
+                    (try_begin),		## if counter didnt pass through number of parties
+                    (lt, ":counter",":parties_in_array"),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        (val_add,":counter",1),
+                        ### DEBUG
+                        #(display_message,"@if counter didnt pass through number of parties"),
+                    (else_try),	## if it did then reset counter
+                        (assign,":counter",0),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        ### DEBUG
+                        #(display_message,"@if it did then reset counter"),
+                    (try_end),
+                    
+                    (party_add_members,":party_no",":troop_id",1), 
+                    (val_add,":stack_id",1),
+                    #(store_sub,":stack_size_minus_one",":stack_size",1),
+                    (try_begin),	## if there are any troops left, iterate through the rest of stacks
+                    (ge,":stack_id",":stack_size"),
+                        (party_get_num_companion_stacks,":stack_size","p_temp_party"),
+                        (val_sub,":stack_id",":stack_id"),
+                        (try_begin),
+                        (lt,":stack_size",1),
+                            (val_sub,":while",":while"),
+                        (try_end),
+                    (try_end),
+                    
+
+                    ### DEBUG
+                    #(assign,reg3,":stack_no"),
+                    #(display_message,"@ Stack NO: {reg3}"),
+                  (try_end),
+                  
+                  
+                  #### "while" loop for prisoners
+                  (assign,":while",9999),
+                  (party_get_num_prisoners, ":num_taken_prisoners", "p_temp_party"),
+                  (assign,":counter",0),
+                  (assign,":stack_id_p",0),
+                  (party_get_num_prisoner_stacks, ":stack_size_p","p_temp_party"),
+                   
+                  (gt,":num_taken_prisoners",0),
+                  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
+                    (party_prisoner_stack_get_troop_id,      ":troop_id_p","p_temp_party",":stack_id_p"),
+                    (party_remove_prisoners,"p_temp_party",":troop_id_p",1),
+                    (try_begin),		## if counter didnt pass through number of parties
+                    (lt, ":counter",":parties_in_array"),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        (val_add,":counter",1),
+                        ### DEBUG
+                        #(display_message,"@if counter didnt pass through number of parties"),
+                    (else_try),	## if it did then reset counter
+                        (assign,":counter",0),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        ### DEBUG
+                        #(display_message,"@if it did then reset counter"),
+                    (try_end),
+                    
+                    (party_add_prisoners,":party_no",":troop_id_p",1), 
+                    (val_add,":stack_id_p",1),
+                    #(store_sub,":stack_size_minus_one",":stack_size",1),
+                    (try_begin),	## if there are any troops left, iterate through the rest of stacks
+                    (ge,":stack_id_p",":stack_size_p"),
+                        (party_get_num_prisoner_stacks,":stack_size_p","p_temp_party"),
+                        (val_sub,":stack_id_p",":stack_id_p"),
+                        (try_begin),
+                        (lt,":stack_size_p",1),
+                            (val_sub,":while",":while"),
+                        (try_end),
+                    (try_end),
 				
 
-				### DEBUG
-				#(assign,reg3,":stack_no"),
-				#(display_message,"@ Stack NO: {reg3}"),
-			  (try_end),
-			  
-			  
-			  #### "while" loop for prisoners
-			  (assign,":while",9999),
-			  (party_get_num_prisoners, ":num_taken_prisoners", "p_temp_party"),
-			  (assign,":counter",0),
-			  (assign,":stack_id_p",0),
-			  (party_get_num_prisoner_stacks, ":stack_size_p","p_temp_party"),
-			   
-			  (gt,":num_taken_prisoners",0),
-			  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
-				(party_prisoner_stack_get_troop_id,      ":troop_id_p","p_temp_party",":stack_id_p"),
-				(party_remove_prisoners,"p_temp_party",":troop_id_p",1),
-				(try_begin),		## if counter didnt pass through number of parties
-				(lt, ":counter",":parties_in_array"),
-					(array_get_val, ":party_no", ":parties_array", ":counter"),
-					(val_add,":counter",1),
-					### DEBUG
-					#(display_message,"@if counter didnt pass through number of parties"),
-				(else_try),	## if it did then reset counter
-					(assign,":counter",0),
-					(array_get_val, ":party_no", ":parties_array", ":counter"),
-					### DEBUG
-					#(display_message,"@if it did then reset counter"),
-				(try_end),
-				
-				(party_add_prisoners,":party_no",":troop_id_p",1), 
-				(val_add,":stack_id_p",1),
-				#(store_sub,":stack_size_minus_one",":stack_size",1),
-				(try_begin),	## if there are any troops left, iterate through the rest of stacks
-				(ge,":stack_id_p",":stack_size_p"),
-					(party_get_num_prisoner_stacks,":stack_size_p","p_temp_party"),
-					(val_sub,":stack_id_p",":stack_id_p"),
-					(try_begin),
-					(lt,":stack_size_p",1),
-						(val_sub,":while",":while"),
-					(try_end),
-				(try_end),
-				
-
-				### DEBUG
-				#(assign,reg3,":stack_no"),
-				#(display_message,"@ Stack NO: {reg3}"),
-			  (try_end),
-			  
+                    ### DEBUG
+                    #(assign,reg3,":stack_no"),
+                    #(display_message,"@ Stack NO: {reg3}"),
+                (try_end),
+			  (try_end), 
 			  
 		  (try_end),
 		  ### MOD END
@@ -6742,7 +6747,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -6793,6 +6798,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
       ]),	
 	  
       ("quit",[
@@ -7176,7 +7183,7 @@ game_menus = [
 			########		Counting troops kills
 			########
 			(party_get_num_companion_stacks,":stacks","p_main_party"),
-			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(array_create, "$kills_array", 0, 2, ":stacks"),
 			(display_message,"@ array created"),
 			(array_set_val_all, "$kills_array", 0),
 			
@@ -7263,7 +7270,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
-
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
@@ -8007,7 +8015,7 @@ game_menus = [
 			########		Counting troops kills
 			########
 			(party_get_num_companion_stacks,":stacks","p_main_party"),
-			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(array_create, "$kills_array", 0, 2, ":stacks"),
 			(display_message,"@ array created"),
 			(array_set_val_all, "$kills_array", 0),
 			
@@ -8080,7 +8088,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
-
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
 #TODO siege sally
 #           (assign, "$g_siege_battle_state", 1),
 #           (assign, ":siege_sally", 0),
@@ -9683,7 +9692,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -9737,7 +9746,9 @@ game_menus = [
         (try_begin),
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
-        (try_end),
+        (try_end),        
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
@@ -10506,7 +10517,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -10562,6 +10573,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 
@@ -13181,6 +13194,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
@@ -16444,6 +16459,22 @@ game_menus = [
 	  "Attack the hideout...",
 	  
 	  [
+      
+        ########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
+
 	    (party_set_slot, "$g_encountered_party", slot_party_ai_substate, 1),
 	    (party_get_template_id, ":template", "$g_encountered_party"),
 	    (assign, "$g_enemy_party", "$g_encountered_party"),
@@ -16555,6 +16586,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 

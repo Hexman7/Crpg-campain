@@ -1441,7 +1441,8 @@ coop_mission_templates = [
           (try_end),
         (try_end),
 
-
+            #mod begin
+            (call_script,"script_coop_read_eq_from_file_to_troops"),
           ]),
 
       #in later rounds delay so clients can join (can use start battle option to skip)
