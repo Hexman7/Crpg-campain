@@ -142,7 +142,7 @@ game_menus = [
 
 	   
      ("tutorial_cheat",[
-	  (eq,1,0),
+	  #(eq,1,0),
 	  ],"{!}CHEAT!",
        [
          (change_screen_return),
@@ -9255,6 +9255,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+		### mod begin
+		(call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 
@@ -10834,13 +10836,13 @@ game_menus = [
     [    
 	
 	    (try_begin), #Arris
-            (eq, "$gShowFeudalMap", 1),
+		(eq, "$gShowFeudalMap", 1),
             (change_screen_map),
             (start_presentation, "prsnt_world_map"),
         (try_end),
         
         (try_begin), #Arris
-            (eq, "$gShowFeudalMap", 2),
+		(eq, "$gShowFeudalMap", 2),
             (assign, "$gShowFeudalMap", 0),
             
             (assign, "$town_entered", 1),

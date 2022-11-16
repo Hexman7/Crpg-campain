@@ -51398,21 +51398,21 @@ scripts = [
 	  
 	  #### adding horsess that would disaapear when factions stop existing
 	  (try_begin),
-	  (eq,":cur_town","p_town_16"),
+	  (eq,":cur_town","p_town_16"),	#Dhirim
 		(troop_add_item,":cur_merchant","itm_charger"),
 		(troop_add_item,":cur_merchant","itm_plated_charger"),
 	  (else_try),
-	  (eq,":cur_town","p_town_6"),
+	  (eq,":cur_town","p_town_6"), #Praven
 		(troop_add_item,":cur_merchant","itm_warhorse_steppe"),
 		(troop_add_item,":cur_merchant","itm_plated_charger"),
 		(troop_add_item,":cur_merchant","itm_steppe_horse"),
 	  (else_try),
-	  (eq,":cur_town","p_town_17"),
+	  (eq,":cur_town","p_town_17"), #Ichamur
 		(troop_add_item,":cur_merchant","itm_steppe_horse"),
 		(troop_add_item,":cur_merchant","itm_arabian_horse_a"),
 		(troop_add_item,":cur_merchant","itm_warhorse_steppe"),
 	  (else_try),
-	  (eq,":cur_town","p_town_22"),
+	  (eq,":cur_town","p_town_22"), # Bariyye
 		(troop_add_item,":cur_merchant","itm_arabian_horse_a"),
 		(troop_add_item,":cur_merchant","itm_arabian_horse_b"),
 		(troop_add_item,":cur_merchant","itm_warhorse_sarranid"),

@@ -1601,7 +1601,7 @@ coop_mission_templates = [
           (store_current_scene, ":cur_scene"),
           (modify_visitors_at_site, ":cur_scene"),
 		  ##################			Fix for troops spawning in weird places in Multiplayer
-		  (set_spawn_radius,5),
+		  (set_spawn_radius,1),
 		  
 		  ##################
           (add_visitors_to_current_scene, reg0, ":selected_troop", 1, ":selected_team", -1),#don't assign group at spawn
