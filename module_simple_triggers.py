@@ -2361,6 +2361,8 @@ simple_triggers = [
 #NPC companion changes end
       (try_end),
     (try_end),
+	(eq,"$party_was_drinking",1),
+		(display_message,"@Party was drinking",0xFFa30527),
     ]),
 
   # Setting item modifiers for food
@@ -3235,7 +3237,7 @@ simple_triggers = [
              (try_end),
            (else_try),
              (eq, ":quest_no", "qst_join_siege_with_army"),
-			 (eq, 1, 0),
+			 #(eq, 1, 0),		#### for some reason it was locked - MOD EDITED	
              (try_begin),
                (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
                (faction_get_slot, ":ai_object", "$players_kingdom", slot_faction_ai_object),

@@ -1753,12 +1753,12 @@ tournament_triggers = [
 lance_breaking = (
   ti_on_agent_hit, 0, 0, [],
   [
-    #(store_trigger_param_1,":agent_rec"),
+    (store_trigger_param_1,":agent_rec"),
 	(store_trigger_param,":agent",2),
 	(store_trigger_param,":damage",3),
 	(assign,":weapon",reg0),
 	
-	
+	(agent_force_rethink, ":agent_rec"), #### force agent to block incoming hit after being hit test
 	(try_begin),
 		(gt,":agent",0),
 		(agent_is_human, ":agent"),
@@ -3311,7 +3311,7 @@ mission_templates = [
       common_music_situation_update,
       common_battle_check_friendly_kills,
 
-      (1, 0, 5, [
+     (1, 0, 5, [
                               
       #new (25.11.09) starts (sdsd = TODO : make a similar code to also helping ally encounters)
       #count all total (not dead) enemy soldiers (in battle area + not currently placed in battle area)

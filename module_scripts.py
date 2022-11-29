@@ -24728,64 +24728,63 @@ scripts = [
       (store_script_param_1, ":village_no"),
 
       (assign, ":ideal_size", 50),
-      (try_begin),
         (party_get_num_companions, ":party_size", ":village_no"),
 		
 		(try_begin),
-		(lt, ":party_size", 10),
-			(party_get_slot,":faction",":village_no",slot_center_native_faction),
-			(try_begin),
-			(eq,":faction",1), ## swadia
-				(assign,":party_template",	"pt_neutrals_reinforcements_swadian_b"),
-			(else_try),
-			(eq,":faction",2), ## vaegirs
-				(assign,":party_template",	"pt_neutrals_reinforcements_vaegirs_b"),
-			(else_try),
-			(eq,":faction",3), ## khergits
-				(assign,":party_template",	"pt_neutrals_reinforcements_khergits_b"),
-			(else_try),
-			(eq,":faction",4), ## nords
-				(assign,":party_template",	"pt_neutrals_reinforcements_nords_b"),
-			(else_try),
-			(eq,":faction",5), ## rhodoks
-				(assign,":party_template",	"pt_neutrals_reinforcements_rhodoks_b"),
-			(else_try),
-			(eq,":faction",6), ## sarranids
-				(assign,":party_template",	"pt_neutrals_reinforcements_sarranids_b"),
-			(else_try),
-				(assign,":party_template",	"pt_village_defenders"),
-			(try_end),
-		(else_try),
-		(lt, ":party_size", 20),
-			(party_get_slot,":faction",":village_no",slot_center_native_faction),
-			(try_begin),
-			(eq,":faction",1), ## swadia
-				(assign,":party_template",	"pt_neutrals_reinforcements_swadian_a"),
-			(else_try),
-			(eq,":faction",2), ## vaegirs
-				(assign,":party_template",	"pt_neutrals_reinforcements_vaegirs_a"),
-			(else_try),
-			(eq,":faction",3), ## khergits
-				(assign,":party_template",	"pt_neutrals_reinforcements_khergits_a"),
-			(else_try),
-			(eq,":faction",4), ## nords
-				(assign,":party_template",	"pt_neutrals_reinforcements_nords_a"),
-			(else_try),
-			(eq,":faction",5), ## rhodoks
-				(assign,":party_template",	"pt_neutrals_reinforcements_rhodoks_a"),
-			(else_try),
-			(eq,":faction",6), ## sarranids
-				(assign,":party_template",	"pt_neutrals_reinforcements_sarranids_a"),
-			(else_try),
-				(assign,":party_template",	"pt_village_defenders"),
-			(try_end),
-		(else_try),
         (lt, ":party_size", ":ideal_size"),
-			(assign,":party_template",	"pt_village_defenders"),
+			(try_begin),
+			(lt, ":party_size", 10),
+				(party_get_slot,":faction",":village_no",slot_center_native_faction),
+				(try_begin),
+				(eq,":faction",1), ## swadia
+					(assign,":party_template",	"pt_neutrals_reinforcements_swadian_b"),
+				(else_try),
+				(eq,":faction",2), ## vaegirs
+					(assign,":party_template",	"pt_neutrals_reinforcements_vaegirs_b"),
+				(else_try),
+				(eq,":faction",3), ## khergits
+					(assign,":party_template",	"pt_neutrals_reinforcements_khergits_b"),
+				(else_try),
+				(eq,":faction",4), ## nords
+					(assign,":party_template",	"pt_neutrals_reinforcements_nords_b"),
+				(else_try),
+				(eq,":faction",5), ## rhodoks
+					(assign,":party_template",	"pt_neutrals_reinforcements_rhodoks_b"),
+				(else_try),
+				(eq,":faction",6), ## sarranids
+					(assign,":party_template",	"pt_neutrals_reinforcements_sarranids_b"),
+				(else_try),
+					(assign,":party_template",	"pt_village_defenders"),
+				(try_end),
+			(else_try),
+			(lt, ":party_size", 20),
+				(party_get_slot,":faction",":village_no",slot_center_native_faction),
+				(try_begin),
+				(eq,":faction",1), ## swadia
+					(assign,":party_template",	"pt_neutrals_reinforcements_swadian_a"),
+				(else_try),
+				(eq,":faction",2), ## vaegirs
+					(assign,":party_template",	"pt_neutrals_reinforcements_vaegirs_a"),
+				(else_try),
+				(eq,":faction",3), ## khergits
+					(assign,":party_template",	"pt_neutrals_reinforcements_khergits_a"),
+				(else_try),
+				(eq,":faction",4), ## nords
+					(assign,":party_template",	"pt_neutrals_reinforcements_nords_a"),
+				(else_try),
+				(eq,":faction",5), ## rhodoks
+					(assign,":party_template",	"pt_neutrals_reinforcements_rhodoks_a"),
+				(else_try),
+				(eq,":faction",6), ## sarranids
+					(assign,":party_template",	"pt_neutrals_reinforcements_sarranids_a"),
+				(else_try),
+					(assign,":party_template",	"pt_village_defenders"),
+				(try_end),
+			(else_try),
+				(assign,":party_template",	"pt_village_defenders"),
+			(try_end),
 		(try_end),
-		
 		(party_add_template, ":village_no", ":party_template"),
-      (try_end),
   ]),
 
   # script_village_set_state
@@ -27061,6 +27060,13 @@ scripts = [
          (call_script, "script_cancel_quest", ":quest_no"),
 		 (troop_get_slot, ":army_quest_giver_troop", ":quest_no", slot_quest_giver_troop),
          (assign, ":one_active", 1),
+		  ### mod begin 27.11.2022
+		 (try_begin),
+		 (eq,":quest_no","qst_report_to_army"),
+			(troop_get_slot, ":troop_party", ":army_quest_giver_troop", slot_troop_leaded_party),
+			(party_set_flags, ":troop_party", pf_always_visible, 0),
+		 (try_end),
+		  ### mod end 
        (try_end),
        (try_begin),
          (check_quest_active, "qst_follow_army"),
@@ -33659,7 +33665,7 @@ scripts = [
 	  (this_or_next|eq,":item","itm_ale"),
 	  (eq,":item","itm_wine"),
 		(assign,"$party_was_drinking",1),
-		(display_message,"@Party was drinking"),
+		#(display_message,"@Party was drinking"),
 	  (try_end),
 	  ### mod end
     (try_end),
@@ -34588,7 +34594,14 @@ scripts = [
       (quest_get_slot, ":quest_giver_troop", ":quest_no", slot_quest_giver_troop),
       (str_store_troop_name, s59, ":quest_giver_troop"),
       (add_quest_note_from_sreg, ":quest_no", 7, "@This quest has been successfully completed. Talk to {s59} to claim your reward.", 0),
-    ]),
+	  ### mod begin 27.11.2022
+	  (try_begin),
+	  (eq,":quest_no","qst_report_to_army"),
+		(troop_get_slot, ":troop_party", ":quest_giver_troop", slot_troop_leaded_party),
+		(party_set_flags, ":troop_party", pf_always_visible, 0),
+	 (try_end),
+	  ### mod end  
+	]),
 
   #script_fail_quest
   # INPUT: arg1 = quest_no
@@ -34600,6 +34613,14 @@ scripts = [
       (quest_get_slot, ":quest_giver_troop", ":quest_no", slot_quest_giver_troop),
       (str_store_troop_name, s59, ":quest_giver_troop"),
       (add_quest_note_from_sreg, ":quest_no", 7, "@This quest has failed. Talk to {s59} to explain the situation.", 0),
+	  ### mod begin 27.11.2022
+	  (try_begin),
+	  (eq,":quest_no","qst_report_to_army"),
+		(troop_get_slot, ":troop_party", ":quest_giver_troop", slot_troop_leaded_party),
+		(party_set_flags, ":troop_party", pf_always_visible, 0),
+	  (try_end),
+	  ### mod end 
+	  
     ]),
 
   #script_report_quest_troop_positions
