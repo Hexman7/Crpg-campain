@@ -1190,12 +1190,17 @@ game_menus = [
 		(assign,"$background_answer_2", cb2_page),
 		(assign,"$background_answer_3",cb3_squire),
 		(assign,"$background_answer_4",cb4_greed),
-			
+		### setting troop to lord	MOD - 03.11.2022
+	    (call_script,"script_cf_character_player_substitute"),
+		
+		###
 	    (troop_set_attribute_points, "trp_player", 0),
 		(troop_set_proficiency_points, "trp_player", 0),
 		(troop_set_skill_points, "trp_player",0),
 		(assign,"$character_choose",0),
-	
+		
+
+		
 		(jump_to_menu, "mnu_auto_return"),
 		(start_presentation, "prsnt_banner_selection"),
 		(set_show_messages, 1),
@@ -3417,13 +3422,7 @@ game_menus = [
         ],
        ),		 
 
-	   ("game_equip_warriors_menu",
-       [(eq,"$cheat_mode",1)
-        ], "CHEAT!: game equip warriors window",
-       [(start_presentation, "prsnt_game_equip_warriors_window"),
-        ],
-       ),		   
-	   
+
 	   ("camp_get_upgrade",
        [(eq,"$cheat_mode",1)
         ], "CHEAT!: Get Upgrade",
@@ -4646,6 +4645,17 @@ game_menus = [
            #(start_presentation, "prsnt_custom_banner"),
         ]
        ),
+	   
+	   ("game_equip_warriors_menu",
+       [
+	   (this_or_next|eq,"$players_kingdom","fac_player_supporters_faction"),
+       (eq,"$cheat_mode", 1),
+        ], "Equip Warriors",
+       [(start_presentation, "prsnt_game_equip_warriors_window"),		### TESting 2022
+        ],
+       ),		   
+	   
+	   
 	  ("reset_stats",[],"Reset your character stats.",
        [(jump_to_menu, "mnu_reset_stats_menu"),
         ]
@@ -5359,8 +5369,9 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
-		(display_message,"@ array created"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
+        (assign,reg3,":stacks"),
+		(display_message,"@ array created. Stacks: {reg3}"),
 		(array_set_val_all, "$kills_array", 0),
 		
 		(try_for_range,":x",0,":stacks"),
@@ -5392,10 +5403,10 @@ game_menus = [
           (set_jump_mission,"mt_village_raid"),
           (party_get_slot, ":scene_to_use", "$g_encounter_is_in_village", slot_castle_exterior),
           (jump_to_scene, ":scene_to_use"),
-		(else_try),	## mod	begin 20.04.2018
+		(else_try),	## mod	begin 20.04.2018	## if bridge is nearby, fight on bridge
 		  (eq,reg1,1),
 		  (set_jump_mission,"mt_lead_charge"),
-		  (jump_to_scene, reg2),
+		  (jump_to_scene, reg2),	## reg2  returned from - script_check_bridge_nearby
         (else_try), ## mod end  
           (set_jump_mission,"mt_lead_charge"),
           (call_script, "script_setup_random_scene"),
@@ -5445,13 +5456,19 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+		
+		### MOD BEGIN - Saving player troops to file	03.11.2022
+	    (call_script, "script_coop_save_troops_equipment_to_file"), # set coop_battle_state to 1
+		
+		
+		### MOD END
       ]),	
 
       ("quit",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 	#MOD BEGIN	
-		(assign,"$troops_have_to_be_copied",1),
+	#	(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -5468,7 +5485,7 @@ game_menus = [
         (assign, "$g_next_menu", "mnu_simple_encounter"),
 		## mod begin, player troops script 
 		
-		(call_script,"script_coop_check_player_troops_status"),
+		#(call_script,"script_coop_check_player_troops_status"),
 		## mod end, player troops script 
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -5951,7 +5968,7 @@ game_menus = [
           (call_script, "script_add_routed_party"),
         (end_try),
         		
-		(try_begin),
+		(try_begin), ### track bandits quest
 			(check_quest_active, "qst_track_down_bandits"),
 			(neg|check_quest_succeeded, "qst_track_down_bandits"),
 			(neg|check_quest_failed, "qst_track_down_bandits"),
@@ -6172,6 +6189,139 @@ game_menus = [
           (gt, reg0, 0),          
           (troop_sort_inventory, "trp_temp_troop"),
           (change_screen_loot, "trp_temp_troop"),
+		  
+		  ### MOD BEGIN
+		  ### if there are allies - add freed prisoners to their parties as rescued soldiers
+		  (party_get_num_companions, ":num_rescued_prisoners", "p_temp_party"),
+
+		  (try_begin),
+		  (gt,":num_rescued_prisoners",0),
+			  (party_get_num_companion_stacks,":stack_size","p_collective_friends"),
+			  (array_create, ":parties_array", 0, 0),
+			  (assign,":array_size",0),
+			  (assign,":counter",0),
+			  (try_for_range,":stack_no",0,":stack_size"),
+				(party_stack_get_troop_id,      ":troop_id","p_collective_friends",":stack_no"),
+				(try_begin),
+				(troop_is_hero,":troop_id"),
+					(troop_get_slot, ":troop_party", ":troop_id", slot_troop_leaded_party),
+					(assign,reg3,":troop_party"),
+					### DEBUG
+					#(display_message,"@troop_party: {reg3}"),		
+					### DEBUG
+					(try_begin),
+					(gt,":troop_party",0),
+						(val_add,":array_size",1),
+						(array_resize_dim, ":parties_array", 0, ":array_size"),
+						(array_set_val, ":parties_array", ":troop_party", ":counter"),
+						(val_add,":counter",1),
+						### DEBUG
+						#(display_message,"@adding party to array"),
+						### DEBUG
+					(try_end),
+				## iterate through	p_temp_party - and give one troop each iteration to current party
+				(try_end),
+			  (try_end),
+   
+		   
+			  (party_get_num_companion_stacks,":stack_size","p_temp_party"),
+			  (array_get_dim_size, ":parties_in_array", ":parties_array", 0),
+			  (assign,":counter",0),
+			  ### DEBUG
+			 # (assign,reg3,":parties_in_array"),
+			  
+			  ### DEBUG
+			  #(display_message,"@Iterating through stack p temp party/ Parties in array {reg3}"),
+			  
+              (try_begin),
+              (gt,":parties_in_array",0),
+                  
+                  (assign,":stack_id",0),
+                  (assign,":while",9999),
+                  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
+                    (party_stack_get_troop_id,      ":troop_id","p_temp_party",":stack_id"),
+                    (party_remove_members,"p_temp_party",":troop_id",1),
+                    (try_begin),		## if counter didnt pass through number of parties
+                    (lt, ":counter",":parties_in_array"),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        (val_add,":counter",1),
+                        ### DEBUG
+                        #(display_message,"@if counter didnt pass through number of parties"),
+                    (else_try),	## if it did then reset counter
+                        (assign,":counter",0),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        ### DEBUG
+                        #(display_message,"@if it did then reset counter"),
+                    (try_end),
+                    
+                    (party_add_members,":party_no",":troop_id",1), 
+                    (val_add,":stack_id",1),
+                    #(store_sub,":stack_size_minus_one",":stack_size",1),
+                    (try_begin),	## if there are any troops left, iterate through the rest of stacks
+                    (ge,":stack_id",":stack_size"),
+                        (party_get_num_companion_stacks,":stack_size","p_temp_party"),
+                        (val_sub,":stack_id",":stack_id"),
+                        (try_begin),
+                        (lt,":stack_size",1),
+                            (val_sub,":while",":while"),
+                        (try_end),
+                    (try_end),
+                    
+
+                    ### DEBUG
+                    #(assign,reg3,":stack_no"),
+                    #(display_message,"@ Stack NO: {reg3}"),
+                  (try_end),
+                  
+                  
+                  #### "while" loop for prisoners
+                  (assign,":while",9999),
+                  (party_get_num_prisoners, ":num_taken_prisoners", "p_temp_party"),
+                  (assign,":counter",0),
+                  (assign,":stack_id_p",0),
+                  (party_get_num_prisoner_stacks, ":stack_size_p","p_temp_party"),
+                   
+                  (gt,":num_taken_prisoners",0),
+                  (try_for_range,":stack_no",0,":while"),	### iterating untill there is troops to take
+                    (party_prisoner_stack_get_troop_id,      ":troop_id_p","p_temp_party",":stack_id_p"),
+                    (party_remove_prisoners,"p_temp_party",":troop_id_p",1),
+                    (try_begin),		## if counter didnt pass through number of parties
+                    (lt, ":counter",":parties_in_array"),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        (val_add,":counter",1),
+                        ### DEBUG
+                        #(display_message,"@if counter didnt pass through number of parties"),
+                    (else_try),	## if it did then reset counter
+                        (assign,":counter",0),
+                        (array_get_val, ":party_no", ":parties_array", ":counter"),
+                        ### DEBUG
+                        #(display_message,"@if it did then reset counter"),
+                    (try_end),
+                    
+                    (party_add_prisoners,":party_no",":troop_id_p",1), 
+                    (val_add,":stack_id_p",1),
+                    #(store_sub,":stack_size_minus_one",":stack_size",1),
+                    (try_begin),	## if there are any troops left, iterate through the rest of stacks
+                    (ge,":stack_id_p",":stack_size_p"),
+                        (party_get_num_prisoner_stacks,":stack_size_p","p_temp_party"),
+                        (val_sub,":stack_id_p",":stack_id_p"),
+                        (try_begin),
+                        (lt,":stack_size_p",1),
+                            (val_sub,":while",":while"),
+                        (try_end),
+                    (try_end),
+				
+
+                    ### DEBUG
+                    #(assign,reg3,":stack_no"),
+                    #(display_message,"@ Stack NO: {reg3}"),
+                (try_end),
+			  (try_end), 
+			  
+		  (try_end),
+		  ### MOD END
+		  
+		  
         (else_try),
           #finished all
           (try_begin),
@@ -6597,7 +6747,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -6648,13 +6798,15 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
       ]),	
 	  
       ("quit",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 	##MOD BEGIN	
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -6669,7 +6821,7 @@ game_menus = [
         (call_script, "script_calculate_renown_value"),
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 
         (jump_to_menu, "mnu_battle_debrief"),
       #change these for menu
@@ -7031,7 +7183,7 @@ game_menus = [
 			########		Counting troops kills
 			########
 			(party_get_num_companion_stacks,":stacks","p_main_party"),
-			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(array_create, "$kills_array", 0, 2, ":stacks"),
 			(display_message,"@ array created"),
 			(array_set_val_all, "$kills_array", 0),
 			
@@ -7118,14 +7270,15 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
-
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -7158,7 +7311,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -7862,7 +8015,7 @@ game_menus = [
 			########		Counting troops kills
 			########
 			(party_get_num_companion_stacks,":stacks","p_main_party"),
-			(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+			(array_create, "$kills_array", 0, 2, ":stacks"),
 			(display_message,"@ array created"),
 			(array_set_val_all, "$kills_array", 0),
 			
@@ -7935,7 +8088,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
-
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
 #TODO siege sally
 #           (assign, "$g_siege_battle_state", 1),
 #           (assign, ":siege_sally", 0),
@@ -7960,7 +8114,7 @@ game_menus = [
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
         (ge, "$g_siege_method", 1),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),	
+		#(assign,"$troops_have_to_be_copied",1),	
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -7983,7 +8137,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -9101,6 +9255,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+		### mod begin
+		(call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 
@@ -9108,7 +9264,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),
+		#(assign,"$troops_have_to_be_copied",1),
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -9125,7 +9281,7 @@ game_menus = [
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
         (assign, "$g_next_menu", "mnu_siege_started_defender"),
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -9538,7 +9694,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -9592,7 +9748,9 @@ game_menus = [
         (try_begin),
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
-        (try_end),
+        (try_end),        
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
@@ -9600,7 +9758,7 @@ game_menus = [
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
         (party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -9616,7 +9774,7 @@ game_menus = [
         (assign, "$g_next_menu", "mnu_village_infest_bandits_result"),
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -10361,7 +10519,7 @@ game_menus = [
 		########		Counting troops kills
 		########
 		(party_get_num_companion_stacks,":stacks","p_main_party"),
-		(array_create, "$kills_array", 0, ":stacks", ":stacks"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
 		(display_message,"@ array created"),
 		(array_set_val_all, "$kills_array", 0),
 		
@@ -10417,6 +10575,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 
@@ -10424,7 +10584,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -10453,7 +10613,7 @@ game_menus = [
 
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),
+		#(call_script,"script_coop_check_player_troops_status"),
 		
 		## mod end, player troops script 
 		## mod begin
@@ -10617,7 +10777,6 @@ game_menus = [
             (val_mul, ":cur_probability", 4),
             (val_mul, ":cur_probability", average_price_factor),
             (val_div, ":cur_probability", ":cur_price"),
-
 			(val_mul, ":cur_probability", num_merchandise_goods),
 			(val_mul, ":cur_probability", 100),
 			(val_div, ":cur_probability", ":total_probability"),
@@ -10675,6 +10834,21 @@ game_menus = [
     "{s10} {s14}^{s11}{s12}{s13}",
     "none",
     [    
+	
+	    (try_begin), #Arris
+		(eq, "$gShowFeudalMap", 1),
+            (change_screen_map),
+            (start_presentation, "prsnt_world_map"),
+        (try_end),
+        
+        (try_begin), #Arris
+		(eq, "$gShowFeudalMap", 2),
+            (assign, "$gShowFeudalMap", 0),
+            
+            (assign, "$town_entered", 1),
+            (call_script, "script_enter_court", "$current_town"),
+            (change_screen_map_conversation, "$g_player_minister"),
+        (try_end),
         (try_begin),
           (eq, "$sneaked_into_town", 1),
           (call_script, "script_music_set_situation_with_culture", mtf_sit_town_infiltrate),
@@ -13022,13 +13196,15 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
       ("quit",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -13043,7 +13219,7 @@ game_menus = [
         (call_script, "script_coop_copy_file_to_parties_sp"),	     #remove troops from parties
         (assign, "$g_next_menu", "mnu_train_peasants_against_bandits_attack_result"),
 		## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 		
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),
@@ -16285,6 +16461,22 @@ game_menus = [
 	  "Attack the hideout...",
 	  
 	  [
+      
+        ########				MOD BEGIN
+		########		Counting troops kills
+		########
+		(party_get_num_companion_stacks,":stacks","p_main_party"),
+		(array_create, "$kills_array", 0, 2, ":stacks"),
+		(display_message,"@ array created"),
+		(array_set_val_all, "$kills_array", 0),
+		
+		(try_for_range,":x",0,":stacks"),
+			(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+			(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+		
+		(try_end),
+		#### 					MOD END
+
 	    (party_set_slot, "$g_encountered_party", slot_party_ai_substate, 1),
 	    (party_get_template_id, ":template", "$g_encountered_party"),
 	    (assign, "$g_enemy_party", "$g_encountered_party"),
@@ -16396,6 +16588,8 @@ game_menus = [
           (eq, "$coop_skip_menu", 1),
           (change_screen_quit), 
         (try_end),
+        # mod begin
+        (call_script,"script_coop_save_troops_equipment_to_file"),
        ]),	
 	  
 
@@ -16403,7 +16597,7 @@ game_menus = [
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
         (eq, "$coop_battle_state", coop_battle_state_setup_sp),
 		#MOD BEGIN
-		(assign,"$troops_have_to_be_copied",1),		
+		#(assign,"$troops_have_to_be_copied",1),		
       ],"Quit game (will not save).", 
       [
         (change_screen_quit), 
@@ -16424,7 +16618,7 @@ game_menus = [
       (party_add_members, "$g_encountered_party", ":bandit_type", 1), #add one to remember what type
 
 	  	## mod begin, player troops script 		
-		(call_script,"script_coop_check_player_troops_status"),	
+		#(call_script,"script_coop_check_player_troops_status"),	
 		## mod end, player troops script 
 		## mod begin
 		(assign, "$coop_multiplayer_battle_result", 1),

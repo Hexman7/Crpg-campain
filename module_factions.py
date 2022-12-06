@@ -39,7 +39,7 @@ factions = [
   ("culture_6",  "{!}culture_6", 0, 0.9, [], []),
   ("culture_7",  "{!}culture_7", 0, 0.9, [], []),
   ("culture_8",  "{!}culture_8", 0, 0.9, [], []),
-  ("culture_9",  "{!}culture_8", 0, 0.9, [], []),
+  ("culture_9",  "{!}culture_9", 0, 0.9, [], []),
 
 
 

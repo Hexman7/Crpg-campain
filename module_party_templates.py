@@ -102,15 +102,15 @@ party_templates = [
 
   
   
-  ("neutrals_reinforcements_swadian_a", "{!}neutrals_reinforcements_swadian_a", 0, 0, fac_commoners, 0, [(trp_swadian_militia_merc,4,8),(trp_watchman,3,6)]),
+  ("neutrals_reinforcements_swadian_a", "{!}neutrals_reinforcements_swadian_a", 0, 0, fac_commoners, 0, [(trp_swadian_militia_merc,4,8),(trp_swadian_militia_merc,3,6)]),
   ("neutrals_reinforcements_swadian_b", "{!}neutrals_reinforcements_swadian_b", 0, 0, fac_commoners, 0, [(trp_swadian_footman_merc,2,4),(trp_swadian_crossbowman_merc,3,6)]),
   ("neutrals_reinforcements_swadian_c", "{!}neutrals_reinforcements_swadian_c", 0, 0, fac_commoners, 0, [(trp_swadian_infantry_merc,2,3),(trp_swadian_man_at_arms_merc,1,2)]),
 
-  ("neutrals_reinforcements_vaegirs_a", "{!}neutrals_reinforcements_vaegirs_a", 0, 0, fac_commoners, 0, [(trp_vaegir_footman_merc,4,8),(trp_watchman,3,6)]),
+  ("neutrals_reinforcements_vaegirs_a", "{!}neutrals_reinforcements_vaegirs_a", 0, 0, fac_commoners, 0, [(trp_vaegir_footman_merc,4,8),(trp_vaegir_footman_merc,3,6)]),
   ("neutrals_reinforcements_vaegirs_b", "{!}neutrals_reinforcements_vaegirs_b", 0, 0, fac_commoners, 0, [(trp_vaegir_skirmisher_merc,2,4),(trp_vaegir_veteran_merc,3,6)]),
   ("neutrals_reinforcements_vaegirs_c", "{!}neutrals_reinforcements_vaegirs_c", 0, 0, fac_commoners, 0, [(trp_vaegir_infantry_merc,2,3),(trp_vaegir_horseman_merc,1,2)]),
 
-  ("neutrals_reinforcements_khergits_a", "{!}neutrals_reinforcements_khergits_a", 0, 0, fac_commoners, 0, [(trp_khergit_skirmisher_merc,4,8),(trp_watchman,3,6)]),
+  ("neutrals_reinforcements_khergits_a", "{!}neutrals_reinforcements_khergits_a", 0, 0, fac_commoners, 0, [(trp_khergit_skirmisher_merc,4,8),(trp_khergit_skirmisher_merc,3,6)]),
   ("neutrals_reinforcements_khergits_b", "{!}neutrals_reinforcements_khergits_b", 0, 0, fac_commoners, 0, [(trp_khergit_horseman_merc,2,4),(trp_khergit_horse_archer_merc,3,6)]),
   ("neutrals_reinforcements_khergits_c", "{!}neutrals_reinforcements_khergits_c", 0, 0, fac_commoners, 0, [(trp_khergit_veteran_horse_archer_merc,2,3),(trp_khergit_lancer_merc,1,2)]),
 

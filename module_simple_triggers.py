@@ -2332,6 +2332,7 @@ simple_triggers = [
     
     (assign, ":consumption_amount", ":num_men"),
     (assign, ":no_food_displayed", 0),
+	(assign,"$party_was_drinking",0), ###### mod, party drinking script
     (try_for_range, ":unused", 0, ":consumption_amount"),
       (assign, ":available_food", 0),
       (try_for_range, ":cur_food", food_begin, food_end),
@@ -2360,6 +2361,8 @@ simple_triggers = [
 #NPC companion changes end
       (try_end),
     (try_end),
+	(eq,"$party_was_drinking",1),
+		(display_message,"@Party was drinking",0xFFa30527),
     ]),
 
   # Setting item modifiers for food
@@ -3234,7 +3237,7 @@ simple_triggers = [
              (try_end),
            (else_try),
              (eq, ":quest_no", "qst_join_siege_with_army"),
-			 (eq, 1, 0),
+			 #(eq, 1, 0),		#### for some reason it was locked - MOD EDITED	
              (try_begin),
                (faction_slot_eq, "$players_kingdom", slot_faction_ai_state, sfai_attacking_center),
                (faction_get_slot, ":ai_object", "$players_kingdom", slot_faction_ai_object),
@@ -4146,20 +4149,24 @@ simple_triggers = [
 	
    	(try_begin),
 	(eq,"$troops_have_to_be_copied_after_saveload",1),
+		# (assign, reg5, -1),
 	
-		(assign, reg5, -1),
-	
-		(call_script,"script_cf_check_file_exist"),#17.02.2020
-		(eq,reg5,-1),
-			(call_script,"script_coop_read_eq_from_file_to_troops"),#28.12.2018
-		
+		# (call_script,"script_cf_check_file_exist"),#17.02.2020
+		# (eq,reg5,-1),
+			# (call_script,"script_coop_read_eq_from_file_to_troops"),#28.12.2018
 		(assign,"$troops_have_to_be_copied_after_saveload",0),
+		(call_script,"script_warriors_eq_menu_reset_done_all_troops_inventories",1),
     (try_end),
    ]),
    
-
-   
-   
+	
+###Script change_party_name
+# by Crossbow Pig
+ (24,
+  [
+    (call_script, "script_change_party_name"),
+  ]),
+##   
    
   (24,
    []),

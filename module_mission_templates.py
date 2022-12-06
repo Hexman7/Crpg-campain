@@ -6,6 +6,7 @@ from header_sounds import *
 from header_music import *
 from header_items import *
 from module_constants import *
+from header_skills import *
 #COOP BEGIN#####################################
 from module_coop_mission_templates import *
 #COOP END#############################################
@@ -1175,6 +1176,310 @@ common_rotate_deathcam = (
 )
 ## MadVader deathcam end	
 	
+	
+##### mod begin
+
+
+
+#### Bodyguars - https://forums.taleworlds.com/index.php?threads/bodyguards-escorts-in-town-village-scenes-open-source.151908/#post-3649579
+## by Caba`drin
+bodyguard_triggers = [
+ (ti_after_mission_start, 0, ti_once, [(neq, "$g_mt_mode", tcm_disguised)], #condition for not sneaking in; to exclude prison-breaks, etc change to (eq, "$g_mt_mode", tcm_default")
+   [
+    #Get number of bodyguards
+    (store_skill_level, ":leadership", skl_leadership, "trp_player"),
+    (troop_get_slot, ":renown", "trp_player", slot_troop_renown),
+    (val_div, ":leadership", 3),
+    (val_div, ":renown", 400),
+    (store_add, ":max_guards", ":renown", ":leadership"),
+    (val_min, ":max_guards", 4),
+   
+    (ge, ":max_guards", 1),
+
+    #Get player info
+    (get_player_agent_no, ":player"),
+    (agent_get_team, ":playerteam", ":player"),
+    (agent_get_horse, ":use_horse", ":player"), #If the player spawns with a horse, the bodyguard will too.
+
+    #Prepare Scene/Mission Template
+    (assign, ":entry_point", 0),
+    (assign, ":mission_tpl", 0),
+    (try_begin),        
+        (party_slot_eq, "$current_town", slot_party_type, spt_village),
+        (assign, ":entry_point", 11), #Village Elder's Entry
+        (assign, ":mission_tpl", "mt_village_center"),
+    (else_try),
+        (this_or_next|eq, "$talk_context", tc_prison_break),
+        (this_or_next|eq, "$talk_context", tc_escape),
+        (eq, "$talk_context", tc_town_talk),
+        (assign, ":entry_point", 24), #Prison Guard's Entry
+        (try_begin),
+            (party_slot_eq, "$current_town", slot_party_type, spt_castle),
+            (assign, ":mission_tpl", "mt_castle_visit"),
+        (else_try),
+            (assign, ":mission_tpl", "mt_town_center"),
+        (try_end),
+    (else_try),
+        (eq, "$talk_context", tc_tavern_talk),
+        (assign, ":entry_point", 17), #First NPC Tavern Entry
+    (try_end),
+    (try_begin),
+        (neq, "$talk_context", tc_tavern_talk),
+        (gt, ":use_horse", 0),
+        (mission_tpl_entry_set_override_flags, ":mission_tpl", ":entry_point", 0),
+    (try_end),
+    (store_current_scene, ":cur_scene"),
+    (modify_visitors_at_site, ":cur_scene"),  
+   
+    #Find and Spawn Bodyguards
+    (assign, ":bodyguard_count", 0),   
+    (party_get_num_companion_stacks, ":num_of_stacks", "p_main_party"),
+    (try_for_range, ":i", 0, ":num_of_stacks"),
+        (party_stack_get_troop_id, ":troop_id", "p_main_party", ":i"),
+        (neq, ":troop_id", "trp_player"),
+        (troop_is_hero, ":troop_id"),
+        (neg|troop_is_wounded, ":troop_id"),
+        (val_add, ":bodyguard_count", 1),
+                
+        (try_begin), #For prison-breaks
+            (this_or_next|eq, "$talk_context", tc_escape),
+            (eq, "$talk_context", tc_prison_break),      
+            (troop_set_slot, ":troop_id", slot_troop_will_join_prison_break, 1),
+        (try_end),
+
+        (add_visitors_to_current_scene, ":entry_point", ":troop_id", 1),
+
+        (eq, ":bodyguard_count", ":max_guards"),
+        (assign, ":num_of_stacks", 0), #Break Loop       
+    (try_end), #Stack Loop
+    (gt, ":bodyguard_count", 0), #If bodyguards spawned...
+    (set_show_messages, 0),   
+    (team_give_order, ":playerteam", 8, mordr_follow), #Division 8 to avoid potential conflicts
+    (set_show_messages, 1),   
+   ]),   
+
+ (ti_on_agent_spawn, 0, 0, [], 
+   [
+    (store_trigger_param_1, ":agent"),
+    (agent_get_troop_id, ":troop", ":agent"),
+    (neq, ":troop", "trp_player"),
+    (troop_is_hero, ":troop"),
+    (main_party_has_troop, ":troop"),
+    
+    (get_player_agent_no, ":player"),
+    (agent_get_team, ":playerteam", ":player"),
+    (agent_get_position,pos1,":player"),        
+    
+    (agent_set_team, ":agent", ":playerteam"),
+    (agent_set_division, ":agent", 8),
+    (agent_add_relation_with_agent, ":agent", ":player", 1),
+    (agent_set_is_alarmed, ":agent", 1),
+    (store_random_in_range, ":shift", 1, 3),
+    (val_mul, ":shift", 100),
+    (position_move_y, pos1, ":shift"),
+    (store_random_in_range, ":shift", 1, 3),
+    (store_random_in_range, ":shift_2", 0, 2),
+    (val_mul, ":shift_2", -1),
+    (try_begin),
+        (neq, ":shift_2", 0),
+        (val_mul, ":shift", ":shift_2"),
+    (try_end),
+    (position_move_x, pos1, ":shift"),
+    (agent_set_position, ":agent", pos1),
+   ]),
+  
+ (ti_on_agent_killed_or_wounded, 0, 0, [],
+    [
+     (store_trigger_param_1, ":dead_agent"),
+        
+     (agent_get_troop_id, ":troop", ":dead_agent"),
+     (neq, ":troop", "trp_player"),
+     (troop_is_hero, ":troop"),
+     (main_party_has_troop, ":troop"),
+     (party_wound_members, "p_main_party", ":troop", 1),
+    ]),
+ ]
+
+
+
+### Passable allies - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-38#post-9505318
+##  by Dalion
+passable_allies = (0, 0, 0,
+    [
+    (neg|main_hero_fallen),
+    (key_is_down, key_left_control),
+    ],
+    [
+    (set_fixed_point_multiplier, 1),
+    (get_player_agent_no, ":player"),
+    (agent_get_position, pos1, ":player"),
+    (agent_get_team, ":p_team", ":player"),
+    (try_for_agents, ":agent", pos1, 1),
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_non_player, ":agent"),
+        (agent_get_team, ":a_team", ":agent"),
+        (neg|teams_are_enemies, ":a_team", ":p_team"),
+        (agent_get_speed, pos2, ":player"),
+        (position_get_y, ":forward_momentum", pos2),
+        (position_get_x, ":sideway_momentum", pos2),
+        (convert_to_fixed_point, ":forward_momentum"),
+        (convert_to_fixed_point, ":sideway_momentum"),
+        (try_begin),
+            (lt, ":forward_momentum", 0), # backwards moving speed is higher somehow, so we divide it in half
+            (val_div, ":forward_momentum", 2),
+        (try_end),
+        (val_div, ":sideway_momentum", 2), # so is sideways moving speed
+        (position_move_y, pos1, ":forward_momentum"),
+        (position_move_x, pos1, ":sideway_momentum"),
+        (agent_set_position, ":player", pos1),      
+    (try_end),
+    ])
+
+#### trigger for changing agents modifiers according to:		
+### kingdom building bonuses 
+### alcohol use	- ###### mod, party drinking script
+# by Rider of Rohirrim
+effects_on_troops =  (
+    ti_on_agent_spawn, 0, 0,
+    [], [
+	(store_trigger_param_1, ":agent"),
+	(agent_is_human,":agent"),
+	(agent_set_kick_allowed, ":agent", 1),
+	(agent_get_party_id,":agent_party",":agent"),
+	(try_begin),
+	(eq,":agent_party","p_main_party"),
+		(try_begin), ### if party uses alcohol - alcohol unlocked and in inventory
+		(eq,"$party_was_drinking",1),
+			## 20 % penalty in everything ( horse speed 10% penalty)
+			(agent_set_damage_modifier, ":agent", 80),
+			(agent_set_accuracy_modifier, ":agent", 80),
+			(agent_set_speed_modifier, ":agent", 80),
+			(agent_set_reload_speed_modifier, ":agent", 80),
+			(agent_set_use_speed_modifier, ":agent", 80),
+			(agent_set_ranged_damage_modifier, ":agent", 80),
+			(agent_set_horse_speed_factor, ":agent", 90),
+			#bonus to health
+			(store_agent_hit_points,":current_hp",":agent",1),
+			#(assign,reg3,":current_hp"),#DEBUG
+			#(display_message,"@ agent hp before change: {reg3}"),
+			(store_mul,":new_hp",":current_hp",3),
+			(val_div,":new_hp",2),
+			(agent_set_max_hit_points,":agent",":new_hp",1),
+			(agent_set_hit_points,":agent",":new_hp",1),
+			#(store_agent_hit_points,reg3,":agent",1), #DEBUG
+			#(assign,reg4,":new_hp"),	
+			#(display_message,"@ agent hp after change: {reg3} new: {reg4}"),
+		(try_end),
+		
+		### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
+	(try_end),
+	
+	])	
+#### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
+## by KnowsCount
+ai_kick_enhancement =  (
+    2, 0, 0,
+    [], [
+    (get_player_agent_no,":player"),
+    (try_for_agents, ":agent"),
+        (neq, ":agent", ":player"),
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_active, ":agent"),
+        (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
+		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
+		(eq,":horse",-1),
+        ##He's an eligible human.  Now see if he's in a position to kick.
+        (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
+        (agent_get_defend_action, ":defend_action", ":agent"),
+        (this_or_next|eq,":attack_action",4),
+        (this_or_next|eq,":defend_action",1), # defend enemy
+        ##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
+        (agent_get_team, ":team", ":agent"),
+        (assign, ":maximum_distance", 100),
+        # get target
+        (agent_ai_get_look_target,":suspect",":agent"),
+        (gt,":suspect",0),
+        (agent_is_alive, ":suspect"),
+        (agent_is_human, ":suspect"),
+        (agent_is_active, ":suspect"),
+        (agent_get_team, ":suspect_team", ":suspect"),
+        (neq, ":suspect_team", ":team"),
+		(agent_get_horse,":horse_suspect",":suspect"),	### enemy is not mounted
+		(eq,":horse_suspect",-1),
+        (agent_get_position, pos1, ":agent"), # distance check
+        (agent_get_position, pos2, ":suspect"),
+        (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
+        (get_distance_between_positions, ":distance", pos1, pos2),
+        (le, ":distance", ":maximum_distance"),
+        (store_random_in_range,":kickchance", 1, 10),
+        (try_begin),
+            (lt,":kickchance",2),
+               # (display_message, "@Agent kicks."),
+                (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
+                (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
+				#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+            (try_end),
+       (try_end),
+       ])	
+
+###	   AI_kick_enhancement for multiplayer
+## based on singleplayer version. 
+#by Rider of Rohirrim
+	   
+ai_kick_enhancement_mp =  (
+    2, 0, 1,
+    [], [
+	(multiplayer_is_server),
+    (try_for_agents, ":agent"),
+		(agent_is_non_player, ":agent"),
+		(agent_is_human, ":agent"),
+		(agent_is_alive, ":agent"),
+		(agent_is_active, ":agent"),	
+		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
+		(eq,":horse",-1),	  
+		##He's an eligible human.  Now see if he's in a position to kick.
+		(agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
+		(agent_get_defend_action, ":defend_action", ":agent"),
+		(this_or_next|eq,":attack_action",4),
+		(this_or_next|eq,":defend_action",1), # defend enemy
+		##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
+		(agent_get_team, ":team", ":agent"),
+		(assign, ":maximum_distance", 100),
+		# get target
+		(agent_ai_get_look_target,":suspect",":agent"),
+		(gt,":suspect",0),
+		(agent_is_alive, ":suspect"),
+		(agent_is_human, ":suspect"),
+		(agent_is_active, ":suspect"),
+		(agent_get_team, ":suspect_team", ":suspect"),
+		(neq, ":suspect_team", ":team"),
+		(agent_get_horse,":horse_suspect",":suspect"),	### enemy is not mounted
+		(eq,":horse_suspect",-1),
+		(agent_get_position, pos1, ":agent"), # distance check
+		(agent_get_position, pos2, ":suspect"),
+		(neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
+		(get_distance_between_positions, ":distance", pos1, pos2),
+		(le, ":distance", ":maximum_distance"),
+		(store_random_in_range,":kickchance", 1, 10),
+		(try_begin),
+		(lt,":kickchance",2),
+			#(display_message, "@Agent kicks."),
+			(agent_set_animation, ":agent", "anim_prepare_kick_0"),
+			(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
+			(agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
+			#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+		(try_end),
+	(try_end),
+	
+	])
+
+### mod end	   
+	
+	
+	
 
 tournament_triggers = [
   (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest"),
@@ -1441,18 +1746,19 @@ tournament_triggers = [
          (try_end),
        (try_end),
        ]),
+	   ai_kick_enhancement,
   ]
 
 #### MOD BEGIN    
 lance_breaking = (
   ti_on_agent_hit, 0, 0, [],
   [
-    #(store_trigger_param_1,":agent_rec"),
+    (store_trigger_param_1,":agent_rec"),
 	(store_trigger_param,":agent",2),
 	(store_trigger_param,":damage",3),
 	(assign,":weapon",reg0),
 	
-	
+	(agent_force_rethink, ":agent_rec"), #### force agent to block incoming hit after being hit test
 	(try_begin),
 		(gt,":agent",0),
 		(agent_is_human, ":agent"),
@@ -1481,13 +1787,13 @@ counting_kills = (
         (store_trigger_param, ":killer_agent_no",2),
         #(store_trigger_param_3, ":is_wounded"),	
 
-		(array_get_dim_size, ":array_size", "$kills_array", 0),
+		(array_get_dim_size, ":array_size", "$kills_array", 1),
 		
 		(agent_get_troop_id,":troop_id", ":killer_agent_no"),
 		
 		(try_for_range, ":array_agent_id", 0, ":array_size"),
 			
-			(array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
+			 (array_get_val, ":array_troop_id", "$kills_array", 0, ":array_agent_id"),
 			
 			 (try_begin),
 			 (eq,":array_troop_id",":troop_id"),
@@ -1532,16 +1838,49 @@ lance_breaking_multiplayer = (
 		(agent_unequip_item, ":agent", ":weapon"),
 		
 		(play_sound_at_position,"snd_shield_broken", pos1, sf_vol_15),		## 20.09.2018
-	(try_end),	
+	 (try_end),	
 	 (assign,reg3,":damage"),
 	 (assign,reg4,":raw_damage"),
-	 (agent_get_player_id,":player_no",":agent"),
-	 (multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@You did {reg3} dmg. Raw dmg: {reg4}"),
-	
+	 (try_begin),
+	 (neg|agent_is_non_player, ":agent"),
+		(agent_get_player_id,":player_no",":agent"),
+		(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@You did {reg3} dmg. Raw dmg: {reg4}"),
+	 (try_end),
 	
     ])
 
 
+	
+  #### Pickable Items for sneaking 
+  ## 
+pickable_items = (	  0, 0, ti_once, [],### replace static weapons
+	  [(neg|is_edit_mode_enabled),
+		(try_for_range, ":item", one_handed_swords_begin, "itm_flintlock_pistol"), #  one_handed_swords_begin, itm_flintlock_pistol is the last weapon
+			(item_get_type, ":type", ":item"),
+			(try_begin),
+			(this_or_next|eq, ":type", itp_type_one_handed_wpn),
+			(this_or_next|eq, ":type", itp_type_two_handed_wpn),
+			(this_or_next|eq, ":type", itp_type_polearm),
+			(this_or_next|eq, ":type", itp_type_arrows),
+			(this_or_next|eq, ":type", itp_type_bolts),
+			(this_or_next|eq, ":type", itp_type_shield),
+			(this_or_next|eq, ":type", itp_type_bow),
+			(this_or_next|eq, ":type", itp_type_crossbow),
+			(eq, ":type", itp_type_thrown),
+				(scene_item_get_num_instances, ":num_instances", ":item"),
+				(try_for_range, ":number", 0, ":num_instances"),
+					(scene_item_get_instance, ":scene_item", ":item", ":number"),
+					(prop_instance_get_position, pos53, ":scene_item"),
+					(prop_instance_set_scale, ":scene_item", 0, 0, 0),
+					(set_spawn_position, pos53),
+					(spawn_item, ":item", 0),
+				(try_end),
+			(try_end),
+		(try_end),
+	 ])
+	
+
+	
 #### MOD END   
   
   
@@ -1797,7 +2136,7 @@ mission_templates = [
         
         (call_script, "script_neutral_behavior_in_fight"),
       ]),	  			
-    ],
+    ]+bodyguard_triggers,
   ),
 
 # This template is used in party encounters and such.
@@ -1883,6 +2222,10 @@ mission_templates = [
         (try_end),         
       ]),
 
+	  
+	  
+
+	  
       (ti_before_mission_start, 0, 0, [],
       [
         (assign, "$g_main_attacker_agent", 0),
@@ -2099,8 +2442,35 @@ mission_templates = [
           
        (display_message, "@You got keys of dungeon."),
      (try_end),
-   ]),     
-  ]),
+   ]),   
+
+	  #### ALIVE Horses - https://forums.taleworlds.com/index.php?threads/alive-horses.366769/
+	  ## by AndyYa
+	  (0, 0, ti_once, [],### replace static horse
+	  [(neg|is_edit_mode_enabled),
+		(try_for_range, ":horse", all_items_begin, all_items_end), # horses_begin, horses_end
+			(item_get_type, ":type", ":horse"),
+			(eq, ":type", itp_type_horse),
+			(scene_item_get_num_instances, ":num_instances", ":horse"),
+			(try_for_range, ":number", 0, ":num_instances"),
+				(scene_item_get_instance, ":scene_item", ":horse", ":number"),
+				(prop_instance_get_position, pos53, ":scene_item"),
+				(prop_instance_set_scale, ":scene_item", 0, 0, 0),
+				(set_spawn_position, pos53),
+				(spawn_horse, ":horse", 0),
+			(try_end),
+		(try_end),
+	 ]),
+	 
+	  
+	#### Pickable Items for sneaking 
+	pickable_items,
+
+   
+  ]+bodyguard_triggers,
+  
+  
+  ),
 
   (
     "village_center",0,-1,
@@ -2174,7 +2544,9 @@ mission_templates = [
           (call_script, "script_succeed_quest", "qst_hunt_down_fugitive"),
         (try_end),
         ]),
-    ],
+		
+		
+    ]+bodyguard_triggers,
   ),
 
   (
@@ -2209,7 +2581,7 @@ mission_templates = [
       (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest")]),
 
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_tab_pressed, 0, 0,
        [
          (display_message, "str_cannot_leave_now"),
@@ -2246,7 +2618,7 @@ mission_templates = [
          (try_end),
          (finish_mission),
          ]),
-      ],
+      ]+bodyguard_triggers,
     ),
 
   
@@ -2273,7 +2645,7 @@ mission_templates = [
          ]),
       
       common_inventory_not_available,
-
+	  ai_kick_enhancement,
       (1, 4, ti_once,
        [
          (this_or_next|main_hero_fallen),
@@ -2347,10 +2719,7 @@ mission_templates = [
 	  [
 		(try_begin),
 	    (neq, "$talk_context", tc_prison_break),	
-		(neq, "$g_player_court", "$current_town"),		### 30.08.2018
 			(set_trigger_result,1),
-		(else_try),
-			(display_message,"@ You can leave by talking with the guards"),		### 30.08.2018
 		(try_end),
 	  ], []),
 	  
@@ -2446,6 +2815,7 @@ mission_templates = [
            (try_end),
            (finish_mission),
            ]),
+		ai_kick_enhancement,
     ],
   ),
 
@@ -2457,9 +2827,9 @@ mission_templates = [
      ],
     [
       common_inventory_not_available,
-
+	  passable_allies,
       common_battle_init_banner,
-
+	  ai_kick_enhancement,
       (ti_tab_pressed, 0, 0, [],
        [(question_box,"str_do_you_want_to_retreat"),
         ]),
@@ -2500,6 +2870,55 @@ mission_templates = [
      (4,mtef_attackers|mtef_team_1,0,aif_start_alarmed,0,[]),
      ],
     [
+	
+	
+	##### trigger for started battle 
+	### by Dalion
+	 (ti_on_agent_spawn, 0, 0,
+	  [
+	   (ge, "$g_ally_party", 0), # if player has joined already started battle
+	   (eq, "$attacker_reinforcement_stage", 0), # and there hasn't been any reinforcements yet
+	   (eq, "$defender_reinforcement_stage", 0),
+	  ],
+	  [
+		(store_trigger_param_1, ":agent"),
+		(assign, ":agent_to_move", -1),
+		(try_begin),
+		  (agent_is_human, ":agent"),
+		  (agent_get_party_id, ":a_party", ":agent"),
+		  (neq, ":a_party", "p_main_party"),
+		  (agent_is_non_player, ":agent"),
+		  (assign, ":agent_to_move", ":agent"),
+		(else_try), 
+		  (neg|agent_is_human, ":agent"),
+		  (agent_get_rider, ":rider", ":agent"),
+		  (agent_get_party_id, ":r_party", ":rider"),
+		  (neq, ":r_party", "p_main_party"),
+		  (agent_is_non_player, ":rider"),
+		  (assign, ":agent_to_move", ":agent"),
+		(try_end),   
+		(neq, ":agent_to_move", -1),
+		(get_scene_boundaries, pos10, pos11),
+		(set_fixed_point_multiplier, 100),
+		(position_get_x, "$g_scene_max_x", pos11),
+		#(position_get_y, "$g_scene_max_y", pos11),
+		(val_add, "$g_scene_max_x", 2400), # 2400 has been subtracted automatically because of barriers from outer terrain
+		#(val_add, "$g_scene_max_y", 2400),
+		(store_div, ":pos_x", "$g_scene_max_x", 2),
+		(store_div, ":pos_y", "$g_scene_max_x", 2),
+		(init_position, pos22), # map center
+		(store_random_in_range, ":x_shift", -1000, 1000),
+		(store_random_in_range, ":y_shift", -1000, 1000),
+		(val_add, ":pos_x", ":x_shift"),
+		(val_add, ":pos_y", ":y_shift"),
+		(position_set_x, pos22, ":pos_x"),
+		(position_set_y, pos22, ":pos_y"),
+		(agent_set_position, ":agent_to_move", pos22),
+	  ]),
+	
+	######
+	   passable_allies,
+	   effects_on_troops,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -2839,7 +3258,9 @@ mission_templates = [
           (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), 
         (try_end),
         (call_script, "script_apply_death_effect_on_courage_scores", ":dead_agent_no", ":killer_agent_no"),
-       ]),
+		### test if troop will faster go for the next target instead of staning for a while doing nothing
+	   (agent_force_rethink, ":killer_agent_no"),
+	   ]),
 	   counting_kills,
 ## MadVader deathcam begin
 	  
@@ -2890,7 +3311,7 @@ mission_templates = [
       common_music_situation_update,
       common_battle_check_friendly_kills,
 
-      (1, 0, 5, [
+     (1, 0, 5, [
                               
       #new (25.11.09) starts (sdsd = TODO : make a similar code to also helping ally encounters)
       #count all total (not dead) enemy soldiers (in battle area + not currently placed in battle area)
@@ -2954,7 +3375,7 @@ mission_templates = [
 			  ]),
 
       common_battle_inventory,
-
+	  ai_kick_enhancement,
 
       #AI Triggers
       (0, 0, ti_once, [
@@ -3007,6 +3428,9 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
+	  passable_allies,
+	  effects_on_troops,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3126,6 +3550,9 @@ mission_templates = [
        ]),
 	   
 	  counting_kills,
+	  ai_kick_enhancement,
+	  passable_allies,
+	  effects_on_troops,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3427,6 +3854,9 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
+	  effects_on_troops,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3499,6 +3929,9 @@ mission_templates = [
       common_battle_tab_press,
       common_battle_init_banner,
 	  counting_kills,
+	  ai_kick_enhancement,
+	  effects_on_troops,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3578,6 +4011,9 @@ mission_templates = [
 	  counting_kills,
       common_battle_tab_press,
       common_battle_init_banner,
+	  ai_kick_enhancement,
+	  effects_on_troops,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3689,6 +4125,9 @@ mission_templates = [
       common_siege_ai_trigger_init,
       common_siege_ai_trigger_init_2,
 	  counting_kills,
+	  ai_kick_enhancement,
+	  effects_on_troops,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3790,6 +4229,9 @@ mission_templates = [
       common_inventory_not_available,
 	  lance_breaking,
 	  counting_kills,
+	  ai_kick_enhancement,
+	  effects_on_troops,
+	  passable_allies,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3929,6 +4371,7 @@ mission_templates = [
         (try_end),
       ]),
       
+	  
       (ti_on_agent_killed_or_wounded, 0, 0, [],
       [
         (store_trigger_param_1, ":dead_agent_no"),
@@ -4070,7 +4513,7 @@ mission_templates = [
         (mission_enable_talk),
         (finish_mission, 0),
       ]),
-    ],
+    ]+bodyguard_triggers,
   ),
 
 
@@ -4128,7 +4571,8 @@ mission_templates = [
       (ti_before_mission_start, 0, 0, [], [(call_script, "script_change_banners_and_chest")]),
       
       common_arena_fight_tab_press,
-      
+      ai_kick_enhancement,
+	  
       (ti_question_answered, 0, 0, [],
        [
          (store_trigger_param_1, ":answer"),
@@ -4192,7 +4636,7 @@ mission_templates = [
          (call_script, "script_change_banners_and_chest")]),
       
       common_arena_fight_tab_press,
-      
+      ai_kick_enhancement,
       (ti_question_answered, 0, 0, [],
        [
          (store_trigger_param_1,":answer"),
@@ -4586,6 +5030,13 @@ mission_templates = [
 
       (ti_inventory_key_pressed, 0, 0, [(display_message,"str_cant_use_inventory_arena")], []),
       
+
+		#### Pickable Items for sneaking 
+		pickable_items,
+		ai_kick_enhancement,
+		###
+	  
+	  
     ],
   ),
 
@@ -4607,6 +5058,7 @@ mission_templates = [
 
       common_battle_order_panel,
       common_battle_order_panel_tick,
+	  ai_kick_enhancement,
 
 ##      (0, 0, ti_once,
 ##       [
@@ -4704,6 +5156,7 @@ mission_templates = [
       (57, mtef_visitor_source|mtef_team_0, af_override_all, aif_start_alarmed, 1, [itm_practice_sword, itm_practice_shield, itm_padded_cloth, itm_segmented_helmet]),
     ],
     tournament_triggers
+	
   ),
 
   (
@@ -4771,6 +5224,8 @@ mission_templates = [
 		   (try_end),
            (finish_mission),
            ]),
+		   
+		   ai_kick_enhancement
     ],
   ),
 
@@ -4790,7 +5245,7 @@ mission_templates = [
        [
          (call_script, "script_music_set_situation_with_culture", mtf_sit_arena),
          ]),
-
+      ai_kick_enhancement,
 
       (1, 4, ti_once, [
 	  (this_or_next|main_hero_fallen),
@@ -5509,6 +5964,8 @@ mission_templates = [
         ]),
       (ti_inventory_key_pressed, 0, 0, [(display_message, "str_cant_use_inventory_tutorial")], []),
 
+	  ai_kick_enhancement,
+	  
       (ti_battle_window_opened, 0, 0, [],
        [
          (start_presentation, "prsnt_tutorial_show_mouse_movement"),
@@ -8365,7 +8822,8 @@ mission_templates = [
       common_custom_battle_tab_press,
       common_custom_battle_question_answered,
       common_inventory_not_available,
-
+	  ai_kick_enhancement,
+	  passable_allies,
       (ti_before_mission_start, 0, 0, [],
        [
          (scene_set_day_time, 15),
@@ -8448,7 +8906,8 @@ mission_templates = [
     [
       common_battle_mission_start,
       common_battle_init_banner,
-
+	  ai_kick_enhancement,
+	  passable_allies,
       (0, 0, ti_once,
        [
          (assign, "$defender_team", 0),
@@ -8622,7 +9081,6 @@ mission_templates = [
       #multiplayer_server_check_belfry_movement,      
      
       multiplayer_server_check_polls,
-
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -9000,9 +9458,8 @@ mission_templates = [
      ],
     [
       common_battle_init_banner,
-
       multiplayer_server_check_polls,
-
+	  ai_kick_enhancement_mp,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -9286,7 +9743,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-
+	  ai_kick_enhancement_mp,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -10315,7 +10772,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-
+	  ai_kick_enhancement_mp,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -10998,7 +11455,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-      
+	  ai_kick_enhancement_mp,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -11991,7 +12448,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-      
+	  ai_kick_enhancement_mp,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -13187,7 +13644,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-      
+	  ai_kick_enhancement_mp,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -14273,7 +14730,7 @@ mission_templates = [
 		common_battle_init_banner,
 
 		multiplayer_server_check_polls,
-
+	    ai_kick_enhancement_mp,
 		(ti_on_agent_spawn, 0, 0, [],
 		[
 			(store_trigger_param_1, ":agent_no"),
@@ -15478,7 +15935,7 @@ mission_templates = [
       common_battle_init_banner,
     
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),
@@ -15864,7 +16321,7 @@ mission_templates = [
       common_battle_init_banner,
     
       common_inventory_not_available,
-      
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [              
         (store_trigger_param_1, ":agent_no"),
@@ -16208,7 +16665,7 @@ mission_templates = [
     ],
     [
       common_battle_init_banner,
-    
+      ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),
@@ -16492,7 +16949,8 @@ mission_templates = [
      ],
     [
       multiplayer_server_check_polls,
-
+	  ai_kick_enhancement_mp,
+	  lance_breaking_multiplayer,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -16569,6 +17027,9 @@ mission_templates = [
              (try_end),
            (try_end),
          (try_end),
+		 
+		 
+		 (agent_set_hit_points,":killer_agent_no",100),
          ]),
       
       (1, 0, 0, [],

@@ -342,6 +342,12 @@ slot_bridge_scene = 72  ### mod begin end
 
 slot_castle_exterior    = slot_town_center
 
+
+
+slot_center_native_faction = 73	## crpg-campaign: center slot for setting it's native faction
+
+
+
 #slot_town_rebellion_contact   = 76
 #trs_not_yet_approached  = 0
 #trs_approached_before   = 1
@@ -1683,7 +1689,8 @@ player_cav_end = "trp_player_prison_guard"
 troops_not_matching_begin = "trp_player"
 troops_not_matching_end = "trp_kingdom_heroes_including_player_begin"
 
-
+player_temp_troops_begin = "trp_player_temp_recruit"
+player_temp_troops_end = "trp_player_test_troop"
 
 ############  MOD END
 

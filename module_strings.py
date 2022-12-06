@@ -2408,6 +2408,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^DRZ_Kopcap_osa\
 "), 
 
+("credits_14","OSP Scripts \
+^Woyeyeh - script for better handing out fiefs by kings  \
+"), 
 
 ## mod end
 #### Warband added texts

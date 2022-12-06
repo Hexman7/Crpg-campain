@@ -28,7 +28,7 @@ tracks = [
 ##  ("ambushed", "ambushed.mp3", mtf_sit_attack),
 ##  ("triumph", "triumph.mp3", mtf_sit_attack),
   ("bogus", "cant_find_this.ogg", 0, 0),
-  ("mount_and_blade_title_screen", "mount_and_blade_title_screen.ogg", mtf_sit_main_title|mtf_start_immediately, 0),
+  ("mount_and_blade_title_screen", "alexander-nakarada-dragonsong.mp3", mtf_sit_main_title|mtf_start_immediately, 0),
 
   ("ambushed_by_neutral", "ambushed_by_neutral.ogg", mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight),
   ("ambushed_by_khergit", "ambushed_by_khergit.ogg", mtf_culture_3|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
@@ -37,6 +37,7 @@ tracks = [
   ("ambushed_by_swadian", "ambushed_by_swadian.ogg", mtf_culture_1|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
   ("ambushed_by_vaegir",  "ambushed_by_vaegir.ogg", mtf_culture_2|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
   ("ambushed_by_sarranid", "middle_eastern_action.ogg", mtf_culture_6|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
+  ("ambushed_by_norse", "alexander-nakarada-mjolnir.ogg", mtf_culture_6|mtf_sit_ambushed|mtf_sit_siege, mtf_sit_fight|mtf_sit_multiplayer_fight|mtf_culture_all),
   
   ("arena_1", "arena_1.ogg", mtf_sit_arena, 0),
 #  ("arena_2", "arena_2.ogg", mtf_looping|mtf_sit_arena, 0),
@@ -114,7 +115,7 @@ tracks = [
   ("tragic_village", "tragic_village.ogg", mtf_sit_travel, mtf_sit_town|mtf_sit_night|mtf_sit_tavern),
 
   ("victorious_evil", "victorious_evil.ogg", mtf_persist_until_finished, 0),
-  ("victorious_neutral_1", "victorious_neutral_1.ogg", mtf_persist_until_finished|mtf_sit_victorious, 0),
+  ("victorious_neutral_1", "alexander-nakarada-winning-loop.mp3", mtf_persist_until_finished|mtf_sit_victorious, 0),
   ("victorious_neutral_2", "victorious_neutral_2.ogg", mtf_persist_until_finished|mtf_sit_victorious, 0),
   ("victorious_neutral_3", "victorious_neutral_3.ogg", mtf_persist_until_finished|mtf_sit_victorious, 0),
 

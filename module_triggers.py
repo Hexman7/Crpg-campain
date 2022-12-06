@@ -1310,7 +1310,7 @@ triggers = [
    ),
 
 #Process morale and determine personality clashes
-  (0, 0, 24,
+(0, 0, 24,
    [],
 [
 

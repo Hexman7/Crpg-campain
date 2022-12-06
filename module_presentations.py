@@ -5,6 +5,7 @@ from ID_meshes import *
 from header_operations import *
 from header_triggers import *
 from module_constants import *
+from header_terrain_types import *
 import string
 #COOP BEGIN#######################################
 from module_coop_presentations import *
@@ -14586,1507 +14587,788 @@ presentations = [
 	]),  
 	  
 	  
-	("game_equip_warriors_window", 0, mesh_inventory_window, [		#23.10.2018
-    (ti_on_presentation_load, [      
-      (set_fixed_point_multiplier, 1000),
-
-	
-		#### initializing some variables
-	  (assign,":starting_x_pos",0),	  
-	  (assign,":starting_y_pos",0),
-	  (assign,":licznik",0),
-	  (assign,"$g_prst_item_attached_to_mouse",-1),
-	  (assign,"$object_item_id",-1),
-	  
-	  
-	  (assign,":current_x_pos",":starting_x_pos"),	  
-	 
-	  (assign,"$g_prst_item_attached_to_mouse",-1),
-	 
-	  ### list of item categories
-	  (create_combo_label_overlay, "$g_presentation_list_of_items"),
-	  (position_set_x, pos1, 900),
-	  (position_set_y, pos1, 900),
-	  (overlay_set_size, "$g_presentation_list_of_items", pos1),
-	  (position_set_x, pos1, 163),
-	  (position_set_y, pos1, 660),
-	  (overlay_set_position, "$g_presentation_list_of_items", pos1),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@None"),	## 0
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Horses"),	## 1
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Boots"),	 
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Gloves"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Armors"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Medium Armors"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Armors"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Helmets"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Medium Helmets"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Helmets"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Crossbows"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Bows"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Throwing weapons"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Shields"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Polearm Weapons"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@Two Handed Weapons"),
-	  (overlay_add_item, "$g_presentation_list_of_items", "@One Handed Weapons"),  ## 16
-	  
-	  
-	  (overlay_set_val, "$g_presentation_list_of_items", "$selected_items"),	
-
-	 ## item category text
-	  (create_text_overlay, "$g_presentation_item_category_name", "@Item's Category"),
-	  (position_set_x, pos1, 900),
-	  (position_set_y, pos1, 900),
-	  (overlay_set_size, "$g_presentation_item_category_name", pos1),
-	  (position_set_x, pos1, 110),
-	  (position_set_y, pos1, 705),
-	  (overlay_set_position, "$g_presentation_item_category_name", pos1),
-
-	 
-
-
-	  
-	  
-	  
-	  #### inventory slots
-      (str_clear, s0),
-	  (create_text_overlay, "$g_presentation_inventory_slots", s0, tf_scrollable),
-	  (position_set_x, pos1, 100),
-	  (position_set_y, pos1, 100),
-	  (overlay_set_size, "$g_presentation_inventory_slots", pos1),
-	  (position_set_x, pos1, 18),
-	  (position_set_y, pos1, 105),
-	  (overlay_set_position, "$g_presentation_inventory_slots", pos1),
-	  (position_set_x, pos1, 270),
-	  (position_set_y, pos1, 545),
-	  (overlay_set_area_size, "$g_presentation_inventory_slots", pos1),
-	  
-
-	  
-	  # (create_mesh_overlay_with_item_id, reg1, "itm_axe"),
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  # (overlay_set_size, reg1, pos1),
-	  # (position_set_x, pos1, 180),
-	  # (position_set_y, pos1, 300),
-	  # (overlay_set_position, reg1, pos1),
-	 
-	 ## troop eq 
-	  (create_text_overlay, "$g_presentation_troop_name", "@Troop equipment"),
-	  (position_set_x, pos1, 900),
-	  (position_set_y, pos1, 900),
-	  (overlay_set_size, "$g_presentation_troop_name", pos1),
-	  (position_set_x, pos1, 760),
-	  (position_set_y, pos1, 705),
-	  (overlay_set_position, "$g_presentation_troop_name", pos1),
-	  
-	  ### list of troops
-	  (create_combo_button_overlay, "$g_presentation_list_of_troops"),
-	  (position_set_x, pos1, 900),
-	  (position_set_y, pos1, 900),
-	  (overlay_set_size, "$g_presentation_list_of_troops", pos1),
-	  (position_set_x, pos1, 830),
-	  (position_set_y, pos1, 660),
-	  (overlay_set_position, "$g_presentation_list_of_troops", pos1),
-	  
-	  (try_for_range,":troop",player_troops_begin,player_troops_end),
-		(str_store_troop_name,s0,":troop"),
-		(overlay_add_item, "$g_presentation_list_of_troops", s0),
-	  (try_end),
-      
-      (str_store_troop_name,s0,"trp_player_test_troop"),
-      (overlay_add_item, "$g_presentation_list_of_troops", s0),
-	  (overlay_set_val,"$g_presentation_list_of_troops","$troop_overlay_val"),
-	
-
-	  
-	  
-
-	  
-	  
-	  #### inventory slots
-      (str_clear, s1),
-	  (create_text_overlay, "$g_presentation_troops_inventory_slots", s1, tf_scrollable),
-	  (position_set_x, pos1, 100),
-	  (position_set_y, pos1, 100),
-	  (overlay_set_size, "$g_presentation_troops_inventory_slots", pos1),
-	  (position_set_x, pos1, 686),
-	  (position_set_y, pos1, 105),
-	  (overlay_set_position, "$g_presentation_troops_inventory_slots", pos1),
-	  (position_set_x, pos1, 270),
-	  (position_set_y, pos1, 545),
-	  (overlay_set_area_size, "$g_presentation_troops_inventory_slots", pos1),
-	  (position_set_x, pos1, 0),
-	  (position_set_y, pos1, 180),	  
-	  (overlay_set_mesh_rotation, "$g_presentation_troops_inventory_slots", ),
-
-	  
-	  
-	  
-	  (create_game_button_overlay, "$g_party_window_done_btn", "@Done"),	### done
-	  (position_set_x, pos1, 120),
-	  (position_set_y, pos1, 40),
-	  (overlay_set_size, "$g_party_window_done_btn", pos1),
-	  (position_set_x, pos1, 580),
-	  (position_set_y, pos1, 25),
-	  (overlay_set_position, "$g_party_window_done_btn", pos1),
-	  
-	  
-	  
-	  
-	  ## Armor stats and weight
-	  (position_set_x, pos1, 900),
-	  (position_set_y, pos1, 900),
-	  
-	  (create_text_overlay, "$g_presentation_head_armor", "@Head Armor: "),
-	  (overlay_set_size, "$g_presentation_head_armor", pos1),
-
-	  (create_text_overlay, "$g_presentation_body_armor", "@Body Armor: "),
-	  (overlay_set_size, "$g_presentation_body_armor", pos1),
-
-	  (create_text_overlay, "$g_presentation_leg_armor", "@Leg Armor: "),
-	  (overlay_set_size, "$g_presentation_leg_armor", pos1),	 
-
-	  (create_text_overlay, "$g_presentation_encumbrance", "@Encumbrance: "),
-	  (overlay_set_size, "$g_presentation_encumbrance", pos1),
-
-
-	  (position_set_x, pos1, 520),
-	  (position_set_y, pos1, 180),
-	  (overlay_set_position, "$g_presentation_head_armor", pos1),
-	  
-	  (position_set_y, pos1, 150),
-	  (overlay_set_position, "$g_presentation_body_armor", pos1),
-	  
-	  (position_set_y, pos1, 120),
-	  (overlay_set_position, "$g_presentation_leg_armor", pos1),	 
-	  
-	  (position_set_y, pos1, 90),
-	  (overlay_set_position, "$g_presentation_encumbrance", pos1),
-
-	  
-	  (array_create, "$inventory_item_types_array",0, 99, 3),
-	  (array_set_val_all, "$inventory_item_types_array", -1),
-
-
-	  (array_create, "$inventory_troop_equipment_array",0, 99, 3),
-	  (array_set_val_all, "$inventory_troop_equipment_array", -1),
-	  
-	  ### generating inventory slots temp troop	LHS
-	  
-	  
-	  (set_container_overlay, "$g_presentation_inventory_slots"),
-	  
-	  (try_for_range_backwards,":slot_no",0,99),
-		 # (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
-		 
-		 
-		 
-		  (try_begin),
-		  (eq,":licznik",3),
-			(assign,":current_x_pos",":starting_x_pos"),
-			(val_add,":starting_y_pos",90),
-			(val_sub,":licznik",":licznik"),
-		  (else_try),
-		  (gt,":licznik",0),
-			(val_add,":current_x_pos",90),
-		  (try_end),
-			
-		  (create_mesh_overlay, reg1, "mesh_inventory_slot"),
+	("game_equip_warriors_window", 0, mesh_inventory_window, [		#26.07.2022
+		(ti_on_presentation_load, [      
+		  (set_fixed_point_multiplier, 1000),
+		  
+		  (assign,"$g_prst_item_attached_to_mouse",-1),
+		  (assign,"$object_item_id",-1),
+		  
+		  
+		  ###################################################################################################	 
+		  ### list of item categories
+		  (create_combo_label_overlay, "$g_presentation_list_of_items"),
 		  (position_set_x, pos1, 900),
 		  (position_set_y, pos1, 900),
-		  (overlay_set_size, reg1, pos1),
-		  (position_set_x, pos1, ":current_x_pos"),
-		  (position_set_y, pos1, ":starting_y_pos"),
-		  (overlay_set_position, reg1, pos1),
-		 
-		  (array_set_val, "$inventory_item_types_array", reg1, ":slot_no",0),
-		 
-		  (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
-
-		  (val_add,":licznik",1),
+		  (overlay_set_size, "$g_presentation_list_of_items", pos1),
+		  (position_set_x, pos1, 163),
+		  (position_set_y, pos1, 660),
+		  (overlay_set_position, "$g_presentation_list_of_items", pos1),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@None"),	## 0
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Horses"),	## 1
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Boots"),	 
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Gloves"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Armors"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Medium Armors"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Armors"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Helmets"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Medium Helmets"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Helmets"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Crossbows"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Bows"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Throwing weapons"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Shields"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Polearm Weapons"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@Two Handed Weapons"),
+		  (overlay_add_item, "$g_presentation_list_of_items", "@One Handed Weapons"),  ## 16
 	  
-	  (try_end),
-	  
-	  
-	  
-	  
-	  
-	  
-	### generating slots for troops			RHS
-	
-	  (assign,":starting_x_pos",0),	  
-	  (assign,":starting_y_pos",0),
-	  (assign,":licznik",0),
-	  
-	  (assign,":current_x_pos",":starting_x_pos"),	  
-	
-	
-	  (set_container_overlay, "$g_presentation_troops_inventory_slots"),
-	  
-	  (try_for_range_backwards,":slot_no",0,99),
-		 # (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
-		  (try_begin),
-		  (eq,":licznik",3),
-			(assign,":current_x_pos",":starting_x_pos"),
-			(val_add,":starting_y_pos",90),
-			(val_sub,":licznik",":licznik"),
-		  (else_try),
-		  (gt,":licznik",0),
-			(val_add,":current_x_pos",90),
-		  (try_end),
-			
-		  (create_mesh_overlay, reg1, "mesh_inventory_slot"),
+		  (overlay_set_val, "$g_presentation_list_of_items", "$selected_items"),	
+	###################################################################################################	
+		 ## item category text
+		  (create_text_overlay, "$g_presentation_item_category_name", "@Item's Category"),
 		  (position_set_x, pos1, 900),
 		  (position_set_y, pos1, 900),
-		  (overlay_set_size, reg1, pos1),
-		  (position_set_x, pos1, ":current_x_pos"),
-		  (position_set_y, pos1, ":starting_y_pos"),
-		  (overlay_set_position, reg1, pos1),
-		 
-		  (overlay_set_container_overlay, reg1, "$g_presentation_troops_inventory_slots"),
+		  (overlay_set_size, "$g_presentation_item_category_name", pos1),
+		  (position_set_x, pos1, 110),
+		  (position_set_y, pos1, 705),
+		  (overlay_set_position, "$g_presentation_item_category_name", pos1),
+	###################################################################################################	
+		  #### inventory slots
+		  (str_clear, s0),
+		  (create_text_overlay, "$g_presentation_categorized_items_slots_container", s0, tf_scrollable),
+		  (position_set_x, pos1, 100),
+		  (position_set_y, pos1, 100),
+		  (overlay_set_size, "$g_presentation_categorized_items_slots_container", pos1),
+		  (position_set_x, pos1, 18),
+		  (position_set_y, pos1, 105),
+		  (overlay_set_position, "$g_presentation_categorized_items_slots_container", pos1),
+		  (position_set_x, pos1, 270),
+		  (position_set_y, pos1, 545),
+		  (overlay_set_area_size, "$g_presentation_categorized_items_slots_container", pos1),
+	###################################################################################################	
+		 ## troop eq 
+		  (create_text_overlay, "$g_presentation_troop_name", "@Troop equipment"),
+		  (position_set_x, pos1, 900),
+		  (position_set_y, pos1, 900),
+		  (overlay_set_size, "$g_presentation_troop_name", pos1),
+		  (position_set_x, pos1, 760),
+		  (position_set_y, pos1, 705),
+		  (overlay_set_position, "$g_presentation_troop_name", pos1),
+		  
+		  ### list of troops
+		  (create_combo_button_overlay, "$g_presentation_list_of_troops"),
+		  (position_set_x, pos1, 900),
+		  (position_set_y, pos1, 900),
+		  (overlay_set_size, "$g_presentation_list_of_troops", pos1),
+		  (position_set_x, pos1, 830),
+		  (position_set_y, pos1, 660),
+		  (overlay_set_position, "$g_presentation_list_of_troops", pos1),
+		  #### adding troops to list
+		  (try_for_range,":troop",player_temp_troops_begin,player_temp_troops_end),
+			(str_store_troop_name,s0,":troop"),
+			(overlay_add_item, "$g_presentation_list_of_troops", s0),
+		  (try_end),
+		  
+			### setting default value
+		  (overlay_set_val,"$g_presentation_list_of_troops","$troop_overlay_val"),
+		  (assign,"$selected_troop_m","$troop_overlay_val"),
+		  (val_add,"$selected_troop_m",player_temp_troops_begin),
+	###################################################################################################	
+
+		  #### inventory slots
+		  (str_clear, s1),
+		  (create_text_overlay, "$g_presentation_troops_inventory_slots", s1, tf_scrollable),
+		  (position_set_x, pos1, 100),
+		  (position_set_y, pos1, 100),
+		  (overlay_set_size, "$g_presentation_troops_inventory_slots", pos1),
+		  (position_set_x, pos1, 686),
+		  (position_set_y, pos1, 105),
+		  (overlay_set_position, "$g_presentation_troops_inventory_slots", pos1),
+		  (position_set_x, pos1, 270),
+		  (position_set_y, pos1, 545),
+		  (overlay_set_area_size, "$g_presentation_troops_inventory_slots", pos1),
+		  (position_set_x, pos1, 0),
+		  (position_set_y, pos1, 180),	  
+		  (overlay_set_mesh_rotation, "$g_presentation_troops_inventory_slots", ),
+	###################################################################################################	
+		### done
+		  (create_game_button_overlay, "$g_party_window_done_btn", "@Done"),	
+		  (position_set_x, pos1, 120),
+		  (position_set_y, pos1, 40),
+		  (overlay_set_size, "$g_party_window_done_btn", pos1),
+		  (position_set_x, pos1, 580),
+		  (position_set_y, pos1, 25),
+		  (overlay_set_position, "$g_party_window_done_btn", pos1),
+
+	###################################################################################################	
+		### reset
+		  (create_game_button_overlay, "$g_party_window_reset_btn", "@Reset"),	
+		  (position_set_x, pos1, 80),
+		  (position_set_y, pos1, 30),
+		  (overlay_set_size, "$g_party_window_reset_btn", pos1),
+		  (position_set_x, pos1, 530),
+		  (position_set_y, pos1, 240),
+		  (overlay_set_position, "$g_party_window_reset_btn", pos1),
+		  
+	###################################################################################################	
+		### reset all
+		  (create_game_button_overlay, "$g_party_window_reset_all_btn", "@Reset All"),	
+		  (position_set_x, pos1, 80),
+		  (position_set_y, pos1, 30),
+		  (overlay_set_size, "$g_party_window_reset_all_btn", pos1),
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 240),
+		  (overlay_set_position, "$g_party_window_reset_all_btn", pos1),		  
+		  
+	####################################################################################################
+	##########			TROOP MESH TABLEU MATERIAL											############
+	####################################################################################################
+	
+	
+	
+		  (create_mesh_overlay_with_tableau_material, "$g_presentation_troop_mesh", -1, "tableau_game_character_sheet", "$selected_troop_m"),
+		  
+		  (position_set_x, pos1, 700),
+		  (position_set_y, pos1, 700),
+		  (overlay_set_size, "$g_presentation_troop_mesh", pos1),
+		  (position_set_x, pos1, 340),
+		  (position_set_y, pos1, 20),
+		  (overlay_set_position, "$g_presentation_troop_mesh", pos1),
+		  
+	####################################################################################################
+		  
+		  ## Armor stats and weight
+		  (position_set_x, pos1, 900),
+		  (position_set_y, pos1, 900),
+		  
+		  (create_text_overlay, "$g_presentation_head_armor", "@Head Armor: "),
+		  (overlay_set_size, "$g_presentation_head_armor", pos1),
+		  
+		  (create_text_overlay, "$g_presentation_head_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_head_armor_val", pos1),
+		  
+		  (create_text_overlay, "$g_presentation_body_armor", "@Body Armor: "),
+		  (overlay_set_size, "$g_presentation_body_armor", pos1),
+		  
+		  (create_text_overlay, "$g_presentation_body_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_body_armor_val", pos1),
+		  
+		  (create_text_overlay, "$g_presentation_leg_armor", "@Leg Armor: "),
+		  (overlay_set_size, "$g_presentation_leg_armor", pos1),	 
+
+		  (create_text_overlay, "$g_presentation_leg_armor_val", "@0"),
+		  (overlay_set_size, "$g_presentation_leg_armor_val", pos1),
+		  
+		  (create_text_overlay, "$g_presentation_encumbrance", "@Encumbrance: "),
+		  (overlay_set_size, "$g_presentation_encumbrance", pos1),
+
+		  (create_text_overlay, "$g_presentation_encumbrance_val", "@0"),
+		  (overlay_set_size, "$g_presentation_encumbrance_val", pos1),
+		  
+		  
+		  (position_set_x, pos1, 500),
+		  (position_set_y, pos1, 180),
+		  (overlay_set_position, "$g_presentation_head_armor", pos1),
+		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 180),
+		  (overlay_set_position, "$g_presentation_head_armor_val", pos1),
+		  
+		  (position_set_x, pos1, 500),
+		  (position_set_y, pos1, 150),
+		  (overlay_set_position, "$g_presentation_body_armor", pos1),
+		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 150),
+		  (overlay_set_position, "$g_presentation_body_armor_val", pos1),
+		  
+		  (position_set_x, pos1, 500),
+		  (position_set_y, pos1, 120),
+		  (overlay_set_position, "$g_presentation_leg_armor", pos1),	 
+		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 120),
+		  (overlay_set_position, "$g_presentation_leg_armor_val", pos1),	 
+		  
+		  (position_set_x, pos1, 500),
+		  (position_set_y, pos1, 90),
+		  (overlay_set_position, "$g_presentation_encumbrance", pos1),
+		  
+		  (position_set_x, pos1, 620),
+		  (position_set_y, pos1, 90),
+		  (overlay_set_position, "$g_presentation_encumbrance_val", pos1),
+		  
+	###################################################################################################	
+	########	 	GENERATING SLOTS FOR CATEGORIZED ITEMS 		######
+	###################################################################################################	
+		  
+
+		  (assign,":licznik",0),
+		  (assign,":current_x_pos",0), 
+		  (assign,":current_y_pos",2880), 
+		  
+		  
+		  (array_create, "$categorized_items_inventory_slots_array",0, 99, 4),
+		  (array_set_val_all, "$categorized_items_inventory_slots_array", -1),
+		  
+		  (array_create, "$troops_items_inventory_slots_array",0, 99, 4),
+		  (array_set_val_all, "$troops_items_inventory_slots_array", -1),
+		  
+		  (array_create, "$items_inventory_slots_positions_array",2, 99), 
+		  (array_create, "$troop_nine_items_positions_array",2, 9), 
+		  (array_create, "$locking_array",0, 99), 
+		  (array_set_val_all, "$locking_array", -1),
 
 		  
-		  (array_set_val, "$inventory_troop_equipment_array", reg1, ":slot_no",0),
-		  (val_add,":licznik",1),
-	  
-	  (try_end),
-	  
-
-	  (set_container_overlay, -1),
-	  
-	  
-	  (assign,":starting_y_pos2",":starting_y_pos"),	
-	  
-	  
-	  
-	  (set_container_overlay, "$g_presentation_inventory_slots"),
-	  
-	  
-	  ### adding items to slots of temp troop
-	  
-	  
-	  (assign,":licznik",0),
-	  (assign,":starting_x_pos",0),	
-	  (assign,":current_x_pos",0),	
-	  
-	  (try_for_range,":slot_no",9,99),
-	  
-		   (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
-	  
-		   (try_begin),
-		   (gt,":i_slot",-1),
-			 
+		  
+		  
+			(array_create, "$inventory_nine_items_array",0, 9, 4),
+			(array_set_val_all, "$inventory_nine_items_array", -1),
+			(assign,":licznik",0),
+			(assign,":item_id",-1),
+			  
+			(try_for_range,":slot",0,9),			
+			  ####### GENERATING SLOTS
+				(try_begin),
+				(lt,":slot",4),
+					(store_mul,":item_y_sub",":licznik",90),
+					(store_sub,":slot_y", 610, ":item_y_sub"),
+				(else_try),
+				(lt,":slot",7),
+				(gt,":slot",3),
+					(store_mul,":item_y_sub",":licznik",90),
+					(store_sub,":slot_y", 610, ":item_y_sub"),
+				(try_end),
+				
+				
+				(create_mesh_overlay, reg1, "mesh_inventory_slot"),
+				(position_set_x, pos1, 900),
+				(position_set_y, pos1, 900),
+				(overlay_set_size, reg1, pos1),
+				
+				  (try_begin),
+				  (lt,":slot",4),
+					(position_set_x, pos2, 550),
+					(position_set_y, pos2, ":slot_y"),
+				  (else_try),
+				  (lt,":slot",7),
+				  (gt,":slot",3),
+					(position_set_x, pos2, 450),
+					(position_set_y, pos2, ":slot_y"),
+				  (else_try),
+				  (eq,":slot",7),
+					(position_set_x, pos2, 360),
+					(position_set_y, pos2, 515),
+				  (else_try),
+				  (eq,":slot",8),
+					(position_set_x, pos2, 363),
+					(position_set_y, pos2, 315),
+				  (try_end),
+				
+				(overlay_set_position, reg1, pos2),
+				
+				(position_get_x,":cur_x",pos2),
+				(position_get_y,":cur_y",pos2),
+				(val_add,":cur_x",45),
+				(val_add,":cur_y",45),
+				(position_set_x, pos3, ":cur_x"),
+				(position_set_y, pos3, ":cur_y"),
+				(array_set_val, "$troop_nine_items_positions_array", pos3,":slot"),
+				
+				(array_set_val, "$inventory_nine_items_array",  reg1, ":slot",0),
+			  
+				(val_add,":licznik",1),
+				
+				(try_begin),
+				(eq,":slot",3),
+					(val_sub,":licznik",":licznik"),
+				(try_end),
+			(try_end),	
+			(set_container_overlay, -1),
+			
+			
+		  (assign,":licznik",0),
+		  (assign,":item_id",-1),
+		  (try_for_range,":slot_no",0,99),
 			  (try_begin),
 			  (eq,":licznik",3),
-				(assign,":current_x_pos",":starting_x_pos"),
-				(val_sub,":starting_y_pos",90),
+				(val_sub,":current_x_pos",":current_x_pos"),
+				(val_sub,":current_y_pos",90),
 				(val_sub,":licznik",":licznik"),
 			  (else_try),
 			  (gt,":licznik",0),
 				(val_add,":current_x_pos",90),
 			  (try_end),
 			  
-			   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   
-			   (assign,reg10,"$g_presentation_item"),
-			   #(display_message,"@obj id: {reg10}"),
-			   
+			  
+			  (set_container_overlay, "$g_presentation_categorized_items_slots_container"),
+			  
+			  (create_mesh_overlay, reg1, "mesh_inventory_slot"),
+			  (position_set_x, pos1, 900),
+			  (position_set_y, pos1, 900),
+			  (overlay_set_size, reg1, pos1),
+			  (position_set_x, pos1, ":current_x_pos"),
+			  (position_set_y, pos1, ":current_y_pos"),
+			  (overlay_set_position, reg1, pos1),
+			
+			  (overlay_set_container_overlay, reg1, "$g_presentation_categorized_items_slots_container"),
+			 
+			  (array_set_val, "$categorized_items_inventory_slots_array", reg1, ":slot_no",0),
+			  
+			  (set_container_overlay, "$g_presentation_troops_inventory_slots"),
+			  
+			  (create_mesh_overlay, reg1, "mesh_inventory_slot"),
+			  (position_set_x, pos1, 900),
+			  (position_set_y, pos1, 900),
+			  (overlay_set_size, reg1, pos1),
+			  (position_set_x, pos1, ":current_x_pos"),
+			  (position_set_y, pos1, ":current_y_pos"),
+			  (overlay_set_position, reg1, pos1),
+			 
+			  (overlay_set_container_overlay, reg1, "$g_presentation_troops_inventory_slots"),
+			  (array_set_val, "$troops_items_inventory_slots_array", reg1, ":slot_no",0),
 
-			   
-			   (position_set_x, pos1, 900),
-			   (position_set_y, pos1, 900),
-			   
-			   # (assign,reg10,"$g_presentation_item"),
-			   # (display_message,"@ presentation item: {reg10}"),
-			   
-			   (store_add,":item_x",":current_x_pos",45),
-			   (store_add,":item_y",":starting_y_pos",45),
-			   (overlay_set_size, "$g_presentation_item", pos1),
-			   (position_set_x, pos1, ":item_x"),
-			   (position_set_y, pos1, ":item_y"),	   
-			   (overlay_set_position, "$g_presentation_item", pos1),
-			   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
-
-			   (array_set_val, "$inventory_item_types_array",  "$g_presentation_item", ":slot_no",1),
-			   (array_set_val, "$inventory_item_types_array",  ":i_slot", ":slot_no" , 2),
-			   
-			   (val_add,":licznik",1),
-			(try_end),  
-	  (try_end),
-      (set_container_overlay, -1),
-	  
-
-	#### TO DO:
-	#  (array_create, "$inventory_item_types_array", 99, 3),
-	  ##	0 - empty slot id
-	  ##	1 - item mesh id
-	  ##	2 - item id
-
-	  
-	  
-	  ### adding items to troop inventory slots
-	  (try_begin),
-	  (gt,"$selected_troop_m",-1),
-		  (assign,":licznik",0),
-		  (assign,":starting_x_pos",0),	
-		  (assign,":current_x_pos",0),
-
-		  
-
-		  
-		  (set_container_overlay, "$g_presentation_troops_inventory_slots"),
-		  
-		  (try_for_range,":slot_no",9,99),
-		  
-			   (troop_get_inventory_slot,":i_slot","$selected_troop_m",":slot_no"),	## mod edited 22.10.2021
-		  
-			   (try_begin),
-			   (gt,":i_slot",-1),
-				 
-				  (try_begin),
-				  (eq,":licznik",3),
-					(assign,":current_x_pos",":starting_x_pos"),
-					(val_sub,":starting_y_pos2",90),
-					(val_sub,":licznik",":licznik"),
-				  (else_try),
-				  (gt,":licznik",0),
-					(val_add,":current_x_pos",90),
-				  (try_end),
-				  
-				   (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-		#		   (assign,reg10,"$g_presentation_item"),
-		#		   (display_message,"@obj id: {reg10}"),
-				   (position_set_x, pos1, 900),
-				   (position_set_y, pos1, 900),
-				   
-				   # (assign,reg10,"$g_presentation_item"),
-				   # (display_message,"@ presentation item: {reg10}"),
-				   
-				   (store_add,":item_x",":current_x_pos",45),
-				   (store_add,":item_y",":starting_y_pos2",45),
-				   (overlay_set_size, "$g_presentation_item", pos1),
-				   (position_set_x, pos1, ":item_x"),
-				   (position_set_y, pos1, ":item_y"),	   
-				   (overlay_set_position, "$g_presentation_item", pos1),
-				   (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_troops_inventory_slots"),
-				   
-				  
-				   
-				   (array_set_val, "$inventory_troop_equipment_array",  "$g_presentation_item", ":slot_no",1),
-				   (array_set_val, "$inventory_troop_equipment_array",  ":i_slot", ":slot_no" , 2),
-				   
-				   (val_add,":licznik",1),
-				(try_end),  
-
+			  ######## 	SAVING POSITIONS. WE NEED ONLY ONE ARRAY BECAUSE ITS GONNA BE SAME POSITIONS FOR BOTH OF SLOTS ARRAYS
+			  (store_add,":cur_x",45,":current_x_pos"),
+			  (store_add,":cur_y",45,":current_y_pos"),
+			  (position_set_x, pos2, ":cur_x"),
+			  (position_set_y, pos2, ":cur_y"),
+			  (array_set_val, "$items_inventory_slots_positions_array", pos2,":slot_no"),
+			  
+			  
+			  (val_add,":licznik",1),
 		  (try_end),
+		  
 		  (set_container_overlay, -1),
-		(try_end),
-		
-		
-		(array_create, "$inventory_nine_items_array",0, 9, 3),
-		(array_set_val_all, "$inventory_nine_items_array", -1),
-		(assign,":licznik",0),
-  
-		(try_for_range,":slot",0,9),
-		    (troop_get_inventory_slot,":i_slot","$selected_troop_m",":slot"),
-			
+		  
+	#######################################################################################
+	##########		GENERATING ITEMS OVERLAYS 										#######
+	#######################################################################################
+		  
+		  (assign,":categorized_items_array_slot",0),
+		  (assign,":troop_inventory_array_slot",0),
+		  
+		  (try_for_range,":index",0,99),
+		  
+			(troop_get_inventory_slot,":item_id","trp_temp_items_troop",":index"),	## mod edited 22.10.2021
+
 		    (try_begin),
-		    (lt,":slot",4),
-				
-				(store_mul,":item_y_sub",":licznik",90),
-				(store_sub,":item_y", 655, ":item_y_sub"),
-				(store_sub,":slot_y", 610, ":item_y_sub"),
-			(else_try),
-		    (lt,":slot",7),
-			(gt,":slot",3),
-				(store_mul,":item_y_sub",":licznik",90),
-				(store_sub,":item_y", 655, ":item_y_sub"),
-				(store_sub,":slot_y", 610, ":item_y_sub"),
+			(gt,":item_id",-1),
+				(set_container_overlay, "$g_presentation_categorized_items_slots_container"),
+				(create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
+				(position_set_x, pos1, 900),
+				(position_set_y, pos1, 900),
+				(overlay_set_size, "$g_presentation_item", pos1),
+				(array_get_val, pos1, "$items_inventory_slots_positions_array", ":categorized_items_array_slot"),
+				(overlay_set_position, "$g_presentation_item", pos1),
+				(overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_categorized_items_slots_container"),
+			    (array_set_val, "$categorized_items_inventory_slots_array", "$g_presentation_item", ":categorized_items_array_slot",1),
+			    (array_set_val, "$categorized_items_inventory_slots_array", ":item_id", ":categorized_items_array_slot",2),
+				(val_add,":categorized_items_array_slot",1),
 			(try_end),
+		   
+		   
+		    
+		    (troop_get_inventory_slot,":item_id","$selected_troop_m",":index"),	
 			
+			(try_begin),
+			(ge,":index",9),
+				(try_begin),
+				(gt,":item_id",-1),
+					(set_container_overlay, "$g_presentation_troops_inventory_slots"),
+					(create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
+					(position_set_x, pos1, 900),
+					(position_set_y, pos1, 900),				
+					(overlay_set_size, "$g_presentation_item", pos1),
+					(array_get_val, pos1, "$items_inventory_slots_positions_array", ":troop_inventory_array_slot"),
+					(overlay_set_position, "$g_presentation_item", pos1),
+					(overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_troops_inventory_slots"),
+					(array_set_val, "$troops_items_inventory_slots_array", "$g_presentation_item", ":troop_inventory_array_slot",1),
+					(array_set_val, "$troops_items_inventory_slots_array", ":item_id", ":troop_inventory_array_slot",2),
+					(val_add,":troop_inventory_array_slot",1),
+				(try_end),
+			(try_end),
+		  (try_end),
+		  
+		  
+	#######################################################################################
+	##########		GENERATING NINE ITEMS OVERLAYS AND  ITEMS OVERLAYS 				#######
+	#######################################################################################
+	    (set_container_overlay, -1),
+
 			
-		    (create_mesh_overlay, reg1, "mesh_inventory_slot"),
-		    (position_set_x, pos1, 900),
-		    (position_set_y, pos1, 900),
-		    (overlay_set_size, reg1, pos1),
+		(try_for_range,":slot",0,9),
+
 			
-			  (try_begin),
-			  (lt,":slot",4),
-				(position_set_x, pos2, 550),
-				(position_set_y, pos2, ":slot_y"),
-			  (else_try),
-			  (lt,":slot",7),
-			  (gt,":slot",3),
-				(position_set_x, pos2, 450),
-				(position_set_y, pos2, ":slot_y"),
-			  (else_try),
-			  (eq,":slot",7),
-				(position_set_x, pos2, 360),
-				(position_set_y, pos2, 515),
-			  (else_try),
-			  (eq,":slot",8),
-				(position_set_x, pos2, 363),
-				(position_set_y, pos2, 315),
-			  (try_end),
-			
-		    (overlay_set_position, reg1, pos2),
-			
-			(array_set_val, "$inventory_nine_items_array",  reg1, ":slot",0),
-		    (try_begin),
-			(gt,":i_slot",-1),
-			  (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   
-			  # (assign,reg6,":i_slot"),
-			  # (display_message,"@ itemek: {reg6}"),
-			  # (assign,reg10,"$g_presentation_item"),
-			  # (display_message,"@obj id: {reg10}"),
-			   
+			####### GETTING ITEMS OVERLAYS
+
+			(troop_get_inventory_slot,":item_id","$selected_troop_m",":slot"),
+			(try_begin),
+			(gt,":item_id",-1),
+			  (create_mesh_overlay_with_item_id, "$g_presentation_item", ":item_id"),
 			  (position_set_x, pos1, 900),
 			  (position_set_y, pos1, 900),
 
 			  (overlay_set_size, "$g_presentation_item", pos1),
-			   
-			  (try_begin),
-			  (lt,":slot",4),
-				(position_set_x, pos1, 595),
-				(position_set_y, pos1, ":item_y"),
-			  (else_try),
-			  (lt,":slot",7),
-			  (gt,":slot",3),
-				(position_set_x, pos1, 495),
-				(position_set_y, pos1, ":item_y"),
-			  (else_try),
-			  (eq,":slot",7),
-				(position_set_x, pos1, 405),
-				(position_set_y, pos1, 560),
-			  (else_try),
-			  (eq,":slot",8),
-				(position_set_x, pos1, 405),
-				(position_set_y, pos1, 360),
-			  (try_end),
+			  
 			  (array_set_val, "$inventory_nine_items_array",  "$g_presentation_item", ":slot",1),
-		      (array_set_val, "$inventory_nine_items_array",  ":i_slot", ":slot" , 2),
-
-			  (overlay_set_position, "$g_presentation_item", pos1),
+			  (array_set_val, "$inventory_nine_items_array",  ":item_id", ":slot" , 2),		
 			
-			 
+			  (array_get_val, pos1, "$troop_nine_items_positions_array", ":slot"),
+			  (overlay_set_position, "$g_presentation_item", pos1),			  
 			(try_end),
-		    (val_add,":licznik",1),
-			
-			#(overlay_set_display, reg1, 0),
+
+	
+		(try_end),  
+    ########  DEBUG
+	#	  (call_script,"script_print_items_array","$troops_items_inventory_slots_array"),
+	#	  (call_script,"script_print_items_array","$categorized_items_inventory_slots_array"),
+	#	  (call_script,"script_print_items_array","$inventory_nine_items_array"),
+	#	  (call_script,"script_save_array_to_file","$troop_nine_items_positions_array"),
+	########  DEBUG
+		  (set_container_overlay, -1),
+
+		  
+		  (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+		  
+		  (presentation_set_duration, 999999),
+		]),
+		
+		(ti_on_presentation_mouse_enter_leave,
+		 [
+		   (store_trigger_param_1, ":object"),
+		   (store_trigger_param_2, ":enter_leave"),
+		   
+		   
 			(try_begin),
-			(eq,":slot",3),
-				(val_sub,":licznik",":licznik"),
-			(try_end),
-		(try_end),
-	  
-	 
-	  
-      (presentation_set_duration, 999999),
-      ]),
-  
-  ### 28.10.2021
-    (ti_on_presentation_mouse_enter_leave,
-     [
-       (store_trigger_param_1, ":object"),
-       (store_trigger_param_2, ":enter_leave"),
-	   
-
-
-		    (try_begin),
 			(eq, ":enter_leave", 0),
-			  # (array_get_dim_size,":size","$inventory_items_array",0),
-			  # (try_for_range,":index",0,":size"),
-			  
-				# (array_get_val, pos1, "$inventory_items_array", ":index"),
-			    # (position_get_x,reg10,pos1),
-				
-				# (try_begin),
-				# (eq,reg10,":object"),
-				# (gt,":object",0),
-					# (position_get_y,reg11,pos1),
-
-					# (val_add,":index",":size"),
-					# (mouse_get_position, pos1),
-					# (show_item_details, reg11, pos1, 1),
-				# (try_end),
-
-			  # (try_end),
-
-			  
-			  (assign,reg1,":object"),
-			  (display_message,"@overlay  ID {reg1}"),
-			  (call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
-			  
-			  (try_begin),
-			  (eq, reg1, -1),
-			  (eq, reg2, -1),
-					(call_script,"script_find_overlay_id","$inventory_troop_equipment_array",":object"),
-			  (try_end),
-			  
-			  (try_begin),
-			  (eq, reg1, -1),
-			  (eq, reg2, -1),
-			  		(call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
-			  (try_end),
-
+		    (neq,":object","$object_item_id"),
+		      (call_script,"script_find_overlay_id_in_arrays",":object"),
 			  
 			  (try_begin),
 			  (gt, reg1, -1),
 			  (gt, reg2, -1),
+			  
 					 (mouse_get_position, pos1),
+					 (set_result_string, "@TO JEST Weapon"),
 					 (show_item_details, reg2, pos1, 1),
-					# (display_message,"@Showing {reg2} item details"),	# Debug
 			  (try_end),
 			(else_try),
-				#(display_message,"@Closing item details"),	# Debug
 				(close_item_details),
 		    (try_end),
-
-       ]),
-  
-  
-     (ti_on_presentation_mouse_press,
-     [
-       (store_trigger_param_1, ":object"),
-       #(store_trigger_param_2, ":mouse_button"),
-
-	   	(assign, reg1, -1),
-	    (assign, reg2, -1),
-	    # (assign,reg6,":object"),
-	    # (display_message,"@ klikamy w: {reg6}"),
-	   
-	    (call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
-	  
-	    (try_begin),
-	    (eq, reg1, -1),
-	    (eq, reg2, -1),
-			(call_script,"script_find_overlay_id","$inventory_troop_equipment_array",":object"),
-	    (try_end),
-	   
-	    #(display_message,"@ Overlay ID: {reg1}, Item ID: {reg2}, Array Index: {reg3}, Array ID: {reg4}"),
-	   
-	    (try_begin),
-		(eq, reg1, -1),
-		(eq, reg2, -1),
-			(call_script,"script_find_overlay_id","$inventory_nine_items_array",":object"),
-	    (try_end),
-
-	   	(try_begin),	## if we click an item in inventories
-	    (gt, reg1, -1),
-	    (gt, reg2, -1),
-		
-			(display_message,"@ Overlay ID: {reg1}, Item ID: {reg2}, Array Index: {reg3}, Array ID: {reg4}"),
-			(try_begin),
-			(eq,"$g_prst_item_attached_to_mouse",-1),
+		   
+		 ]),
+		 
+		(ti_on_presentation_mouse_press,
+		 [
+		   (store_trigger_param_1, ":object"),
+		   #(store_trigger_param_2, ":mouse_button"),
+		   
+		   (try_begin),
+		   (neg|eq,":object","$g_presentation_list_of_items"),
+		   (neg|eq,":object","$g_presentation_item_category_name"),
+		   (neg|eq,":object","$g_presentation_categorized_items_slots_container"),
+		   (neg|eq,":object","$g_presentation_troop_name"),
+		   (neg|eq,":object","$g_presentation_list_of_troops"),
+		   (neg|eq,":object","$g_presentation_troops_inventory_slots"),
+		   (neg|eq,":object","$g_party_window_done_btn"),
+		   (neg|eq,":object","$g_party_window_reset_btn"),
+		   (neg|eq,":object","$g_party_window_reset_all_btn"),
+		   (neg|eq,":object","$g_presentation_head_armor"),
+		   (neg|eq,":object","$g_presentation_body_armor"),
+		   (neg|eq,":object","$g_presentation_leg_armor"),
+		   (neg|eq,":object","$g_presentation_encumbrance"),
+		   (neg|eq,":object","$object_item_id"),
+		   (neg|eq,":object","$g_presentation_troop_mesh"),
+		   (neg|eq,":object","$g_presentation_head_armor_val"),
+		   (neg|eq,":object","$g_presentation_body_armor_val"),
+		   (neg|eq,":object","$g_presentation_leg_armor_val"),
+		   (neg|eq,":object","$g_presentation_encumbrance_val"),
+		   
+			   
+			   
+			    (call_script,"script_find_overlay_id_in_arrays",":object"),
+				(assign,reg0,":object"),
+				#(display_message,"@ Obiekt klikany {reg0}"),####### DEBUG
 				(try_begin),
-				(eq,reg4,"$inventory_item_types_array"),	## when we are clicking categorized items
-					#(display_message,"@im clicking items on the left"),	#Debug
-				   (array_set_val, "$inventory_item_types_array",  -1, reg3,1),	## clearing overlay id from array 
-				   (array_set_val, "$inventory_item_types_array",  -1, reg3 , 2), ## clearing item id from array 
-				(else_try),			
-				(eq,reg4,"$inventory_troop_equipment_array"),
-					#(display_message,"@im clicking items on the right"),#Debug
-				   (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 1),	## clearing overlay id from array 
-				   (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 2), ## clearing item id from array 				
-				(else_try),			
-				(eq,reg4,"$inventory_nine_items_array"),
-					#(display_message,"@im clicking items on the right"),#Debug
-				   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 1),	## clearing overlay id from array 
-				   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 2), ## clearing item id from array 
-				(try_end),
+				(gt,reg4,-1),
+				(array_eq, reg4, -1, reg3, 3),
+					(try_begin),		### we click empty slot
+					(eq, reg1, -1),
+					(eq, reg2, -1),						
+						(try_begin),	## we click empty slot with item attached
+						(gt,"$g_prst_item_attached_to_mouse",-1),
+						(array_eq, reg4, -1, reg3, 1),	
+							#(display_message,"@klikam pusty slot z itemkiem na myszce"),####### DEBUG
+							
+							(array_get_val, pos5, "$items_inventory_slots_positions_array", reg3),### getting position of slot
 
-				(overlay_set_container_overlay, ":object", -1),
-					
-				
-				(position_set_x,pos1, 200),
-				(position_set_y,pos1, 200),
-				(overlay_set_size,":object",pos1),
-				
-				(assign,"$g_prst_item_attached_to_mouse",reg2),
-				(assign,"$object_item_id",":object"),
-				(display_message,"@klikam item bez i"),
-				
-			(else_try),	## we click with item attached to mouse 
-			(gt,"$g_prst_item_attached_to_mouse",-1),
-			(neq,":object","$object_item_id"),			
-				(assign,":temp_itm_id","$g_prst_item_attached_to_mouse"), # storing current item to temp variable
-				(assign,":temp_obj","$object_item_id"),	# storing current item overlay to temp_obj variable
-				(assign,"$g_prst_item_attached_to_mouse",reg2),
-				(assign,"$object_item_id",":object"),
-			
-				
-				
-				(try_begin),
-				(eq,reg4,"$inventory_item_types_array"),	## when we are clicking categorized items
-					# #(display_message,"@im clicking items on the left"),	#Debug
-					(assign,":array","$inventory_item_types_array"),
-				   ## (array_set_val, "$inventory_item_types_array",  -1, reg3, 1),	## clearing overlay id from array 
-				    #(array_set_val, "$inventory_item_types_array",  -1, reg3, 2), ## clearing item id from array 
-					(assign,":overlay","$g_presentation_inventory_slots"),
-				(else_try),			
-				(eq,reg4,"$inventory_troop_equipment_array"),
-					# #(display_message,"@im clicking items on the right"),#Debug
-					(assign,":array","$inventory_troop_equipment_array"),
-				  #  (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 1),	## clearing overlay id from array 
-				#	(array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 2), ## clearing item id from array 
-					(assign,":overlay","$g_presentation_troops_inventory_slots"),
-				(else_try),			
-				(eq,reg4,"$inventory_nine_items_array"),
-					# #(display_message,"@im clicking items on the right"),#Debug
-					(assign,":array","$inventory_nine_items_array"),
-				  #  (array_set_val, "$inventory_nine_items_array",  -1, reg3, 1),	## clearing overlay id from array 
-				#	(array_set_val, "$inventory_nine_items_array",  -1, reg3, 2), ## clearing item id from array 
-					(assign,":overlay",-1),
-				(try_end),
-				
-				(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
-				(array_set_val, ":array",  -1, reg3, 2), ## clearing item id from array 
-				(array_get_val, ":slot_overlay", ":array", reg3, 0),
-
-			#	(array_set_val, ":array",  ":temp_obj", reg3, 1),	## clearing overlay id from array 
-		#		(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
-				
-				(set_container_overlay, ":overlay"),
-				(overlay_set_container_overlay, ":temp_obj", ":overlay"),
-			
-				## setting position
-				 (overlay_get_position, pos3, reg1),
-				
-				 
-	
-				# (position_get_x,":current_x_pos",pos2),
-				# (position_get_y,":current_y_pos",pos2),
-				 
-				# (assign,reg6,":current_x_pos"),
-				 (assign,reg5,pos2),
-				# (position_get_x,reg6,pos2),
-				# (position_get_y,reg5,pos2),
-				# (display_message,"@ X {reg6},Y {reg5}"),
-				 (display_message,"@ X {reg5}"),
-				 
-			     (position_set_x, pos2, 0),
-			     (position_set_y, pos2, 0),
-				
-				 
-				 
-				 (position_set_x, pos1, 90),
-				 (position_set_y, pos1, 90),
-				 (overlay_set_size, ":temp_obj", pos1),
-				 (overlay_set_position, ":temp_obj", pos2),
-				 
-				 
-				 (set_container_overlay, -1),
-				 
-				 (display_message,"@klikam item z itemkiem"),
-				 
-				
-				  (overlay_set_container_overlay, ":object", -1),
-				  (position_set_x,pos1, 200),
-				  (position_set_y,pos1, 200),
-				  (overlay_set_size,":object",pos1),
-			(else_try),
-					(display_message,"@klikam cos"),
-			(try_end),
-		(else_try),
-		(gt,"$g_prst_item_attached_to_mouse",-1),
-			(display_message,"@klikam pusty slot z itemkiem"),
-		(else_try),
-			(display_message,"@klikam pusty slot"),
-		(try_end),
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-		# (assign, reg1, -1),
-	    # (assign, reg2, -1),
-	   
-	    # (assign,reg6,":object"),
-	    # (display_message,"@ klikamy w: {reg6}"),
-	   
-	    # (call_script,"script_find_overlay_id","$inventory_item_types_array",":object"),
-	  
-	    # (try_begin),
-	    # (eq, reg1, -1),
-	    # (eq, reg2, -1),
-			# (call_script,"script_find_overlay_id","$inventory_troop_equipment_array",":object"),
-	    # (try_end),
-	   
-		# (try_begin),	## if we click an item in inventories
-	    # (gt, reg1, -1),
-	    # (gt, reg2, -1),
-			# (try_begin),
-			# (eq,"$g_prst_item_attached_to_mouse",-1),
-				# (try_begin),
-				# (eq,reg4,"$inventory_item_types_array"),	## when we are clicking categorized items
-					# #(display_message,"@im clicking items on the left"),	#Debug
-				   # (array_set_val, "$inventory_item_types_array",  -1, reg3,1),	## clearing overlay id from array 
-				   # (array_set_val, "$inventory_item_types_array",  -1, reg3 , 2), ## clearing item id from array 
-				# (else_try),			
-				# (eq,reg4,"$inventory_troop_equipment_array"),
-					# #(display_message,"@im clicking items on the right"),#Debug
-				   # (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 1),	## clearing overlay id from array 
-				   # (array_set_val, "$inventory_troop_equipment_array",  -1, reg3, 2), ## clearing item id from array 
-				# (try_end),
-
-				# (overlay_set_container_overlay, ":object", -1),
-				
-				
-				# (position_set_x,pos1, 100),
-				# (position_set_y,pos1, 100),
-				# (overlay_set_size,":object",pos1),
-				
-				# (assign,"$g_prst_item_attached_to_mouse",reg2),
-				# (assign,"$object_item_id",":object"),
-				
-			# (else_try),	## we click with item attached to mouse 
-				
-				# (assign,":temp_itm_id","$g_prst_item_attached_to_mouse"), # storing current item to temp variable
-				# (assign,":temp_obj","$object_item_id"),	# storing current item overlay to temp_obj variable
-				# (assign,"$g_prst_item_attached_to_mouse",reg2),
-				# (assign,"$object_item_id",":object"),
-			    
-				
-				
-				# ## setting position
-				# (overlay_get_position, pos2, ":object"),
-				
-				# (position_get_x,":current_x_pos",pos2),
-				# (position_get_y,":current_y_pos",pos2),
-				
-				
-			    # (store_add,":item_x",":current_x_pos",45),
-			    # (store_add,":item_y",":current_y_pos",45),
-			    # (position_set_x, pos2, ":item_x"),
-			    # (position_set_y, pos2, ":item_y"),
-				
-				# (overlay_set_container_overlay, ":object", -1),
-				# (position_set_x,pos1, 200),
-				# (position_set_y,pos1, 200),
-				# (overlay_set_size,":object",pos1),
-				
+							
+							(try_begin),
+							(eq,reg4,"$categorized_items_inventory_slots_array"),	## when we are clicking categorized items
+								#(display_message,"@im clicking items on the left"),	#Debug
+							   (array_set_val, "$categorized_items_inventory_slots_array",  "$object_item_id", reg3, 1),	## clearing overlay id from array 
+							   (array_set_val, "$categorized_items_inventory_slots_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## clearing item id from array 
+							   (assign,":overlay","$g_presentation_categorized_items_slots_container"),
+							(else_try),			
+							(eq,reg4,"$troops_items_inventory_slots_array"),
+								#(display_message,"@im clicking items on the right"),#Debug
+							   (array_set_val, "$troops_items_inventory_slots_array",  "$object_item_id", reg3, 1),	## clearing overlay id from array 
+							   (array_set_val, "$troops_items_inventory_slots_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## clearing item id from array 				
+							   (assign,":overlay","$g_presentation_troops_inventory_slots"),
+						    (else_try),			
+							(eq,reg4,"$inventory_nine_items_array"),
+								 #(display_message,"@im clicking items on the right"),#Debug
 								
+								(item_get_type, ":item_type", "$g_prst_item_attached_to_mouse"),
+								(call_script,"script_warriors_eq_prsnt_get_item_type",":item_type"),
+								
+								(try_begin),
+								(eq, reg9, 1),
+								(array_set_val, "$inventory_nine_items_array",  "$object_item_id", reg3, 1),	## assigning overlay ID to array slot
+							    (array_set_val, "$inventory_nine_items_array",  "$g_prst_item_attached_to_mouse", reg3, 2), ## assigning item ID to array slot
+								(assign,":overlay",-1),
+								(array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+								### refresh armor stats
+								(call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
 
+								(else_try),
+									(display_message,"@Wrong item type"),
+								(try_end),
+							(try_end),
+							
+							
+							
+							(try_begin),			
+							(this_or_next|neq,reg4,"$inventory_nine_items_array"),
+							(eq,reg9,1),
+								(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
+								
+								(set_container_overlay, ":overlay"),
+								(overlay_set_container_overlay, "$object_item_id", ":overlay"),
+								(position_set_x, pos1, 90),
+								(position_set_y, pos1, 90),
+								(overlay_set_size, "$object_item_id", pos1),
+								(overlay_animate_to_position, "$object_item_id", 1, pos5),
+								
+								(assign,"$g_prst_item_attached_to_mouse",-1),
+								(assign,"$object_item_id",-1),
+							(try_end),
+						(else_try), #### we click empty slot
+						(eq,"$g_prst_item_attached_to_mouse",-1),
+						(array_eq, reg4, -1, reg3,1),	
+							#(display_message,"@klikam pusty slot"),####### DEBUG
 				
-				# (try_begin),
-				# (eq,reg4,"$inventory_item_types_array"),	## when we are clicking categorized items
-					# #(display_message,"@im clicking items on the left"),	#Debug
-				   # (array_set_val, "$inventory_item_types_array",  ":temp_obj", reg3,1),	## saving item overlay to array 
-				   # (array_set_val, "$inventory_item_types_array",  ":temp_itm_id", reg3 , 2), ## saving item id to array 
-				   # (overlay_set_container_overlay, ":temp_obj", "$g_presentation_inventory_slots"),
-				# (else_try),
-				# (eq,reg4,"$inventory_troop_equipment_array"),
-					# #(display_message,"@im clicking items on the right"),#Debug
-				   # (array_set_val, "$inventory_troop_equipment_array",  ":temp_obj", reg3,1),	## saving item overlay to array 
-				   # (array_set_val, "$inventory_troop_equipment_array",  ":temp_itm_id", reg3 , 2), ## saving item id to array 
-				   # (overlay_set_container_overlay, ":temp_obj", "$g_presentation_troops_inventory_slots"),
-				# (try_end),
+				
+						(try_end),
+					(else_try),	## if we click an item in inventories
+					(gt, reg1, -1),
+					(gt, reg2, -1),
+					(eq, reg5, -1),	
+					(array_gt, reg4, -1, reg3, 1),	
+						(try_begin),	### clicking item without item
+						(eq,"$g_prst_item_attached_to_mouse",-1),
+							#(display_message,"@klikam item bez itemka"),####### DEBUG
+						
+							(try_begin),
+							(eq,reg4,"$categorized_items_inventory_slots_array"),	## when we are clicking categorized items
+								#(display_message,"@im clicking items on the left"),	#Debug
+							   (array_set_val, "$categorized_items_inventory_slots_array",  -1, reg3, 1),	## clearing overlay id from array 
+							   (array_set_val, "$categorized_items_inventory_slots_array",  -1, reg3, 2), ## clearing item id from array 
+							(else_try),			
+							(eq,reg4,"$troops_items_inventory_slots_array"),
+								#(display_message,"@im clicking items on the right"),#Debug
+							   (array_set_val, "$troops_items_inventory_slots_array",  -1, reg3, 1),	## clearing overlay id from array 
+							   (array_set_val, "$troops_items_inventory_slots_array",  -1, reg3, 2), ## clearing item id from array 				
+							(else_try),			
+							(eq,reg4,"$inventory_nine_items_array"),
+								#(display_message,"@im clicking items on the right"),#Debug
+							   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 1),	## clearing overlay id from array 
+							   (array_set_val, "$inventory_nine_items_array",  -1, reg3, 2), ## clearing item id from array 
+							   ### refresh armor stats
+							   (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+
+							(try_end),
+							(set_container_overlay, -1),
+							(overlay_set_container_overlay, ":object", -1),
+							(position_set_x,pos1, 200),
+							(position_set_y,pos1, 200),
+							(overlay_set_size,":object",pos1),
+							(assign,"$g_prst_item_attached_to_mouse",reg2),
+							(assign,"$object_item_id",":object"),
+						
+						
+						(else_try),	## we click item with item attached to mouse 
+						(gt,"$g_prst_item_attached_to_mouse",-1),
+						(neq,":object","$object_item_id"),						
+							#(display_message,"@klikam item z itemkiem"),####### DEBUG
+							(assign,":temp_itm_id","$g_prst_item_attached_to_mouse"), # storing current item to temp variable
+							(assign,"$temp_obj","$object_item_id"),	# storing current item overlay to temp_obj variable
+							
+							(array_get_val, pos5, "$items_inventory_slots_positions_array", reg3),### getting position of slot
+
+							
+							(try_begin),
+							(eq,reg4,"$categorized_items_inventory_slots_array"),	## when we are clicking categorized items
+								# #(display_message,"@im clicking items on the left"),	#Debug
+								(assign,":array","$categorized_items_inventory_slots_array"), #getting position
+								(assign,":overlay","$g_presentation_categorized_items_slots_container"),
+							(else_try),			
+							(eq,reg4,"$troops_items_inventory_slots_array"),
+								# #(display_message,"@im clicking items on the right"),#Debug
+								(assign,":array","$troops_items_inventory_slots_array"),	#getting position
+								(assign,":overlay","$g_presentation_troops_inventory_slots"),
+							(else_try),			
+							 (eq,reg4,"$inventory_nine_items_array"),
+								 # #(display_message,"@im clicking items on the right"),#Debug
+								 
+								(item_get_type, ":item_type", "$g_prst_item_attached_to_mouse"),
+								(call_script,"script_warriors_eq_prsnt_get_item_type",":item_type"),
+								
+								(try_begin),
+								(eq, reg9, 1),
+									 (assign,":array","$inventory_nine_items_array"),
+									 (array_get_val, pos5, "$troop_nine_items_positions_array", reg3),### getting position of slot
+									 (assign,":overlay",-1),
+									 ### refresh armor stats
+									 (call_script,"script_warrior_eq_menu_get_all_armor_parts_stats","$inventory_nine_items_array","$g_presentation_head_armor_val","$g_presentation_body_armor_val","$g_presentation_leg_armor_val","$g_presentation_encumbrance_val"),
+
+								(else_try),
+									(display_message,"@Wrong item type"),
+								(try_end),
+							 (try_end),
+
+							 
+							 
+							(try_begin),			
+							(this_or_next|neq,reg4,"$inventory_nine_items_array"),
+							(eq,reg9,1),
+								(array_set_val, ":array",  -1, reg3, 1),	## clearing overlay id from array 
+								(array_set_val, ":array",  -1, reg3, 2), ## clearing item id from array 
+
+								(set_container_overlay, ":overlay"),
+								(overlay_set_container_overlay, "$temp_obj", ":overlay"),
+								(position_set_x, pos1, 90),
+								(position_set_y, pos1, 90),
+								(overlay_set_size, "$temp_obj", pos1),
+								(overlay_animate_to_position, "$temp_obj", 1, pos5),
+								
+								(array_set_val, reg4, 0, reg3, 3), ## locking item overlay				
+
+								(array_set_val, ":array",  "$temp_obj", reg3, 1),	## clearing overlay id from array 
+								(array_set_val, ":array",  ":temp_itm_id", reg3, 2), ## clearing item id from array 
+								
+								(assign,"$g_prst_item_attached_to_mouse",reg2),
+								(assign,"$object_item_id",":object"),
+							 
+								(set_container_overlay, -1),		
+								
+								(overlay_set_container_overlay, ":object", -1),
+								(position_set_x,pos1, 200),
+								(position_set_y,pos1, 200),
+								(overlay_set_size,":object",pos1),
+							(try_end),
+						
+							
+						(try_end),
+					(try_end),
+				(else_try),
+				(gt,reg4,-1),
+				(array_eq, reg4, 0, reg3, 3),
+					(array_set_val, reg4,-1,reg3, 3),
+		   (try_end),
 			
-				# (position_set_x, pos1, 900),
-				# (position_set_y, pos1, 900),
-				# (overlay_set_size, ":temp_obj", pos1),
-				# (overlay_set_position, ":temp_obj", pos2),
+		 ]),
 
-
+		 (ti_on_presentation_run, [
+		 	 
+			(try_begin),	#if player clicked item then attach it to mouse
+			(gt,"$g_prst_item_attached_to_mouse",-1),
+				(mouse_get_position, pos1),
+				(overlay_animate_to_position,"$object_item_id",1,pos1),
+			(try_end),
+		 
+		 ]), 
+		(ti_on_presentation_event_state_change, [
+			(store_trigger_param_1, ":object"),
+			(store_trigger_param_2, ":value"),
 			
-			# (try_end),
-		# (try_end),
-		
-		
-		
-       ]),
+			(try_begin),
+			(eq, ":object", "$g_presentation_list_of_items"),
+			### SAVING ITEMS FROM ARRAYS TO TROOPS
+			  (call_script,"script_save_choosen_items_to_temp_troop", "$inventory_nine_items_array","$troops_items_inventory_slots_array","$selected_troop_m"),
+			###
+			  (call_script,"script_warriors_eq_menu_setting_available_items_for_troop",":value"),
+			  (assign,"$selected_items",":value"),  
+			  (presentation_set_duration,0),
+			  (start_presentation, "prsnt_game_equip_warriors_window"),
+			  (presentation_set_duration,99999),
+			  ####### DEBUG
+			  # (assign,reg6,"$selected_items"),
+			  # (display_message,"@selected items: {reg6}"),
+			  ####### DEBUG
+				  
+			#### Troop choose
+			(else_try),
+			(eq, ":object", "$g_presentation_list_of_troops"),
+				### SAVING ITEMS FROM ARRAYS TO TROOPS
+				(call_script,"script_save_choosen_items_to_temp_troop", "$inventory_nine_items_array","$troops_items_inventory_slots_array","$selected_troop_m"),
+				###
+				(overlay_get_val, "$troop_overlay_val", "$g_presentation_list_of_troops"),
+				(assign,"$selected_troop_m","$troop_overlay_val"),
+				(val_add,"$selected_troop_m",player_temp_troops_begin),
+				(call_script,"script_warriors_eq_menu_setting_available_items_for_troop","$selected_items"),### fix for no update of items available after switching troop
+				
 
-     (ti_on_presentation_run, [
-	 
-		(try_begin),	#if player clicked item then attach it to mouse
-		(gt,"$g_prst_item_attached_to_mouse",-1),
-			(mouse_get_position, pos1),
-			(overlay_animate_to_position,"$object_item_id",1,pos1),
-		(try_end),
-		
-		
-      ]),    
-	  
-	  (ti_on_presentation_event_state_change, [
-		(store_trigger_param_1, ":object"),
-	    (store_trigger_param_2, ":value"),
-		
-		
-		(try_begin),
-          (eq, ":object", "$g_presentation_list_of_items"),
-			  (troop_clear_inventory,"trp_temp_items_troop"),
-			  (try_begin),
-			  (eq,":value",16),
-				(call_script,"script_add_items_to_temp_troop_beta",one_handed_swords_begin ,one_handed_sabres_end ),  
-			  (else_try),	
-			  (eq,":value",15),
-				(call_script,"script_add_items_to_temp_troop_beta",two_handed_swords_begin ,bastard_weapons_end ),
-			  (else_try),	
-			  (eq,":value",14),
-				(call_script,"script_add_items_to_temp_troop_beta",spears_and_pikes_begin ,lances_end ),
-			  (else_try),	
-			  (eq,":value",13),
-				(call_script,"script_add_items_to_temp_troop_beta",shields_begin ,shields_end ),
-			  (else_try),	
-			  (eq,":value",12),		  
-				(call_script,"script_add_items_to_temp_troop_beta",throwings_begin ,throwings_end ),	  
-			  (else_try),	
-			  (eq,":value",11),
-				(call_script,"script_add_items_to_temp_troop_beta",bows_begin ,bows_end ),
-				(call_script,"script_add_items_to_temp_troop_beta",arrows_begin ,arrows_end ),
-			  (else_try),	
-			  (eq,":value",10),		
-				(call_script,"script_add_items_to_temp_troop_beta",crossbows_begin ,crossbows_end ),
-				(call_script,"script_add_items_to_temp_troop_beta",bolts_begin ,bolts_end ),	
-			  (else_try),	
-			  (eq,":value",9),
-				(call_script,"script_add_items_to_temp_troop_beta",light_helmets_begin ,light_helmets_end ),
-			  (else_try),	
-			  (eq,":value",8), 
-				(call_script,"script_add_items_to_temp_troop_beta",medium_helmets_begin ,medium_helmets_end ),
-			  (else_try),	
-			  (eq,":value",7),
-				(call_script,"script_add_items_to_temp_troop_beta",heavy_helmets_begin ,heavy_helmets_end ),
-			  (else_try),	
-			  (eq,":value",6),
-				(call_script,"script_add_items_to_temp_troop_beta",light_armors_begin ,light_armors_end ),
-			  (else_try),	
-			  (eq,":value",5),
-				(call_script,"script_add_items_to_temp_troop_beta",medium_armors_begin ,"itm_arabian_armor_b" ),
-			  (else_try),	
-			  (eq,":value",4),
-				(call_script,"script_add_items_to_temp_troop_beta","itm_arabian_armor_b", heavy_armors_end ),
-			  (else_try),	
-			  (eq,":value",3),
-				(call_script,"script_add_items_to_temp_troop_beta", gloves_begin ,gloves_end ),
-			  (else_try),	
-			  (eq,":value",2),
-				(call_script,"script_add_items_to_temp_troop_beta", boots_begin ,boots_end ),
-			  (else_try),	
-			  (eq,":value",1),
-				(call_script,"script_add_items_to_temp_troop_beta",horses_begin ,horses_end ),
-			  (try_end),
-		  (assign,"$selected_items",":value"),  
-		  (presentation_set_duration,0),
-		  (start_presentation, "prsnt_game_equip_warriors_window"),
-		  (presentation_set_duration,99999),
-		  (assign,reg6,"$selected_items"),
-		  (display_message,"@selected items: {reg6}"),
+				(presentation_set_duration,0),
+				(start_presentation, "prsnt_game_equip_warriors_window"),
+				(presentation_set_duration,99999),
+				
+				####### DEBUG
+				#(assign,reg6,"$selected_troop_m"),
+				#(assign,reg7,"$troop_overlay_val"),
+				#(display_message,"@selected troop: {reg6} menu val: {reg7}"),
+				####### DEBUG
 			  
-		#### Troop choose
-		(else_try),
-		(eq, ":object", "$g_presentation_list_of_troops"),
-			(overlay_get_val, "$troop_overlay_val", "$g_presentation_list_of_troops"),
-			(assign,"$selected_troop_m","$troop_overlay_val"),
-			(val_add,"$selected_troop_m",player_troops_begin),
-            
-            (try_begin),
-            (ge,"$selected_troop_m",player_troops_end),
-                (assign,"$selected_troop_m","trp_player_test_troop"),
-            (try_end),
-            
+			(else_try),		
+			(eq,":object","$g_party_window_done_btn"),		##Done btn
+			
+				### SAVING ITEMS FROM ARRAYS TO TROOPS
+				(call_script,"script_save_choosen_items_to_temp_troop", "$inventory_nine_items_array","$troops_items_inventory_slots_array","$selected_troop_m"),
+				###
+				### SAVING ITEMS FROM temp troops TO TROOPS
+				(call_script,"script_warriors_eq_menu_reset_done_all_troops_inventories",1),
+				###				
 			(presentation_set_duration,0),
-			(start_presentation, "prsnt_game_equip_warriors_window"),
-			(presentation_set_duration,99999),
-			(assign,reg6,"$selected_troop_m"),
-			(assign,reg7,"$troop_overlay_val"),
-            
-			(display_message,"@selected troop: {reg6} menu val: {reg7}"),
-           
-               
-
-            
-		  
-		(else_try),		
-		(eq,":object","$g_party_window_done_btn"),		##Done btn
-			(presentation_set_duration,0),
-		(try_end),
-	  
-	  
-	  
-      ]),
+			(else_try),		
+			(eq,":object","$g_party_window_reset_btn"),		##Reset btn		
+				(store_sub, ":val", player_temp_troops_end, "$selected_troop_m"),
+				#(assign,reg6,":val"),##### DEBUG	
+				(store_sub, ":troop_id", player_troops_end, ":val"),
+				(store_sub, ":troop_id", ":troop_id", 2),
+			##### DEBUG	
+			#	(assign,reg7,":troop_id"),
+			#	(assign,reg8,"$selected_troop_m"),
+				
+			#	(display_message,"@ odjete {reg6}, id plyrTrp {reg7}, selectedTrp {reg8}"),
+			##### DEBUG	
+				(call_script,"script_copy_items_from_troop_to_troop",":troop_id","$selected_troop_m"),
+				(presentation_set_duration,0),
+				(start_presentation, "prsnt_game_equip_warriors_window"),
+				(presentation_set_duration,99999),
+			(else_try),		
+			(eq,":object","$g_party_window_reset_all_btn"),		##Reset all btn			
+				### RESETTING ALL TROOPS
+				(call_script,"script_warriors_eq_menu_reset_done_all_troops_inventories",0),
+				###
+				(presentation_set_duration,0),
+				(start_presentation, "prsnt_game_equip_warriors_window"),
+				(presentation_set_duration,99999),
+			(try_end),
+		]),
     ]),
 	  
-	    
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	# ("game_equip_warriors_window", 0, mesh_inventory_window, [		#23.10.2018
-    # (ti_on_presentation_load, [      
-      # (set_fixed_point_multiplier, 1000),
-
-	  
-	  # ########### TO DO:
-	  # ## list of categories for items
-	  # ## list of troops which can be equipped
-	  # ## information about armor weight and statistics
-	  # ## troop image
-	  # ## items of troop on the right
-	  # ## items to choose from on the left
-	  # #####
-	  # ## One handed weps
-	  # ## two handed weps
-	  # ## polearm weps
-	  # ## shields
-	  # ## bows
-	  # ## xbows
-	  # ## throwings
-	  # ## light/med/heavy helmets
-	  # ## light/med/heavy armors
-	  # ## boots
-	  # ## horses
-	  
-	  
-	  # # (troop_get_inventory_capacity,":capacity_temp","trp_temp_items_troop"),
-	  # # (assign,reg1,":capacity_temp"),
-	  # # (display_message,"@capacity {reg1}"),
 	 
-	 
-	 
-	  # ### list of item categories
-	  # (create_combo_label_overlay, "$g_presentation_list_of_items"),
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  # (overlay_set_size, "$g_presentation_list_of_items", pos1),
-	  # (position_set_x, pos1, 163),
-	  # (position_set_y, pos1, 660),
-	  # (overlay_set_position, "$g_presentation_list_of_items", pos1),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@None"),	## 0
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Horses"),	## 1
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Boots"),	 
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Gloves"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Armors"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Medium Armors"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Armors"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Heavy Helmets"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Medium Helmets"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Ligh Helmets"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Crossbows"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Bows"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Throwing weapons"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Shields"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Polearm Weapons"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@Two Handed Weapons"),
-	  # (overlay_add_item, "$g_presentation_list_of_items", "@One Handed Weapons"),  ## 16
-	  
-	  
-	  # (overlay_set_val, "$g_presentation_list_of_items", "$selected_items"),	
-
-	 # ## item category text
-	  # (create_text_overlay, "$g_presentation_item_category_name", "@Item's Category"),
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  # (overlay_set_size, "$g_presentation_item_category_name", pos1),
-	  # (position_set_x, pos1, 110),
-	  # (position_set_y, pos1, 705),
-	  # (overlay_set_position, "$g_presentation_item_category_name", pos1),
-
-	 
-  	  # (assign,":starting_x_pos",0),	  
-	  # (assign,":starting_y_pos",0),
-	  # (assign,":licznik",0),
-	  
-	  # (assign,":current_x_pos",":starting_x_pos"),	  
-
-	  
-	  # #### inventory slots
-      # (str_clear, s0),
-	  # (create_text_overlay, "$g_presentation_inventory_slots", s0, tf_scrollable),
-	  # (position_set_x, pos1, 100),
-	  # (position_set_y, pos1, 100),
-	  # (overlay_set_size, "$g_presentation_inventory_slots", pos1),
-	  # (position_set_x, pos1, 18),
-	  # (position_set_y, pos1, 105),
-	  # (overlay_set_position, "$g_presentation_inventory_slots", pos1),
-	  # (position_set_x, pos1, 270),
-	  # (position_set_y, pos1, 545),
-	  # (overlay_set_area_size, "$g_presentation_inventory_slots", pos1),
-	  
-	  # (set_container_overlay, "$g_presentation_inventory_slots"),
-	  
-
-	 
-	 
-	  
-	  
-	  # (try_for_range_backwards,":slot_no",0,99),
-		 # # (store_add,":item_slot",":slot_no",4),## mod edited 22.10.2021
-		  # (try_begin),
-		  # (eq,":licznik",3),
-			# (assign,":current_x_pos",":starting_x_pos"),
-			# (val_add,":starting_y_pos",90),
-			# (val_sub,":licznik",":licznik"),
-		  # (else_try),
-		  # (gt,":licznik",0),
-			# (val_add,":current_x_pos",90),
-		  # (try_end),
-			
-		  # (create_mesh_overlay, reg1, "mesh_inventory_slot"),
-		  # (position_set_x, pos1, 900),
-		  # (position_set_y, pos1, 900),
-		  # (overlay_set_size, reg1, pos1),
-		  # (position_set_x, pos1, ":current_x_pos"),
-		  # (position_set_y, pos1, ":starting_y_pos"),
-		  # (overlay_set_position, reg1, pos1),
-		 
-		  # (overlay_set_container_overlay, reg1, "$g_presentation_inventory_slots"),
-		  # # (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":item_slot"),	## mod edited 22.10.2021
-			 
-		    # # (try_begin),
-		    # # (gt,":i_slot",-1),
-			   # # (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   # # (position_set_x, pos1, 900),
-			   # # (position_set_y, pos1, 900),
-			   
-			   # # (store_add,":item_x",":current_x_pos",40),
-			   # # (store_add,":item_y",":starting_y_pos",220),
-			   # # (overlay_set_size, "$g_presentation_item", pos1),
-			   # # (position_set_x, pos1, ":item_x"),
-			   # # (position_set_y, pos1, ":item_y"),
-			   # # (overlay_set_position, "$g_presentation_item", pos1),
-			 
-				# # (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
-		    # # (try_end),
-		  
-		  # (val_add,":licznik",1),
-	  
-	  # (try_end),
-	  
-	  # (assign,":licznik",0),
-	  # (assign,":starting_x_pos",0),	
-	  # (assign,":current_x_pos",0),	
-
-	  # (array_create, "$inventory_items_array", 2, 99),
-	  # (assign,":array_index",0),
-	  
-	  # (try_for_range,":slot_no",9,99),
-	  
-		   # (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),	## mod edited 22.10.2021
-	  
-		   # (try_begin),
-		   # (gt,":i_slot",-1),
-			 
-			  # (try_begin),
-			  # (eq,":licznik",3),
-				# (assign,":current_x_pos",":starting_x_pos"),
-				# (val_sub,":starting_y_pos",90),
-				# (val_sub,":licznik",":licznik"),
-			  # (else_try),
-			  # (gt,":licznik",0),
-				# (val_add,":current_x_pos",90),
-			  # (try_end),
-			  
-			   # (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-			   
-			   # (assign,reg10,"$g_presentation_item"),
-			   # (display_message,"@obj id: {reg10}"),
-			   
-			   # (position_set_x, pos1, "$g_presentation_item"),
-			   # (position_set_y, pos1, ":i_slot"),
-			   # (array_set_val, "$inventory_items_array", pos1, ":array_index"),
-			   # (val_add,":array_index",1),
-			   
-			   # (position_set_x, pos1, 900),
-			   # (position_set_y, pos1, 900),
-			   
-
-			   
-			   
-			   # # (assign,reg10,"$g_presentation_item"),
-			   # # (display_message,"@ presentation item: {reg10}"),
-			   
-			   # (store_add,":item_x",":current_x_pos",45),
-			   # (store_add,":item_y",":starting_y_pos",45),
-			   # (overlay_set_size, "$g_presentation_item", pos1),
-			   # (position_set_x, pos1, ":item_x"),
-			   # (position_set_y, pos1, ":item_y"),	   
-			   # (overlay_set_position, "$g_presentation_item", pos1),
-			   # (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
-
-			   
-			   # (val_add,":licznik",1),
-			# (try_end),  
-		  
-
-	  # (try_end),
-      # (set_container_overlay, -1),
-	  
-
-	  
-	  
-	  
-	  # # (create_mesh_overlay_with_item_id, reg1, "itm_axe"),
-	  # # (position_set_x, pos1, 900),
-	  # # (position_set_y, pos1, 900),
-	  # # (overlay_set_size, reg1, pos1),
-	  # # (position_set_x, pos1, 180),
-	  # # (position_set_y, pos1, 300),
-	  # # (overlay_set_position, reg1, pos1),
-	 
-	 # ## troop eq 
-	  # (create_text_overlay, "$g_presentation_troop_name", "@Troop equipment"),
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  # (overlay_set_size, "$g_presentation_troop_name", pos1),
-	  # (position_set_x, pos1, 760),
-	  # (position_set_y, pos1, 705),
-	  # (overlay_set_position, "$g_presentation_troop_name", pos1),
-	 
-	 
-	 
-	  # (assign,":starting_x_pos_2",0),	  
-	  # (assign,":starting_y_pos_2",0),
-	  # (assign,":licznik_2",0),
-	  
-	  # (assign,":current_x_pos_2",":starting_x_pos_2"),	
-	  
-	  # ### list of troops
-	  # (create_combo_button_overlay, "$g_presentation_list_of_troops"),
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  # (overlay_set_size, "$g_presentation_list_of_troops", pos1),
-	  # (position_set_x, pos1, 830),
-	  # (position_set_y, pos1, 660),
-	  # (overlay_set_position, "$g_presentation_list_of_troops", pos1),
-	  
-	  # (try_for_range_backwards,":troop",player_troops_begin,player_troops_end),
-		# (str_store_troop_name,s0,":troop"),
-		# (overlay_add_item, "$g_presentation_list_of_troops", s0),
-			
-	  # (try_end),
-		# (overlay_set_val, "$g_presentation_list_of_troops", player_troops_begin),	
-
-	  
-	  
-
-	  
-	  
-	  # #### inventory slots
-      # (str_clear, s1),
-	  # (create_text_overlay, "$g_presentation_troops_inventory_slots", s1, tf_scrollable),
-	  # (position_set_x, pos1, 100),
-	  # (position_set_y, pos1, 100),
-	  # (overlay_set_size, "$g_presentation_troops_inventory_slots", pos1),
-	  # (position_set_x, pos1, 686),
-	  # (position_set_y, pos1, 105),
-	  # (overlay_set_position, "$g_presentation_troops_inventory_slots", pos1),
-	  # (position_set_x, pos1, 270),
-	  # (position_set_y, pos1, 545),
-	  # (overlay_set_area_size, "$g_presentation_troops_inventory_slots", pos1),
-	  # (position_set_x, pos1, 0),
-	  # (position_set_y, pos1, 180),	  
-	  # (overlay_set_mesh_rotation, "$g_presentation_troops_inventory_slots", ),
-	  
-	  # (set_container_overlay, "$g_presentation_troops_inventory_slots"),
-	 
-	  
-	  # (try_for_range_backwards,reg4,0,99),
-	  
-		  # (try_begin),
-		  # (eq,":licznik_2",3),
-			# (assign,":current_x_pos_2",":starting_x_pos_2"),
-			# (val_add,":starting_y_pos_2",90),
-			# (val_sub,":licznik_2",":licznik_2"),
-		  # (else_try),
-		  # (gt,":licznik_2",0),
-			# (val_add,":current_x_pos_2",90),
-		  # (try_end),
-			
-		  # (create_mesh_overlay, reg2, "mesh_inventory_slot"),
-		  # (position_set_x, pos1, 900),
-		  # (position_set_y, pos1, 900),
-		  # (overlay_set_size, reg2, pos1),
-		  # (position_set_x, pos1, ":current_x_pos_2"),
-		  # (position_set_y, pos1, ":starting_y_pos_2"),
-		  # (overlay_set_position, reg2, pos1),
-		 
-		  # (overlay_set_container_overlay, reg2, "$g_presentation_troops_inventory_slots"),
-
-		  
-		  # (val_add,":licznik_2",1),
-	  
-	  # (try_end),
-	  
-
-	  # (set_container_overlay, -1),
-  
-
-  
-	  # (create_game_button_overlay, "$g_party_window_done_btn", "@Done"),	### done
-	  # (position_set_x, pos1, 120),
-	  # (position_set_y, pos1, 40),
-	  # (overlay_set_size, "$g_party_window_done_btn", pos1),
-	  # (position_set_x, pos1, 580),
-	  # (position_set_y, pos1, 25),
-	  # (overlay_set_position, "$g_party_window_done_btn", pos1),
-	  
-	  
-	  
-	  
-	  # ## Armor stats and weight
-	  # (position_set_x, pos1, 900),
-	  # (position_set_y, pos1, 900),
-	  
-	  # (create_text_overlay, "$g_presentation_head_armor", "@Head Armor: "),
-	  # (overlay_set_size, "$g_presentation_head_armor", pos1),
-
-	  # (create_text_overlay, "$g_presentation_body_armor", "@Body Armor: "),
-	  # (overlay_set_size, "$g_presentation_body_armor", pos1),
-
-	  # (create_text_overlay, "$g_presentation_leg_armor", "@Leg Armor: "),
-	  # (overlay_set_size, "$g_presentation_leg_armor", pos1),	 
-
-	  # (create_text_overlay, "$g_presentation_encumbrance", "@Encumbrance: "),
-	  # (overlay_set_size, "$g_presentation_encumbrance", pos1),
-
-
-	  # (position_set_x, pos1, 520),
-	  # (position_set_y, pos1, 180),
-	  # (overlay_set_position, "$g_presentation_head_armor", pos1),
-	  
-	  # (position_set_y, pos1, 150),
-	  # (overlay_set_position, "$g_presentation_body_armor", pos1),
-	  
-	  # (position_set_y, pos1, 120),
-	  # (overlay_set_position, "$g_presentation_leg_armor", pos1),	 
-	  
-	  # (position_set_y, pos1, 90),
-	  # (overlay_set_position, "$g_presentation_encumbrance", pos1),
-	  
-	  
-      # (presentation_set_duration, 999999),
-      # ]),
-  
-  # ### 28.10.2021
-    # (ti_on_presentation_mouse_enter_leave,
-     # [
-       # (store_trigger_param_1, ":object"),
-       # (store_trigger_param_2, ":enter_leave"),
-	   
-
-
-		    # (try_begin),
-			# (eq, ":enter_leave", 0),
-			  # (array_get_dim_size,":size","$inventory_items_array",0),
-			  # (try_for_range,":index",0,":size"),
-			  
-				# (array_get_val, pos1, "$inventory_items_array", ":index"),
-			    # (position_get_x,reg10,pos1),
-				
-				# (try_begin),
-				# (eq,reg10,":object"),
-				# (gt,":object",0),
-					# (position_get_y,reg11,pos1),
-
-					# (val_add,":index",":size"),
-					# (mouse_get_position, pos1),
-					# (show_item_details, reg11, pos1, 1),
-				# (try_end),
-
-			  # (try_end),
-			# (else_try),
-				# (assign,reg12,":enter_leave"),
-	
-				# (close_item_details),
-		    # (try_end),
-
-       # ]),
-  
-  
-     # (ti_on_presentation_mouse_press,
-     # [
-       # (store_trigger_param_1, ":object"),
-       # (store_trigger_param_2, ":mouse_button"),
-	   
-	    # (try_begin),
-		# (gt,":object",102),
-			# (position_set_x,pos1, 1500),
-			# (position_set_y,pos1, 1500),
-			# #(overlay_set_size,":object",pos1),
-			
-			# #(overlay_set_container_overlay, ":object", -1),
-			# (assign,"$mouse_item_clicked",1),
-			# (assign,"$object_item_id",":object"),
-		# (try_end),
-		# (assign,"$mouse_item_clicked",0),
-		
-		
-       # ]),
-
-     # (ti_on_presentation_run, [
-	 
-		# (try_begin),	#if player clicked item then attach it to mouse
-		# (eq,"$mouse_item_clicked",1),
-			# (mouse_get_position, pos1),
-			# (overlay_animate_to_position,"$object_item_id",1,pos1),
-		# (try_end),
-		
-		
-      # ]),    
-	  
-	  # (ti_on_presentation_event_state_change, [
-		# (store_trigger_param_1, ":object"),
-	    # (store_trigger_param_2, ":value"),
-		
-		
-		# (try_begin),
-          # (eq, ":object", "$g_presentation_list_of_items"),
-			  # (troop_clear_inventory,"trp_temp_items_troop"),
-			  # (try_begin),
-			  # (eq,":value",16),
-				# (call_script,"script_add_items_to_temp_troop_beta",one_handed_swords_begin ,one_handed_sabres_end ),  
-			  # (else_try),	
-			  # (eq,":value",15),
-				# (call_script,"script_add_items_to_temp_troop_beta",two_handed_swords_begin ,bastard_weapons_end ),
-			  # (else_try),	
-			  # (eq,":value",14),
-				# (call_script,"script_add_items_to_temp_troop_beta",spears_and_pikes_begin ,lances_end ),
-			  # (else_try),	
-			  # (eq,":value",13),
-				# (call_script,"script_add_items_to_temp_troop_beta",shields_begin ,shields_end ),
-			  # (else_try),	
-			  # (eq,":value",12),		  
-				# (call_script,"script_add_items_to_temp_troop_beta",throwings_begin ,throwings_end ),	  
-			  # (else_try),	
-			  # (eq,":value",11),
-				# (call_script,"script_add_items_to_temp_troop_beta",bows_begin ,bows_end ),
-				# (call_script,"script_add_items_to_temp_troop_beta",arrows_begin ,arrows_end ),
-			  # (else_try),	
-			  # (eq,":value",10),		
-				# (call_script,"script_add_items_to_temp_troop_beta",crossbows_begin ,crossbows_end ),
-				# (call_script,"script_add_items_to_temp_troop_beta",bolts_begin ,bolts_end ),	
-			  # (else_try),	
-			  # (eq,":value",9),
-				# (call_script,"script_add_items_to_temp_troop_beta",light_helmets_begin ,light_helmets_end ),
-			  # (else_try),	
-			  # (eq,":value",8), 
-				# (call_script,"script_add_items_to_temp_troop_beta",medium_helmets_begin ,medium_helmets_end ),
-			  # (else_try),	
-			  # (eq,":value",7),
-				# (call_script,"script_add_items_to_temp_troop_beta",heavy_helmets_begin ,heavy_helmets_end ),
-			  # (else_try),	
-			  # (eq,":value",6),
-				# (call_script,"script_add_items_to_temp_troop_beta",light_armors_begin ,light_armors_end ),
-			  # (else_try),	
-			  # (eq,":value",5),
-				# (call_script,"script_add_items_to_temp_troop_beta",medium_armors_begin ,"itm_arabian_armor_b" ),
-			  # (else_try),	
-			  # (eq,":value",4),
-				# (call_script,"script_add_items_to_temp_troop_beta","itm_arabian_armor_b", heavy_armors_end ),
-			  # (else_try),	
-			  # (eq,":value",3),
-				# (call_script,"script_add_items_to_temp_troop_beta", gloves_begin ,gloves_end ),
-			  # (else_try),	
-			  # (eq,":value",2),
-				# (call_script,"script_add_items_to_temp_troop_beta", boots_begin ,boots_end ),
-			  # (else_try),	
-			  # (eq,":value",1),
-				# (call_script,"script_add_items_to_temp_troop_beta",horses_begin ,horses_end ),
-			  # (try_end),
-		  # (assign,"$selected_items",":value"),  
-		  # (presentation_set_duration,0),
-		  # (start_presentation, "prsnt_game_equip_warriors_window"),
-		  # (presentation_set_duration,99999),
-		  # (assign,reg6,"$selected_items"),
-		  # (display_message,"@selected items: {reg6}"),
-		  
-
-		  
-		  
-		  
-		  # # (str_clear,s0),
-		  # # (create_text_overlay, "$g_presentation_inventory_slots", s0, tf_scrollable),
-		  # # (position_set_x, pos1, 100),
-		  # # (position_set_y, pos1, 100),
-		  # # (overlay_set_size, "$g_presentation_inventory_slots", pos1),
-		  # # (position_set_x, pos1, 18),
-		  # # (position_set_y, pos1, 105),
-		  # # (overlay_set_position, "$g_presentation_inventory_slots", pos1),
-		  # # (position_set_x, pos1, 270),
-		  # # (position_set_y, pos1, 545),
-		  # # (overlay_set_area_size, "$g_presentation_inventory_slots", pos1),
-	  
-	  
-		  # # (assign,":starting_x_pos",0),	  
-		  # # (assign,":starting_y_pos",0),
-		  # # (assign,":licznik",0),
-		  
-		  # # (assign,":current_x_pos",":starting_x_pos"),	 
-		  # # (assign,"$g_presentation_item",-1),
-		  # # (set_container_overlay, "$g_presentation_inventory_slots"),
-		  
-		  # # (try_for_range,":slot_no",0,99),
-		  
-			  # # (try_begin),
-			  # # (eq,":licznik",3),
-				# # (assign,":current_x_pos",":starting_x_pos"),
-				# # (val_add,":starting_y_pos",90),
-				# # (val_sub,":licznik",":licznik"),
-			  # # (else_try),
-			  # # (gt,":licznik",0),
-				# # (val_add,":current_x_pos",90),
-			  # # (try_end),
-			  
-			  # # (troop_get_inventory_slot,":i_slot","trp_temp_items_troop",":slot_no"),
-			  
-			  # # (create_mesh_overlay, reg1, "mesh_inventory_slot"),
-			  # # (position_set_x, pos1, 900),
-			  # # (position_set_y, pos1, 900),
-			  # # (overlay_set_size, reg1, pos1),
-			  # # (position_set_x, pos1, ":current_x_pos"),
-			  # # (position_set_y, pos1, ":starting_y_pos"),
-			  # # (overlay_set_position, reg1, pos1),
-			  
-			  # # (try_begin),
-			  # # (gt,":i_slot",-1),
-				   # # (create_mesh_overlay_with_item_id, "$g_presentation_item", ":i_slot"),
-				   # # (position_set_x, pos1, 1000),
-				   # # (position_set_y, pos1, 1000),
-				   # # (overlay_set_size, "$g_presentation_item", pos1),
-				   # # (position_set_x, pos1, ":current_x_pos"),
-				   # # (position_set_y, pos1, ":starting_y_pos"),
-				   # # (overlay_set_position, "$g_presentation_item", pos1),
-			 
-				# # (overlay_set_container_overlay, "$g_presentation_item", "$g_presentation_inventory_slots"),
-			  # # (try_end),
-			  # # (val_add,":licznik",1),
-		  
-		  # # (try_end),
-	  
-
-	      # (set_container_overlay, -1),
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		# (else_try),		
-		# (eq,":object","$g_party_window_done_btn"),		##Done btn
-			# (presentation_set_duration,0),
-		# (try_end),
-	  
-	  
-	  
-      # ]),
-    # ]),
-	  
-	  
-	  
-	  
 	  
 	("present_lords", prsntf_manual_end_only, mesh_load_window, [		#19.03.2019
     (ti_on_presentation_load, [      
@@ -16263,7 +15545,7 @@ presentations = [
 		 #  (assign, reg1,"fac_kingdom_1"),
 		  # (display_message,"@ fac1: {reg1}"),
 		   
-		   (call_script,"script_cf_character_player_substitute"),
+		#   (call_script,"script_cf_character_player_substitute"),
 		   
 		   
 
@@ -16367,7 +15649,951 @@ presentations = [
 	  ]),
     ]),		
 		
+	  # Arris Feudal World Map. (Based on previous work by Rubik)
+    #
+    # Uses trp_temp_array_a and trp_temp_array_b to store info about centers (feuds) and lords, stored sequentially.
+    # Search above with scripts "search_fiefs_tmp" and "search_lords_tmp" respectively.
+    # Returns indexes of results in trp_temp_array_c, number of matches in reg0
+    #
+    # Fields in trp_temp_array_a (centers):
+    #    - id overlay center
+    #    - id center
+    #    - id overlay label name center
+    #    - id overlay label owner
+    #    - id lord
+    #    - overlay center display state
+    #
+    # Fields in trp_temp_array_b (lords)
+    #     - id lord
+    #     - color lord
+    #    - id button overlay in lord list
+    #    - id item in combo box vassal (-1 if not vassal)
+
+
+    ("world_map", 0, mesh_load_window, [
+    (ti_on_presentation_load,
+      [
+        (presentation_set_duration, 999999),
+        (set_fixed_point_multiplier, 1000),
+
+      ## initialization part begin
+    
+        
+        # presentation obj: begin from top left corner
+        (assign, ":init_pos_x", 15), # init x
+        (assign, ":init_pos_y", 725), # init y
+
+        # world map
+        (assign, ":min_map_x", -200*1000),
+        (assign, ":max_map_x", 200*1000),
+        (assign, ":min_map_y", -177*1000),
+        (assign, ":max_map_y", 177*1000),
+        
+        # also begin from top left corner
+        (assign, ":init_map_x", ":min_map_x"), # init map_x
+        (assign, ":init_map_y", ":max_map_y"), # init map_y
+      
+        # move length of p_temp_party, total_cols and total_rows
+        (assign, ":party_move_length", 2*1000),
+        (store_sub, ":total_cols", ":max_map_x", ":min_map_x"),
+        (store_sub, ":total_rows", ":max_map_y", ":min_map_y"),
+        (val_div, ":total_cols", ":party_move_length"),
+        (val_div, ":total_rows", ":party_move_length"),
+      
+        # color_block_length
+        (assign, ":color_block_length", 4),
+        (store_mul, ":color_block_size", ":color_block_length", 50),
+        (position_set_x, pos2, ":color_block_size"),
+        (position_set_y, pos2, ":color_block_size"),
+    
+        (store_sub, "$N_Lords", active_npcs_end, active_npcs_begin),
+        (val_add, "$N_Lords", 1),
+        (store_sub, "$N_Centers", centers_end, centers_begin),
+        (val_add, "$N_Centers", 1),
+
+        (try_for_range, ":i", 0, 1000),
+            (troop_set_slot, "trp_temp_array_a", ":i", -1),
+            (troop_set_slot, "trp_temp_array_b", ":i", -1),
+        (try_end),
+        
+      ## initialization part end
+      
+        (assign, ":pos_x", ":init_pos_x"), # assign to cur pos_x
+        (assign, ":pos_y", ":init_pos_y"), # assign to cur pos_y
+        (assign, ":map_x", ":init_map_x"), # assign to cur map_x
+        (assign, ":map_y", ":init_map_y"), # assign to cur map_y
+        ## draw whole map
+        (try_for_range, ":unused_rows", 0, ":total_rows"),
+          (try_for_range, ":unused_cols", 0, ":total_cols"),
+            (assign, ":dest_color", 0xFFFFFF), # default
+            (position_set_x, pos3, ":map_x"),
+            (position_set_y, pos3, ":map_y"),
+            (party_set_position, "p_temp_party", pos3),
+            (party_get_current_terrain, ":current_terrain", "p_temp_party"),
+            (try_begin),
+              (eq, ":current_terrain", rt_water),
+              (assign, ":dest_color", 0x0066FF), # default
+            (else_try),
+              (call_script, "script_get_closest_center", "p_temp_party"),
+              (assign, ":nearest_center", reg0),
+              (try_begin),
+                (gt, ":nearest_center", -1),
+                (store_faction_of_party, ":center_faction", ":nearest_center"),
+                (is_between, ":center_faction", kingdoms_begin, kingdoms_end),
+                (faction_get_color, ":dest_color", ":center_faction"),
+              (try_end),
+            (try_end),
+            (create_mesh_overlay, reg0, "mesh_white_plane"),
+            (overlay_set_color, reg0, ":dest_color"),
+            (position_set_x, pos1, ":pos_x"),
+            (position_set_y, pos1, ":pos_y"),
+            (overlay_set_position, reg0, pos1),
+            (overlay_set_size, reg0, pos2), # color block size
+          
+            ## draw borderlines begin [optional]
+            # borderlines length and whidth
+            (store_add, ":line_length", ":color_block_size", 1*50),
+            (assign, ":line_whidth", 1*50),
+            # find bound_center
+            (try_begin),
+              (this_or_next|party_slot_eq, ":nearest_center", slot_party_type, spt_town),
+              (party_slot_eq, ":nearest_center", slot_party_type, spt_castle),
+              (assign, ":bound_center", ":nearest_center"), # itself
+            (else_try),
+              (party_slot_eq, ":nearest_center", slot_party_type, spt_village),
+              (party_get_slot, ":bound_center", ":nearest_center", slot_village_bound_center),
+            (try_end),
+            # compare with the left side color block
+            (try_begin),
+              (store_sub, ":map_x_2", ":map_x", ":party_move_length"),
+              (assign, ":map_y_2", ":map_y"),
+              (position_set_x, pos4, ":map_x_2"),
+              (position_set_y, pos4, ":map_y_2"),
+              (party_set_position, "p_temp_party", pos4),
+              (party_get_current_terrain, ":current_terrain_2", "p_temp_party"),
+              (try_begin),
+                (assign, ":continue", 0),
+                (try_begin),
+                  (neq, ":current_terrain", rt_water),
+                  (neq, ":current_terrain_2", rt_water),
+                  (call_script, "script_get_closest_center", "p_temp_party"),
+                  (assign, ":nearest_center_2", reg0),
+                  (try_begin),
+                    (gt, ":nearest_center_2", -1),
+                    (try_begin),
+                      (this_or_next|party_slot_eq, ":nearest_center_2", slot_party_type, spt_town),
+                      (party_slot_eq, ":nearest_center_2", slot_party_type, spt_castle),
+                      (assign, ":bound_center_2", ":nearest_center_2"), # itself
+                    (else_try),
+                      (party_slot_eq, ":nearest_center_2", slot_party_type, spt_village),
+                      (party_get_slot, ":bound_center_2", ":nearest_center_2", slot_village_bound_center),
+                    (try_end),
+                    (neq, ":bound_center_2", ":bound_center"),
+                    (assign, ":continue", 1),
+                  (try_end),
+                (else_try),
+                  (neq, ":current_terrain", ":current_terrain_2"),
+                  (this_or_next|eq, ":current_terrain", rt_water),
+                  (eq, ":current_terrain_2", rt_water),
+                  (assign, ":continue", 1),
+                (try_end),
+                (eq, ":continue", 1),
+                (create_mesh_overlay, reg0, "mesh_white_plane"),
+                (overlay_set_color, reg0, 0),
+                (position_set_x, pos1, ":pos_x"),
+                (position_set_y, pos1, ":pos_y"),
+                (overlay_set_position, reg0, pos1),
+                (position_set_x, pos1, ":line_whidth"),
+                (position_set_y, pos1, ":line_length"),
+                (overlay_set_size, reg0, pos1),
+              (try_end),
+            (try_end),
+            # compare with the under color block
+            (try_begin),
+              (assign, ":map_x_2", ":map_x"),
+              (store_sub, ":map_y_2", ":map_y", ":party_move_length"),
+              (position_set_x, pos4, ":map_x_2"),
+              (position_set_y, pos4, ":map_y_2"),
+              (party_set_position, "p_temp_party", pos4),
+              (party_get_current_terrain, ":current_terrain_2", "p_temp_party"),
+              (try_begin),
+                (assign, ":continue", 0),
+                (try_begin),
+                  (neq, ":current_terrain", rt_water),
+                  (neq, ":current_terrain_2", rt_water),
+                  (call_script, "script_get_closest_center", "p_temp_party"),
+                  (assign, ":nearest_center_2", reg0),
+                  (try_begin),
+                    (gt, ":nearest_center_2", -1),
+                    (try_begin),
+                      (this_or_next|party_slot_eq, ":nearest_center_2", slot_party_type, spt_town),
+                      (party_slot_eq, ":nearest_center_2", slot_party_type, spt_castle),
+                      (assign, ":bound_center_2", ":nearest_center_2"),
+                    (else_try),
+                      (party_slot_eq, ":nearest_center_2", slot_party_type, spt_village),
+                      (party_get_slot, ":bound_center_2", ":nearest_center_2", slot_village_bound_center),
+                    (try_end),
+                    (neq, ":bound_center_2", ":bound_center"),
+                    (assign, ":continue", 1),
+                  (try_end),
+                (else_try),
+                  (neq, ":current_terrain", ":current_terrain_2"),
+                  (this_or_next|eq, ":current_terrain", rt_water),
+                  (eq, ":current_terrain_2", rt_water),
+                  (assign, ":continue", 1),
+                (try_end),
+                (eq, ":continue", 1),
+                (create_mesh_overlay, reg0, "mesh_white_plane"),
+                (overlay_set_color, reg0, 0),
+                (position_set_x, pos1, ":pos_x"),
+                (position_set_y, pos1, ":pos_y"),
+                (overlay_set_position, reg0, pos1),
+                (position_set_x, pos1, ":line_length"),
+                (position_set_y, pos1, ":line_whidth"),
+                (overlay_set_size, reg0, pos1),
+              (try_end),
+            (try_end),
+            ## draw borderlines end [optional]
+          
+            # offset
+            (val_add, ":pos_x", ":color_block_length"),
+            (val_add, ":map_x", ":party_move_length"),
+          (try_end),
+          # offset
+          (assign, ":pos_x", ":init_pos_x"),
+          (val_sub, ":pos_y", ":color_block_length"),
+          (assign, ":map_x", ":init_map_x"),
+          (val_sub, ":map_y", ":party_move_length"),
+        (try_end),
+      
+        ## blocks of centers
+
+        (assign, ":slot_no", 0),
+        (try_for_range, ":center_no", centers_begin, centers_end),
+          (party_is_active, ":center_no"),
+          (party_get_position, pos4, ":center_no"),
+          (position_get_x, ":center_x", pos4),
+          (position_get_y, ":center_y", pos4),
+          (val_sub, ":center_x", ":init_map_x"),
+          (val_sub, ":center_y", ":init_map_y"),
+          (val_mul, ":center_x", ":color_block_length"),
+          (val_mul, ":center_y", ":color_block_length"),
+          (val_div, ":center_x", ":party_move_length"),
+          (val_div, ":center_y", ":party_move_length"),
+          (val_add, ":center_x", ":init_pos_x"),
+          (val_add, ":center_y", ":init_pos_y"),
+          # offset and size
+          (try_begin),
+            (party_slot_eq, ":center_no", slot_party_type, spt_town),
+            (assign, ":block_size", 20),
+          (else_try),
+            (party_slot_eq, ":center_no", slot_party_type, spt_castle),
+            (assign, ":block_size", 12),
+          (else_try),
+            (party_slot_eq, ":center_no", slot_party_type, spt_village),
+            (assign, ":block_size", 8),
+          (try_end),
+          (val_mul, ":block_size", 50),
+          # block
+          (create_image_button_overlay, reg0, "mesh_white_dot", "mesh_white_dot"),
+          (overlay_set_color, reg0, 0),
+          (position_set_x, pos1, ":center_x"),
+          (position_set_y, pos1, ":center_y"),
+          (overlay_set_position, reg0, pos1),
+          (position_set_x, pos1, ":block_size"),
+          (position_set_y, pos1, ":block_size"),
+          (overlay_set_size, reg0, pos1),
+          (troop_set_slot, "trp_temp_array_a", ":slot_no", reg0), # overlay center
+          (val_add, ":slot_no", 1),
+          (troop_set_slot, "trp_temp_array_a", ":slot_no", ":center_no"), #id center
+
+          # center name label
+          (str_store_party_name, s1, ":center_no"),
+          (create_text_overlay, reg1, s1, tf_center_justify),
+          (store_add, ":text_x", ":center_x", 0),
+          (store_add, ":text_y", ":center_y", 10),
+          (position_set_x, pos1, ":text_x"), (position_set_y, pos1, ":text_y"),
+          (overlay_set_position, reg1, pos1),
+          (overlay_set_color, reg1, 0),
+          (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+          (overlay_set_size, reg1, pos1),
+          (overlay_set_display, reg1, 0),
+          (val_add, ":slot_no", 1),
+          (troop_set_slot, "trp_temp_array_a", ":slot_no", reg1), #overlay label name center
+          
+          # owner name label
+          (party_get_slot, ":lord", ":center_no", slot_town_lord),
+          (try_begin),
+            (gt, ":lord", -1),
+            (str_store_troop_name, s1, ":lord"),
+          (else_try),
+            (str_store_string, s1, "@Unassigned"),
+          (try_end),
+          (create_text_overlay, reg1, s1, tf_center_justify),
+          (store_add, ":text_x", ":center_x", 0),
+          (store_add, ":text_y", ":center_y", -25),
+          (position_set_x, pos1, ":text_x"), (position_set_y, pos1, ":text_y"),
+          (overlay_set_position, reg1, pos1),
+          (overlay_set_color, reg1, 0),
+          (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+          (overlay_set_size, reg1, pos1),
+          (overlay_set_display, reg1, 0),
+          (val_add, ":slot_no", 1),
+          (troop_set_slot, "trp_temp_array_a", ":slot_no", reg1), #overlay label owner
+          # id center owner
+          (try_begin),
+            (gt, ":lord", -1),
+            (val_add, ":slot_no", 1),
+            (troop_set_slot, "trp_temp_array_a", ":slot_no", ":lord"),
+          (else_try),
+            (val_add, ":slot_no", 1),
+            (troop_set_slot, "trp_temp_array_a", ":slot_no", -1),
+          (try_end),
+          # overlay center display state
+          (val_add, ":slot_no", 1),
+          (troop_set_slot, "trp_temp_array_a", ":slot_no", 0),
+                
+          (val_add, ":slot_no", 1),
+        (try_end),
+        
+        (troop_get_slot, "$first_center_btn", "trp_temp_array_a", 0),
+        (val_sub, ":slot_no", 6),
+        (troop_get_slot, "$last_center_btn", "trp_temp_array_a", ":slot_no"),
+
+        ##end block centers
+        
+        #Color codes for lords   
+        (assign, ":indx", -1),
+        (try_for_range, ":id_npc", active_npcs_begin, active_npcs_end),
+            (store_random_in_range, ":color_lord", 0, 10000),
+            (val_mul, ":color_lord", 16777215), (val_div, ":color_lord", 10000),
+            (val_add, ":indx", 1),
+            (troop_set_slot, "trp_temp_array_b", ":indx", ":id_npc"),
+            (val_add, ":indx", 1),
+            (troop_set_slot, "trp_temp_array_b", ":indx", ":color_lord"),
+            (val_add, ":indx", 2),
+        (try_end),
+        
+        #player color
+        (store_random_in_range, ":color_lord", 0, 10000),
+        (val_mul, ":color_lord", 16777215), (val_div, ":color_lord", 10000),
+        (val_add, ":indx", 1),
+        (troop_set_slot, "trp_temp_array_b", ":indx", 0),
+        (val_add, ":indx", 1),
+        (troop_set_slot, "trp_temp_array_b", ":indx", ":color_lord"),       
+                
+        #List Lords
+        (str_clear, s0),
+        (create_text_overlay, "$list_lords", s0, tf_scrollable),
+        (position_set_x, pos1, 750), (position_set_y, pos1, 260),
+        (overlay_set_position, "$list_lords", pos1),
+        (position_set_x, pos1, 200), (position_set_y, pos1, 4100),
+        (overlay_set_size, "$list_lords", pos1),
+        (position_set_x, pos1, 200), (position_set_y, pos1, 250),
+        (overlay_set_area_size, "$list_lords", pos1),
+        (set_container_overlay, "$list_lords"),
+        (assign, ":x_pos", 160), (assign, ":y_pos", 4000),
+        #human
+        (str_store_troop_name, s0, 0),
+        (create_game_button_overlay, reg1 , "@{s0}", tf_center_justify),
+        (position_set_x, pos3, ":x_pos"), (position_set_y, pos3, ":y_pos"),
+        (overlay_set_position, reg1, pos3),
+        (position_set_x, pos3, 100), (position_set_y, pos3, 25),
+        (overlay_set_size, reg1, pos3),
+        (val_sub, ":y_pos", 25),
+        
+        (call_script, "script_search_lords_tmp", 0, 0),
+        (troop_get_slot, ":indx", "trp_temp_array_c",0),
+        (val_add, ":indx", 2),   
+        (troop_set_slot, "trp_temp_array_b",":indx", reg1),
+
+        (assign, "$first_lord_btn", reg1),
+        
+        #lords
+        (try_for_range, ":id_npc", active_npcs_begin, active_npcs_end),
+            (str_store_troop_name, s0, ":id_npc"),
+            (create_game_button_overlay, reg1 , "@{s0}", tf_center_justify),
+
+            (call_script, "script_search_lords_tmp", 0, ":id_npc"),
+            (troop_get_slot, ":indx", "trp_temp_array_c",0),           
+            (val_add, ":indx", 2),   
+            (troop_set_slot, "trp_temp_array_b",":indx", reg1),             
+            
+            (position_set_x, pos3, ":x_pos"), (position_set_y, pos3, ":y_pos"),
+            (overlay_set_position, reg1, pos3),
+            (position_set_x, pos3, 100), (position_set_y, pos3, 25),
+            (overlay_set_size, reg1, pos3),
+            (val_sub, ":y_pos", 25),
+            
+        (try_end),
+
+        (assign, "$last_lord_btn", reg1),
+        (set_container_overlay, -1),   
+        
+        #Checkbox show all unassigned
+        (create_check_box_overlay, "$chk_unassigned", "mesh_checkbox_off", "mesh_checkbox_on"),
+        (position_set_x, pos1, 825), (position_set_y, pos1, 700),
+        (overlay_set_position, "$chk_unassigned", pos1),
+        (create_text_overlay, "$chk_unassigned_lbl", "@Show unassigned"),
+        (position_set_x, pos1, 840), (position_set_y, pos1, 700),
+        (overlay_set_position, "$chk_unassigned_lbl", pos1),
+        (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+        (overlay_set_size, "$chk_unassigned_lbl", pos1),
+        
+        #Show all toggle
+        (create_game_button_overlay, "$g_btn_show_toggle", "@Show All/None"),
+        (position_set_x, pos1, 900),
+        (position_set_y, pos1, 650),
+        (overlay_set_position, "$g_btn_show_toggle", pos1),   
+        (assign, "$show_toggle", 1),
+    
+        #Owner name
+        (create_text_overlay, "$lbl_name_color_lord", "@None2"),
+        (position_set_x, pos1, 825), (position_set_y, pos1, 700),
+        (overlay_set_position, "$lbl_name_color_lord", pos1),
+        (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+        (overlay_set_size, "$lbl_name_color_lord", pos1),
+        (overlay_set_color, "$lbl_name_color_lord", 0xFFFFFF),
+        (overlay_set_display, "$lbl_name_color_lord", 0),
+        
+        #Custom color slider
+        (create_slider_overlay, "$slider_color", 0, 0xFFFFFF),
+        (position_set_x, pos1, 950), (position_set_y, pos1, 670),
+        (overlay_set_position, "$slider_color", pos1),   
+        (position_set_x, pos1, 600), (position_set_y, pos1, 780),
+        (overlay_set_size, "$slider_color", pos1),
+        (overlay_set_display, "$slider_color", 0),
+        
+        #End color edit
+        (create_game_button_overlay, "$btn_endcolor", "@OK"),
+        (position_set_x, pos1, 900), (position_set_y, pos1, 640),
+        (overlay_set_position, "$btn_endcolor", pos1),
+        (position_set_x, pos1, 100), (position_set_y, pos1, 25),
+        (overlay_set_size, "$btn_endcolor", pos1),
+        (overlay_set_color, "$btn_endcolor", 0xFFFFFF),   
+        (overlay_set_display, "$btn_endcolor", 0),
+
+        #faction label
+        (create_text_overlay, "$show_faction_lbl", "@Show faction:"),
+        (position_set_x, pos1, 830), (position_set_y, pos1, 590),
+        (overlay_set_position, "$show_faction_lbl", pos1),
+        (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+        (overlay_set_size, "$show_faction_lbl", pos1),       
+
+        #Combo box factions (hardcoded because few)
+        (create_combo_button_overlay, "$factions"),
+        (overlay_add_item, "$factions", "@Player"),
+        (overlay_add_item, "$factions", "@Polanie"),
+        (overlay_add_item, "$factions", "@Grey Order"),
+        (overlay_add_item, "$factions", "@Warriors of Tengri"),
+        (overlay_add_item, "$factions", "@Kalmarunion"),
+        (overlay_add_item, "$factions", "@Druzhina"),
+        (overlay_add_item, "$factions", "@Templars"),
+        (overlay_add_item, "$factions", "@Eques"),
+        (overlay_add_item, "$factions", "@Norse"),
+		(overlay_add_item, "$factions", "@Order de l'Etoile"),
+        
+        (position_set_x, pos1, 945), (position_set_y, pos1, 560),
+        (overlay_set_position, "$factions", pos1),
+        (position_set_x, pos1, 550), (position_set_y, pos1, 700),
+        (overlay_set_size, "$factions", pos1),
+        
+        #label lord to grant fief
+        (create_text_overlay, "$lbl_name_grant_lord", "@Grant fief to..."),
+        (position_set_x, pos1, 825), (position_set_y, pos1, 700),
+        (overlay_set_position, "$lbl_name_grant_lord", pos1),
+        (position_set_x, pos1, 780), (position_set_y, pos1, 780),
+        (overlay_set_size, "$lbl_name_grant_lord", pos1),
+        (overlay_set_color, "$lbl_name_grant_lord", 0xFFFFFF),
+        (overlay_set_display, "$lbl_name_grant_lord", 0),
+        
+        #combo box vassals
+        (assign, ":i", 0 ),
+
+        (create_combo_button_overlay, "$cbo_grant"),
+        
+        (try_for_range, ":id_npc", active_npcs_begin, active_npcs_end),
+            (store_troop_faction, reg0, ":id_npc"),
+            (eq, reg0, "fac_player_supporters_faction"),
+            
+            (str_store_troop_name, s0, ":id_npc"),
+            (overlay_add_item, "$cbo_grant", s0),
+            
+            (call_script, "script_search_lords_tmp", 0, ":id_npc"),
+            (troop_get_slot, ":indx", "trp_temp_array_c",0),
+            (val_add, ":indx", 3),
+            (troop_set_slot, "trp_temp_array_b", ":indx", ":i"),
+            (val_add, ":i", 1),           
+        (try_end),
+
+        (call_script, "script_search_lords_tmp", 0, 0),
+        (troop_get_slot, ":indx", "trp_temp_array_c",0),
+        (val_add, ":indx", 3),
+        (troop_set_slot, "trp_temp_array_b", ":indx", ":i"),
+        (str_store_troop_name, s0, 0),
+        (overlay_add_item, "$cbo_grant", s0),
+        (val_add, ":i", 1),   
+        (overlay_add_item, "$cbo_grant", "@None"),
+        (overlay_set_val, "$cbo_grant", ":i"),
+        (assign, "$last_indx_cbogrant", ":i"),
+
+        (position_set_x, pos1, 945), (position_set_y, pos1, 640),
+        (overlay_set_position, "$cbo_grant", pos1),
+        (position_set_x, pos1, 550), (position_set_y, pos1, 700),
+        (overlay_set_size, "$cbo_grant", pos1),
+        (overlay_set_display, "$cbo_grant", 0),
+
+        # Done
+        (create_game_button_overlay, "$g_presentation_obj_5", "@Done"),
+        (position_set_x, pos1, 900), (position_set_y, pos1, 70),
+        (overlay_set_position, "$g_presentation_obj_5", pos1),
+        
+        #Help
+        (create_button_overlay, "$g_help", "@Help"),
+        (position_set_x, pos1, 825), (position_set_y, pos1, 30),
+        (overlay_set_position, "$g_help", pos1),
+      ]),
 	  
+	        (ti_on_presentation_mouse_enter_leave,
+      [
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":enter_leave"),
+      
+           (ge, ":object", "$first_center_btn"),
+        (le, ":object", "$last_center_btn"),
+      
+        # show center name, owner when mouse over it
+        (store_sub, ":display_overlay", 1, ":enter_leave"),
+        
+        (call_script, "script_search_fiefs_tmp", 0, ":object"),
+        (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+        
+        (gt, ":indx0", -1),   
+        (store_add, ":indx1", ":indx0", 2), (troop_get_slot, ":id_lbl_name", "trp_temp_array_a", ":indx1"),
+        (store_add, ":indx1", ":indx0", 3), (troop_get_slot, ":id_lbl_lord", "trp_temp_array_a", ":indx1"),
+        (overlay_set_display, ":id_lbl_name", ":display_overlay"),
+        (overlay_set_display, ":id_lbl_lord", ":display_overlay"),         
+      ]),
+ 
+    (ti_on_presentation_event_state_change,
+      [
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":value"),
+        
+        #Click on done
+        (try_begin),
+            (eq, ":object", "$g_presentation_obj_5"),
+            
+            (try_begin),
+                (eq, "$gShowFeudalMap", 1),
+                (assign, "$gShowFeudalMap", 2),
+            (try_end),
+            
+            (presentation_set_duration, 0),
+        (try_end),
+
+        #Click on center
+        (try_begin),
+
+            (ge, ":object", "$first_center_btn"),
+            (le, ":object", "$last_center_btn"),   
+            (neg | key_is_down, key_right_shift),
+            (neg | key_is_down, key_left_shift),
+            (neg | key_is_down, key_right_control),
+            (neg | key_is_down, key_left_control),
+    
+            #find lord
+            (call_script, "script_search_fiefs_tmp", 0, ":object"),
+            (troop_get_slot, ":indx0", "trp_temp_array_c", 0),    (store_add, ":indx1", ":indx0", 4),
+            (troop_get_slot, ":lord", "trp_temp_array_a", ":indx1"),
+            (store_add, ":indx1", ":indx0", 5), ( troop_get_slot, ":display_state", "trp_temp_array_a", ":indx1"),
+            
+            #find lord color
+            (try_begin),
+                (gt, ":lord", -1),
+                (call_script, "script_search_lords_tmp", 0, ":lord"),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", 0),    (store_add, ":indx1", ":indx0", 1),
+                (troop_get_slot, ":color_lord", "trp_temp_array_b", ":indx1"),
+            (else_try),
+                (assign, ":color_lord", 0xFFFFFF),
+            (try_end),
+            
+            #find lord button
+            (store_add, ":indx1", ":indx0", 2),
+            (troop_get_slot, ":id_btn", "trp_temp_array_b", ":indx1"),
+            
+            #color fiefs lord
+            (call_script, "script_search_fiefs_tmp", 4, ":lord"),
+            
+            (try_for_range, ":i", 0, reg0),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", ":i"),   
+                (store_add, ":indx1", ":indx0", 5),
+                (troop_get_slot, ":lord_center", "trp_temp_array_a", ":indx0"),
+                (try_begin),
+                    (eq, ":display_state", 1),
+                    (troop_set_slot,  "trp_temp_array_a", ":indx1", 0),
+                    (overlay_set_color, ":lord_center", 0),   
+                (else_try),
+                    (troop_set_slot,  "trp_temp_array_a", ":indx1", 1),
+                    (overlay_set_color, ":lord_center", ":color_lord"),                   
+                (try_end),
+            (try_end),
+            
+            #update lord button
+            (try_begin),
+                (gt,":lord",-1),
+                (try_begin),
+                    (eq, ":display_state", 1),
+                    (overlay_set_color, ":id_btn", 0),
+                (else_try),
+                    (overlay_set_color, ":id_btn", 0x0066FF),
+                (try_end),
+            (try_end),
+            
+            #update unassigned chkbox
+            (try_begin),
+                (lt, ":lord", 0),
+                (try_begin),
+                    (eq, ":display_state", 1),
+                    (assign, ":display_state", 0),
+                (else_try),
+                    (assign, ":display_state", 1),
+                (try_end),
+                (overlay_set_val, "$chk_unassigned", ":display_state"),
+            (try_end),
+
+        (try_end),
+
+        #click on center+shift, assigned
+        (try_begin),
+
+            (ge, ":object", "$first_center_btn"),
+            (le, ":object", "$last_center_btn"),   
+            (this_or_next| key_is_down, key_right_shift), (key_is_down, key_left_shift),
+
+            (call_script, "script_search_fiefs_tmp", 0, ":object"),    (troop_get_slot, ":indx0", "trp_temp_array_c", 0),   
+            (store_add, ":indx1", ":indx0", 4),    (troop_get_slot, ":lord", "trp_temp_array_a", ":indx1"),
+            (store_add, ":indx1", ":indx0", 5),    (troop_get_slot, ":selected", "trp_temp_array_a", ":indx1"),
+            
+            (eq, ":selected", 1), (gt, ":lord", -1),
+            
+            (call_script, "script_toggle_controls_worldmap", 0),
+            (overlay_set_display, "$lbl_name_color_lord", 1),
+            (overlay_set_display, "$slider_color", 1),
+            (overlay_set_display, "$btn_endcolor", 1),
+            (call_script, "script_search_lords_tmp", 0, ":lord"), (troop_get_slot, ":indx0", "trp_temp_array_c", 0),   
+            (store_add, ":indx1", ":indx0", 1),    (troop_get_slot, ":color_lord", "trp_temp_array_b", ":indx1"),
+            #init color controls
+            (troop_get_slot, ":color_lord", "trp_temp_array_d", ":lord"),
+            (str_store_troop_name, s0, ":lord"),
+            (overlay_set_text, "$lbl_name_color_lord", s0),
+            (overlay_set_val, "$slider_color", ":color_lord"),
+            (assign, "$id_color_lord", ":lord"),
+        
+        (try_end),
+        
+        #click on button end color edit
+        (try_begin),
+            (eq, ":object", "$btn_endcolor"),
+            (call_script, "script_toggle_controls_worldmap", 1),
+            (overlay_set_display, "$lbl_name_color_lord", 0),
+            (overlay_set_display, "$slider_color", 0),
+            (overlay_set_display, "$btn_endcolor", 0),
+            
+        (try_end),
+        
+        #move color slider
+        (try_begin),
+            (eq, ":object", "$slider_color"),
+            
+            (call_script, "script_search_fiefs_tmp", 4, "$id_color_lord"),
+            (try_for_range, ":i", 0, reg0),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", ":i"),
+                (troop_get_slot, ":lord_center", "trp_temp_array_a", ":indx0"),
+                (overlay_set_color, ":lord_center", ":value"),
+            (try_end),
+            
+            (call_script, "script_search_lords_tmp", 0, "$id_color_lord"), (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+            (store_add, ":indx1", ":indx0", 1), (troop_set_slot, "trp_temp_array_b", ":indx1", ":value"),
+
+        (try_end),
+
+        #Click on lord's list
+        (try_begin),
+        
+            (ge, ":object", "$first_lord_btn"),
+            (le, ":object", "$last_lord_btn"),
+            
+            (call_script, "script_search_lords_tmp", 2, ":object"),
+            (troop_get_slot, ":indx0", "trp_temp_array_c", 0), (troop_get_slot, ":id_lord", "trp_temp_array_b", ":indx0"),
+            (store_add, ":indx1", ":indx0", 1), (troop_get_slot, ":color_lord", "trp_temp_array_b", ":indx1"),
+
+            (try_begin),
+                (call_script, "script_search_fiefs_tmp", 4, ":id_lord"),
+                (gt, reg0, 0),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", 0),           
+                (store_add, ":indx1", ":indx0", 5),
+                (troop_get_slot, ":selected", "trp_temp_array_a", ":indx1"),
+                
+                (try_for_range, ":i", 0, reg0),
+                    (troop_get_slot, ":indx0", "trp_temp_array_c", ":i"),
+                    (troop_get_slot, ":id_overlay_center", "trp_temp_array_a", ":indx0"),
+                    (try_begin),
+                        (eq, ":selected", 0),
+                        (overlay_set_color, ":object", 0x0066FF),   
+                        (overlay_set_color, ":id_overlay_center", ":color_lord"),
+                        (store_add, ":indx1", ":indx0", 5),
+                        (troop_set_slot, "trp_temp_array_a", ":indx1", 1),
+                    (else_try),
+                        (overlay_set_color, ":object", 0),   
+                        (overlay_set_color, ":id_overlay_center", 0),
+                        (store_add, ":indx1", ":indx0", 5),
+                        (troop_set_slot, "trp_temp_array_a", ":indx1", 0),
+                    (try_end),
+                (try_end),
+            
+            (else_try),
+                (display_message, "@Selected lord has no fiefs."),
+            (try_end),
+            
+        (try_end),
+        
+        #Click show unassigned
+        (try_begin),
+        
+            (eq, ":object", "$chk_unassigned"),
+            
+            (try_begin),
+                (eq, ":value", 1),   
+                (assign, ":color", 0xFFFFFF),
+            (else_try),
+                (assign, ":color", 0),
+            (try_end),
+                
+            (call_script, "script_search_fiefs_tmp", 4, -1),
+            
+            (try_for_range, ":i", 0, reg0),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", ":i"),
+                (troop_get_slot, ":id_overlay_center", "trp_temp_array_a", ":indx0"),
+                (overlay_set_color, ":id_overlay_center", ":color"),
+                (store_add, ":indx1", ":indx0", 5),
+                (troop_set_slot, "trp_temp_array_a", ":indx1", ":value" ),
+            (try_end),
+        
+        (try_end),
+        
+        #Click show all toggle
+        (try_begin),
+
+            (eq, ":object", "$g_btn_show_toggle"),
+
+            #update centers
+            (try_for_range, ":i", 0, "$N_Centers"),
+                (store_mul, ":indx0", ":i", 6),
+                (troop_get_slot, ":center_overlay", "trp_temp_array_a", ":indx0"),
+                (store_add, ":indx1", ":indx0", 4),
+                (troop_get_slot, ":lord", "trp_temp_array_a", ":indx1"),
+                (store_add, ":indx_display_state", ":indx0", 5),
+                
+                (try_begin),
+                    (eq, ":lord", -1),
+                    (assign, ":color", 0xFFFFFF),
+                (else_try),
+                    (call_script, "script_search_lords_tmp", 0, ":lord"),
+                    (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+                    (store_add, ":indx1", ":indx0", 1),
+                    (troop_get_slot, ":color", "trp_temp_array_b", ":indx1"),                   
+                (try_end),
+                
+                (try_begin),
+                    (eq, "$show_toggle", 1),
+                    (overlay_set_color, ":center_overlay", ":color"),
+                    (troop_set_slot, "trp_temp_array_a", ":indx_display_state", 1),
+                    
+                (else_try),
+                    (overlay_set_color, ":center_overlay", 0),
+                    (troop_set_slot, "trp_temp_array_a", ":indx_display_state", 0),
+                (try_end),
+                
+            (try_end),
+            
+            #update lord buttons, checkbox unassigned
+            (try_begin),
+                (eq, "$show_toggle", 1),
+                (assign, "$show_toggle", 0),
+                (assign, ":color_button", 0x0066FF),
+                (overlay_set_val, "$chk_unassigned", 1),
+            (else_try),
+                (assign, "$show_toggle", 1),
+                (assign, ":color_button", 0),
+                (overlay_set_val, "$chk_unassigned", 0),
+            (try_end),
+
+            (try_for_range, ":btn_lord", "$first_lord_btn", "$last_lord_btn"),
+                    (overlay_set_color, ":btn_lord", ":color_button"),
+            (try_end),
+            (val_add,":btn_lord", 1), (overlay_set_color, ":btn_lord", ":color_button"),
+
+        (try_end),           
+
+        #change on faction show combo
+        (try_begin),
+        
+            (eq, ":object", "$factions"),
+
+            #set all lord buttons to unselected
+            (store_add, ":limit",  "$last_lord_btn", 1),
+            (try_for_range, ":i", "$first_lord_btn", ":limit"),
+                (overlay_set_color, ":i", 0),
+            (try_end),
+
+            #paint centers of chosen faction
+            (store_add, ":fac_id", "fac_player_supporters_faction", ":value"),
+            
+            (try_for_range, ":i", 0, "$N_Centers"),
+                (store_mul, ":indx0", ":i", 6),
+                (troop_get_slot, ":center_overlay", "trp_temp_array_a", ":indx0"),
+                (store_add, ":indx1", ":indx0", 1),
+                (troop_get_slot, ":id_center", "trp_temp_array_a", ":indx1"),
+                (store_add, ":indx1", ":indx0", 4),
+                (troop_get_slot, ":lord", "trp_temp_array_a", ":indx1"),
+                (store_faction_of_party, ":fac", ":id_center"),
+                (store_add, ":indx_display_state", ":indx0", 5),
+                
+                (try_begin),
+                    (eq, ":fac_id", ":fac"),
+                    (call_script, "script_search_lords_tmp", 0, ":lord"),
+                    #if no lord, white
+                    (try_begin),
+                        (eq, reg0, 0),
+                        (assign, ":color", 0xFFFFFF),
+                    (else_try), #lord color and button lord as marked
+                        (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+                        (store_add, ":indx1", ":indx0", 1),
+                        (troop_get_slot, ":color", "trp_temp_array_b", ":indx1"),
+                        (store_add, ":indx1", ":indx0", 2),
+                        (troop_get_slot, ":btn_lord", "trp_temp_array_b", ":indx1"),
+                        (overlay_set_color, ":btn_lord", 0x0066FF),
+                    (try_end),
+                    
+                    (overlay_set_color, ":center_overlay", ":color"),
+                    (troop_set_slot, "trp_temp_array_a", ":indx_display_state", 1),
+
+                (else_try),
+                    (overlay_set_color, ":center_overlay", 0),
+                    (troop_set_slot, "trp_temp_array_a", ":indx_display_state", 0),
+                (try_end),
+                
+            (try_end),
+        (try_end),
+
+        #click on center + control
+        (try_begin),
+            (eq, "$gShowFeudalMap", 1), #assign only if dialog with minister first
+            (ge, ":object", "$first_center_btn"),
+            (le, ":object", "$last_center_btn"),   
+            (this_or_next| key_is_down, key_right_control), (key_is_down, key_left_control),
+            
+            (call_script, "script_search_fiefs_tmp", 0, ":object"),
+            (gt, reg0, 0),
+            (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+            (store_add, ":indx1", ":indx0", 5), (troop_get_slot, ":display_state", "trp_temp_array_a", ":indx1"),
+            (eq, ":display_state", 1),
+            (store_add, ":indx1", ":indx0", 4), (troop_get_slot, ":lord", "trp_temp_array_a", ":indx1"),
+            (this_or_next | eq, ":lord", -1), (eq, ":lord", 0), #assign only unassigned or player owned
+            
+            (store_add, ":indx1", ":indx0", 1), (troop_get_slot, "$fief_selected", "trp_temp_array_a", ":indx1"),
+            
+            (try_begin),
+                (eq, "$g_player_court", "$fief_selected"),
+                (display_message, "@Can't grant capital fief!"),
+            (else_try),
+                (try_begin),
+                    (try_begin),
+                        (store_faction_of_party, reg0, "$fief_selected"),
+                        (neq, reg0, "fac_player_supporters_faction"),
+                        (display_message, "@Unassigned fief not part of your kingdom!"),
+                    (else_try),
+                        (call_script, "script_toggle_controls_worldmap", 0),
+                        (overlay_set_display, "$lbl_name_grant_lord", 1),
+                        (overlay_set_display, "$cbo_grant", 1),   
+                        (overlay_set_val, "$cbo_grant",  "$last_indx_cbogrant"),
+                        
+                    (try_end),
+                (try_end),
+            (try_end),
+            
+        (try_end),
+        
+        
+        #change on grant combo
+        (try_begin),
+            
+            (eq, ":object", "$cbo_grant"),
+            (call_script, "script_search_lords_tmp" , 3, ":value"),
+            
+            (try_begin),
+                (eq, reg0, 0),    #case None
+            (else_try),
+            
+                (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+                (store_add, ":indx1", ":indx0", 0), (troop_get_slot, ":lord", "trp_temp_array_b", ":indx1"),
+
+                (call_script, "script_give_center_to_lord", "$fief_selected", ":lord", 0),
+                
+                #if fief was on agenda, remove from agenda
+                (faction_get_slot, ":fief_on_agenda", "fac_player_supporters_faction", slot_faction_political_issue),
+                (try_begin),
+                    (eq, ":fief_on_agenda", "$fief_selected"),
+                    (faction_set_slot, "fac_player_supporters_faction", slot_faction_political_issue, -1),
+                (try_end),
+
+                (call_script, "script_add_log_entry", logent_castle_given_to_lord_by_player, "trp_player", "$fief_selected", ":lord", "$g_encountered_party_faction"),
+
+                #update lists fief & lords, overlays center and label name
+                (call_script, "script_search_fiefs_tmp" , 1, "$fief_selected"),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+                (store_add, ":indx1", ":indx0", 4),
+                (troop_set_slot, "trp_temp_array_a", ":indx1", ":lord"),
+                
+                (troop_get_slot, ":center_overlay", "trp_temp_array_a", ":indx0"),
+                
+                (store_add, ":indx1", ":indx0", 3),
+                (troop_get_slot, ":id_overlay_name", "trp_temp_array_a", ":indx1"),           
+                
+                (call_script, "script_search_lords_tmp" , 0, ":lord"),
+                (troop_get_slot, ":indx0", "trp_temp_array_c", 0),
+                (store_add, ":indx1", ":indx0", 1),
+                (troop_get_slot, ":color", "trp_temp_array_b", ":indx1"),
+                
+                (str_store_troop_name, s0, ":lord"),
+                
+                (overlay_set_text, ":id_overlay_name", s0),
+                (overlay_set_color, ":center_overlay", ":color"),
+                
+                (str_store_party_name, s1, "$fief_selected"),
+                (display_message, "@{s1} is granted to {s0}.", 0xFF00FF),
+
+            (try_end),
+            
+            (call_script, "script_toggle_controls_worldmap", 1),
+            (overlay_set_display, "$lbl_name_grant_lord", 0),
+            (overlay_set_display, "$cbo_grant", 0),
+            
+        (try_end),
+
+        
+        #Click on help   
+        (try_begin),
+            (eq, ":object", "$g_help"),
+            
+            (dialog_box, "@Hover mouse over settlement to view basic info. Click to toggle view of all fiefs assigned to settlement owner.^^To change colors, click+shift on a colorized settlement.^^To assign fief, click+control on settlement (Only if coming from dialog with minister).^^By: Arris Rumi, 2021.", "@Feudal Map"),
+            
+        (try_end),
+        
+      ]),
+
+  ]),
   
 
 	

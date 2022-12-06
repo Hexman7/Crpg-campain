@@ -3888,15 +3888,51 @@ coop_scripts = [
 		 
 	 
 	 
-	("coop_check_player_troops_status",
+	# ("coop_check_player_troops_status",
+	 # [		
+		
+		# (try_begin),
+		# (eq,"$troops_have_to_be_copied",1),
+			# (call_script,"script_coop_read_eq_from_file_to_troops"),
+			# (assign,"$troops_have_to_be_copied",0),
+		# (try_end),
+		 
+ 
+	  # ]),
+	  
+	  
+#### script_coop_save_troops_equipment_to_file
+#### copy warriors equipment to file for multiplayer battle
+#### input: 
+#### output: 
+		 
+	 
+	 
+	("coop_save_troops_equipment_to_file",
 	 [		
 		
-		(try_begin),
-		(eq,"$troops_have_to_be_copied",1),
-			(call_script,"script_coop_read_eq_from_file_to_troops"),
-			#(display_message,"@chuj"),
-			(assign,"$troops_have_to_be_copied",0),
-		(try_end),
+			(try_begin),
+			(neg|is_vanilla_warband),
+			(dict_create, "$troop_dict"),
+			(dict_save, "$troop_dict", "@coop_troops"), ## Clear file
+			## loop for player troops
+			(try_for_range,reg1,player_troops_begin,player_troops_end),
+				#(dict_set_str,"$troop_dict","@troop_{reg1}"),
+				(try_for_range,":slot_no",0,101),
+					(troop_get_inventory_slot,":i_slot",reg1,":slot_no"),
+					(assign,reg2,":slot_no"),
+					(assign,reg3,0),
+					(val_add,reg3,":i_slot"),
+					(try_begin),
+					(neg|eq,":i_slot",-1),
+						(dict_set_int,"$troop_dict","@troop_{reg1}_{reg2}",reg3),
+					(try_end),
+					#(display_message,"@jednostka {reg1}, nrSlota{reg2}, wartoscSlota{reg3}"),	## DEBUG
+				(try_end),
+			(try_end),
+			(dict_save, "$troop_dict", "@coop_troops"), ## save file
+			(dict_free, "$troop_dict"),
+		(try_end),	
 		 
  
 	  ]),
@@ -4061,15 +4097,18 @@ coop_scripts = [
 
 #script_wse_savegame_loaded
 # Called each time after savegame is loaded successfully
- ("cf_wse_savegame_loaded", [
+ ("wse_savegame_loaded", [
+	
+
 	
 	(store_current_day,":day"),
 	
-	# (assign,reg0,":day"),
-	# (display_message,"@ Day of game:{reg0}"),
+	(assign,reg0,":day"),
+	(display_message,"@ Day of game:{reg0}"),
+	(try_begin),
 	(gt,":day", -1),
 		(assign,"$troops_have_to_be_copied_after_saveload",1),
-		
+	(try_end),
 ]),
 
 #script_cf_check_file_exist		17.02.2020
