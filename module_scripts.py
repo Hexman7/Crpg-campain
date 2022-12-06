@@ -24783,8 +24783,9 @@ scripts = [
 			(else_try),
 				(assign,":party_template",	"pt_village_defenders"),
 			(try_end),
+			(party_add_template, ":village_no", ":party_template"),
 		(try_end),
-		(party_add_template, ":village_no", ":party_template"),
+		
   ]),
 
   # script_village_set_state
@@ -51415,31 +51416,36 @@ scripts = [
       (store_sub, ":cur_town", ":cur_merchant", horse_merchants_begin),
       (val_add, ":cur_town", towns_begin),
       (party_get_slot, ":cur_faction", ":cur_town", slot_center_original_faction),
-	  (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_horse, 5),
+	  (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_horse, 4),
+
+	  ### adding horsess that would disaapear when factions stop existing - test
+      (party_get_slot, ":cur_faction", ":cur_town", slot_center_native_faction),	 
+	  (val_add,":cur_faction","fac_kingdom_1"),
+	  (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_horse, 4),
 	  
-	  #### adding horsess that would disaapear when factions stop existing
-	  (try_begin),
-	  (eq,":cur_town","p_town_16"),	#Dhirim
-		(troop_add_item,":cur_merchant","itm_charger"),
-		(troop_add_item,":cur_merchant","itm_plated_charger"),
-	  (else_try),
-	  (eq,":cur_town","p_town_6"), #Praven
-		(troop_add_item,":cur_merchant","itm_warhorse_steppe"),
-		(troop_add_item,":cur_merchant","itm_plated_charger"),
-		(troop_add_item,":cur_merchant","itm_steppe_horse"),
-	  (else_try),
-	  (eq,":cur_town","p_town_17"), #Ichamur
-		(troop_add_item,":cur_merchant","itm_steppe_horse"),
-		(troop_add_item,":cur_merchant","itm_arabian_horse_a"),
-		(troop_add_item,":cur_merchant","itm_warhorse_steppe"),
-	  (else_try),
-	  (eq,":cur_town","p_town_22"), # Bariyye
-		(troop_add_item,":cur_merchant","itm_arabian_horse_a"),
-		(troop_add_item,":cur_merchant","itm_arabian_horse_b"),
-		(troop_add_item,":cur_merchant","itm_warhorse_sarranid"),
-	  (try_end),
+	  ### adding horsess that would disaapear when factions stop existing
+	  # (try_begin),
+	  # (eq,":cur_town","p_town_16"),	#Dhirim
+		# (troop_add_item,":cur_merchant","itm_charger"),
+		# (troop_add_item,":cur_merchant","itm_plated_charger"),
+	  # (else_try),
+	  # (eq,":cur_town","p_town_6"), #Praven
+		# (troop_add_item,":cur_merchant","itm_warhorse_steppe"),
+		# (troop_add_item,":cur_merchant","itm_plated_charger"),
+		# (troop_add_item,":cur_merchant","itm_steppe_horse"),
+	  # (else_try),
+	  # (eq,":cur_town","p_town_17"), #Ichamur
+		# (troop_add_item,":cur_merchant","itm_steppe_horse"),
+		# (troop_add_item,":cur_merchant","itm_arabian_horse_a"),
+		# (troop_add_item,":cur_merchant","itm_warhorse_steppe"),
+	  # (else_try),
+	  # (eq,":cur_town","p_town_22"), # Bariyye
+		# (troop_add_item,":cur_merchant","itm_arabian_horse_a"),
+		# (troop_add_item,":cur_merchant","itm_arabian_horse_b"),
+		# (troop_add_item,":cur_merchant","itm_warhorse_sarranid"),
+	  # (try_end),
 	  
-	  #### 
+	  ### 
       (troop_ensure_inventory_space, ":cur_merchant", 65),
       (troop_sort_inventory, ":cur_merchant"),
       (store_troop_gold, ":cur_gold", ":cur_merchant"),

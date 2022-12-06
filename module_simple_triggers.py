@@ -1045,7 +1045,7 @@ simple_triggers = [
 		  (try_end),
 			
           (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
-          (this_or_next|le, reg0, -50), #was -75
+          (this_or_next|le, reg0, -75), #was -50  - mod edited
 		  (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
 
           (call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 

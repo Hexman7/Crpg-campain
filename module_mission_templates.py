@@ -1351,25 +1351,29 @@ effects_on_troops =  (
 	(eq,":agent_party","p_main_party"),
 		(try_begin), ### if party uses alcohol - alcohol unlocked and in inventory
 		(eq,"$party_was_drinking",1),
-			## 20 % penalty in everything ( horse speed 10% penalty)
-			(agent_set_damage_modifier, ":agent", 80),
-			(agent_set_accuracy_modifier, ":agent", 80),
-			(agent_set_speed_modifier, ":agent", 80),
-			(agent_set_reload_speed_modifier, ":agent", 80),
-			(agent_set_use_speed_modifier, ":agent", 80),
-			(agent_set_ranged_damage_modifier, ":agent", 80),
-			(agent_set_horse_speed_factor, ":agent", 90),
-			#bonus to health
-			(store_agent_hit_points,":current_hp",":agent",1),
-			#(assign,reg3,":current_hp"),#DEBUG
-			#(display_message,"@ agent hp before change: {reg3}"),
-			(store_mul,":new_hp",":current_hp",3),
-			(val_div,":new_hp",2),
-			(agent_set_max_hit_points,":agent",":new_hp",1),
-			(agent_set_hit_points,":agent",":new_hp",1),
-			#(store_agent_hit_points,reg3,":agent",1), #DEBUG
-			#(assign,reg4,":new_hp"),	
-			#(display_message,"@ agent hp after change: {reg3} new: {reg4}"),
+			(store_random_in_range,":rand",0,100),
+			(try_begin),
+			(lt,":rand",51),		## 50% chance for agent got drunk before battle 
+				## 20 % penalty in everything ( horse speed 10% penalty)
+				(agent_set_damage_modifier, ":agent", 80),
+				(agent_set_accuracy_modifier, ":agent", 80),
+				(agent_set_speed_modifier, ":agent", 80),
+				(agent_set_reload_speed_modifier, ":agent", 80),
+				(agent_set_use_speed_modifier, ":agent", 80),
+				(agent_set_ranged_damage_modifier, ":agent", 80),
+				(agent_set_horse_speed_factor, ":agent", 90),
+				#bonus to health
+				(store_agent_hit_points,":current_hp",":agent",1),
+				#(assign,reg3,":current_hp"),#DEBUG
+				#(display_message,"@ agent hp before change: {reg3}"),
+				(store_mul,":new_hp",":current_hp",3),
+				(val_div,":new_hp",2),
+				(agent_set_max_hit_points,":agent",":new_hp",1),
+				(agent_set_hit_points,":agent",":new_hp",1),
+				#(store_agent_hit_points,reg3,":agent",1), #DEBUG
+				#(assign,reg4,":new_hp"),	
+				#(display_message,"@ agent hp after change: {reg3} new: {reg4}"),
+			(try_end),
 		(try_end),
 		
 		### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
