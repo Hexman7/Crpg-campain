@@ -6185,6 +6185,7 @@ game_menus = [
 #            (call_script, "script_party_add_party", ":helper_party", "p_temp_party"), #Add remaining prisoners to our reinforcements
 #          (try_end),          
           (troop_clear_inventory, "trp_temp_troop"),
+		  (display_message,"@calculating loot"),
           (call_script, "script_party_calculate_loot", "p_total_enemy_casualties"), #p_encountered_party_backup changed to total_enemy_casualties
           (gt, reg0, 0),          
           (troop_sort_inventory, "trp_temp_troop"),
