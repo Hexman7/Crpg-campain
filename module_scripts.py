@@ -24904,7 +24904,6 @@ scripts = [
 		   
            (try_begin),
              (ge, ":raider_party", 0),
-           # (neg|party_slot_gt, ":raider_party", slot_party_last_in_combat, 0),#### mod raiding while fighting next to village fix
 			 (party_is_active, ":raider_party"),
              (this_or_next|neq, ":raider_party", "p_main_party"),
              (eq, "$g_player_is_captive", 0),
@@ -24912,6 +24911,20 @@ scripts = [
              (lt, ":distance", raid_distance),
              (assign, ":raid_ended", 0),
            (try_end),
+                     
+          ####  mod fix for raiding villages while lord is having a battle 
+           (party_get_battle_opponent, ":opponent", ":raider_party"),
+           (try_begin),
+           (gt, ":opponent", 0),
+               (assign, reg2, ":opponent"),
+               (party_stack_get_troop_id, ":party_leader", ":opponent", 0),
+               (str_store_troop_name,s1,":party_leader"),
+               (str_store_party_name,s4,":village_no"),
+               (display_message,"@Battle opponent: {reg2} Leader: {s1} Near Village: {s4}"),
+               
+               (assign, ":raid_ended", 1),
+           (try_end),
+           ### mod end
            
            (try_begin),           
              (eq, ":raid_ended", 1),
