@@ -24855,7 +24855,7 @@ scripts = [
   ("process_village_raids",
     [
        (try_for_range, ":village_no", villages_begin, villages_end),
-        ##CABA Fix 
+        ##CABA Fix ## initializing icons
         (try_begin), 
           (this_or_next|is_between, ":village_no", "p_village_16", "p_village_23"), #Shapeshte through Shulus (up to Ilvia) 
           (this_or_next|is_between, ":village_no", "p_village_49", "p_village_51"), #Tismirr and Karindi 
@@ -24881,7 +24881,7 @@ scripts = [
            (val_sub, ":village_raid_progress", 5),
            (val_max, ":village_raid_progress", 0),
            (party_set_slot, ":village_no", slot_village_raid_progress, ":village_raid_progress"),
-           (try_begin),
+           (try_begin), ##  icons
              (lt, ":village_raid_progress", 50),
              
              (try_begin),
@@ -24894,9 +24894,10 @@ scripts = [
              (party_set_slot, ":village_no", slot_village_smoke_added, 0),             
              (party_clear_particle_systems, ":village_no"),
            (try_end),
-         (else_try),
+         (else_try),    ###village is being raided
            (party_slot_eq, ":village_no", slot_village_state, svs_being_raided), #village is being raided
            #End raid unless there is an enemy party nearby
+           (assign, ":raid_holded", 0),
            (assign, ":raid_ended", 1),
            (party_get_slot, ":raider_party", ":village_no", slot_village_raided_by),
            
@@ -24913,16 +24914,21 @@ scripts = [
            (try_end),
                      
           ####  mod fix for raiding villages while lord is having a battle 
-           (party_get_battle_opponent, ":opponent", ":raider_party"),
            (try_begin),
-           (gt, ":opponent", 0),
+           (ge, ":raider_party", 0),
+            (party_get_battle_opponent, ":opponent", ":raider_party"),
+            (try_begin),
+            (gt, ":opponent", 0),
                (assign, reg2, ":opponent"),
                (party_stack_get_troop_id, ":party_leader", ":opponent", 0),
                (str_store_troop_name,s1,":party_leader"),
                (str_store_party_name,s4,":village_no"),
                (display_message,"@Battle opponent: {reg2} Leader: {s1} Near Village: {s4}"),
-               
-               (assign, ":raid_ended", 1),
+               (assign,":raid_holded",1),
+               (assign, reg3, ":village_raid_progress"),
+               (display_message,"@Raid Progress: {reg3}"),
+               # (assign, ":raid_ended", 1),
+            (try_end),
            (try_end),
            ### mod end
            
@@ -24932,6 +24938,7 @@ scripts = [
              (party_set_slot, ":village_no", slot_village_smoke_added, 0),
              (party_clear_particle_systems, ":village_no"),                          
            (else_try),
+             (eq, ":raid_holded", 0),
              (assign, ":raid_progress_increase", 11),
              (party_get_slot, ":looter_party", ":village_no", slot_village_raided_by),
              (try_begin),
