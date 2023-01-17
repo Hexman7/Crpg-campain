@@ -15557,6 +15557,75 @@ presentations = [
 		 
 	  ]),
     ]),
+    
+    
+    ("present_lords_new", prsntf_manual_end_only, mesh_load_window, [		#17.01.2023
+    (ti_on_presentation_load, [      
+      (set_fixed_point_multiplier, 1000),
+	    
+	  (create_text_overlay, "$g_present_lords_text", s10,tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_text", pos1),
+	  (position_set_x, pos1, 500),
+	  (position_set_y, pos1, 590),
+	  (overlay_set_position, "$g_present_lords_text", pos1),
+	
+
+      (create_combo_button_overlay, reg2),
+      (position_set_x, pos1, 800),
+      (position_set_y, pos1, 800),
+      (overlay_set_size, reg2, pos1),
+      (position_set_x, pos1, 300),
+      (position_set_y, pos1, 500),
+      (overlay_set_position, reg2, pos1),
+	 
+	  
+	  (try_for_range_backwards,":faction", npc_kingdoms_begin, npc_kingdoms_end),
+          (str_store_faction_name,s1,":faction"),
+
+          (overlay_add_item, reg2, s1),
+
+          (assign,reg3,":faction"),
+         # (display_message,"@ value: {reg3}"),
+         # (overlay_set_val, reg2, ":hero"),
+
+		  
+	  (try_end),
+      
+      (try_for_range_backwards,":faction", npc_kingdoms_begin, npc_kingdoms_end),
+          (str_store_faction_name,s1,":faction"),
+
+          (overlay_add_item, reg2, s1),
+
+          (assign,reg3,":faction"),
+         # (display_message,"@ value: {reg3}"),
+         # (overlay_set_val, reg2, ":hero"),
+
+      
+      (try_end),
+
+		
+		
+		(presentation_set_duration, 999999),
+    ]),
+	  (ti_on_presentation_run, [
+
+      ]),    
+	  
+	  (ti_on_presentation_event_state_change, [
+		  (store_trigger_param_2, ":value"),
+	
+		   
+		   (presentation_set_duration, 0),
+
+		 
+	  ]),
+    ]),
+    
+    
+    
+    
 		
 	("present_lord_votes", prsntf_manual_end_only, mesh_load_window, [		#19.03.2019
     (ti_on_presentation_load, [      

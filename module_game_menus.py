@@ -3420,7 +3420,14 @@ game_menus = [
         ], "CHEAT!: RENAME KINGDOM",
        [(start_presentation, "prsnt_name_kingdom"),
         ],
-       ),		 
+       ),	
+       
+       ("camp_present_lords",
+       [(eq,"$cheat_mode",1)
+        ], "CHEAT!: Present Lords",
+       [(start_presentation, "prsnt_present_lords_new"),
+        ],
+       ),	
 
 
 	   ("camp_get_upgrade",
