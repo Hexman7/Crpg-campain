@@ -1865,8 +1865,15 @@ grey_banners_end_offset = 39
 khergit_banners_begin_offset = 63
 khergit_banners_end_offset = 84
 
+
 sarranid_banners_begin_offset = 105
 sarranid_banners_end_offset = 125
+
+
+### mod begin
+kalmar_banners_begin_offset = 146
+kalmar_banners_end_offset = 167
+### mod end
 
 banners_end_offset = 199
 
