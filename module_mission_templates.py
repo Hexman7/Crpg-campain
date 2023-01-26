@@ -1377,6 +1377,8 @@ effects_on_troops =  (
 		(try_end),
 		
 		### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
+		### to do: variable for player, lords if they have built buildings 
+		#### to do: randomly build buildings in lords centers
 	(try_end),
 	
 	])	

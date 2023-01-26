@@ -10100,20 +10100,45 @@ game_menus = [
     "none",
     [(assign, ":num_improvements", 0),
      (str_clear, s18),
-     (try_begin),
-       (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
+     # (try_begin),	### native
+       # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
+       # (assign, ":begin", village_improvements_begin),
+       # (assign, ":end", village_improvements_end),
+       # (str_store_string, s17, "@village"),
+     # (else_try),
+       # (assign, ":begin", walled_center_improvements_begin),
+       # (assign, ":end", walled_center_improvements_end),
+       # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+       # (str_store_string, s17, "@town"),
+     # (else_try),
+       # (str_store_string, s17, "@castle"),
+     # (try_end),
+     
+	 
+	 (try_begin),	### native
+     (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
        (assign, ":begin", village_improvements_begin),
        (assign, ":end", village_improvements_end),
        (str_store_string, s17, "@village"),
      (else_try),
-       (assign, ":begin", walled_center_improvements_begin),
-       (assign, ":end", walled_center_improvements_end),
-       (party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+	 (party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+	   (party_get_slot, ":is_capitol", "$g_encountered_party", slot_town_is_capitol),
+	   (try_begin),
+	   (eq,":is_capitol",1),
+			(assign, ":begin", capitol_improvements_begin),
+			(assign, ":end", capitol_improvements_end),
+	   (else_try),
+			(assign, ":begin", town_improvements_begin),
+			(assign, ":end", town_improvements_end),
+	   (try_end),
        (str_store_string, s17, "@town"),
      (else_try),
+	   (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+	   (assign, ":begin", castle_improvements_begin),
+       (assign, ":end", castle_improvements_end),
        (str_store_string, s17, "@castle"),
      (try_end),
-     
+	 
      (try_for_range, ":improvement_no", ":begin", ":end"),
        (party_slot_ge, "$g_encountered_party", ":improvement_no", 1),
        (val_add,  ":num_improvements", 1),
@@ -10185,37 +10210,210 @@ game_menus = [
                                        ],
        "Build a prisoner tower.",[(assign, "$g_improvement_type", slot_center_has_prisoner_tower),
                                   (jump_to_menu, "mnu_center_improve"),]),
-                 
-##### mod begin
-	  # ("center_build_blacksmith",[(eq, reg6, 0),
-                                      # (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
-                                      # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
-                                      # (party_slot_eq, "$g_encountered_party", slot_center_has_prisoner_tower, 0),
-                                       # ],
-       # "Build a Blacksmith.",[(assign, "$g_improvement_type", slot_center_has_prisoner_tower),
-                                  # (jump_to_menu, "mnu_center_improve"),]),
-	  # ("center_build_armorer",[(eq, reg6, 0),
-                                      # (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
-                                      # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
-                                      # (party_slot_eq, "$g_encountered_party", slot_center_has_prisoner_tower, 0),
-                                       # ],
-       # "Build a Armorer.",[(assign, "$g_improvement_type", slot_center_has_prisoner_tower),
-                                  # (jump_to_menu, "mnu_center_improve"),]),
-	  # ("center_build_stables",[(eq, reg6, 0),
-                                      # (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
-                                      # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
-                                      # (party_slot_eq, "$g_encountered_party", slot_center_has_prisoner_tower, 0),
-                                       # ],
-       # "Build a Stables.",[(assign, "$g_improvement_type", slot_center_has_prisoner_tower),
-                                  # (jump_to_menu, "mnu_center_improve"),]),	 
-	  # ("center_build_bowyer",[(eq, reg6, 0),
-                                      # (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
-                                      # (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
-                                      # (party_slot_eq, "$g_encountered_party", slot_center_has_prisoner_tower, 0),
-                                       # ],
-       # "Build a Bowyer.",[(assign, "$g_improvement_type", slot_center_has_prisoner_tower),
-                                  # (jump_to_menu, "mnu_center_improve"),]),
-### mod end			 
+ #### mod begin
+	  ("center_build_smithy",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_smithy, 0),
+
+                                       ],
+
+       "Build a smithy.",[(assign, "$g_improvement_type", slot_center_has_smithy),
+
+		  (jump_to_menu, "mnu_center_improve"),]),
+
+
+	  ("center_build_large_smithy",[(eq, reg6, 0),
+
+							  (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+							  (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+							  (party_slot_eq, "$g_encountered_party", slot_center_has_smithy, 1),
+
+							  (party_slot_eq, "$g_encountered_party", slot_center_has_large_smithy, 0),
+
+							   ],
+
+       "Build a large smithy.",[(assign, "$g_improvement_type", slot_center_has_large_smithy),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+ 
+
+	  ("center_build_kings_smithy",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_smithy, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_kings_smithy, 0),
+
+                                       ],
+
+       "Build a king's smithy.",[(assign, "$g_improvement_type", slot_center_has_kings_smithy),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),        
+
+ 
+
+	  ("center_build_armorer",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_armorer, 0),
+
+                                       ],
+
+       "Build an armorer.",[(assign, "$g_improvement_type", slot_center_has_armorer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+
+	  ("center_build_large_armorer",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_armorer, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_armorer, 0),
+
+                                       ],
+
+       "Build an large armorer.",[(assign, "$g_improvement_type", slot_center_has_large_armorer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+ 
+
+	  ("center_build_kings_armorer",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_armorer, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_kings_armorer, 0),
+
+                                       ],
+
+       "Build an king's armorer.",[(assign, "$g_improvement_type", slot_center_has_kings_armorer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),        
+
+             
+
+                                                                                                                  
+
+	  ("center_build_stables",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_stables, 0),
+
+                                       ],
+
+       "Build stables.",[(assign, "$g_improvement_type", slot_center_has_stables),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+
+	  ("center_build_large_stables",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_stables, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_stables, 0),
+
+                                       ],
+
+       "Build large stables.",[(assign, "$g_improvement_type", slot_center_has_large_stables),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+ 
+
+	  ("center_build_kings_stables",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_stables, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_kings_stables, 0),
+
+                                       ],
+
+       "Build king's stables.",[(assign, "$g_improvement_type", slot_center_has_kings_stables),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),     
+
+	  ("center_build_bowyer",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_bowyer, 0),
+
+                                       ],
+
+       "Build bowyer.",[(assign, "$g_improvement_type", slot_center_has_bowyer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+
+	  ("center_build_large_stables",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_bowyer, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_bowyer, 0),
+
+                                       ],
+
+       "Build large bowyer.",[(assign, "$g_improvement_type", slot_center_has_large_bowyer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]),
+
+ 
+
+	  ("center_build_kings_stables",[(eq, reg6, 0),
+
+                                      (this_or_next|party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_castle),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_large_bowyer, 1),
+
+                                      (party_slot_eq, "$g_encountered_party", slot_center_has_kings_bowyer, 0),
+
+                                       ],
+
+       "Build king's bowyer.",[(assign, "$g_improvement_type", slot_center_has_kings_bowyer),
+
+                                  (jump_to_menu, "mnu_center_improve"),]), 
+								  
+### mod end								  
       ("go_back_dot",[],"Go back.",[(jump_to_menu, "$g_next_menu")]),
     ],
   ),

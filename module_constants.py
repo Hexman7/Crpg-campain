@@ -345,7 +345,7 @@ slot_castle_exterior    = slot_town_center
 
 
 slot_center_native_faction = 73	## crpg-campaign: center slot for setting it's native faction
-
+slot_town_is_capitol = 74 ### crpg-campaign: center is capitol
 
 
 #slot_town_rebellion_contact   = 76
@@ -420,8 +420,6 @@ slot_center_improvement_end_hour  = 125
 
 slot_party_last_traded_center     = 126 
 
-
-
 slot_center_has_manor            = 130 #village
 slot_center_has_fish_pond        = 131 #village
 slot_center_has_watch_tower      = 132 #village
@@ -429,20 +427,46 @@ slot_center_has_school           = 133 #village
 slot_center_has_messenger_post   = 134 #town, castle, village
 slot_center_has_prisoner_tower   = 135 #town, castle
 
+## MOD BEGIN
+slot_center_has_smithy			 = 136
+slot_center_has_armorer			 = 137
+slot_center_has_stables			 = 138
+slot_center_has_bowyer 			 = 139
+
+slot_center_has_large_smithy	 = 140
+slot_center_has_large_armorer	 = 141
+slot_center_has_large_stables	 = 142
+slot_center_has_large_bowyer	 = 143
+
+slot_center_has_kings_smithy	 = 144
+slot_center_has_kings_armorer	 = 145
+slot_center_has_kings_stables 	 = 146
+slot_center_has_kings_bowyer	 = 147
+
 village_improvements_begin = slot_center_has_manor
-village_improvements_end          = 135
+village_improvements_end          = slot_center_has_smithy
 
 walled_center_improvements_begin = slot_center_has_messenger_post
 walled_center_improvements_end               = 136
 
-slot_center_player_enterprise     				  = 137 #noted with the item produced
-slot_center_player_enterprise_production_order    = 138
-slot_center_player_enterprise_consumption_order   = 139 #not used
-slot_center_player_enterprise_days_until_complete = 139 #Used instead
+castle_improvements_begin = slot_center_has_messenger_post
+castle_improvements_end = slot_center_has_large_smithy
 
-slot_center_player_enterprise_balance             = 140 #not used
-slot_center_player_enterprise_input_price         = 141 #not used
-slot_center_player_enterprise_output_price        = 142 #not used
+town_improvements_begin = slot_center_has_messenger_post
+town_improvements_end = slot_center_has_kings_smithy
+
+capitol_improvements_begin = slot_center_has_messenger_post
+capitol_improvements_end = 147
+#### MOD END
+
+slot_center_player_enterprise     				  = 148 #noted with the item produced
+slot_center_player_enterprise_production_order    = 149
+slot_center_player_enterprise_consumption_order   = 150 #not used
+slot_center_player_enterprise_days_until_complete = 151 #Used instead
+
+slot_center_player_enterprise_balance             = 152 #not used
+slot_center_player_enterprise_input_price         = 153 #not used
+slot_center_player_enterprise_output_price        = 154 #not used
 
 
 
