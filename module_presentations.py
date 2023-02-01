@@ -6,6 +6,7 @@ from header_operations import *
 from header_triggers import *
 from module_constants import *
 from header_terrain_types import *
+from module_skills import *
 import string
 #COOP BEGIN#######################################
 from module_coop_presentations import *
@@ -15568,56 +15569,139 @@ presentations = [
 	  (position_set_y, pos1, 1200),
 	  (overlay_set_size, "$g_present_lords_text", pos1),
 	  (position_set_x, pos1, 500),
-	  (position_set_y, pos1, 590),
+	  (position_set_y, pos1, 650),
 	  (overlay_set_position, "$g_present_lords_text", pos1),
 	
 
-      (create_combo_button_overlay, reg2),
+      (create_combo_button_overlay, "$present_lords_factions"),
       (position_set_x, pos1, 800),
       (position_set_y, pos1, 800),
-      (overlay_set_size, reg2, pos1),
-      (position_set_x, pos1, 300),
-      (position_set_y, pos1, 500),
-      (overlay_set_position, reg2, pos1),
+      (overlay_set_size, "$present_lords_factions", pos1),
+      (position_set_x, pos1, 150),
+      (position_set_y, pos1, 600),
+      (overlay_set_position, "$present_lords_factions", pos1),
 	 
+      (create_combo_button_overlay, "$present_lords_lords"),
+      (position_set_x, pos1, 800),
+      (position_set_y, pos1, 800),
+      (overlay_set_size, "$present_lords_lords", pos1),
+      (position_set_x, pos1, 400),
+      (position_set_y, pos1, 600),
+      (overlay_set_position, "$present_lords_lords", pos1),
 	  
-	  (try_for_range_backwards,":faction", npc_kingdoms_begin, npc_kingdoms_end),
+      
+     
+      
+	  (try_for_range,":faction", npc_kingdoms_begin, npc_kingdoms_end),
           (str_store_faction_name,s1,":faction"),
 
-          (overlay_add_item, reg2, s1),
-
-          (assign,reg3,":faction"),
-         # (display_message,"@ value: {reg3}"),
-         # (overlay_set_val, reg2, ":hero"),
-
-		  
+          (overlay_add_item, "$present_lords_factions", s1),
 	  (try_end),
       
-      (try_for_range_backwards,":faction", npc_kingdoms_begin, npc_kingdoms_end),
-          (str_store_faction_name,s1,":faction"),
-
-          (overlay_add_item, reg2, s1),
-
-          (assign,reg3,":faction"),
-         # (display_message,"@ value: {reg3}"),
-         # (overlay_set_val, reg2, ":hero"),
-
+      (overlay_set_val, "$present_lords_factions", "$faction_choose"),
       
+     
+      (store_mul, ":lords_start", "$faction_choose", 20),
+      # (assign, reg1, ":lords_start"),
+      # (display_message,"@ Lords start: {reg1}"),
+      (val_add, ":lords_start", lords_begin),
+      # (assign, reg1, ":lords_start"),
+      # (display_message,"@ Lords start: {reg1}"),
+      (store_add, ":lords_end", ":lords_start", 20),
+      # (assign, reg1, ":lords_end"),
+      # (display_message,"@ Lords end: {reg1}"),
+      (try_for_range,":lord", ":lords_start", ":lords_end"),
+          (str_store_troop_name,s1,":lord"),
+          (overlay_add_item, "$present_lords_lords", s1),
       (try_end),
-
-		
-		
-		(presentation_set_duration, 999999),
+      
+      (overlay_set_val, "$present_lords_lords", "$lord_choose"),
+      
+      ### display troop
+      
+      (store_add, ":troop", "$lord_choose", ":lords_start"),
+      (create_mesh_overlay_with_tableau_material, "$g_presentation_troop_mesh", -1, "tableau_game_character_sheet", ":troop"),
+      (position_set_x, pos1, 1000),
+      (position_set_y, pos1, 1000),
+      (overlay_set_size, "$g_presentation_troop_mesh", pos1),
+      (position_set_x, pos1, 200),
+      (position_set_y, pos1, 100),
+      (overlay_set_position, "$g_presentation_troop_mesh", pos1),
+      
+      
+      ### display skills, attr and wpf
+      #store_skill_level, store_character_level, store_attribute_level, store_proficiency_level
+      # (str_store_skill_name, <string_register>, <skill_no>), 
+      
+      (assign, ":y", 500),
+      
+      (try_for_range, ":skill", skl_trade, skl_reserved_14),
+        (try_begin),
+        (neg|is_between, ":skill", skl_reserved_1,skl_persuasion),
+        (neg|is_between, ":skill", skl_reserved_5,skl_looting),
+        (neg|is_between, ":skill", skl_reserved_9,skl_power_draw),
+        (neg|ge, ":skill", skl_reserved_14),
+            (str_store_skill_name, s1, ":skill"),
+            #(display_message,"@{s1}"),
+            (store_skill_level, reg0, ":skill", ":troop"),
+            (str_store_string, s2, "str_reg0"),
+            
+            (create_text_overlay, ":skill_name_text", s1),
+            (position_set_x, pos1, 1000),
+            (position_set_y, pos1, 1000),
+            (overlay_set_size, ":skill_name_text", pos1),
+            (position_set_x, pos1, 700),
+            (position_set_y, pos1, ":y"),
+            (overlay_set_position, ":skill_name_text", pos1),
+            
+            
+            
+            (create_text_overlay, ":skill_lvl_text", s2),
+            (position_set_x, pos1, 1000),
+            (position_set_y, pos1, 1000),
+            (overlay_set_size, ":skill_lvl_text", pos1),
+            (position_set_x, pos1, 900),
+            (position_set_y, pos1, ":y"),
+            (overlay_set_position, ":skill_lvl_text", pos1),
+            
+            
+            
+            (val_sub, ":y", 20),
+        (try_end),
+      (try_end),
+      
+      
+      
+      
+	  (presentation_set_duration, 999999),
     ]),
 	  (ti_on_presentation_run, [
 
       ]),    
 	  
 	  (ti_on_presentation_event_state_change, [
-		  (store_trigger_param_2, ":value"),
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":value"),
 	
+        (try_begin),
+        (eq, ":object" ,"$present_lords_factions"),
+            (assign,"$faction_choose",":value"),
+            (presentation_set_duration, 0),
+            (start_presentation,"prsnt_present_lords_new"),
+            (presentation_set_duration,99999),
+            (display_message,"@Faction"),
+        (else_try),
+        (eq, ":object", "$present_lords_lords"),
+            (assign,"$lord_choose",":value"),
+            (presentation_set_duration, 0),
+            (start_presentation,"prsnt_present_lords_new"),
+            (presentation_set_duration,99999),
+            
+
+        (try_end),
+        
 		   
-		   (presentation_set_duration, 0),
+        
 
 		 
 	  ]),

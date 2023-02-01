@@ -980,7 +980,8 @@ game_menus = [
 	Who are known of their powerfull cavalry. Their ruler is King Dawo.\
 	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
 	  (assign, "$character_faction", "fac_kingdom_1"),
-	  (start_presentation,"prsnt_present_lords"),
+	 # (start_presentation,"prsnt_present_lords"),
+	  (start_presentation,"prsnt_present_lords_new"),
 	#(jump_to_menu,"mnu_start_character_2"),
     ]),
 	
