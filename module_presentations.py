@@ -15578,7 +15578,7 @@ presentations = [
       (position_set_y, pos1, 800),
       (overlay_set_size, "$present_lords_factions", pos1),
       (position_set_x, pos1, 150),
-      (position_set_y, pos1, 600),
+      (position_set_y, pos1, 550),
       (overlay_set_position, "$present_lords_factions", pos1),
 	 
       (create_combo_button_overlay, "$present_lords_lords"),
@@ -15586,7 +15586,7 @@ presentations = [
       (position_set_y, pos1, 800),
       (overlay_set_size, "$present_lords_lords", pos1),
       (position_set_x, pos1, 400),
-      (position_set_y, pos1, 600),
+      (position_set_y, pos1, 550),
       (overlay_set_position, "$present_lords_lords", pos1),
 	  
       
@@ -15624,17 +15624,17 @@ presentations = [
       (position_set_x, pos1, 1000),
       (position_set_y, pos1, 1000),
       (overlay_set_size, "$g_presentation_troop_mesh", pos1),
-      (position_set_x, pos1, 200),
+      (position_set_x, pos1, 100),
       (position_set_y, pos1, 100),
       (overlay_set_position, "$g_presentation_troop_mesh", pos1),
       
       
       ### display skills, attr and wpf
-      #store_skill_level, store_character_level, store_attribute_level, store_proficiency_level
+      # store_character_level, store_attribute_level, store_proficiency_level
       # (str_store_skill_name, <string_register>, <skill_no>), 
       
-      (assign, ":y", 500),
-      
+      (assign, ":y", 560),
+      ## go through usable skills 
       (try_for_range, ":skill", skl_trade, skl_reserved_14),
         (try_begin),
         (neg|is_between, ":skill", skl_reserved_1,skl_persuasion),
@@ -15645,7 +15645,7 @@ presentations = [
             #(display_message,"@{s1}"),
             (store_skill_level, reg0, ":skill", ":troop"),
             (str_store_string, s2, "str_reg0"),
-            
+            #### skill name text
             (create_text_overlay, ":skill_name_text", s1),
             (position_set_x, pos1, 1000),
             (position_set_y, pos1, 1000),
@@ -15654,8 +15654,7 @@ presentations = [
             (position_set_y, pos1, ":y"),
             (overlay_set_position, ":skill_name_text", pos1),
             
-            
-            
+            ### skill level text
             (create_text_overlay, ":skill_lvl_text", s2),
             (position_set_x, pos1, 1000),
             (position_set_y, pos1, 1000),
@@ -15663,8 +15662,6 @@ presentations = [
             (position_set_x, pos1, 900),
             (position_set_y, pos1, ":y"),
             (overlay_set_position, ":skill_lvl_text", pos1),
-            
-            
             
             (val_sub, ":y", 20),
         (try_end),
