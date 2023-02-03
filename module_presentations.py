@@ -15383,9 +15383,6 @@ presentations = [
 	  (position_set_y, pos1, 590),
 	  (overlay_set_position, "$g_present_lords_text", pos1),
 	 
-
-	 
-	 
 	  (try_begin),
 	  (eq, "$character_faction", "fac_kingdom_1"),
 		(assign, ":begin", lords_begin),
@@ -15564,6 +15561,39 @@ presentations = [
     (ti_on_presentation_load, [      
       (set_fixed_point_multiplier, 1000),
 	    
+      (try_begin),
+      (eq,"$character_faction","fac_kingdom_1"),
+        (str_store_string,s1,"str_faction_1_descr"),
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_2"),
+        (str_store_string,s1,"str_faction_2_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_3"),
+        (str_store_string,s1,"str_faction_3_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_4"),
+        (str_store_string,s1,"str_faction_4_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_5"),
+        (str_store_string,s1,"str_faction_5_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_6"),
+        (str_store_string,s1,"str_faction_6_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_7"),
+        (str_store_string,s1,"str_faction_7_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_8"),
+        (str_store_string,s1,"str_faction_8_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_9"),
+        (str_store_string,s1,"str_faction_9_descr"),        
+      (else_try),
+        (str_store_string,s1,"str_faction_1_descr"),
+      (try_end),
+      
+      (str_store_string, s10, "@You are a Lady or Lord of {s1} Which one of Lords or Ladies are you ?"),
+      
 	  (create_text_overlay, "$g_present_lords_text", s10,tf_center_justify|tf_double_space|tf_vertical_align_center),
 	  (position_set_x, pos1, 1200),
 	  (position_set_y, pos1, 1200),
@@ -15601,16 +15631,16 @@ presentations = [
       (overlay_set_val, "$present_lords_factions", "$faction_choose"),
       
      
-      (store_mul, ":lords_start", "$faction_choose", 20),
-      # (assign, reg1, ":lords_start"),
+      (store_mul, "$lords_start", "$faction_choose", 20),
+      # (assign, reg1, "$lords_start"),
       # (display_message,"@ Lords start: {reg1}"),
-      (val_add, ":lords_start", lords_begin),
-      # (assign, reg1, ":lords_start"),
+      (val_add, "$lords_start", lords_begin),
+      # (assign, reg1, "$lords_start"),
       # (display_message,"@ Lords start: {reg1}"),
-      (store_add, ":lords_end", ":lords_start", 20),
+      (store_add, ":lords_end", "$lords_start", 20),
       # (assign, reg1, ":lords_end"),
       # (display_message,"@ Lords end: {reg1}"),
-      (try_for_range,":lord", ":lords_start", ":lords_end"),
+      (try_for_range,":lord", "$lords_start", ":lords_end"),
           (str_store_troop_name,s1,":lord"),
           (overlay_add_item, "$present_lords_lords", s1),
       (try_end),
@@ -15619,7 +15649,7 @@ presentations = [
       
       ### display troop
       
-      (store_add, ":troop", "$lord_choose", ":lords_start"),
+      (store_add, ":troop", "$lord_choose", "$lords_start"),
       (create_mesh_overlay_with_tableau_material, "$g_presentation_troop_mesh", -1, "tableau_game_character_sheet", ":troop"),
       (position_set_x, pos1, 1000),
       (position_set_y, pos1, 1000),
@@ -15630,11 +15660,10 @@ presentations = [
       
       
       ### display skills, attr and wpf
-      # store_character_level, store_attribute_level, store_proficiency_level
-      # (str_store_skill_name, <string_register>, <skill_no>), 
+      # store_character_level
       
       (assign, ":y", 560),
-      ## go through usable skills 
+      ## go through skills 
       (try_for_range, ":skill", skl_trade, skl_reserved_14),
         (try_begin),
         (neg|is_between, ":skill", skl_reserved_1,skl_persuasion),
@@ -15667,8 +15696,59 @@ presentations = [
         (try_end),
       (try_end),
       
+      ####attributes
+      (assign, ":y", 420),
+      (call_script,"script_present_attributes",ca_strength,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_agility,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_intelligence,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_charisma,":y",":troop"),
+      (val_sub, ":y", 80),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_one_handed_weapon,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_two_handed_weapon,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_polearm,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_archery,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_crossbow,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_throwing,":y",":troop"),
+      (val_sub, ":y", 30),        
       
       
+      ### troop level label
+      (assign, ":y", 470),
+      (create_text_overlay, ":character_level_label", "@Level"),
+      (position_set_x, pos1, 1500),
+      (position_set_y, pos1, 1500),
+      (overlay_set_size, ":character_level_label", pos1),
+      (position_set_x, pos1, 400),
+      (position_set_y, pos1, ":y"),
+      (overlay_set_position, ":character_level_label", pos1),
+      
+      ### troop level val
+      (store_character_level,reg0,":troop"),
+      (str_store_string, s2, "str_reg0"),
+      (create_text_overlay, ":character_level_text", s2),
+      (position_set_x, pos1, 1500),
+      (position_set_y, pos1, 1500),
+      (overlay_set_size, ":character_level_text", pos1),
+      (position_set_x, pos1, 600),
+      (position_set_y, pos1, ":y"),
+      (overlay_set_position, ":character_level_text", pos1),
+      
+      
+      
+      #### done btn
+      (create_game_button_overlay,"$g_presentation_done_btn", "@Done"), 
+      (position_set_x, pos1, 900),
+      (position_set_y, pos1, 50),
+      (overlay_set_position, "$g_presentation_done_btn", pos1),
+
       
 	  (presentation_set_duration, 999999),
     ]),
@@ -15683,18 +15763,43 @@ presentations = [
         (try_begin),
         (eq, ":object" ,"$present_lords_factions"),
             (assign,"$faction_choose",":value"),
+            (store_add,":faction","$faction_choose",npc_kingdoms_begin),
+            (assign, "$character_faction", ":faction"),
             (presentation_set_duration, 0),
             (start_presentation,"prsnt_present_lords_new"),
             (presentation_set_duration,99999),
-            (display_message,"@Faction"),
+           # (display_message,"@Faction"),
         (else_try),
         (eq, ":object", "$present_lords_lords"),
             (assign,"$lord_choose",":value"),
             (presentation_set_duration, 0),
             (start_presentation,"prsnt_present_lords_new"),
             (presentation_set_duration,99999),
+        (else_try),
+        (eq,":object","$g_presentation_done_btn"),
+            (store_add, "$current_hero", "$lord_choose","$lords_start"),
+            # (str_store_troop_name, s1, "$current_hero"),
+            # (display_message, "@ Character: {s1}"),
+            (store_add,":faction","$faction_choose",npc_kingdoms_begin),
+            # (str_store_faction_name, s1, ":faction"),
+            # (display_message, "@ Faction: {s1}"),
+            (assign, "$character_faction", ":faction"),
             
+            (troop_get_type,":troop_type","$current_hero"),
+            (try_begin),
+            (eq,":troop_type",0),
+                (assign,"$character_gender",tf_male),
+                (troop_set_type,"trp_player", 0),
+            (else_try),
+            (eq,":troop_type",1),
+                (troop_set_type, "trp_player", 1),
+                (assign,"$character_gender",tf_female),
+            (try_end),				
 
+            
+            (presentation_set_duration, 0),
+            (jump_to_menu, "mnu_start_character_2_crpg_campaign"),
+            
         (try_end),
         
 		   

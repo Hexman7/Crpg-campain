@@ -56422,10 +56422,100 @@ scripts = [
   ]),
 	
     
+###Script present_attributes
+# 
+("present_attributes",
+  [
+    (store_script_param_1,":attr"),
+    (store_script_param_2,":y"),
+    (store_script_param,":troop",3),
+    (try_begin),
+    (eq,":attr",ca_strength),
+        (create_text_overlay, ":attr_name_text", "@Strength"),
+        (store_attribute_level,reg0,":troop",ca_strength),
+    (else_try),
+    (eq,":attr",ca_agility),
+        (create_text_overlay, ":attr_name_text", "@Agility"),
+        (store_attribute_level,reg0,":troop",ca_agility),
+    (else_try),
+    (eq,":attr",ca_intelligence),
+        (create_text_overlay, ":attr_name_text", "@Intelligence"),        
+        (store_attribute_level,reg0,":troop",ca_intelligence),
+    (else_try),
+    (eq,":attr",ca_charisma),   
+        (create_text_overlay, ":attr_name_text", "@Charisma"),
+        (store_attribute_level,reg0,":troop",ca_charisma),
+    (try_end),
+    (position_set_x, pos1, 1200),
+    (position_set_y, pos1, 1200),
+    (overlay_set_size, ":attr_name_text", pos1),
+    (position_set_x, pos1, 400),
+    (position_set_y, pos1, ":y"),
+    (overlay_set_position, ":attr_name_text", pos1),
     
+    
+    (str_store_string, s2, "str_reg0"),
+    ### skill level text
+    (create_text_overlay, ":attr_lvl_text", s2),
+    (position_set_x, pos1, 1200),
+    (position_set_y, pos1, 1200),
+    (overlay_set_size, ":attr_lvl_text", pos1),
+    (position_set_x, pos1, 600),
+    (position_set_y, pos1, ":y"),
+    (overlay_set_position, ":attr_lvl_text", pos1),
+  ]),    
     
   
+###Script present_weapon_proficiency_points
+###
+("present_weapon_proficiency_points",
+  [
+    (store_script_param_1,":wpt"),
+    (store_script_param_2,":y"),
+    (store_script_param,":troop",3),
+    (try_begin),
+    (eq,":wpt",wpt_one_handed_weapon),
+        (create_text_overlay, ":wpf_name_text", "@One Handed Weapon"),
+        (store_proficiency_level,reg0,":troop",wpt_one_handed_weapon),
+    (else_try),
+    (eq,":wpt",wpt_two_handed_weapon),
+        (create_text_overlay, ":wpf_name_text", "@Two Handed Weapon"),
+        (store_proficiency_level,reg0,":troop",wpt_two_handed_weapon),
+    (else_try),
+    (eq,":wpt",wpt_polearm),
+        (create_text_overlay, ":wpf_name_text", "@Polearm"),        
+        (store_proficiency_level,reg0,":troop",wpt_polearm),
+    (else_try),
+    (eq,":wpt",wpt_archery),   
+        (create_text_overlay, ":wpf_name_text", "@Archery"),
+        (store_proficiency_level,reg0,":troop",wpt_archery),
+    (else_try),
+    (eq,":wpt",wpt_crossbow),   
+        (create_text_overlay, ":wpf_name_text", "@Crossbow"),
+        (store_proficiency_level,reg0,":troop",wpt_crossbow),
+    (else_try),
+    (eq,":wpt",wpt_throwing),   
+        (create_text_overlay, ":wpf_name_text", "@Throwing"),
+        (store_proficiency_level,reg0,":troop",wpt_throwing),
+    (try_end),
+    (position_set_x, pos1, 1000),
+    (position_set_y, pos1, 1000),
+    (overlay_set_size, ":wpf_name_text", pos1),
+    (position_set_x, pos1, 400),
+    (position_set_y, pos1, ":y"),
+    (overlay_set_position, ":wpf_name_text", pos1),
     
+    
+    (str_store_string, s2, "str_reg0"),
+    ### skill level text
+    (create_text_overlay, ":wpf_lvl_text", s2),
+    (position_set_x, pos1, 1000),
+    (position_set_y, pos1, 1000),
+    (overlay_set_size, ":wpf_lvl_text", pos1),
+    (position_set_x, pos1, 600),
+    (position_set_y, pos1, ":y"),
+    (overlay_set_position, ":wpf_lvl_text", pos1),
+  ]),       
 ###
 	
     

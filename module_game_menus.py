@@ -941,7 +941,10 @@ game_menus = [
 
 	   ("start_as_lord",[],"Start as Lady or Lord.",
        [
-          (jump_to_menu, "mnu_start_character_1_crpg_campaign"),
+        #  (jump_to_menu, "mnu_start_character_1_crpg_campaign"),
+           (assign,"$background_type",cb_noble),
+           (assign, reg3, "$character_gender"),
+           (start_presentation,"prsnt_present_lords_new"),
        ]
 	   ),
 	   
@@ -966,111 +969,111 @@ game_menus = [
 
   ### mod begin
   
-    ("start_character_1_crpg_campaign",mnf_disable_all_keys,
-    "You are Lady/Lord of...",
-    "none",
-    [
-    (str_clear,s10),
-    ],
-    [
-    ("start_kingdom_of_polanie",[],"Polanie.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Polanie.\
-	Who are known of their powerfull cavalry. Their ruler is King Dawo.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_1"),
-	 # (start_presentation,"prsnt_present_lords"),
-	  (start_presentation,"prsnt_present_lords_new"),
-	#(jump_to_menu,"mnu_start_character_2"),
-    ]),
+    # ("start_character_1_crpg_campaign",mnf_disable_all_keys,
+    # "You are Lady/Lord of...",
+    # "none",
+    # [
+    # (str_clear,s10),
+    # ],
+    # [
+    # ("start_kingdom_of_polanie",[],"Polanie.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Polanie.\
+	# Who are known of their powerfull cavalry. Their ruler is King Dawo.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_1"),
+	 # # (start_presentation,"prsnt_present_lords"),
+	  # (start_presentation,"prsnt_present_lords_new"),
+	# #(jump_to_menu,"mnu_start_character_2"),
+    # ]),
 	
-    ("start_grey_order",[],"Grey Order.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Grey Order.\
-	Who are known of their great organization. Their ruler is Hetman.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_2"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_grey_order",[],"Grey Order.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Grey Order.\
+	# Who are known of their great discipline. Their ruler is Hetman.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_2"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_warriors_of_tengri",[],"Warriors_of_Tengri.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Warriors of Tengri.\
-	Who are known of their ... . Their rulers is Sultan Azap.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_3"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_warriors_of_tengri",[],"Warriors_of_Tengri.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Warriors of Tengri.\
+	# Who are known of their ... . Their rulers is Sultan Azap.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_3"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_kalmarunion",[],"Kalmarunion.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Kalmarunion.\
-	Who are known of their great trading skills. Their ruler is Queen Margaret.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_4"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_kalmarunion",[],"Kalmarunion.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Kalmarunion.\
+	# Who are known of their great trading skills. Their ruler is Queen Margaret.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_4"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_druzhina",[],"Druzhina.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Druzhina.\
-	Who are known of their archery skills. Their ruler is King Nebun.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_5"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_druzhina",[],"Druzhina.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Druzhina.\
+	# Who are known of their archery skills. Their ruler is King Nebun.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_5"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_templars",[],"Templars.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Templars.\
-	Who are known of their ... . Their ruler is King Casimir.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_6"),
-	  (start_presentation,"prsnt_present_lords"),
+    # ("start_templars",[],"Templars.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Templars.\
+	# Who are known of their ... . Their ruler is King Casimir.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_6"),
+	  # (start_presentation,"prsnt_present_lords"),
 	  
-    ]),
+    # ]),
 	
-    ("start_eques",[],"Eques.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Eques.\
-	Who are known of their ... . Their ruler is King Atze.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_7"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_eques",[],"Eques.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Eques.\
+	# Who are known of their ... . Their ruler is King Atze.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_7"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_norse",[],"Norse.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Norse.\
-	Who are known of their ... . Their ruler is King Norr.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_8"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_norse",[],"Norse.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Norse.\
+	# Who are known of their ... . Their ruler is King Norr.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_8"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 	
-    ("start_order_de_l_etoile",[],"Order de l'Etoile.",[
-      (assign,"$background_type",cb_noble),
-      (assign, reg3, "$character_gender"),
-      (str_store_string,s10,"@You are a Lady or Lord of Order de l'Etoile.\
-	Who are known of their ... .Their ruler is King Thorvic.\
-	Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
-	  (assign, "$character_faction", "fac_kingdom_9"),
-	  (start_presentation,"prsnt_present_lords"),
-    ]),
+    # ("start_order_de_l_etoile",[],"Order de l'Etoile.",[
+      # (assign,"$background_type",cb_noble),
+      # (assign, reg3, "$character_gender"),
+      # (str_store_string,s10,"@You are a Lady or Lord of Order de l'Etoile.\
+	# Who are known of their ... .Their ruler is King Thorvic.\
+	# Which one of Lords or Ladies are you ?"),	### TODO: some text about kingdom.
+	  # (assign, "$character_faction", "fac_kingdom_9"),
+	  # (start_presentation,"prsnt_present_lords"),
+    # ]),
 
-    ("go_back",[],"Go back",
-     [(jump_to_menu,"mnu_start_game_1"),
-    ]),
-    ]
-  ),
+    # ("go_back",[],"Go back",
+     # [(jump_to_menu,"mnu_start_game_1"),
+    # ]),
+    # ]
+  # ),
   
     ("start_character_1_crpg_campaign_2",mnf_disable_all_keys,
     "You are {reg3?Queen:King} of...",

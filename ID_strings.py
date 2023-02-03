@@ -3442,5 +3442,14 @@ str_blue = 3440
 str_violet = 3441
 str_grey = 3442
 str_lord_s1_votes_reg3 = 3443
+str_faction_1_descr = 3444
+str_faction_2_descr = 3445
+str_faction_3_descr = 3446
+str_faction_4_descr = 3447
+str_faction_5_descr = 3448
+str_faction_6_descr = 3449
+str_faction_7_descr = 3450
+str_faction_8_descr = 3451
+str_faction_9_descr = 3452
 
 
