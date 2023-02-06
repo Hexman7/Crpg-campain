@@ -15561,6 +15561,8 @@ presentations = [
     (ti_on_presentation_load, [      
       (set_fixed_point_multiplier, 1000),
 	    
+        
+      ### Setting description
       (try_begin),
       (eq,"$character_faction","fac_kingdom_1"),
         (str_store_string,s1,"str_faction_1_descr"),
@@ -15594,6 +15596,8 @@ presentations = [
       
       (str_store_string, s10, "@You are a Lady or Lord of {s1} Which one of Lords or Ladies are you ?"),
       
+      
+      ### description
 	  (create_text_overlay, "$g_present_lords_text", s10,tf_center_justify|tf_double_space|tf_vertical_align_center),
 	  (position_set_x, pos1, 1200),
 	  (position_set_y, pos1, 1200),
@@ -15601,8 +15605,16 @@ presentations = [
 	  (position_set_x, pos1, 500),
 	  (position_set_y, pos1, 650),
 	  (overlay_set_position, "$g_present_lords_text", pos1),
+      
+      ### lords combo btn + text
+      (create_text_overlay, "$g_present_lords_factions_text", "@Faction", tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_factions_text", pos1),
+	  (position_set_x, pos1, 150),
+	  (position_set_y, pos1, 590),
+	  (overlay_set_position, "$g_present_lords_factions_text", pos1),
 	
-
       (create_combo_button_overlay, "$present_lords_factions"),
       (position_set_x, pos1, 800),
       (position_set_y, pos1, 800),
@@ -15611,6 +15623,15 @@ presentations = [
       (position_set_y, pos1, 550),
       (overlay_set_position, "$present_lords_factions", pos1),
 	 
+      ### faction combo btn + text
+      (create_text_overlay, "$g_present_lords_factions_text", "@Lord/Lady", tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_factions_text", pos1),
+	  (position_set_x, pos1, 400),
+	  (position_set_y, pos1, 590),
+	  (overlay_set_position, "$g_present_lords_factions_text", pos1),
+     
       (create_combo_button_overlay, "$present_lords_lords"),
       (position_set_x, pos1, 800),
       (position_set_y, pos1, 800),
@@ -15621,7 +15642,7 @@ presentations = [
 	  
       
      
-      
+      ### adding factions to faction combo box
 	  (try_for_range,":faction", npc_kingdoms_begin, npc_kingdoms_end),
           (str_store_faction_name,s1,":faction"),
 
@@ -15630,7 +15651,7 @@ presentations = [
       
       (overlay_set_val, "$present_lords_factions", "$faction_choose"),
       
-     
+     ### adding lords to lords combo box
       (store_mul, "$lords_start", "$faction_choose", 20),
       # (assign, reg1, "$lords_start"),
       # (display_message,"@ Lords start: {reg1}"),
