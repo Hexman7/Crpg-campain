@@ -15645,7 +15645,6 @@ presentations = [
       ### adding factions to faction combo box
 	  (try_for_range,":faction", npc_kingdoms_begin, npc_kingdoms_end),
           (str_store_faction_name,s1,":faction"),
-
           (overlay_add_item, "$present_lords_factions", s1),
 	  (try_end),
       
