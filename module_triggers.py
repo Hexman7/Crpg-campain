@@ -1735,14 +1735,51 @@ triggers = [
 	# (store_proficiency_level,":xbow_wpf","trp_player",wpt_crossbow),
 	# (store_proficiency_level,":throwing_wpf","trp_player",wpt_throwing),
 	# (store_proficiency_level,":archery_wpf","trp_player",wpt_archery),   
-	
-	
-	
-	
-   
-   
-
   ]), 
+   
+   
+#######	 SCRIPT for constructing building by lords
+####### 
+  (72, 0, 0, [],		
+  [    
+	### look for lords with fiefs or go through fiefs and check center lords
+	(try_for_range,":center_no",centers_begin, centers_end), ### for every center
+        (party_get_slot,":center_lord", ":center_no", slot_town_lord), ## get center owner
+        (gt,":center_lord",-1), ## if center has owner 
+        (neq,":center_lord","trp_player"), ## and owner is not the player
+        (neq,":center_lord","trp_kingdom_neutral_lord"),
+        (troop_get_slot,":troop_gold",":center_lord",slot_troop_wealth),
+        ## DEBUG 
+        (str_store_troop_name,s1,":center_lord"),
+        (assign,reg0 , ":troop_gold"),
+        (display_message, "@ LORD: {s1}, gold: {reg0}"),
+        ## DEBUG END
+        
+        (try_begin),
+        (gt,":troop_gold",9000),
+        ### get building to build
+        ### 50% chance to build - will result in constructing building not only in first center for lord that has more than 1
+        ### remove gold
+        ### start building
+        ### Maybe destroy building after raid/siege ?
+        
+        
+        
+        
+        
+        
+        
+        
+        (try_end),
+        
+        
+    
+    (try_end),
+    
+    
+  ]),    
+   
+   
    
    
 ## MOD END

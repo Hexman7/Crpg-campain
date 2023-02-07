@@ -1006,9 +1006,17 @@ troop_slots_reserved_for_relations_start        = 165 #this is based on id_troop
 
 slot_troop_relations_begin				= 0 #this creates an array for relations between troops
 											#Right now, lords start at 165 and run to around 290, including pretenders
-											
-											
-											
+	
+### MOD BEGIN - slots for buildings for lords, players, kings    
+slot_troop_built_smithy = 320        ## 1 - lvl 1 building, 2 - lvl 2 - large smith, 3 - lvl 3 - kings smith. Same for below
+slot_troop_built_armorer = 321									
+slot_troop_built_stables = 322
+slot_troop_built_bowyer = 323       ## 1,2,3 lvl
+
+slot_troop_is_constructing_building = 324
+
+
+                
 ########################################################
 ##  PLAYER SLOTS           #############################
 ########################################################

@@ -512,9 +512,34 @@ scripts = [
       (assign, ":num_other_lords_assigned", 0),   
 	  (assign, ":num_kalmar_lords_assigned", 0),
 	  
+  
+    #### MOD BEGIN - 
+    ## set slot for every building type
+    ## set slot for ongoing construction
+    ## 
+      (troop_set_slot,"trp_player",slot_troop_built_smithy,0),
+      (troop_set_slot,"trp_player",slot_troop_built_armorer,0),
+      (troop_set_slot,"trp_player",slot_troop_built_stables,0),
+      (troop_set_slot,"trp_player",slot_troop_built_bowyer,0),
+      (troop_set_slot,"trp_player",slot_troop_is_constructing_building,0),
+    #### MOD END
+      
+      
+      
       (try_for_range, ":kingdom_hero", active_npcs_begin, active_npcs_end),
         (this_or_next|troop_slot_eq, ":kingdom_hero", slot_troop_occupation, slto_kingdom_hero),
         (troop_slot_eq, ":kingdom_hero", slot_troop_occupation, slto_inactive_pretender),
+        
+        #### MOD BEGIN - 
+        ## set slot for every building type
+        ## set slot for ongoing construction
+        ## 
+        (troop_set_slot,":kingdom_hero",slot_troop_built_smithy,0),
+        (troop_set_slot,":kingdom_hero",slot_troop_built_armorer,0),
+        (troop_set_slot,":kingdom_hero",slot_troop_built_stables,0),
+        (troop_set_slot,":kingdom_hero",slot_troop_built_bowyer,0),
+        (troop_set_slot,":kingdom_hero",slot_troop_is_constructing_building,0),
+        #### MOD END
         
         (store_troop_faction, ":kingdom_hero_faction", ":kingdom_hero"),
         (neg|faction_slot_eq, ":kingdom_hero_faction", slot_faction_leader, ":kingdom_hero"),
@@ -55709,7 +55734,7 @@ scripts = [
 	
 	
 	(store_sub,":decrease_val", 600, ":wpt_points"),
-	(store_div,":decrease_val",":decrease_val",30),
+	(store_div,":decrease_val",":decrease_val",60),  ### WAS 30 07.02.2023
 	
 	(try_begin),
 	(gt,":weapon_master",0),

@@ -10119,7 +10119,7 @@ game_menus = [
      # (try_end),
      
 	 
-	 (try_begin),	### native
+	 (try_begin),	### mod
      (party_slot_eq, "$g_encountered_party", slot_party_type, spt_village),
        (assign, ":begin", village_improvements_begin),
        (assign, ":end", village_improvements_end),
