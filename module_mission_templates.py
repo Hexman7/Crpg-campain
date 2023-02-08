@@ -1381,6 +1381,7 @@ effects_on_troops =  (
 		#### to do: randomly build buildings in lords centers  -  DONE
 		### bonus for troops in castles/towns and lord's party  -  
 		### deleting buildings  or transforming  -  
+        ### TO DO: make an if statement for lords to not let them build all buildings which gives better eq for troops
 	(try_end),
 	
 	])	
