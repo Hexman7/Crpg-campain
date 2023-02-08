@@ -1742,6 +1742,9 @@ triggers = [
 ####### 
   (72, 0, 0, [],		
   [    
+  
+  
+    
 	### look for lords with fiefs or go through fiefs and check center lords
 	(try_for_range,":center_no",centers_begin, centers_end), ### for every center
         (party_get_slot,":center_lord", ":center_no", slot_town_lord), ## get center owner
@@ -1754,23 +1757,67 @@ triggers = [
         (assign,reg0 , ":troop_gold"),
         (display_message, "@ LORD: {s1}, gold: {reg0}"),
         ## DEBUG END
+        (assign,":index",0),
+        (array_create, ":affordable_buildings", 0, 0),
+        ### for every center check every building type: if its not build get the price of it and choose the 
+        (try_for_range,":building", village_improvements_begin, capitol_improvements_end),
+            (call_script, "script_get_improvement_details", ":building"),
+            (assign, ":improvement_cost", reg0),
+            (store_add,":cost", 5000, ":improvement_cost"),
+            (try_begin),
+            (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
+                (store_add,":size",":index",1),
+                (array_resize_dim, ":affordable_buildings", 0, ":size"),
+                (array_set_val, ":affordable_buildings", ":building", ":index"),
+                (val_add,":index",1),
+            (try_end),
+        (try_end),
+        (array_get_dim_size, ":array_size", ":affordable_buildings", 0),
+        #### DEBUG
+        (try_for_range,":x",0,":array_size"),
+            (array_get_val, reg2, ":affordable_buildings", ":x"),
+            (display_message,"@Building: {reg2}"),
+        (try_end),
+        #### DEBUG
         
-        (try_begin),
-        (gt,":troop_gold",9000),
+        (try_begin), ## get random building to construct and construct it
+        (gt, ":array_size", 0),
+            (store_random_in_range,":build_chance", 0, 100),
+            (try_begin),
+            (lt,":build_chance",50),
+                (store_random_in_range,":random", 0, ":array_size"),
+                (array_get_val, reg2, ":affordable_buildings", ":random"), ## get building to build
+                (store_skill_level, ":max_skill", "skl_engineer", ":center_lord"), ## get lord's engineering lvl
+                (store_sub, ":multiplier", 20, ":max_skill"),
+                (call_script, "script_get_improvement_details", reg2),
+                (assign, ":improvement_cost", reg0),
+                (val_sub,":troop_gold",":improvement_cost"),
+                (troop_set_slot, ":center_lord", slot_troop_wealth, ":troop_gold"),
+                (val_mul, ":improvement_cost", ":multiplier"),
+                (val_div, ":improvement_cost", 20),
+                (store_div, ":improvement_time", ":improvement_cost", 500),
+                (val_add, ":improvement_time", 3),
+                (assign,reg3,":troop_gold"),
+                (party_set_slot, ":center_no", slot_center_current_improvement, reg2),
+                (store_current_hours, ":cur_hours"),
+                (store_mul, ":hours_takes", ":improvement_time", 24),
+                (val_add, ":hours_takes", ":cur_hours"),
+                (party_set_slot, ":center_no", slot_center_improvement_end_hour, ":hours_takes"),
+                ## DEBUG
+                (str_store_party_name,s2,":center_no"),
+                (display_message,"@Constructing building:{reg2} in {s2}. Improvement cost: {reg0}, gold left: {reg3}  "),
+                ##DEBUG
+            (try_end),
+        (try_end),
+        
+       # (array_free, ":affordable_buildings"),
+
         ### get building to build
         ### 50% chance to build - will result in constructing building not only in first center for lord that has more than 1
         ### remove gold
         ### start building
         ### Maybe destroy building after raid/siege ?
-        
-        
-        
-        
-        
-        
-        
-        
-        (try_end),
+   
         
         
     
