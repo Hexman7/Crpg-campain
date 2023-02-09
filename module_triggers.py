@@ -1742,9 +1742,6 @@ triggers = [
 ####### 
   (72, 0, 0, [],		
   [    
-  
-  
-    
 	### look for lords with fiefs or go through fiefs and check center lords
 	(try_for_range,":center_no",centers_begin, centers_end), ### for every center
         (party_get_slot,":center_lord", ":center_no", slot_town_lord), ## get center owner
@@ -1766,9 +1763,10 @@ triggers = [
             (store_add,":cost", 5000, ":improvement_cost"),
             (try_begin),
             (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
-                (store_add,":size",":index",1),
+            (party_slot_eq,":center_no",":building",0), ## building is not already built
+                (store_add,":sizaffordable_buildingse",":index",1),
                 (array_resize_dim, ":affordable_buildings", 0, ":size"),
-                (array_set_val, ":affordable_buildings", ":building", ":index"),
+                (array_set_val, ":", ":building", ":index"),
                 (val_add,":index",1),
             (try_end),
         (try_end),
