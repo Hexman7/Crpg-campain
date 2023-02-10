@@ -1756,8 +1756,17 @@ triggers = [
         ## DEBUG END
         (assign,":index",0),
         (array_create, ":affordable_buildings", 0, 0),
+        (try_begin),
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_smithy,1),
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_armorer,1),
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_stables,1),
+        (troop_slot_ge,":center_lord",slot_troop_built_bowyer,1),
+            (assign,":end",slot_center_has_smithy),
+        (else_try),
+            (assign,":end",capitol_improvements_end),
+        (try_end),
         ### for every center check every building type: if its not build get the price of it and choose the 
-        (try_for_range,":building", village_improvements_begin, capitol_improvements_end),
+        (try_for_range,":building", village_improvements_begin, ":end"),
             (call_script, "script_get_improvement_details", ":building"),
             (assign, ":improvement_cost", reg0),
             (store_add,":cost", 5000, ":improvement_cost"),
