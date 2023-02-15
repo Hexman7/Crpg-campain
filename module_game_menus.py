@@ -184,17 +184,17 @@ game_menus = [
 		 (troop_add_item, "trp_player","itm_saddle_horse",imod_spirited),
 		 (troop_add_item, "trp_player","itm_saddle_horse",imod_champion),
 
-		 (troop_add_item, "trp_player","itm_leather_coat"),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_fine),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_well_made),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_exquisite),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_hardened),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_masterwork),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_thick),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_sturdy),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_reinforced),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_lordly),
-		 (troop_add_item, "trp_player","itm_leather_coat",imod_superb),
+		 (troop_add_item, "trp_player","itm_french_plate"),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_fine),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_well_made),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_exquisite),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_hardened),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_masterwork),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_thick),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_sturdy),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_reinforced),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_lordly),
+		 (troop_add_item, "trp_player","itm_french_plate",imod_superb),
 
 
 		 
