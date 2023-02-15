@@ -1376,13 +1376,87 @@ effects_on_troops =  (
 			(try_end),
 		(try_end),
 		
+        
 		### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
+        #####           Check if item is between e.g. - 1h swords begin - 1h swords end - set modifiers for 1h swords ### +1,+2,+3 (Balanced=35c, tempered=36c , masterwork=37c,    - DONE
 		### to do: variable for player, lords if they have built buildings - DONE
 		#### to do: randomly build buildings in lords centers  -  DONE
 		### bonus for troops in castles/towns and lord's party  -  
 		### deleting buildings  or transforming  -  
-        ### TO DO: make an if statement for lords to not let them build all buildings which gives better eq for troops
-	(try_end),
+        ### TO DO: make an if statement for lords to not let them build all buildings which gives better eq for troops - DONE
+    (try_end),
+    
+    
+ 
+    (try_begin),  ### if party is not - town/castle/village
+ #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
+
+#    (else_try), ### if party is town/castle/village
+    (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
+    (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
+    (party_slot_eq,":agent_party",slot_party_type, spt_castle),
+        (party_get_slot, ":party_leader", ":agent_party", slot_town_lord),
+        (str_store_troop_name,s2,":party_leader"),
+        
+        (call_script,"script_check_troop_built_improvements",":center_lord"),
+        #### DEBUG
+        #(assign,reg2,":party_leader"),
+        (display_message,"@party_leader {s2}"),
+        #### DEBUG END
+    (else_try),
+        (party_stack_get_troop_id, ":party_leader",":agent_party",0),
+        (str_store_troop_name,s2,":party_leader"),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
+        #### DEBUG
+        #(assign,reg0,":party_leader"),
+        (display_message,"@party_leader {s2}"),
+        #### DEBUG END
+    (try_end),
+    
+    
+    (try_begin),
+    (this_or_next|gt,reg0,0),
+    (gt,reg3,0),
+        (try_for_range,":item_slot",0,4),
+            (store_add,":slot",reg0,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
+            (try_begin),
+            (gt,reg0,0),
+            (this_or_next|eq,":item_no",itp_type_one_handed_wpn),
+            (this_or_next|eq,":item_no",itp_type_two_handed_wpn),
+            (this_or_next|eq,":item_no",itp_type_polearm),
+            (eq,":item_no",itp_type_shield),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+            (try_end),            
+            
+            (try_begin),
+            (gt,reg3,0),
+            (this_or_next|eq,":item_no",itp_type_bow),
+            (this_or_next|eq,":item_no",itp_type_arrows),
+            (this_or_next|eq,":item_no",itp_type_crossbow),
+            (this_or_next|eq,":item_no",itp_type_bolts),
+            (eq,":item_no",itp_type_thrown),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+            (try_end),
+        (try_end),
+    (else_try),
+    (gt,reg1,0),
+        (try_for_range,":item_slot",4,8),
+            (store_add,":slot",reg1,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
+            (item_get_slot,":modifier",":item_no", ":slot"),
+            (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+        (try_end),
+    (else_try),
+    (gt,reg2,0),
+            (store_add,":slot",reg2,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", 8),
+            (item_get_slot,":modifier",":item_no", ":slot"),
+            (agent_set_item_slot_modifier, ":agent", 8, ":modifier"),
+    (try_end),
+    
 	
 	])	
 #### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677

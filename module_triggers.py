@@ -1756,11 +1756,28 @@ triggers = [
         ## DEBUG END
         (assign,":index",0),
         (array_create, ":affordable_buildings", 0, 0),
-        (try_begin),
+        (try_begin), ### if there is one of the unique buildings built
         (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_smithy,1),
         (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_armorer,1),
         (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_stables,1),
         (troop_slot_ge,":center_lord",slot_troop_built_bowyer,1),
+            (try_for_range,":building", slot_center_has_smithy, capitol_improvements_end), ## then find wich one
+                (try_begin), 
+                (party_slot_eq,":center_no",":building",1), 
+                (neg|is_between, ":building", capitol_improvements_begin, capitol_improvements_end),
+                    (val_add,":building",4), ### move building id by 4 to get higher lvl
+                    (call_script, "script_get_improvement_details", ":building"),
+                    (assign, ":improvement_cost", reg0),
+                    (store_add,":cost", 5000, ":improvement_cost"),
+                    (try_begin),
+                    (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
+                    (party_slot_eq,":center_no",":building",0), ## building is not already built
+                        (array_resize_dim, ":affordable_buildings", 0, 1),
+                        (array_set_val, ":affordable_buildings", ":building", 0),   ## add it to buildins that can be built
+                        (val_add,":index",1),
+                    (try_end),
+                (try_end),
+            (try_end),
             (assign,":end",slot_center_has_smithy),
         (else_try),
             (assign,":end",capitol_improvements_end),
@@ -1773,9 +1790,9 @@ triggers = [
             (try_begin),
             (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
             (party_slot_eq,":center_no",":building",0), ## building is not already built
-                (store_add,":sizaffordable_buildingse",":index",1),
+                (store_add,":size",":index",1),
                 (array_resize_dim, ":affordable_buildings", 0, ":size"),
-                (array_set_val, ":", ":building", ":index"),
+                (array_set_val, ":affordable_buildings", ":building", ":index"),
                 (val_add,":index",1),
             (try_end),
         (try_end),
@@ -1792,6 +1809,7 @@ triggers = [
             (store_random_in_range,":build_chance", 0, 100),
             (try_begin),
             (lt,":build_chance",50),
+            (troop_slot_eq,":center_lord",slot_troop_is_constructing_building,0),
                 (store_random_in_range,":random", 0, ":array_size"),
                 (array_get_val, reg2, ":affordable_buildings", ":random"), ## get building to build
                 (store_skill_level, ":max_skill", "skl_engineer", ":center_lord"), ## get lord's engineering lvl
@@ -1810,6 +1828,7 @@ triggers = [
                 (store_mul, ":hours_takes", ":improvement_time", 24),
                 (val_add, ":hours_takes", ":cur_hours"),
                 (party_set_slot, ":center_no", slot_center_improvement_end_hour, ":hours_takes"),
+                (troop_set_slot,":center_lord",slot_troop_is_constructing_building,1),
                 ## DEBUG
                 (str_store_party_name,s2,":center_no"),
                 (display_message,"@Constructing building:{reg2} in {s2}. Improvement cost: {reg0}, gold left: {reg3}  "),

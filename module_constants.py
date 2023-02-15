@@ -54,7 +54,12 @@ slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be mov
 
 slot_selected_item = 62
 
-slot_item_is_blocked = 63		### mod 21.09.2018
+slot_item_is_blocked = 63		### mod 21.09.2018      cant'be moved down the next one
+#### slots for item modifiers: +1, +2, +3
+slot_item_modifier_first_level  = 64
+slot_item_modifier_second_level = 65 
+slot_item_modifier_third_level  = 66
+
 
 ########################################################
 ##  AGENT SLOTS            #############################

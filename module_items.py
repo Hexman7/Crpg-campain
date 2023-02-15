@@ -25,22 +25,22 @@ from header_triggers import *
 
 # Some constants for ease of use.
 imodbits_none = 0
-imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
-imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened
-imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
-imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
-imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_balanced
-imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_thick | imodbit_reinforced
-imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered
-imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork
-imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy  | imodbit_masterwork                          ### imodbits_powerful, - not working
-imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_heavy
-imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_balanced | imodbit_heavy
-imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_strong |imodbit_masterwork
-imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_masterwork
-imodbits_missile   = imodbit_bent | imodbit_large_bag
-imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag
-imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag
+imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn|imodbit_champion     ### +1,+2,+3 (spirited=, heavy= , champion=,                    1
+imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened                     ### +1,+2,+3 (sturdy=, thick= , hardened=,                      2 
+imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly     ### +1,+2,+3 (thick=, reinforced= , lordly=,                    3
+imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly   ### +1,+2,+3 (thick=, reinforced= , lordly=,    3
+imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_fine |imodbit_balanced | imodbit_masterwork             ### +1,+2,+3 (fine=, balanced= , masterwork=,                           4
+imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_heavy |imodbit_thick | imodbit_reinforced            ### +1,+2,+3 (heavy=35c, thick=36c , reinforced=37c,                    5
+imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork          ### +1,+2,+3 (Balanced=35c, tempered=36c , masterwork=37c,              6
+imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork     ### +1,+2,+3 (Heavy=38c ,Balanced=39c, masterwork=41c,                  7
+imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy |imodbit_balanced| imodbit_masterwork            ### +1,+2,+3 (fine=38c ,Balanced=39c, masterwork=41c,                    7  
+imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_fine|imodbit_heavy|imodbit_masterwork                 ### +1,+2,+3 (fine=33b ,Balanced=34b, masterwork=37b                         8
+imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_fine | imodbit_heavy|imodbit_masterwork               ### +1,+2,+3 (fine=32k ,Balanced=34p, masterwork=36k,                        8
+imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_fine |imodbit_strong|imodbit_masterwork                     ### +1,+2,+3 (fine= ,strong=, masterwork=,                              9
+imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_fine | imodbit_heavy|imodbit_masterwork                 ### +1,+2,+3 (heavy= ,strong=, masterwork=,                            10
+imodbits_missile   = imodbit_bent | imodbit_large_bag|imodbit_fine|imodbit_heavy                                       ### +1,+2,+3 (large_bag= ,fine=, heavy=,                             11
+imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag |imodbit_masterwork              ### +1,+2,+3 (heavy= ,balanced=, masterwork=,                        12
+imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag|imodbit_masterwork                 ### +1,+2,+3 (large_bag= ,balanced=, masterwork=,                       13
 
 itc_warclub = itc_cut_two_handed |  itcf_thrust_polearm | itc_parry_two_handed |itc_dagger
 itc_greatsword = itc_cut_two_handed |  itcf_thrust_twohanded | itc_parry_two_handed |itcf_thrust_onehanded_lance

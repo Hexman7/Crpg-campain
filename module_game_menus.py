@@ -175,7 +175,27 @@ game_menus = [
 		 
 		 
 		 (troop_add_item, "trp_player","itm_rider_pistol",0),	
-		 
+		 (troop_add_item, "trp_player","itm_saddle_horse"),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_lame),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_swaybacked),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_stubborn),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_timid),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_meek),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_spirited),
+		 (troop_add_item, "trp_player","itm_saddle_horse",imod_champion),
+
+		 (troop_add_item, "trp_player","itm_leather_coat"),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_fine),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_well_made),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_exquisite),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_hardened),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_masterwork),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_thick),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_sturdy),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_reinforced),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_lordly),
+		 (troop_add_item, "trp_player","itm_leather_coat",imod_superb),
+
 
 		 
 		 (troop_add_gold,"trp_player", 1000000),

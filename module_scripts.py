@@ -524,7 +524,7 @@ scripts = [
       (troop_set_slot,"trp_player",slot_troop_is_constructing_building,0),
     #### MOD END
       
-      
+      (call_script,"script_initialize_item_modifiers"),
       
       (try_for_range, ":kingdom_hero", active_npcs_begin, active_npcs_end),
         (this_or_next|troop_slot_eq, ":kingdom_hero", slot_troop_occupation, slto_kingdom_hero),
@@ -56543,8 +56543,87 @@ scripts = [
   ]),       
 ###
 	
+###Script initialize_item_modifiers
+### initializes items modifiers: +1, +2 ,+3
+("initialize_item_modifiers",
+  [
+    (try_for_range,":item","itm_no_item","itm_ccoop_new_items_end"),
+        (item_get_type, ":item_type", ":item"),
+        (try_begin),
+        (eq,":item_type",itp_type_horse),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_spirited),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_heavy),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_champion),
+        (else_try),
+        (is_between,":item_type",itp_type_head_armor,itp_type_pistol),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_thick),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_reinforced),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_lordly),
+        (else_try),
+        (eq,":item_type",itp_type_bow),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_strong),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (else_try),
+        (eq,":item_type",itp_type_crossbow),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_strong),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (else_try),
+        (this_or_next|eq,":item_type",itp_type_arrows),
+        (eq,":item_type",itp_type_bolts),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_large_bag),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_fine),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_heavy),        
+        (else_try),       
+        (eq,":item_type",itp_type_thrown),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_heavy),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (else_try),       
+        (eq,":item_type",itp_type_polearm),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (else_try),       
+        (eq,":item_type",itp_type_shield),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_heavy),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_thick),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_reinforced),
+        (else_try),
+        (this_or_next|is_between,":item",one_handed_swords_begin,one_handed_swords_end),
+        (this_or_next|is_between,":item",bastard_weapons_begin,bastard_weapons_end),
+        (is_between,":item",one_handed_sabres_begin,two_handed_swords_end),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_balanced),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_tempered),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (else_try),
+        (this_or_next|is_between,":item",one_handed_axes_begin,one_handed_sabres_begin),
+        (is_between,":item",two_handed_mauls_maces_axes_begin,two_handed_mauls_maces_axes_end),
+            (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
+            (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
+            (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
+        (try_end),
+    (try_end),
+ ]),
     
+###Script get_troop_built_improvements
+### checking if lord has built any improvements (smithy,armorer,stables,bowyer)
+("check_troop_built_improvements",
+  [
+    (store_script_param_1,":troop"),
     
+    (troop_get_slot,":smithy_lvl",":troop",slot_troop_built_smithy),
+    (troop_get_slot,":armorer_lvl",":troop",slot_troop_built_armorer),
+    (troop_get_slot,":stables_lvl",":troop",slot_troop_built_stables),
+    (troop_get_slot,":bowyer_lvl",":troop",slot_troop_built_bowyer),
+    
+    (assign,reg0,":smithy_lvl"),
+    (assign,reg1,":armorer_lvl"),
+    (assign,reg2,":stables_lvl"),
+    (assign,reg3,":bowyer_lvl"),
+ 
+ ]),
     
     
     
