@@ -1401,7 +1401,7 @@ effects_on_troops =  (
         (call_script,"script_check_troop_built_improvements",":party_leader"),
         #### DEBUG
         #(assign,reg2,":party_leader"),
-        (display_message,"@party_leader {s2}"),
+       # (display_message,"@party_leader {s2}"),
         #### DEBUG END
     (else_try),
         (party_stack_get_troop_id, ":party_leader",":agent_party",0),
@@ -1409,52 +1409,68 @@ effects_on_troops =  (
         (call_script,"script_check_troop_built_improvements",":party_leader"),
         #### DEBUG
         #(assign,reg0,":party_leader"),
-        (display_message,"@party_leader {s2}"),
+       # (display_message,"@party_leader {s2}"),
         #### DEBUG END
     (try_end),
+	###DEBUG
+	#(display_message,"@ reg0 {reg0}, reg1 {reg1}, reg2 {reg2}, reg3 {reg3}"),
     
     
     (try_begin),
     (this_or_next|gt,reg0,0),
-    (gt,reg3,0),
+    (gt,reg3,0),	
         (try_for_range,":item_slot",0,4),
             (store_add,":slot",reg0,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
-            (try_begin),
+			(gt,":item_no",-1),
+			(item_get_type, ":item_type", ":item_no"),
+            (try_begin),	### melee weapons
             (gt,reg0,0),
-            (this_or_next|eq,":item_no",itp_type_one_handed_wpn),
-            (this_or_next|eq,":item_no",itp_type_two_handed_wpn),
-            (this_or_next|eq,":item_no",itp_type_polearm),
-            (eq,":item_no",itp_type_shield),
+            (this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+            (this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+            (this_or_next|eq,":item_type",itp_type_polearm),
+            (eq,":item_type",itp_type_shield),
                 (item_get_slot,":modifier",":item_no", ":slot"),
                 (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+				###DEBUG
+				#(display_message,"@setting melee weapon modifier"),
             (try_end),            
-            
-            (try_begin),
+            (store_add,":slot",reg3,slot_item_is_blocked),
+            (try_begin),## ranged weapons
             (gt,reg3,0),
-            (this_or_next|eq,":item_no",itp_type_bow),
-            (this_or_next|eq,":item_no",itp_type_arrows),
-            (this_or_next|eq,":item_no",itp_type_crossbow),
-            (this_or_next|eq,":item_no",itp_type_bolts),
-            (eq,":item_no",itp_type_thrown),
+            (this_or_next|eq,":item_type",itp_type_bow),
+            (this_or_next|eq,":item_type",itp_type_arrows),
+            (this_or_next|eq,":item_type",itp_type_crossbow),
+            (this_or_next|eq,":item_type",itp_type_bolts),
+            (eq,":item_type",itp_type_thrown),
                 (item_get_slot,":modifier",":item_no", ":slot"),
                 (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+				###DEBUG
+				#(display_message,"@setting ranged weapon modifier"),
             (try_end),
         (try_end),
-    (else_try),
+	(try_end),
+	
+    (try_begin),##armors
     (gt,reg1,0),
         (try_for_range,":item_slot",4,8),
             (store_add,":slot",reg1,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
             (item_get_slot,":modifier",":item_no", ":slot"),
             (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+			###DEBUG
+			#(display_message,"@setting armor parts modifier"),
         (try_end),
-    (else_try),
+    (try_end),
+	
+	(try_begin),###horses
     (gt,reg2,0),
             (store_add,":slot",reg2,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", 8),
             (item_get_slot,":modifier",":item_no", ":slot"),
             (agent_set_item_slot_modifier, ":agent", 8, ":modifier"),
+			###DEBUG
+			##(display_message,"@setting horse modifier"),
     (try_end),
     
 	
