@@ -1398,7 +1398,7 @@ effects_on_troops =  (
         (party_get_slot, ":party_leader", ":agent_party", slot_town_lord),
         (str_store_troop_name,s2,":party_leader"),
         
-        (call_script,"script_check_troop_built_improvements",":center_lord"),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
         #### DEBUG
         #(assign,reg2,":party_leader"),
         (display_message,"@party_leader {s2}"),
