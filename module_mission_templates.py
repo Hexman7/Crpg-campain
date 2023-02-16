@@ -1423,6 +1423,7 @@ effects_on_troops =  (
             (store_add,":slot",reg0,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
 			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
 			(item_get_type, ":item_type", ":item_no"),
             (try_begin),	### melee weapons
             (gt,reg0,0),
@@ -1456,6 +1457,8 @@ effects_on_troops =  (
         (try_for_range,":item_slot",4,8),
             (store_add,":slot",reg1,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
+			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
             (item_get_slot,":modifier",":item_no", ":slot"),
             (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
 			###DEBUG
@@ -1467,6 +1470,8 @@ effects_on_troops =  (
     (gt,reg2,0),
             (store_add,":slot",reg2,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", 8),
+			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
             (item_get_slot,":modifier",":item_no", ":slot"),
             (agent_set_item_slot_modifier, ":agent", 8, ":modifier"),
 			###DEBUG

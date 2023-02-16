@@ -7121,7 +7121,7 @@ game_menus = [
                                 ]),
       ("pass_through_siege",[(store_faction_of_party, ":faction_no", "$g_encountered_party"),	## 28.04.2018
                              (store_relation, ":relation", ":faction_no", "fac_player_supporters_faction"),
-                             (ge, ":relation", 0),
+                             (ge, ":relation", -5),	# was 0
                              ],"Pass through the siege lines and enter {s1}.",
        [
             (jump_to_menu,"mnu_cut_siege_without_fight"),
@@ -7136,13 +7136,14 @@ game_menus = [
     "none",
     [],
     [
-      ("continue",[],"Continue...",[(try_begin),
-                                   (this_or_next|eq, "$g_encountered_party_faction", "fac_player_supporters_faction"),
-                                   (eq, "$g_encountered_party_faction", "$players_kingdom"),
+      ("continue",[],"Continue...",[#(try_begin),
+                                   #(this_or_next|eq, "$g_encountered_party_faction", "fac_player_supporters_faction"),
+                                   #(eq, "$g_encountered_party_faction", "$players_kingdom"),
                                    (jump_to_menu, "mnu_town"),
-                                 (else_try),
-                                   (jump_to_menu, "mnu_castle_outside"),
-                                 (try_end)]),
+                                 # (else_try),
+                                   # (jump_to_menu, "mnu_castle_outside"),
+                                 #(try_end)
+								 ]),
       ]
   ),
   (
@@ -8056,7 +8057,7 @@ game_menus = [
 				(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
 			
 			(try_end),
-			#### 					MOD ENDa
+			#### 					MOD END
            (call_script, "script_calculate_renown_value"),            
            (call_script, "script_calculate_battle_advantage"),
            (assign, ":battle_advantage", reg0),
@@ -9235,7 +9236,21 @@ game_menus = [
        [
          (neg|troop_is_wounded, "trp_player"),
          ],
-          "Join the battle.",[              
+          "Join the battle.",[          
+			########				MOD BEGIN
+			########		Counting troops kills
+			########
+			(party_get_num_companion_stacks,":stacks","p_main_party"),
+			(array_create, "$kills_array", 0, 2, ":stacks"),
+			(display_message,"@ array created"),
+			(array_set_val_all, "$kills_array", 0),
+			
+			(try_for_range,":x",0,":stacks"),
+				(party_stack_get_troop_id, ":troop_id","p_main_party",":x"),
+				(array_set_val, "$kills_array", ":troop_id", 0, ":x"),
+			
+			(try_end),
+			#### 					MOD END		  
               (party_set_next_battle_simulation_time, "$g_encountered_party", -1),
               (assign, "$g_battle_result", 0),
               (try_begin),
@@ -11102,10 +11117,10 @@ game_menus = [
         (store_relation, ":faction_relation", ":encountered_faction", "fac_player_supporters_faction"),
         (try_begin),
           (gt, ":besieger_party", 0),
-          (ge, ":faction_relation", 0),
+          (ge, ":faction_relation", -5),	## was 0
           (store_faction_of_party, ":besieger_party_faction", ":besieger_party"),
           (store_relation, ":besieger_party_relation", ":besieger_party_faction", "fac_player_supporters_faction"),
-          (lt, ":besieger_party_relation", 0),
+          (lt, ":besieger_party_relation", 5),	#was 0
           (assign, "$g_defending_against_siege", 1),
           (assign, "$g_siege_first_encounter", 1),
           (jump_to_menu, "mnu_siege_started_defender"),

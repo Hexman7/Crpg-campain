@@ -1662,7 +1662,7 @@ triggers = [
 
    
     (store_skill_level,":skill_weapon_master",skl_weapon_master,"trp_player"),
-	(store_div,":skill_weapon_master",":skill_weapon_master",2),
+	(store_div,":skill_weapon_master",":skill_weapon_master",2),	
 	
     (try_for_range,":wpt", wpt_one_handed_weapon, wpt_firearm),
 		(assign,":offset",16),
@@ -1670,16 +1670,17 @@ triggers = [
 		(assign,":off",0),
 	
 	
-		(store_proficiency_level,":proficiency_level","trp_player",":wpt"),
+		(store_proficiency_level,":proficiency_level","trp_player",":wpt"),	
 		
 		(try_begin),
 		(gt,":proficiency_level",100),
-			(store_sub,":off",":max_wpf",":proficiency_level"),
-			(store_div,":off",":off",100),
-			(store_mul,":off",":off",2),
-			(store_sub,":offset",":offset",":off"),
-			(store_sub,":offset",":offset",":skill_weapon_master"),
+			(store_sub,":off",":max_wpf",":proficiency_level"),	
+			(store_div,":off",":off",100),		
+			(store_mul,":off",":off",3),	
+			(store_sub,":offset",":offset",":off"),	
+			(store_sub,":offset",":offset",":skill_weapon_master"),		
 			
+			(gt,":offset",0),
 			(store_sub,":proficiency_level",":proficiency_level",":offset"),
 			(troop_set_proficiency,"trp_player", ":wpt", ":proficiency_level"),
 		(try_end),
