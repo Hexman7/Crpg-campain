@@ -1583,16 +1583,16 @@ triggers = [
 			(assign,":faction_no_1",-1),
 			(assign,":faction_no_2",-1),
 			(assign,":end_cond",1000),
-			(assign,":try",0),
-			(val_add,":try",0),
 			
-			(try_for_range, ":try", 0, ":end_cond"),
+			(try_for_range, reg5, 0, ":end_cond"),
 				(try_begin),
 				(eq, ":faction_no_1", ":faction_no_2"),	
 					(call_script, "script_get_random_faction_for_war"),
 					(assign, ":faction_no_1", reg2),
+                    (display_message,"@FACTION 1: {reg2}"),
 					(call_script, "script_get_random_faction_for_war"),
 					(assign, ":faction_no_2", reg2),
+                    (display_message,"@FACTION 2: {reg2}"),
 				(else_try),
 					(assign,":end_cond",-1),
 				(try_end),
@@ -1798,10 +1798,10 @@ triggers = [
         (try_end),
         (array_get_dim_size, ":array_size", ":affordable_buildings", 0),
         #### DEBUG
-        (try_for_range,":x",0,":array_size"),
-            (array_get_val, reg2, ":affordable_buildings", ":x"),
-            (display_message,"@Building: {reg2}"),
-        (try_end),
+        # (try_for_range,":x",0,":array_size"),
+            # (array_get_val, reg2, ":affordable_buildings", ":x"),
+            # (display_message,"@Building: {reg2}"),
+        # (try_end),
         #### DEBUG
         
         (try_begin), ## get random building to construct and construct it
