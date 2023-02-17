@@ -1580,25 +1580,65 @@ triggers = [
   [    
   
 	(try_for_range,":try",0,5),
-			(assign,":faction_no_1",-1),
-			(assign,":faction_no_2",-1),
+			(assign,":kingdom_a",-1),
+			(assign,":kingdom_b",-1),
 			(assign,":end_cond",1000),
 			
 			(try_for_range, reg5, 0, ":end_cond"),
 				(try_begin),
-				(eq, ":faction_no_1", ":faction_no_2"),	
+				(eq, ":kingdom_a", ":kingdom_b"),	
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":faction_no_1", reg2),
+					(assign, ":kingdom_a", reg2),
                     (display_message,"@FACTION 1: {reg2}"),
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":faction_no_2", reg2),
+					(assign, ":kingdom_b", reg2),
                     (display_message,"@FACTION 2: {reg2}"),
 				(else_try),
 					(assign,":end_cond",-1),
 				(try_end),
 			(try_end),
-		(call_script, "script_diplomacy_start_war_between_kingdoms", ":faction_no_1", ":faction_no_2", 1),
-	(try_end),
+	#	(call_script, "script_diplomacy_start_war_between_kingdoms", ":kingdom_a", ":kingdom_b", 1),
+        
+      (call_script, "script_add_log_entry", logent_faction_declares_war_to_curb_power, ":kingdom_a", 0, 0, ":kingdom_b"),
+	  (call_script, "script_faction_follows_controversial_policy", ":kingdom_a", logent_policy_ruler_declares_war_with_justification),
+
+      (store_relation, ":relation", ":kingdom_a", ":kingdom_b"),
+      (val_min, ":relation", -10),
+      (val_add, ":relation", -30),
+      (set_relation, ":kingdom_a", ":kingdom_b", ":relation"),
+      
+      (str_store_faction_name_link, s1, ":kingdom_a"),
+      (str_store_faction_name_link, s2, ":kingdom_b"),
+      (display_log_message, "@{s1} has declared war against {s2}."),
+
+      (store_current_hours, ":hours"),
+      (faction_set_slot, ":kingdom_a", slot_faction_ai_last_decisive_event, ":hours"),
+      (faction_set_slot, ":kingdom_b", slot_faction_ai_last_decisive_event, ":hours"),
+
+    #set provocation and truce days
+      (store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+      (store_add, ":provocation_slot", ":kingdom_b", slot_faction_provocation_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (val_sub, ":provocation_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_a", ":truce_slot", 0),
+      (faction_set_slot, ":kingdom_a", ":provocation_slot", 0),
+
+      (store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+      (store_add, ":provocation_slot", ":kingdom_a", slot_faction_provocation_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (val_sub, ":provocation_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_b", ":truce_slot", 0),
+      (faction_set_slot, ":kingdom_b", ":provocation_slot", 0),
+
+      (call_script, "script_add_notification_menu", "mnu_notification_war_declared", ":kingdom_a", ":kingdom_b"),
+
+      (call_script, "script_update_faction_notes", ":kingdom_a"),
+      (call_script, "script_update_faction_notes", ":kingdom_b"),
+      (assign, "$g_recalculate_ais", 1),
+
+      
+      
+    (try_end),
 
   ]),   
   
