@@ -2406,10 +2406,14 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Frell - kazakh pack\
 ^Yamabushi\
 ^DRZ_Kopcap_osa\
+^Sonyer, Rgcotl , Sumskilz , Sarrie \
+^ Kovas, Brego, MADTAO - Teutonic and Lithuanian items\
+^ Kovas - reworked native items\
 "), 
 
 ("credits_14","OSP Scripts \
 ^Woyeyeh - script for better handing out fiefs by kings  \
+^Mad Vader - death camera\
 "), 
 
 ## mod end
