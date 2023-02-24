@@ -5,7 +5,7 @@ export_dir = "../WOTS/Modules/RiderMod2/"
 
 
 
-export_dir = "C:/Program Files (x86)/Steam/steamapps/common/MountBlade Warband/Modules/Crpg-campain/"
+export_dir = "C:/Program Files (x86)/Steam/steamapps/common/MountBlade Warband/Modules/CRPG-Campaign/"
 #export_dir = "D:/Program Files (x86)/Mount&Blade Warband/Modules/Mod/"
 
 
