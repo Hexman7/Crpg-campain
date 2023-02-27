@@ -36,6 +36,21 @@ from module_mission_templates import *
 # 
 ####################################################################################################################
 
+common_battle_order_panel = (
+  0, 0, 0, [],
+  [
+    (game_key_clicked, gk_view_orders),
+    (neg|is_presentation_active, "prsnt_battle"),
+    (start_presentation, "prsnt_battle"),
+    ])
+
+common_battle_order_panel_tick = (
+  0.1, 0, 0, [],
+  [
+    (is_presentation_active, "prsnt_battle"),
+    (call_script, "script_update_order_panel_statistics_and_map"),
+    ])
+
 
 coop_server_check_polls = (
   1, 5, 0,
@@ -383,8 +398,8 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  ai_kick_enhancement_mp,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
-     # common_battle_order_panel,
-     # common_battle_order_panel_tick,
+      common_battle_order_panel,
+      common_battle_order_panel_tick,
 
 #multiplayer_once_at_the_first_frame
       

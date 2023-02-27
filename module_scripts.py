@@ -33263,8 +33263,14 @@ scripts = [
     (agent_get_team, ":player_team", ":player_agent"),
 
     (get_scene_boundaries, pos2, pos3),
-
+    
     (team_get_movement_order, ":cur_order", ":player_team", grc_infantry),
+    (assign, reg0, ":player_agent"),
+    (display_message,"@player agent: {reg0}"),
+    (assign, reg0, ":player_team"),
+    (display_message,"@player team: {reg0}"),
+    (assign, reg0, ":cur_order"),
+    (display_message,"@CUR ORDER: {reg0}"),
     (try_begin),
       (eq, ":cur_order", mordr_hold),
       (team_get_order_position, pos1, ":player_team", grc_infantry),
