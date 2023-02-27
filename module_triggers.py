@@ -1579,7 +1579,22 @@ triggers = [
   ],
   [    
   
-	(try_for_range,":try",0,5),
+  
+    (try_for_range,":faction_a",kingdoms_begin, kingdoms_end),
+        (try_for_range,":faction_b", kingdoms_begin, kingdoms_end),
+            (store_add, ":truce_slot", ":faction_b", slot_faction_truce_days_with_factions_begin),
+            (val_sub, ":truce_slot", kingdoms_begin),
+            (faction_set_slot, ":faction_a", ":truce_slot", 0),
+     
+            (store_add, ":truce_slot", ":faction_a", slot_faction_truce_days_with_factions_begin),
+            (val_sub, ":truce_slot", kingdoms_begin),
+            (faction_set_slot, ":faction_b", ":truce_slot", 0),
+            (call_script, "script_update_faction_notes", ":faction_a"),
+            (call_script, "script_update_faction_notes", ":faction_b"),
+        (try_end),
+    (try_end),
+  
+	(try_for_range,":try",0,7),
 			(assign,":kingdom_a",-1),
 			(assign,":kingdom_b",-1),
 			(assign,":end_cond",1000),
@@ -1636,7 +1651,8 @@ triggers = [
       (call_script, "script_update_faction_notes", ":kingdom_b"),
       (assign, "$g_recalculate_ais", 1),
 
-      
+
+
       
     (try_end),
 
@@ -1791,9 +1807,9 @@ triggers = [
         (neq,":center_lord","trp_kingdom_neutral_lord"),
         (troop_get_slot,":troop_gold",":center_lord",slot_troop_wealth),
         ## DEBUG 
-        (str_store_troop_name,s1,":center_lord"),
+      #  (str_store_troop_name,s1,":center_lord"),
         (assign,reg0 , ":troop_gold"),
-        (display_message, "@ LORD: {s1}, gold: {reg0}"),
+      #  (display_message, "@ LORD: {s1}, gold: {reg0}"),
         ## DEBUG END
         (assign,":index",0),
         (array_create, ":affordable_buildings", 0, 0),
@@ -1871,8 +1887,8 @@ triggers = [
                 (party_set_slot, ":center_no", slot_center_improvement_end_hour, ":hours_takes"),
                 (troop_set_slot,":center_lord",slot_troop_is_constructing_building,1),
                 ## DEBUG
-                (str_store_party_name,s2,":center_no"),
-                (display_message,"@Constructing building:{reg2} in {s2}. Improvement cost: {reg0}, gold left: {reg3}  "),
+               # (str_store_party_name,s2,":center_no"),
+               # (display_message,"@Constructing building:{reg2} in {s2}. Improvement cost: {reg0}, gold left: {reg3}  "),
                 ##DEBUG
             (try_end),
         (try_end),
