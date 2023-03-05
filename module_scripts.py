@@ -29108,6 +29108,8 @@ scripts = [
       (try_end),
   ]),
 
+
+
   # script_select_battle_tactic_aux
   # Input: team_no
   # Output: battle_tactic
@@ -29225,6 +29227,198 @@ scripts = [
         (team_set_order_position, ":team_no", grc_everyone, pos60),
       (try_end),
   ]),
+
+
+#### MOD BEGIN TEST
+
+  # script_select_battle_tactic_mp
+  # Input: none
+  # Output: none
+  ("select_battle_tactic_mp",
+    [
+      (assign, "$ai_team_1_battle_tactic", 0),
+     # (get_player_agent_no, ":player_agent"),
+     # (agent_get_team, ":player_team", ":player_agent"),
+      # (try_begin),
+        # (num_active_teams_le, 2),
+        # (try_begin),
+          # (eq, ":player_team", 0),
+          # (assign, "$ai_team_1", 1),
+        # (else_try),
+          # (assign, "$ai_team_1", 0),
+        # (try_end),
+        # (assign, "$ai_team_2", -1),
+      # (else_try),
+        # (try_begin),
+          # (eq, ":player_team", 0),
+          # (assign, "$ai_team_1", 1),
+        # (else_try),
+          # (assign, "$ai_team_1", 0),
+        # (try_end),
+        # (store_add, "$ai_team_2", ":player_team", 2),
+      # (try_end),
+      
+      (assign, "$ai_team_1", 0),
+      (assign, "$ai_team_2", 1),
+      (call_script, "script_select_battle_tactic_aux_mp", "$ai_team_1", 0),
+      (assign, "$ai_team_1_battle_tactic", reg0),
+      (try_begin),
+        (ge, "$ai_team_2", 0),
+        (assign, ":defense_not_an_option", 0),
+        (try_begin),
+          (eq, "$ai_team_1_battle_tactic", btactic_hold),
+          (assign, ":defense_not_an_option", 1), #don't let two AI defend at the same time
+        (try_end),
+        (call_script, "script_select_battle_tactic_aux_mp", "$ai_team_2", ":defense_not_an_option"),
+        (assign, "$ai_team_2_battle_tactic", reg0),
+      (try_end),
+  ]),
+
+  # script_select_battle_tactic_aux_mp
+  # Input: team_no
+  # Output: battle_tactic
+  ("select_battle_tactic_aux_mp",
+    [
+      (store_script_param, ":team_no", 1),
+      (store_script_param, ":defense_not_an_option", 2),
+      (assign, ":battle_tactic", 0),
+      # (get_player_agent_no, ":player_agent"),
+      # (agent_get_team, ":player_team", ":player_agent"),
+      # (try_begin),
+        # (eq, "$cant_leave_encounter", 1),
+        # (teams_are_enemies, ":team_no", ":player_team"),
+        # (assign, ":defense_not_an_option", 1),
+      # (try_end),
+      (call_script, "script_team_get_class_percentages", ":team_no", 0),
+      #      (assign, ":ai_perc_infantry", reg0),
+      (assign, ":ai_perc_archers",  reg1),
+      (assign, ":ai_perc_cavalry",  reg2),
+      (call_script, "script_team_get_class_percentages", ":team_no", 1),#enemies of the ai_team
+      #      (assign, ":enemy_perc_infantry", reg0),
+      #      (assign, ":enemy_perc_archers",  reg1),
+      #      (assign, ":enemy_perc_cavalry",  reg2),
+
+      (store_random_in_range, ":rand", 0, 100),      
+      (try_begin),
+        # (assign, ":continue", 0),
+        # (try_begin),
+          # (teams_are_enemies, ":team_no", ":player_team"),
+          # (party_slot_eq, "$g_enemy_party", slot_party_type, spt_kingdom_hero_party),
+          # (assign, ":continue", 1),
+        # (else_try),
+          # (neg|teams_are_enemies, ":team_no", ":player_team"),
+          # (gt, "$g_ally_party", 0),
+          # (party_slot_eq, "$g_ally_party", slot_party_type, spt_kingdom_hero_party),
+          # (assign, ":continue", 1),
+        # (try_end),
+        #(this_or_next|lt, ":rand", 20),
+        # (eq, ":continue", 1),
+		# (store_faction_of_party, ":enemy_faction_no", "$g_enemy_party"),
+		# (neq, ":enemy_faction_no", "fac_kingdom_3"), #don't let khergits use battle tactics
+       (try_begin),
+          (eq, ":defense_not_an_option", 0),
+          (gt, ":ai_perc_archers", 50),
+          (lt, ":ai_perc_cavalry", 35),
+          (assign, ":battle_tactic", btactic_hold),
+        (else_try),
+          (lt, ":rand", 80),
+          (assign, ":battle_tactic", btactic_follow_leader),
+        (try_end),
+      (try_end),
+      (assign, reg0, ":battle_tactic"),
+  ]),
+  
+  # script_battle_calculate_initial_powers
+  # Input: none
+  # Output: none
+  #("battle_calculate_initial_powers",
+  #  [        
+  #    (try_for_agents, ":agent_no"),
+  #      (agent_is_human, ":agent_no"),
+  #      
+  #      (call_script, "script_calculate_team_powers", ":agent_no"),
+  #      (assign, ":ally_power", reg0),
+  #      (assign, ":enemy_power", reg1),
+  #      
+  #      (agent_set_slot, ":agent_no", slot_agent_initial_ally_power, ":ally_power"),
+  #      (agent_set_slot, ":agent_no", slot_agent_initial_enemy_power, ":enemy_power"),
+  #    (try_end),
+  #]),
+
+  # battle_tactic_init_mp
+  # Input: none
+  # Output: none
+  ("battle_tactic_init_mp",
+    [
+      (call_script, "script_battle_tactic_init_aux_mp", "$ai_team_1", "$ai_team_1_battle_tactic"),
+      (try_begin),
+        (ge, "$ai_team_2", 0),
+        (call_script, "script_battle_tactic_init_aux_mp", "$ai_team_2", "$ai_team_2_battle_tactic"),
+      (try_end),
+
+  ]),
+
+  # script_battle_tactic_init_aux_mp
+  # Input: team_no, battle_tactic
+  # Output: none
+  ("battle_tactic_init_aux_mp",
+    [
+      (store_script_param, ":team_no", 1),
+      (store_script_param, ":battle_tactic", 2),
+      
+      (assign,reg0,":team_no"),
+      
+      (display_message,"@ TEAM NO: {reg0}"),
+      
+      (assign,":random_leader",-1),
+      (try_for_agents, ":agent_no"),
+        (agent_get_team, ":agent_team", ":agent_no"),
+        (assign,reg1,":agent_team"),
+        (display_message,"@AGENT TEAM: {reg1}"),
+        (try_begin),
+        (agent_is_non_player, ":agent_no"),
+        (agent_is_human, ":agent_no"),
+        (agent_is_alive, ":agent_no"),
+        (eq,":agent_team",":team_no"),
+            (assign,":random_leader",":agent_no"),
+        (try_end),
+      (try_end),
+      (team_get_leader, ":ai_leader", ":team_no"),
+      (try_begin),
+      (gt,":ai_leader",-1),
+        (team_set_leader, ":team_no", ":random_leader"),
+      (try_end),
+
+       
+      (team_get_leader, ":ai_leader", ":team_no"),
+      (try_begin),
+        (eq, ":battle_tactic", btactic_hold),
+        (agent_get_position, pos1, ":ai_leader"),
+        (call_script, "script_find_high_ground_around_pos1", ":team_no", 30),
+        (copy_position, pos1, pos52),
+        (call_script, "script_find_high_ground_around_pos1", ":team_no", 30), # call again just in case we are not at peak point.
+        (copy_position, pos1, pos52),
+        (call_script, "script_find_high_ground_around_pos1", ":team_no", 30), # call again just in case we are not at peak point.
+        (team_give_order, ":team_no", grc_everyone, mordr_hold),
+        (team_set_order_position, ":team_no", grc_everyone, pos52),
+        (team_give_order, ":team_no", grc_archers, mordr_advance),
+        (team_give_order, ":team_no", grc_archers, mordr_advance),
+      (else_try),
+        (eq, ":battle_tactic", btactic_follow_leader),
+        (team_get_leader, ":ai_leader", ":team_no"),
+        (ge, ":ai_leader", 0),
+        (agent_set_speed_limit, ":ai_leader", 8),
+        (agent_get_position, pos60, ":ai_leader"),
+        (team_give_order, ":team_no", grc_everyone, mordr_hold),
+        (team_set_order_position, ":team_no", grc_everyone, pos60),
+      (try_end),
+  ]),
+
+### MOD END TEST
+
+
+
+
 
   # script_calculate_team_powers
   # Input: none
