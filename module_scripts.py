@@ -29366,9 +29366,7 @@ scripts = [
       (store_script_param, ":team_no", 1),
       (store_script_param, ":battle_tactic", 2),
       
-      (assign,reg0,":team_no"),
-      
-      (display_message,"@ TEAM NO: {reg0}"),
+
       
       (assign,":random_leader",-1),
       (try_for_agents, ":agent_no"),
@@ -29381,11 +29379,15 @@ scripts = [
         (agent_is_alive, ":agent_no"),
         (eq,":agent_team",":team_no"),
             (assign,":random_leader",":agent_no"),
+            (display_message,"@I've found new leader"),
         (try_end),
       (try_end),
+      (assign,reg0,":team_no"),
+      
+      (display_message,"@ TEAM NO: {reg0}"),
       (team_get_leader, ":ai_leader", ":team_no"),
       (try_begin),
-      (gt,":ai_leader",-1),
+      (eq,":ai_leader",-1),
         (team_set_leader, ":team_no", ":random_leader"),
       (try_end),
 

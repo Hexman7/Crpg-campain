@@ -1179,8 +1179,16 @@ coop_mission_templates = [
           (store_mission_timer_a,":mission_time"),(ge,":mission_time",6),
           (eq,"$load_ai_tactics",1),
           ],
-        [(call_script, "script_select_battle_tactic_mp"),
-        (call_script, "script_battle_tactic_init_mp"),
+        [
+        (try_for_range,":team_no",-1,10),
+            (team_get_leader, ":ai_leader", ":team_no"),
+            (assign,reg1,":ai_leader"),
+            
+            (display_message,"@AI leader: {reg1}"),
+           
+        (try_end),
+        # (call_script, "script_select_battle_tactic_mp"),
+        # (call_script, "script_battle_tactic_init_mp"),
         #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
         ]),
  
