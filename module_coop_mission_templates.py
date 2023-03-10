@@ -398,8 +398,8 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  ai_kick_enhancement_mp,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
-      common_battle_order_panel,
-      common_battle_order_panel_tick,
+  #    common_battle_order_panel,
+  #    common_battle_order_panel_tick,
 
 #multiplayer_once_at_the_first_frame
       
@@ -665,25 +665,8 @@ coop_mission_templates = [
             (val_sub, "$coop_num_bots_team_2", 1),
           (try_end),
         (try_end),    
-        (try_end),    
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
+        (try_end),   
         ]),
- 
-
- 
- 
-
- 
- 
  
  #### mod end
  
@@ -742,7 +725,17 @@ coop_mission_templates = [
         ]),
 
  
-
+		### MOD TEST
+	  #AI Triggers
+      (0, 0, ti_once, [
+	      (multiplayer_is_server),
+		  (multiplayer_is_dedicated_server),
+          (store_mission_timer_a,":mission_time"),(ge,":mission_time",2),
+          ],
+       [(call_script, "script_select_battle_tactic"),
+        (call_script, "script_battle_tactic_init"),
+        #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
+        ]),
 		
 		
       (ti_on_agent_spawn, 0, 0, [],#called by client also

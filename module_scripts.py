@@ -24959,6 +24959,7 @@ scripts = [
           ####  mod fix for raiding villages while lord is having a battle 
            (try_begin),
            (ge, ":raider_party", 0),
+		   (party_is_active,":raider_party"),
             (party_get_battle_opponent, ":opponent", ":raider_party"),
             (try_begin),
             (ge, ":opponent", 0),

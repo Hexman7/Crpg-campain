@@ -1603,11 +1603,15 @@ triggers = [
 				(try_begin),
 				(eq, ":kingdom_a", ":kingdom_b"),	
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":kingdom_a", reg2),
-                    (display_message,"@FACTION 1: {reg2}"),
+					### DEBUG
+					# (assign, ":kingdom_a", reg2),
+                    # (display_message,"@FACTION 1: {reg2}"),
+					### DEBUG
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":kingdom_b", reg2),
-                    (display_message,"@FACTION 2: {reg2}"),
+					### DEBUG
+					# (assign, ":kingdom_b", reg2),
+                    # (display_message,"@FACTION 2: {reg2}"),
+					### DEBUG
 				(else_try),
 					(assign,":end_cond",-1),
 				(try_end),
