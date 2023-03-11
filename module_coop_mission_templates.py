@@ -398,8 +398,10 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  ai_kick_enhancement_mp,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
+
   #    common_battle_order_panel,
   #    common_battle_order_panel_tick,
+
 
 #multiplayer_once_at_the_first_frame
       
@@ -553,7 +555,6 @@ coop_mission_templates = [
         ]),
 
 
-
  #multiplayer_server_spawn_bots
       (0, 0, 0, [],
        [
@@ -665,7 +666,10 @@ coop_mission_templates = [
             (val_sub, "$coop_num_bots_team_2", 1),
           (try_end),
         (try_end),    
+
         (try_end),   
+
+
         ]),
  
  #### mod end
@@ -724,18 +728,6 @@ coop_mission_templates = [
 
         ]),
 
- 
-		### MOD TEST
-	  #AI Triggers
-      (0, 0, ti_once, [
-	      (multiplayer_is_server),
-		  (multiplayer_is_dedicated_server),
-          (store_mission_timer_a,":mission_time"),(ge,":mission_time",2),
-          ],
-       [(call_script, "script_select_battle_tactic"),
-        (call_script, "script_battle_tactic_init"),
-        #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
-        ]),
 		
 		
       (ti_on_agent_spawn, 0, 0, [],#called by client also
@@ -1179,6 +1171,35 @@ coop_mission_templates = [
 #          ], []), #applying battle tactic
 
 	#mod end
+
+    #AI Triggers
+     (0, 5, ti_once, [
+          (this_or_next|multiplayer_is_server),
+          (multiplayer_is_dedicated_server),
+          (store_mission_timer_a,":mission_time"),(ge,":mission_time",6),
+         # (eq,"$load_ai_tactics",1),
+          ],
+        [
+        # (try_for_range,":team_no",-1,10),
+            # (team_get_leader, ":ai_leader", ":team_no"),
+            # (assign,reg1,":ai_leader"),
+            
+            # (display_message,"@AI leader: {reg1}"),
+           
+        # (try_end),
+         (try_begin),
+         (num_active_teams_le,2),
+            (display_message,"@ Less teams than 2"),
+         (else_try),
+            (display_message,"@ More teams than 2"),
+         (try_end),
+         (call_script, "script_select_battle_tactic_mp"),
+         (call_script, "script_battle_tactic_init_mp"),
+        #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
+        ]),
+ 
+
+
 
 #	 END BATTLE ##################	
       (3, 4, ti_once, [(eq, "$g_round_ended", 1)],
