@@ -11454,7 +11454,8 @@ scripts = [
 		(eq, ":event_type", multiplayer_event_mod_send_file_to_server_key),
 		#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@line: {s3}"),
 		#(display_message,"@line:{s0}"),
-		(call_script,"script_multiplayer_save_file_keys","@coop_battle"),
+        (str_store_string,s10,"@coop_battle"),
+		(call_script,"script_multiplayer_save_file_keys",s10),
 		#(call_script,"script_multiplayer_save_file_keys","@coop_troops"),
 
 	### mod end
@@ -12576,7 +12577,8 @@ scripts = [
 ## mod begin
 		(else_try),
 		  (eq, ":event_type", multiplayer_event_mod_send_file_to_player_key),
-		  (call_script,"script_multiplayer_save_file_keys","@coop_battle"),
+          (str_store_string,s10,"@coop_battle"),
+		  (call_script,"script_multiplayer_save_file_keys",s10),
 		(else_try),
 		  (eq, ":event_type", multiplayer_event_return_invisible),
 		  (store_script_param,":agent_no",3),	
@@ -55493,7 +55495,7 @@ scripts = [
 		(try_begin), 
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"),
-			(dict_load_file, "$coop_dict", ":file_no", 1), 
+			(dict_load_file, "$coop_dict", s10, 1), 
 			(str_split, reg5, s5, s0, "@;"),
 			#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@{s5} ; {s6}"),	## DEBUG
 			(str_to_num, reg0, s6),
@@ -55504,7 +55506,7 @@ scripts = [
 			(else_try),
 				(dict_set_int, "$coop_dict", s5, reg0),
 			(try_end),
-			(dict_save, "$coop_dict", ":file_no"), #save new data
+			(dict_save, "$coop_dict", s10), #save new data
 			(dict_free, "$coop_dict"),
 			#(display_message,"@{s5}{s6}"),	## DEBUG
 		    #(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@Key saved."),	## DEBUG
