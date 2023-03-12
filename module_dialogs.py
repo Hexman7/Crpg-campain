@@ -3519,61 +3519,91 @@ dialogs = [
    
    
         ##MOD BEGIN
-  [anyone|plyr,"minister_talk", [],
+  [anyone|plyr,"minister_talk", [ ### if 7 days passed since last recruitment
+    (store_current_hours, ":hours_since_last_recruitment"),
+    (gt,":hours_since_last_recruitment","$recruiting_company_delay"),
+  ],
    "I want to recruit new warriors.", "minister_recruit_warriors",[
-
-
-   
+        (store_current_hours, ":hours_since_last_recruitment"),
+        (val_add,":hours_since_last_recruitment",168),
+        (assign,"$recruiting_company_delay",":hours_since_last_recruitment"),
    ]],	
 		
   [anyone,"minister_recruit_warriors", [],
-   "Ok, how many warriors you want to recruit?.", "minister_choose_warriors",[
+   "Ok, how big company you want to recruit?.", "minister_choose_warriors",[
    ]],
+   
+     [anyone|plyr,"minister_choose_warriors",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",25),
+      ],
+       "Small (25 troops).", "minister_pretalk",[ 
+       (party_add_template, "p_main_party", "pt_player_troops_company_25"),
+       (troop_remove_gold,"trp_player",2000),
+       ]],     
+       
+       [anyone|plyr,"minister_choose_warriors",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",50),
+      ],
+       "Medium (50 troops).", "minister_pretalk",[ 
+       (party_add_template, "p_main_party", "pt_player_troops_company_50"),
+       (troop_remove_gold,"trp_player",4300),
+       ]],    
 
-  [anyone|plyr,"minister_choose_warriors",[
-	(party_get_free_companions_capacity,":capacity","p_main_party"),
-	(ge,":capacity",1),
-  ],
-   "One.", "minister_pretalk",[ 
-   (party_add_members,"p_main_party","trp_player_recruit",1),
-   (troop_remove_gold,"trp_player",10),
-   ]],
-   
-  [anyone|plyr,"minister_choose_warriors",[
-	(party_get_free_companions_capacity,":capacity","p_main_party"),
-	(ge,":capacity",5),
-  ],
-   "Five.", "minister_pretalk",[ 
-   (party_add_members,"p_main_party","trp_player_recruit",5),
-   (troop_remove_gold,"trp_player",50),
-   ]],
-   
-  [anyone|plyr,"minister_choose_warriors",[
-	(party_get_free_companions_capacity,":capacity","p_main_party"),
-	(ge,":capacity",10),
-  ],
-   "Ten.", "minister_pretalk",[ 
-   (party_add_members,"p_main_party","trp_player_recruit",10),
-   (troop_remove_gold,"trp_player",100),
-   ]],  
-   
-  [anyone|plyr,"minister_choose_warriors",[
-	(party_get_free_companions_capacity,":capacity","p_main_party"),
-	(ge,":capacity",20),
-   ],
-   "Twenty.", "minister_pretalk",[ 
-	(party_add_members,"p_main_party","trp_player_recruit",20),
-	(troop_remove_gold,"trp_player",200),
-   ]],  
+       [anyone|plyr,"minister_choose_warriors",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",75),
+      ],
+       "Large (75 troops).", "minister_pretalk",[ 
+       (party_add_template, "p_main_party", "pt_player_troops_company_75"),
+       (troop_remove_gold,"trp_player",5800),
+       ]],
 
-   [anyone|plyr,"minister_choose_warriors",[ 
-	(party_get_free_companions_capacity,":capacity","p_main_party"),
-	(ge,":capacity",50),
-   ],
-   "Fifty.", "minister_pretalk",[ 
-	(party_add_members,"p_main_party","trp_player_recruit",50),
-	(troop_remove_gold,"trp_player",500),
-   ]],
+  # [anyone|plyr,"minister_choose_warriors",[
+	# (party_get_free_companions_capacity,":capacity","p_main_party"),
+	# (ge,":capacity",1),
+  # ],
+   # "One.", "minister_pretalk",[ 
+   # (party_add_members,"p_main_party","trp_player_recruit",1),
+   # (troop_remove_gold,"trp_player",10),
+   # ]],
+   
+  # [anyone|plyr,"minister_choose_warriors",[
+	# (party_get_free_companions_capacity,":capacity","p_main_party"),
+	# (ge,":capacity",5),
+  # ],
+   # "Five.", "minister_pretalk",[ 
+   # (party_add_members,"p_main_party","trp_player_recruit",5),
+   # (troop_remove_gold,"trp_player",50),
+   # ]],
+   
+  # [anyone|plyr,"minister_choose_warriors",[
+	# (party_get_free_companions_capacity,":capacity","p_main_party"),
+	# (ge,":capacity",10),
+  # ],
+   # "Ten.", "minister_pretalk",[ 
+   # (party_add_members,"p_main_party","trp_player_recruit",10),
+   # (troop_remove_gold,"trp_player",100),
+   # ]],  
+   
+  # [anyone|plyr,"minister_choose_warriors",[
+	# (party_get_free_companions_capacity,":capacity","p_main_party"),
+	# (ge,":capacity",20),
+   # ],
+   # "Twenty.", "minister_pretalk",[ 
+	# (party_add_members,"p_main_party","trp_player_recruit",20),
+	# (troop_remove_gold,"trp_player",200),
+   # ]],  
+
+   # [anyone|plyr,"minister_choose_warriors",[ 
+	# (party_get_free_companions_capacity,":capacity","p_main_party"),
+	# (ge,":capacity",50),
+   # ],
+   # "Fifty.", "minister_pretalk",[ 
+	# (party_add_members,"p_main_party","trp_player_recruit",50),
+	# (troop_remove_gold,"trp_player",500),
+   # ]],
    
   [anyone|plyr,"minister_choose_warriors",[],
    "Nevermind.", "minister_pretalk",[ ]],

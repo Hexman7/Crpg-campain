@@ -91,3 +91,6 @@ pt_sea_raider_lair = 89
 pt_looter_lair = 90
 pt_bandit_lair_templates_end = 91
 pt_leaded_looters = 92
+pt_player_troops_company_25 = 93
+pt_player_troops_company_50 = 94
+pt_player_troops_company_75 = 95

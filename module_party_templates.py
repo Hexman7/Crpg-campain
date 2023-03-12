@@ -197,4 +197,8 @@ party_templates = [
   ("bandit_lair_templates_end","{!}bandit_lair_templates_end",icon_axeman|carries_goods(2)|pf_is_static,0,fac_outlaws,bandit_personality,[(trp_sea_raider,15,50)]),
 
   ("leaded_looters","Band of robbers",icon_axeman|carries_goods(8)|pf_quest_party,0,fac_neutral,bandit_personality,[(trp_looter_leader,1,1),(trp_looter,3,3)]),
+  
+  ("player_troops_company_25", "{!}player_troops_company_25", 0, 0, fac_commoners, 0, [(trp_player_recruit,5,5),(trp_player_footman,5,5),(trp_player_trained_footman,3,3),(trp_player_skirmisher,5,5),(trp_player_archer,3,3),(trp_player_horseman,4,4)]),
+  ("player_troops_company_50", "{!}player_troops_company_50", 0, 0, fac_commoners, 0, [(trp_player_recruit,10,10),(trp_player_footman,10,10),(trp_player_trained_footman,6,6),(trp_player_skirmisher,10,10),(trp_player_archer,6,6),(trp_player_horseman,8,8)]),
+  ("player_troops_company_75", "{!}player_troops_company_75", 0, 0, fac_commoners, 0, [(trp_player_recruit,15,15),(trp_player_footman,15,15),(trp_player_trained_footman,9,9),(trp_player_skirmisher,15,15),(trp_player_archer,9,9),(trp_player_horseman,12,12)]),
 ]

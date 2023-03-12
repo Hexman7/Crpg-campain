@@ -1398,17 +1398,17 @@ troops = [
 
    
   ################ PLAYER Troops
-  ### 																				###### do zmiany w WSE na odnalezienie jednostki o tym id i zwrocenie jej ID w formie int
+  ### 		## join cost: 24																		
   ["player_recruit","Recruit","Recruits",tf_guarantee_boots|tf_guarantee_armor,0,0,fac_player_supporters_faction,
    [itm_club,itm_spiked_club,itm_cleaver,itm_tab_shield_round_a,
 	itm_felt_hat,itm_straw_hat,itm_shirt,itm_linen_shirt_a,itm_wrapping_boots,itm_hide_boots],
    str_7 | agi_5 | int_4 | cha_4|level(4),wp(60),knows_common|knows_inventory_management_10,swadian_face_younger_1, swadian_face_middle_2],
- 
+ ## join cost: 47	
   ["player_footman","Footman","Footmen",tf_guarantee_boots|tf_guarantee_armor,0,0,fac_player_supporters_faction,
    [itm_sword_medieval_a,itm_spiked_club,itm_one_handed_war_axe_a,itm_shortened_spear,itm_spear,itm_tab_shield_round_b,
     itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
    str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(80)|wp_two_handed(80)|wp_polearm(80)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_2|knows_ironflesh_1|knows_shield_1|knows_athletics_1|knows_power_throw_2,swadian_face_younger_1, swadian_face_middle_2],
-  
+  ## join cost: 80
   ["player_trained_footman","Trained Footman","Trained Footmen",tf_guarantee_shield|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet,0,0,fac_player_supporters_faction,
    [itm_one_handed_war_axe_b,itm_sword_medieval_b,itm_sword_medieval_c,itm_fighting_pick,itm_war_spear,itm_spear,itm_long_hafted_knobbed_mace,itm_javelin,itm_tab_shield_round_c,itm_tab_shield_round_b,
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
@@ -1429,12 +1429,12 @@ troops = [
 	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b],
    str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_8|knows_ironflesh_5|knows_shield_5|knows_athletics_7|knows_power_throw_5,swadian_face_younger_1, swadian_face_middle_2],
   
-
+## join cost: 47
   ["player_skirmisher","Skirmisher","Skirmishers",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_ranged,0,0,fac_player_supporters_faction,
    [itm_fighting_pick,itm_one_handed_war_axe_a,itm_hunting_bow,itm_arrows,itm_short_bow,itm_barbed_arrows,
    	itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
    str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(65)|wp_two_handed(20)|wp_polearm(50)|wp_archery(100)|wp_crossbow(100)|wp_throwing(100),knows_common|knows_power_strike_1|knows_ironflesh_1|knows_athletics_3|knows_power_draw_1,swadian_face_younger_1, swadian_face_middle_2],
-
+## join cost: 80
   ["player_archer","Archer","Archers",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_ranged,0,0,fac_player_supporters_faction,
    [itm_one_handed_war_axe_b,itm_sword_medieval_a,itm_long_bow,itm_barbed_arrows,itm_short_bow,itm_bodkin_arrows,
     itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
@@ -1445,7 +1445,7 @@ troops = [
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
    str_13 | agi_12 | int_4 | cha_4|level(19),wp_one_handed(80)|wp_two_handed(40)|wp_polearm(70)|wp_archery(140)|wp_crossbow(140)|wp_throwing(140),knows_common|knows_power_strike_2|knows_ironflesh_3|knows_athletics_6|knows_power_draw_4,swadian_face_younger_1, swadian_face_middle_2],
 
-   
+   ## join cost: 209
   ["player_horseman","Horseman","Horsemen",tf_guarantee_armor|tf_guarantee_boots|tf_guarantee_helmet|tf_guarantee_horse|tf_mounted,0,0,fac_player_supporters_faction,
    [itm_sword_medieval_a,itm_sword_medieval_b,itm_light_lance,itm_lance,itm_tab_shield_small_round_a,itm_tab_shield_small_round_b,itm_javelin,
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_saddle_horse,itm_courser],
