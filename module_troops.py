@@ -3811,8 +3811,8 @@ troops = [
    
   ["player_temp_kingsguard","Player Temp Kings Guard","Player Temp Kings Guards",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_battle_axe_b,itm_tab_shield_small_round_c,itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
-   str_25|agi_18|int_10|cha_5|level(20),wp(200),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
-  
+    str_24 | agi_21 | int_21 | cha_9|level(35),wp_one_handed(300)|wp_two_handed(300)|wp_polearm(300)|wp_archery(150)|wp_crossbow(150)|wp_throwing(150),knows_common|knows_power_strike_9|knows_ironflesh_10|knows_shield_8|knows_athletics_8|knows_riding_10|knows_inventory_management_10,swadian_face_young_1, swadian_face_old_2],
+ 
   ["player_test_troop","Player Test Troop 1","Player Test Troop 1",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
   [itm_padded_leather,itm_nomad_boots, itm_crossbow, itm_bolts, itm_pickaxe],
    def_attrib|level(1),wp(20),knows_warrior_npc|knows_inventory_management_10, man_face_old_1, man_face_older_2],
