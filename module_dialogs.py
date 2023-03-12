@@ -3520,16 +3520,94 @@ dialogs = [
    
         ##MOD BEGIN
   [anyone|plyr,"minister_talk", [ ### if 7 days passed since last recruitment
+  ],
+   "I want to recruit new warriors.", "minister_recruit_warriors",[
+   ]],	
+		
+   [anyone,"minister_recruit_warriors", [       
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",1),],
+   "What new warriors do you mean?.", "minister_choose_warriors_type",[
+   ]],
+   
+  [anyone,"minister_recruit_warriors", [        
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (lt,":capacity",1),],
+   "You can't lead more men.", "minister_choose_warriors_type",[
+   ]],
+   
+  [anyone|plyr,"minister_choose_warriors_type", [ ### if 7 days passed since last recruitment
     (store_current_hours, ":hours_since_last_recruitment"),
     (gt,":hours_since_last_recruitment","$recruiting_company_delay"),
   ],
-   "I want to recruit new warriors.", "minister_recruit_warriors",[
-        (store_current_hours, ":hours_since_last_recruitment"),
-        (val_add,":hours_since_last_recruitment",168),
-        (assign,"$recruiting_company_delay",":hours_since_last_recruitment"),
-   ]],	
-		
-  [anyone,"minister_recruit_warriors", [],
+   "I want to recruit regular company.", "minister_recruit_company",[
+   ]],	    
+        
+  [anyone|plyr,"minister_choose_warriors_type", [ ### if 30 days passed since last recruitment
+    (store_current_hours, ":hours_since_last_recruitment"),
+    (gt,":hours_since_last_recruitment","$recruiting_kings_guards_delay"),
+  ],
+   "I want to recruit kings guards.", "minister_recruit_kings_guards",[
+   ]],	   
+  [anyone|plyr,"minister_choose_warriors_type",[],
+      "Nevermind.", "minister_pretalk",[ ]],     
+        
+ [anyone,"minister_recruit_kings_guards", [],
+   "Ok, how many kings guards you want to recruit?.", "minister_choose_kings_guards",[
+   ]],     
+     [anyone|plyr,"minister_choose_kings_guards",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",1),
+      ],
+       "One.", "minister_pretalk",[ 
+       (party_add_members,"p_main_party","trp_player_kingsguard",1),
+       (troop_remove_gold,"trp_player",656),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",720),
+       (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
+       ]],        
+     [anyone|plyr,"minister_choose_kings_guards",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",3),
+      ],
+       "Three.", "minister_pretalk",[ 
+       (party_add_members,"p_main_party","trp_player_kingsguard",3),
+       (troop_remove_gold,"trp_player",1968),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",720),
+       (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
+       ]],        
+     [anyone|plyr,"minister_choose_kings_guards",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",5),
+      ],
+       "Five.", "minister_pretalk",[ 
+       (party_add_members,"p_main_party","trp_player_kingsguard",5),
+       (troop_remove_gold,"trp_player",3280),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",720),
+       (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
+       ]],        
+     [anyone|plyr,"minister_choose_kings_guards",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",10),
+      ],
+       "Ten.", "minister_pretalk",[ 
+       (party_add_members,"p_main_party","trp_player_kingsguard",10),
+       (troop_remove_gold,"trp_player",6560),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",720),
+       (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
+       ]],        
+
+    [anyone|plyr,"minister_choose_kings_guards",[],
+      "Nevermind.", "minister_pretalk",[ ]],
+   
+  [anyone,"minister_recruit_company", [],
    "Ok, how big company you want to recruit?.", "minister_choose_warriors",[
    ]],
    
@@ -3540,6 +3618,10 @@ dialogs = [
        "Small (25 troops).", "minister_pretalk",[ 
        (party_add_template, "p_main_party", "pt_player_troops_company_25"),
        (troop_remove_gold,"trp_player",2000),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",168),
+       (assign,"$recruiting_company_delay",":hours_since_last_recruitment"),
        ]],     
        
        [anyone|plyr,"minister_choose_warriors",[
@@ -3549,6 +3631,9 @@ dialogs = [
        "Medium (50 troops).", "minister_pretalk",[ 
        (party_add_template, "p_main_party", "pt_player_troops_company_50"),
        (troop_remove_gold,"trp_player",4300),
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",168),
+       (assign,"$recruiting_company_delay",":hours_since_last_recruitment"),
        ]],    
 
        [anyone|plyr,"minister_choose_warriors",[
@@ -3558,8 +3643,14 @@ dialogs = [
        "Large (75 troops).", "minister_pretalk",[ 
        (party_add_template, "p_main_party", "pt_player_troops_company_75"),
        (troop_remove_gold,"trp_player",5800),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",168),
+       (assign,"$recruiting_company_delay",":hours_since_last_recruitment"),
        ]],
 
+  [anyone|plyr,"minister_choose_warriors",[],
+   "Nevermind.", "minister_pretalk",[ ]],
   # [anyone|plyr,"minister_choose_warriors",[
 	# (party_get_free_companions_capacity,":capacity","p_main_party"),
 	# (ge,":capacity",1),
@@ -3605,8 +3696,8 @@ dialogs = [
 	# (troop_remove_gold,"trp_player",500),
    # ]],
    
-  [anyone|plyr,"minister_choose_warriors",[],
-   "Nevermind.", "minister_pretalk",[ ]],
+  # [anyone|plyr,"minister_choose_warriors",[],
+   # "Nevermind.", "minister_pretalk",[ ]],
  
    #### TEST V2
   # [anyone|plyr,"minister_talk", [],
