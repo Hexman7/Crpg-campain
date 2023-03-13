@@ -1485,15 +1485,24 @@ effects_on_troops =  (
 ai_kick_enhancement =  (
     2, 0, 0,
     [], [
-    (get_player_agent_no,":player"),
+    (try_begin),
+    (neg|multiplayer_is_server),
+        (get_player_agent_no,":player"),
+    (try_end),
     (try_for_agents, ":agent"),
-        (neq, ":agent", ":player"),
+        (try_begin),
+        (neg|multiplayer_is_server),
+            (neq, ":agent", ":player"),
+        (try_end),
         (agent_is_alive, ":agent"),
         (agent_is_human, ":agent"),
         (agent_is_active, ":agent"),
         (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
 		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
 		(eq,":horse",-1),
+        (agent_get_animation,":anim",":agent",0),
+        (neg|is_between,":anim","anim_fall_face_hold","anim_strike_chest_front_stop"), ### checking if agent didnt just fall of horse and is getting up
+
         ##He's an eligible human.  Now see if he's in a position to kick.
         (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
         (agent_get_defend_action, ":defend_action", ":agent"),
@@ -1522,65 +1531,14 @@ ai_kick_enhancement =  (
             (lt,":kickchance",2),
                # (display_message, "@Agent kicks."),
                 (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+                (agent_set_animation, ":agent", "anim_kick_right_leg"),### added 13.03.2023
 				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
                 (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
 				#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
             (try_end),
        (try_end),
        ])	
-
-###	   AI_kick_enhancement for multiplayer
-## based on singleplayer version. 
-#by Rider of Rohirrim
-	   
-ai_kick_enhancement_mp =  (
-    2, 0, 1,
-    [], [
-	(multiplayer_is_server),
-    (try_for_agents, ":agent"),
-		(agent_is_non_player, ":agent"),
-		(agent_is_human, ":agent"),
-		(agent_is_alive, ":agent"),
-		(agent_is_active, ":agent"),	
-		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
-		(eq,":horse",-1),	  
-		##He's an eligible human.  Now see if he's in a position to kick.
-		(agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
-		(agent_get_defend_action, ":defend_action", ":agent"),
-		(this_or_next|eq,":attack_action",4),
-		(this_or_next|eq,":defend_action",1), # defend enemy
-		##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
-		(agent_get_team, ":team", ":agent"),
-		(assign, ":maximum_distance", 100),
-		# get target
-		(agent_ai_get_look_target,":suspect",":agent"),
-		(gt,":suspect",0),
-		(agent_is_alive, ":suspect"),
-		(agent_is_human, ":suspect"),
-		(agent_is_active, ":suspect"),
-		(agent_get_team, ":suspect_team", ":suspect"),
-		(neq, ":suspect_team", ":team"),
-		(agent_get_horse,":horse_suspect",":suspect"),	### enemy is not mounted
-		(eq,":horse_suspect",-1),
-		(agent_get_position, pos1, ":agent"), # distance check
-		(agent_get_position, pos2, ":suspect"),
-		(neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
-		(get_distance_between_positions, ":distance", pos1, pos2),
-		(le, ":distance", ":maximum_distance"),
-		(store_random_in_range,":kickchance", 1, 10),
-		(try_begin),
-		(lt,":kickchance",2),
-			#(display_message, "@Agent kicks."),
-			(agent_set_animation, ":agent", "anim_prepare_kick_0"),
-			(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
-			(agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
-			#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
-		(try_end),
-	(try_end),
-	
-	])
-
-### mod end	   
+# ### mod end	   
 	
 	
 	
@@ -9563,7 +9521,7 @@ mission_templates = [
     [
       common_battle_init_banner,
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -9847,7 +9805,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -10876,7 +10834,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
@@ -11559,7 +11517,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -12552,7 +12510,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -13748,7 +13706,7 @@ mission_templates = [
       common_battle_init_banner,
 
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
       (ti_server_player_joined, 0, 0, [],
        [
          (store_trigger_param_1, ":player_no"),
@@ -14834,7 +14792,7 @@ mission_templates = [
 		common_battle_init_banner,
 
 		multiplayer_server_check_polls,
-	    ai_kick_enhancement_mp,
+	    ai_kick_enhancement,
 		(ti_on_agent_spawn, 0, 0, [],
 		[
 			(store_trigger_param_1, ":agent_no"),
@@ -17053,7 +17011,7 @@ mission_templates = [
      ],
     [
       multiplayer_server_check_polls,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
 	  lance_breaking_multiplayer,
       (ti_on_agent_spawn, 0, 0, [],
        [
