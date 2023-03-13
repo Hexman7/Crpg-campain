@@ -2410,7 +2410,7 @@ coop_scripts = [
         (assign, ":end", 40), 
         (try_for_range, ":unused", 0, ":end"),
 		
-		#### mod begin
+		#### mod begin	## get random troop to spawn
 		  (party_get_num_companion_stacks,":num_stacks","$coop_cur_temp_party_ally"),
 		  (store_random_in_range,":stack",0,":num_stacks"),
 		### mod end
