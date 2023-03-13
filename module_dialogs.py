@@ -3602,7 +3602,21 @@ dialogs = [
        (store_current_hours, ":hours_since_last_recruitment"),
        (val_add,":hours_since_last_recruitment",720),
        (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
-       ]],        
+       ]],       
+   
+    [anyone|plyr,"minister_choose_kings_guards",[
+        (party_get_free_companions_capacity,":capacity","p_main_party"),
+        (ge,":capacity",20),
+      ],
+       "Twenty.", "minister_pretalk",[ 
+       (party_add_members,"p_main_party","trp_player_kingsguard",20),
+       (troop_remove_gold,"trp_player",6560),
+       (troop_remove_gold,"trp_player",13120),
+       
+       (store_current_hours, ":hours_since_last_recruitment"),
+       (val_add,":hours_since_last_recruitment",720),
+       (assign,"$recruiting_kings_guards_delay",":hours_since_last_recruitment"),
+       ]],   	   
 
     [anyone|plyr,"minister_choose_kings_guards",[],
       "Nevermind.", "minister_pretalk",[ ]],
