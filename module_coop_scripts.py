@@ -2409,7 +2409,14 @@ coop_scripts = [
 
         (assign, ":end", 40), 
         (try_for_range, ":unused", 0, ":end"),
-          (party_stack_get_troop_id, ":selected_troop", "$coop_cur_temp_party_ally", 0), #get one troop from each party per cycle
+		
+		#### mod begin
+		  (party_get_num_companion_stacks,":num_stacks","$coop_cur_temp_party_ally"),
+		  (store_random_in_range,":stack",0,":num_stacks"),
+		### mod end
+		
+        #  (party_stack_get_troop_id, ":selected_troop", "$coop_cur_temp_party_ally", 0), #get one troop from each party per cycle
+          (party_stack_get_troop_id, ":selected_troop", "$coop_cur_temp_party_ally", ":stack"), #get one random troop 
           (try_begin),
             (gt, ":selected_troop", 0), 
             (assign, ":party", "$coop_cur_temp_party_ally"), 
