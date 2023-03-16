@@ -3749,67 +3749,67 @@ troops = [
    ["kingdom_neutral_lord",  "King Neutral",  "Neutral",  tf_hero, 0,reserved,  fac_neutrals,[ itm_saddle_horse,  itm_nord_nobleman_outfit,    itm_leather_boots,              itm_iron_greaves,                 itm_french_plate,   itm_hourglass_gauntlets_b,    itm_french_longsword,   itm_heavy_lance,        itm_tab_shield_heater_cav_b,    itm_visored_sallet_coif],            knight_attrib_5,wp(360),knight_skills_5, 0x0000000189080005549c575aea691962000000000011dd270000000000000000, nord_face_older_2],
 
 
-  ["player_temp_recruit","Player Temp Recruit","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_recruit","Player Recruit","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_club,itm_spiked_club,itm_cleaver,itm_tab_shield_round_a,
 	itm_felt_hat,itm_straw_hat,itm_shirt,itm_linen_shirt_a,itm_wrapping_boots,itm_hide_boots],
    str_7 | agi_5 | int_4 | cha_4|level(4),wp(60),knows_common|knows_inventory_management_10, man_face_old_1, man_face_older_2],
   
-  ["player_temp_footman","Player Temp Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_footman","Player Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_sword_medieval_a,itm_spiked_club,itm_one_handed_war_axe_a,itm_shortened_spear,itm_spear,itm_tab_shield_round_b,
     itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
    str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(80)|wp_two_handed(80)|wp_polearm(80)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_2|knows_ironflesh_1|knows_shield_1|knows_athletics_1|knows_power_throw_2,swadian_face_younger_1, swadian_face_middle_2],
    
-  ["player_temp_trained_footman","Player Temp Trained Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_trained_footman","Player Trained Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_war_axe_b,itm_sword_medieval_b,itm_sword_medieval_c,itm_fighting_pick,itm_war_spear,itm_spear,itm_long_hafted_knobbed_mace,itm_javelin,itm_tab_shield_round_c,itm_tab_shield_round_b,
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
    str_12 | agi_9 | int_4 | cha_4|level(14),wp_one_handed(110)|wp_two_handed(110)|wp_polearm(110)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_4|knows_ironflesh_2|knows_shield_2|knows_athletics_3|knows_power_throw_2,swadian_face_younger_1, swadian_face_middle_2],
    
-  ["player_temp_infantry","Player Temp Infantry","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_infantry","Player Infantry","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_war_spear,itm_long_bardiche,itm_longsword_b,itm_long_hafted_spiked_mace,itm_ashwood_pike,itm_tab_shield_round_c,itm_tab_shield_round_d,itm_javelin,itm_throwing_spears,
 	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5|knows_power_throw_3,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_elite_footman","Player Temp Elite Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_elite_footman","Player Elite Footman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_war_spear,itm_long_bardiche,itm_longsword_b,itm_long_hafted_spiked_mace,itm_ashwood_pike,itm_tab_shield_round_c,itm_tab_shield_round_d,itm_javelin,itm_throwing_spears,
 	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5|knows_power_throw_4,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_sergeant","Player Temp Sergeant","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_sergeant","Player Sergeant","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_warhammer,itm_one_handed_battle_axe_c,itm_steel_pick,itm_sword_two_handed_a,itm_great_bardiche,itm_warhammer,itm_great_long_bardiche,itm_ashwood_pike,itm_tab_shield_round_d,itm_tab_shield_round_e,itm_throwing_spears,
 	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b],
    str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_8|knows_ironflesh_5|knows_shield_5|knows_athletics_7|knows_power_throw_5,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_skirmisher","Player Temp Skirmisher","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_skirmisher","Player Skirmisher","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_fighting_pick,itm_one_handed_war_axe_a,itm_hunting_bow,itm_arrows,itm_short_bow,itm_barbed_arrows,
    	itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
    str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(65)|wp_two_handed(20)|wp_polearm(50)|wp_archery(100)|wp_crossbow(100)|wp_throwing(100),knows_common|knows_power_strike_1|knows_ironflesh_1|knows_athletics_3|knows_power_draw_1,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_archer","Player Temp Archer","Player Temp Archers",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_archer","Player Archer","Player Temp Archers",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_war_axe_b,itm_sword_medieval_a,itm_long_bow,itm_barbed_arrows,itm_short_bow,itm_bodkin_arrows,
     itm_nordic_archer_helmet,itm_leather_warrior_cap,itm_leather_jerkin,itm_red_gambeson,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_black_leather_gloves],
    str_11 | agi_9 | int_4 | cha_4|level(14),wp_one_handed(70)|wp_two_handed(30)|wp_polearm(60)|wp_archery(115)|wp_crossbow(115)|wp_throwing(115),knows_common|knows_power_strike_1|knows_ironflesh_2|knows_athletics_5|knows_power_draw_3,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_master_archer","Player Temp Master Archer","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_master_archer","Player Master Archer","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_war_axe_b,itm_military_hammer,itm_long_bow,itm_barbed_arrows,itm_bodkin_arrows,
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves],
    str_13 | agi_12 | int_4 | cha_4|level(19),wp_one_handed(80)|wp_two_handed(40)|wp_polearm(70)|wp_archery(140)|wp_crossbow(140)|wp_throwing(140),knows_common|knows_power_strike_2|knows_ironflesh_3|knows_athletics_6|knows_power_draw_4,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_horseman","Player Temp Horseman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_horseman","Player Horseman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_sword_medieval_a,itm_sword_medieval_b,itm_light_lance,itm_lance,itm_tab_shield_small_round_a,itm_tab_shield_small_round_b,itm_javelin,
 	itm_helmet_with_neckguard,itm_segmented_helmet,itm_mail_shirt_with_fur,itm_byrnie,itm_nomad_boots,itm_leather_boots,itm_leather_gloves,itm_saddle_horse,itm_courser],
    str_12 | agi_9 | int_4 | cha_4|level(17),wp_one_handed(120)|wp_two_handed(120)|wp_polearm(120)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_3|knows_ironflesh_3|knows_shield_2|knows_athletics_3|knows_riding_3,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_nobleman","Player Temp Nobleman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_nobleman","Player Nobleman","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_battle_axe_b,itm_steel_pick,itm_military_hammer,itm_bardiche,itm_longsword_b,itm_lance,itm_heavy_lance,itm_tab_shield_round_c,itm_tab_shield_small_round_b,
 	itm_guard_helmet,itm_bascinet_3,itm_heraldic_mail_with_surcoat,itm_heraldic_mail_with_tabard,itm_mail_chausses,itm_mail_mittens,itm_hourglass_gloves,itm_gilded_hourglass_gloves,itm_courser,itm_hunter],
    str_15 | agi_12 | int_4 | cha_4|level(21),wp_one_handed(150)|wp_two_handed(150)|wp_polearm(150)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_5|knows_ironflesh_4|knows_shield_4|knows_athletics_5|knows_riding_5,swadian_face_younger_1, swadian_face_middle_2],
   
-  ["player_temp_knight","Player Temp Knight","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_knight","Player Knight","Player Temp ",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_warhammer,itm_one_handed_battle_axe_c,itm_steel_pick,itm_sword_two_handed_a,itm_heavy_lance,itm_great_lance,itm_tab_shield_small_round_c,
 	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
     str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_7|knows_ironflesh_6|knows_shield_5|knows_athletics_6|knows_riding_7,swadian_face_younger_1, swadian_face_middle_2],
    
-  ["player_temp_kingsguard","Player Temp Kings Guard","Player Temp Kings Guards",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
+  ["player_temp_kingsguard","Player Kings Guard","Player Temp Kings Guards",tf_hero|tf_randomize_face, 0, reserved,  fac_commoners,
    [itm_one_handed_battle_axe_b,itm_tab_shield_small_round_c,itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
     str_24 | agi_21 | int_21 | cha_9|level(35),wp_one_handed(300)|wp_two_handed(300)|wp_polearm(300)|wp_archery(150)|wp_crossbow(150)|wp_throwing(150),knows_common|knows_power_strike_9|knows_ironflesh_10|knows_shield_8|knows_athletics_8|knows_riding_10|knows_inventory_management_10,swadian_face_young_1, swadian_face_old_2],
  

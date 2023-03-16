@@ -8226,6 +8226,11 @@ scripts = [
 	  (faction_set_slot, "fac_player_faction",  slot_faction_reinforcements_b, "pt_player_reinforcements_b"),
 	  (faction_set_slot, "fac_player_faction",  slot_faction_reinforcements_c, "pt_player_reinforcements_c"),
 	  (faction_set_slot, "fac_player_faction",  slot_faction_kingsguard_troop, "trp_player_kingsguard"),	
+	  (faction_set_slot, "fac_player_faction",  slot_faction_prison_guard_troop, "trp_player_prison_guard"),
+	  (faction_set_slot, "fac_player_faction",  slot_faction_castle_guard_troop, "trp_player_castle_guard"),
+	  (faction_set_slot, "fac_player_supporters_faction",  slot_faction_prison_guard_troop, "trp_player_prison_guard"),
+	  (faction_set_slot, "fac_player_supporters_faction",  slot_faction_castle_guard_troop, "trp_player_castle_guard"),
+	  (faction_set_slot, "fac_player_supporters_faction",  slot_faction_guard_troop, "trp_player_knight"),
 
 ### mod end 30.04.2018
 
