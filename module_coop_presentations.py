@@ -1352,7 +1352,7 @@ coop_presentations = [
       (try_begin),
         (eq, ":object", "$g_presentation_obj_start_battle_1"),
         (multiplayer_send_int_to_server, multiplayer_event_coop_send_to_server, coop_event_start_battle),
-        (assign,"$load_ai_tactics",1),
+        #(assign,"$load_ai_tactics",1),
         (presentation_set_duration, 0),
       (try_end),
       ]),

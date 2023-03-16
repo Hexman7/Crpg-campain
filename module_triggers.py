@@ -1594,7 +1594,7 @@ triggers = [
         (try_end),
     (try_end),
   
-	(try_for_range,":try",0,7),
+	(try_for_range,reg0,0,7),
 			(assign,":kingdom_a",-1),
 			(assign,":kingdom_b",-1),
 			(assign,":end_cond",1000),

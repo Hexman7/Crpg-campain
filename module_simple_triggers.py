@@ -2573,6 +2573,10 @@ simple_triggers = [
   # Checking center upgrades
   (12,
    [(try_for_range, ":center_no", centers_begin, centers_end),
+   #### Mod if center has no lord, freeze building progress
+      (party_get_slot,":center_lord",":center_no",slot_town_lord),
+	  (gt,":center_lord",-1),
+	### to be tested
       (party_get_slot, ":cur_improvement", ":center_no", slot_center_current_improvement),
       (gt, ":cur_improvement", 0),
       (party_get_slot, ":cur_improvement_end_time", ":center_no", slot_center_improvement_end_hour),
@@ -2581,7 +2585,7 @@ simple_triggers = [
       (party_set_slot, ":center_no", ":cur_improvement", 1),
       (party_set_slot, ":center_no", slot_center_current_improvement, 0),
       #### MOD BEGIN  -- set center lord slot according to building level
-      (party_get_slot,":center_lord",":center_no",slot_town_lord),
+      
       (troop_set_slot,":center_lord",slot_troop_is_constructing_building,0), ## lord finished builing
       (try_begin),
       (this_or_next|eq,":cur_improvement", slot_center_has_smithy),

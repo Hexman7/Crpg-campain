@@ -11455,7 +11455,7 @@ scripts = [
 		#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@line: {s3}"),
 		#(display_message,"@line:{s0}"),
         (str_store_string,s10,"@coop_battle"),
-		(call_script,"script_multiplayer_save_file_keys",s10),
+		(call_script,"script_multiplayer_save_file_keys"),
 		#(call_script,"script_multiplayer_save_file_keys","@coop_troops"),
 
 	### mod end
@@ -12578,7 +12578,7 @@ scripts = [
 		(else_try),
 		  (eq, ":event_type", multiplayer_event_mod_send_file_to_player_key),
           (str_store_string,s10,"@coop_battle"),
-		  (call_script,"script_multiplayer_save_file_keys",s10),
+		  (call_script,"script_multiplayer_save_file_keys"),
 		(else_try),
 		  (eq, ":event_type", multiplayer_event_return_invisible),
 		  (store_script_param,":agent_no",3),	
@@ -54685,63 +54685,63 @@ scripts = [
 	 ]),
 	 
 	 
-  #script_set_probability_values:
-  #input: 
-  #output: 
-   ("set_probability_values",
-	 [		 
+  # #script_set_probability_values:
+  # #input: 
+  # #output: 
+   # ("set_probability_values",
+	 # [		 
 
-	 			(try_begin),
-	 			(assign,":loso2",0),
-				(assign,":loso3",0),
-				(assign,":loso4",0),
-				(neg|eq,reg31,0),
-					(assign,":loso2",1000.0),
+	 			# (try_begin),
+	 			# (assign,":loso2",0),
+				# (assign,":loso3",0),
+				# (assign,":loso4",0),
+				# (neg|eq,reg31,0),
+					# (assign,":loso2",1000.0),
 					
-					(try_begin),
-					(neg|eq,reg32,0), ## we check if there is any 2h weapons if yes:
-						(assign,":loso3",1000.0),	# we set los3 to 100 %			1h 	-1 - 51
-						(val_sub,":loso2",490.0),	# and los2 to 51%				2h 51 - 100
+					# (try_begin),
+					# (neg|eq,reg32,0), ## we check if there is any 2h weapons if yes:
+						# (assign,":loso3",1000.0),	# we set los3 to 100 %			1h 	-1 - 51
+						# (val_sub,":loso2",490.0),	# and los2 to 51%				2h 51 - 100
 
-						(try_begin),
-						(neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:
-							(assign,":loso4",1000.0),	# we set los4 to 100%	1h 	-1 - 34
-							(val_sub,":loso3",330.0),	# los3 to 67			2h 	34 - 67
-							(val_sub,":loso2",170.0),	# los2 to 34	   polearm	67 - 100
-						(try_end),
-					(else_try),
-					(neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:
-						(assign,":loso4",1000.0),	# we set los4 to 100%	1h 	-1 - 51
-						(assign,":loso3",510.0),	# los3 to 51			2h 	51 - 51
-						(val_sub,":loso2",490.0),	# and los2 to 51    polearm	51 - 100		
-					(try_end),	
-				(else_try),
-				(neg|eq,reg32,0),	 ## we check if there is any 2h weapons if yes:
-					(assign,":loso3",1000.0),	# we set los3 to 100 %	1h -1 - 0			2h 0 - 100	
+						# (try_begin),
+						# (neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:
+							# (assign,":loso4",1000.0),	# we set los4 to 100%	1h 	-1 - 34
+							# (val_sub,":loso3",330.0),	# los3 to 67			2h 	34 - 67
+							# (val_sub,":loso2",170.0),	# los2 to 34	   polearm	67 - 100
+						# (try_end),
+					# (else_try),
+					# (neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:
+						# (assign,":loso4",1000.0),	# we set los4 to 100%	1h 	-1 - 51
+						# (assign,":loso3",510.0),	# los3 to 51			2h 	51 - 51
+						# (val_sub,":loso2",490.0),	# and los2 to 51    polearm	51 - 100		
+					# (try_end),	
+				# (else_try),
+				# (neg|eq,reg32,0),	 ## we check if there is any 2h weapons if yes:
+					# (assign,":loso3",1000.0),	# we set los3 to 100 %	1h -1 - 0			2h 0 - 100	
 					
-					(try_begin),
-					(neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:	1h -1 - 0
-						(assign,":loso4",1000.0),	# we set los4 to 100%	2h 	0 - 51
-						(val_sub,":loso3",490.0),	# los3 to 51	   polearm  51 - 100
-					(try_end),
+					# (try_begin),
+					# (neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:	1h -1 - 0
+						# (assign,":loso4",1000.0),	# we set los4 to 100%	2h 	0 - 51
+						# (val_sub,":loso3",490.0),	# los3 to 51	   polearm  51 - 100
+					# (try_end),
 				
-				(else_try),
-				(neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:	1h -1 - 0
-					(assign,":loso4",1000.0),	# we set los4 to 100%	2h 	0 - 0	polearm 0 - 100
-				(try_end),
+				# (else_try),
+				# (neg|eq,reg33,0),	#we check if there is any polearm weapons if yes:	1h -1 - 0
+					# (assign,":loso4",1000.0),	# we set los4 to 100%	2h 	0 - 0	polearm 0 - 100
+				# (try_end),
 
 	 
-				(assign,"$los2",":loso2"),
-				(assign,"$los3",":loso3"),
-				(assign,"$los4",":loso4"),
+				# (assign,"$los2",":loso2"),
+				# (assign,"$los3",":loso3"),
+				# (assign,"$los4",":loso4"),
 				
-				#(assign,reg20,"$los2"),
-				#(assign,reg21,"$los3"),
-				#(assign,reg22,"$los4"),
+				# #(assign,reg20,"$los2"),
+				# #(assign,reg21,"$los3"),
+				# #(assign,reg22,"$los4"),
 				
-				#(display_message,"@ los2 {reg20}, los 3 {reg21}, los4 {reg22}"),
+				# #(display_message,"@ los2 {reg20}, los 3 {reg21}, los4 {reg22}"),
 
-	 ]),	 
+	 # ]),	 
 	 
 	 
 	 
@@ -55492,7 +55492,7 @@ scripts = [
 	("multiplayer_save_file_keys",
 	 [		 
 		#(store_script_param,":player_no",1),
-		(store_script_param,":file_no",1),
+		#(store_script_param,":file_no",1),
 		(try_begin), 
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"),
