@@ -1000,12 +1000,12 @@ simple_triggers = [
                 (this_or_next|eq, ":troop_reputation", lrep_selfrighteous),
                 (this_or_next|eq, ":troop_reputation", lrep_cunning),
                 (eq, ":troop_reputation", lrep_debauched),
-                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -4),
-                (val_add, "$total_no_fief_changes", -4),
+                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),#was 4
+                (val_add, "$total_no_fief_changes", -2),    #was 4
               (else_try),
                 (eq, ":troop_reputation", lrep_martial),
-                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),
-                (val_add, "$total_no_fief_changes", -2),
+                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -1), #was 2
+                (val_add, "$total_no_fief_changes", -1), #was 1
               (try_end),
             (try_end),
           (try_end),
@@ -1049,13 +1049,13 @@ simple_triggers = [
 		  (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
 
           (call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
-          (store_random_in_range, ":who_moves_first", 0, 2),
+          (store_random_in_range, ":who_moves_first", 0, 4),        ## was 0, 2
 		   (store_current_day,":cur_day"), ### mod 20.11.2018
            (try_begin),### mod
 		   (gt,":cur_day",120), 
 			   (try_begin),
 				(this_or_next|eq, ":num_centers", 0), #Thanks Caba`drin & Osviux
-				(neq, ":who_moves_first", 0),
+				(eq, ":who_moves_first", 0),        # was (neq, ":who_moves_first", 0),  
 				(neq, ":troop_no", "trp_player"),
 					
 							#do a defection

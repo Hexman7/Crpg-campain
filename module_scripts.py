@@ -42858,8 +42858,8 @@ scripts = [
 			(call_script, "script_add_log_entry", logent_ruler_intervenes_in_quarrel, ":faction_1_leader",  ":loser_lord", ":winner_lord", ":lord_1_faction"), #faction leader is actor, loser lord is center object, winner lord is troop_object
 			
 			(call_script, "script_troop_change_relation_with_troop", ":winner_lord", ":faction_1_leader", 10),
-			(call_script, "script_troop_change_relation_with_troop", ":loser_lord", ":faction_1_leader", -20),
-			(val_add, "$total_random_quarrel_changes", -10),
+			(call_script, "script_troop_change_relation_with_troop", ":loser_lord", ":faction_1_leader", -2),   ## was -20
+			(val_add, "$total_random_quarrel_changes", -1), ### was -10
 
 		(try_end),
 
@@ -43215,12 +43215,12 @@ scripts = [
 			
 			(call_script, "script_add_log_entry", logent_lord_blames_defeat, ":cur_troop_id", "$marshall_defeated_in_battle", ":faction_leader", ":winner_faction"),
 
-			(call_script, "script_troop_change_relation_with_troop", ":cur_troop_id", ":faction_leader", -15),
-			(val_add, "$total_battle_ally_changes", -15),
+			(call_script, "script_troop_change_relation_with_troop", ":cur_troop_id", ":faction_leader", -3),  ## was -15
+			(val_add, "$total_battle_ally_changes", -3),## was -15
 			
 			(neq, "$marshall_defeated_in_battle", ":faction_leader"),
-			(call_script, "script_troop_change_relation_with_troop", ":cur_troop_id", "$marshall_defeated_in_battle", -15),
-			(val_add, "$total_battle_ally_changes", -15),
+			(call_script, "script_troop_change_relation_with_troop", ":cur_troop_id", "$marshall_defeated_in_battle", -3),## was -15
+			(val_add, "$total_battle_ally_changes", -3),## was -15
 			
 		(try_end),
 		
@@ -48545,13 +48545,13 @@ scripts = [
 	
 	(else_try),
 		(eq, ":policy_type", logent_policy_ruler_declares_war_with_justification),
-		(assign, ":hawk_relation_effect", 3),
-		(assign, ":honorable_relation_effect", 1),
+		(assign, ":hawk_relation_effect", 5),   ## was 3
+		(assign, ":honorable_relation_effect", 3),## was 1
 		(assign, ":honor_change", 0),
 
 	(else_try),
 		(eq, ":policy_type", logent_policy_ruler_breaks_truce),
-		(assign, ":hawk_relation_effect", 0),
+		(assign, ":hawk_relation_effect", -1), #was 0
 		(assign, ":honorable_relation_effect", -3),
 		(assign, ":honor_change", -5),
 
