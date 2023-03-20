@@ -12374,6 +12374,7 @@ game_menus = [
         (neg|party_slot_eq, "$current_town", slot_village_state, svs_under_siege),
 		(party_get_slot, ":town_lord", "$current_town", slot_town_lord),
 		(neg|eq, ":town_lord", "trp_player"),
+		(gt,":town_lord",0),
 		(store_faction_of_party, ":party_faction", "$g_encountered_party"),
 		(eq,"$players_kingdom",":party_faction"),
       ],

@@ -11462,6 +11462,13 @@ scripts = [
         (str_store_string,s10,"@coop_battle"),
 		(call_script,"script_multiplayer_save_file_keys"),
 		#(call_script,"script_multiplayer_save_file_keys","@coop_troops"),
+	  (else_try),
+		(eq, ":event_type", multiplayer_event_mod_send_troops_file_to_server_key),
+		#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@line: {s3}"),
+		#(display_message,"@line:{s0}"),
+        (str_store_string,s10,"@coop_troops"),
+		(call_script,"script_multiplayer_save_file_keys"),
+		#(call_script,"script_multiplayer_save_file_keys","@coop_troops"),
 
 	### mod end
 	
@@ -55428,7 +55435,7 @@ scripts = [
 		(try_begin),
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"), 
-			(dict_load_file, "$coop_dict", "@coop_battle", 2),
+			(dict_load_file, "$coop_dict", s11, 2),	# s11 - file name
 			(dict_get_size, ":num_of_keys","$coop_dict"),
 			(assign,":key",0),
 			(try_for_range,":key", 0, ":num_of_keys"),
@@ -55443,7 +55450,15 @@ scripts = [
 				 (try_end),
 			#	(display_message,"@{s5}"),	##DEBUG
 			#	(display_message,"@{s0}"),  ##DEBUG
-				(multiplayer_send_string_to_server, multiplayer_event_mod_send_file_to_server_key, s0),
+				(try_begin),
+				(str_equals, s11, "@coop_battle"),
+					(multiplayer_send_string_to_server, multiplayer_event_mod_send_file_to_server_key, s0),
+				(else_try),
+				(str_equals, s11, "@coop_troops"),
+					(multiplayer_send_string_to_server, multiplayer_event_mod_send_troops_file_to_server_key, s0),
+				(else_try),
+					(display_message,"@Wrong file name"),
+				(try_end),
 			(try_end),
 			(dict_free, "$coop_dict"),
 		(try_end),
@@ -55501,7 +55516,7 @@ scripts = [
 		(try_begin), 
 		(neg|is_vanilla_warband),
 			(dict_create, "$coop_dict"),
-			(dict_load_file, "$coop_dict", s10, 1), 
+			(dict_load_file, "$coop_dict", s10, 1), 	# s10 -file name
 			(str_split, reg5, s5, s0, "@;"),
 			#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@{s5} ; {s6}"),	## DEBUG
 			(str_to_num, reg0, s6),
