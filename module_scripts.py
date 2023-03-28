@@ -22734,6 +22734,9 @@ scripts = [
         (ge, ":old_town_lord", 0),
         (neq, ":faction_no", "fac_player_supporters_faction"),
         (call_script, "script_update_troop_notes", ":old_town_lord"),
+		### MOD - Update lords building bonuses
+		(call_script, "script_update_lords_building_bonuses_all",":old_town_lord",":center_no"), 
+		### END
       (try_end),
 
       (try_for_range, ":other_center", centers_begin, centers_end),
@@ -23347,7 +23350,9 @@ scripts = [
         (party_set_faction, ":center_no", ":lord_troop_faction"),
       (try_end),
       (party_set_slot, ":center_no", slot_town_lord, ":lord_troop_id"),
-
+	### MOD - Update lords building bonuses
+	  (call_script,"script_update_lords_building_bonuses_by_center",":lord_troop_id",":center_no"),
+	### END
       (try_begin),
         (party_slot_eq, ":center_no", slot_party_type, spt_village),
         (party_get_slot, ":farmer_party_no", ":center_no", slot_village_farmer_party),
@@ -56846,6 +56851,47 @@ scripts = [
     (troop_get_slot,":stables_lvl",":troop",slot_troop_built_stables),
     (troop_get_slot,":bowyer_lvl",":troop",slot_troop_built_bowyer),
     
+	
+	### if statement to get proper lvl for items
+	
+	
+	(try_begin),
+	(eq, ":smithy_lvl", slot_center_has_smithy),
+		(assign, ":smithy_lvl", 1),
+	(eq, ":smithy_lvl", slot_center_has_large_smithy),
+		(assign, ":smithy_lvl", 2),
+	(eq, ":smithy_lvl", slot_center_has_kings_smithy),
+		(assign, ":smithy_lvl", 3),
+	(try_end),
+	
+	(try_begin),
+	(eq, ":armorer_lvl", slot_center_has_armorer),
+		(assign, ":armorer_lvl", 1),
+	(eq, ":armorer_lvl", slot_center_has_large_armorer),
+		(assign, ":armorer_lvl", 2),
+	(eq, ":armorer_lvl", slot_center_has_kings_armorer),
+		(assign, ":armorer_lvl", 3),
+	(try_end),
+	
+	(try_begin),
+	(eq, ":stables_lvl", slot_center_has_stables),
+		(assign, ":stables_lvl", 1),
+	(eq, ":stables_lvl", slot_center_has_large_stables),
+		(assign, ":stables_lvl", 2),
+	(eq, ":stables_lvl", slot_center_has_kings_stables),
+		(assign, ":stables_lvl", 3),
+	(try_end),
+	
+	(try_begin),
+	(eq, ":bowyer_lvl", slot_center_has_bowyer),
+		(assign, ":bowyer_lvl", 1),
+	(eq, ":bowyer_lvl", slot_center_has_large_bowyer),
+		(assign, ":bowyer_lvl", 2),
+	(eq, ":bowyer_lvl", slot_center_has_kings_bowyer),
+		(assign, ":bowyer_lvl", 3),
+	(try_end),
+	
+	
     (assign,reg0,":smithy_lvl"),
     (assign,reg1,":armorer_lvl"),
     (assign,reg2,":stables_lvl"),
@@ -56853,31 +56899,90 @@ scripts = [
  
  ]),
     
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
     
  
 ###script_update_lords_building_bonuses
 ### removing building bonuses for lords
-("update_lords_building_bonuses",
+("update_lords_building_bonuses_by_center",
+[			
+	(store_script_param_1,":troop"),
+	(store_script_param_2,":center_no"),
+
+	(troop_get_slot,":smithy_lvl",":troop",slot_troop_built_smithy),
+	(troop_get_slot,":armorer_lvl",":troop",slot_troop_built_armorer),
+	(troop_get_slot,":stables_lvl",":troop",slot_troop_built_stables),
+	(troop_get_slot,":bowyer_lvl",":troop",slot_troop_built_bowyer),
+
+	(try_for_range,":building",slot_center_has_smithy, capitol_improvements_end),
+	(party_slot_eq,":center_no",":building",1), ## if building is built
+		(try_begin),## if building is smithy
+		(this_or_next|eq,":building", slot_center_has_smithy),
+		(this_or_next|eq,":building", slot_center_has_large_smithy),
+		(eq,":building", slot_center_has_kings_smithy),
+		(lt,":smithy_lvl",":building"),### if current smith lvl is lower than building 
+			(troop_set_slot,":troop",slot_troop_built_smithy,":building"),
+		(else_try),
+		(this_or_next|eq,":building", slot_center_has_armorer),
+		(this_or_next|eq,":building", slot_center_has_large_armorer),
+		(eq,":building", slot_center_has_kings_armorer),
+		(lt,":armorer_lvl",":building"), ### if current armorer lvl is lower than building 
+			(troop_set_slot,":troop",slot_troop_built_armorer,":building"),
+		(else_try),
+		(this_or_next|eq,":building", slot_center_has_stables),
+		(this_or_next|eq,":building", slot_center_has_large_stables),
+		(eq,":building", slot_center_has_kings_stables),
+		(lt,":stables_lvl",":building"), ### if current stables lvl is lower than building 
+			(troop_set_slot,":troop",slot_troop_built_stables,":building"),
+		(else_try),
+		(this_or_next|eq,":building", slot_center_has_bowyer),
+		(this_or_next|eq,":building", slot_center_has_large_bowyer),
+		(eq,":building", slot_center_has_kings_bowyer),
+		(lt,":bowyer_lvl",":building"), ### if current bowyer lvl is lower than building 
+			(troop_set_slot,":troop",slot_troop_built_bowyer,":building"),
+		(try_end),
+	(try_end),
+
+
+]),
+
+
+###script_update_lords_building_bonuses_all
+### removing building bonuses for lords
+("update_lords_building_bonuses_all",
   [
     (store_script_param_1,":troop"),
+    (store_script_param_2,":center"),
+	
+	(party_get_slot, ":cur_improvement", ":center", slot_center_current_improvement),
+	(try_begin),
+	(gt, ":cur_improvement", 0),
+		(troop_set_slot,":troop",slot_troop_is_constructing_building,0),
+	(try_end),
+	
 	(troop_set_slot,":troop",slot_troop_built_smithy,0),
 	(troop_set_slot,":troop",slot_troop_built_armorer,0),
 	(troop_set_slot,":troop",slot_troop_built_stables,0),
 	(troop_set_slot,":troop",slot_troop_built_bowyer,0),
-	(troop_set_slot,":troop",slot_troop_is_constructing_building,0),
+	
 	
 	
 	(try_for_range,":center_no",walled_centers_begin, walled_centers_end),
 		(party_get_slot, ":center_lord", ":center_no", slot_town_lord),
 		(try_begin),
 		(eq,":center_lord",":troop"),
-			(
+			(call_script,"script_update_lords_building_bonuses_by_center",":troop",":center_no"),
 		(try_end),
 	(try_end),
-    
-
-    
-
  
  ]),
      

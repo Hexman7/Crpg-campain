@@ -1799,7 +1799,7 @@ triggers = [
   ]), 
    
    
-#######	 SCRIPT for constructing building by lords
+#######	 SCRIPT for constructing buildings by lords
 ####### 
   (72, 0, 0, [],		
   [    
