@@ -25820,26 +25820,26 @@ scripts = [
 	  #Helpfulness
 	  (try_begin),
 	    (ge, ":commander", 0),
-	  
-	    (party_set_helpfulness, ":party_no", 101),
+	  ### MOD EDITED
+	    (party_set_helpfulness, ":party_no", 201),#was 101
 	    (try_begin),
   	      (troop_slot_eq, ":commander", slot_lord_reputation_type, lrep_martial),
- 	      (party_set_helpfulness, ":party_no", 200),
+ 	      (party_set_helpfulness, ":party_no", 300),#was 200
 	    (else_try),
   	      (troop_slot_eq, ":commander", slot_lord_reputation_type, lrep_upstanding),
-	      (party_set_helpfulness, ":party_no", 150),
+	      (party_set_helpfulness, ":party_no", 250),#was 150
 	    (else_try),
 	      (party_slot_eq, ":party_no", slot_party_ai_state, spai_accompanying_army),
-	      (party_set_helpfulness, ":party_no", 110),
+	      (party_set_helpfulness, ":party_no", 210),#was 110
 	    (else_try),
 	      (troop_slot_eq, ":commander", slot_lord_reputation_type, lrep_quarrelsome),
-	      (party_set_helpfulness, ":party_no", 90),	  
+	      (party_set_helpfulness, ":party_no", 190),	#was 90  
 	    (else_try),
 	      (troop_slot_eq, ":commander", slot_lord_reputation_type, lrep_selfrighteous),
-	      (party_set_helpfulness, ":party_no", 80),	  
+	      (party_set_helpfulness, ":party_no", 180),	 #was 80 
 	    (else_try),
 	      (troop_slot_eq, ":commander", slot_lord_reputation_type, lrep_debauched),
-	      (party_set_helpfulness, ":party_no", 50),
+	      (party_set_helpfulness, ":party_no", 150),	#was 50
 	    (try_end),	  
 	  (try_end),  
   ]),
@@ -56854,7 +56854,33 @@ scripts = [
  ]),
     
     
+ 
+###script_update_lords_building_bonuses
+### removing building bonuses for lords
+("update_lords_building_bonuses",
+  [
+    (store_script_param_1,":troop"),
+	(troop_set_slot,":troop",slot_troop_built_smithy,0),
+	(troop_set_slot,":troop",slot_troop_built_armorer,0),
+	(troop_set_slot,":troop",slot_troop_built_stables,0),
+	(troop_set_slot,":troop",slot_troop_built_bowyer,0),
+	(troop_set_slot,":troop",slot_troop_is_constructing_building,0),
+	
+	
+	(try_for_range,":center_no",walled_centers_begin, walled_centers_end),
+		(party_get_slot, ":center_lord", ":center_no", slot_town_lord),
+		(try_begin),
+		(eq,":center_lord",":troop"),
+			(
+		(try_end),
+	(try_end),
     
+
+    
+
+ 
+ ]),
+     
     
      
 #COOP BEGIN ###################

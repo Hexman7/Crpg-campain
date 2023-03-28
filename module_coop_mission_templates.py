@@ -502,7 +502,7 @@ coop_mission_templates = [
 
         (try_begin),
           (multiplayer_is_server),
-          (assign, "$coop_reinforce_size", 10),
+          (assign, "$coop_reinforce_size", 25), ## was 10
           (assign, "$coop_reinforce", 1),
           (assign, "$coop_alive_team1", 0),#store count for reinforcement spawn
           (assign, "$coop_alive_team2", 0),
@@ -547,18 +547,11 @@ coop_mission_templates = [
            (assign, "$coop_inventory_box", reg0),
 
         (try_end),
-
-		
-		
-		
 		
 			## MOD BEGIN Rewrite of items of troops
 			(call_script,"script_coop_read_eq_from_file_to_troops"),
 			## MOD END
 
-		
-			
-		
 		
         ]),
 
@@ -1435,7 +1428,7 @@ coop_mission_templates = [
 
         (try_begin),
           (multiplayer_is_server),
-          (assign, "$coop_reinforce_size", 10), #size of reinforcement wave
+          (assign, "$coop_reinforce_size", 25), #size of reinforcement wave # was 10
           (assign, "$coop_reinforce", 1),
           (assign, "$coop_alive_team1", 0),#store count for reinforcement spawn
           (assign, "$coop_alive_team2", 0),
@@ -1507,7 +1500,7 @@ coop_mission_templates = [
           (eq, "$coop_round", coop_round_castle_hall),
           (val_div, ":battle_size", 4),
           (val_max, ":battle_size", coop_min_battle_size),
-          (assign, "$coop_reinforce_size",4),
+          (assign, "$coop_reinforce_size",10),	# was 4
         (try_end),
 
         #regulate troop spawn
