@@ -1419,7 +1419,7 @@ effects_on_troops =  (
     (try_begin),
     (this_or_next|gt,reg0,0),
     (gt,reg3,0),	
-        (try_for_range,":item_slot",0,4),
+        (try_for_range,":item_slot",ek_item_0,ek_head),
             (store_add,":slot",reg0,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
 			(gt,":item_no",-1),
@@ -1454,7 +1454,7 @@ effects_on_troops =  (
 	
     (try_begin),##armors
     (gt,reg1,0),
-        (try_for_range,":item_slot",4,8),
+        (try_for_range,":item_slot",ek_head,ek_horse),
             (store_add,":slot",reg1,slot_item_is_blocked),
             (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
 			(gt,":item_no",-1),
@@ -1469,11 +1469,11 @@ effects_on_troops =  (
 	(try_begin),###horses
     (gt,reg2,0),
             (store_add,":slot",reg2,slot_item_is_blocked),
-            (agent_get_item_slot, ":item_no", ":agent", 8),
+            (agent_get_item_slot, ":item_no", ":agent", ek_horse),
 			(gt,":item_no",-1),
 			(lt,":item_no","itm_items_end"),
             (item_get_slot,":modifier",":item_no", ":slot"),
-            (agent_set_item_slot_modifier, ":agent", 8, ":modifier"),
+            (agent_set_item_slot_modifier, ":agent", ek_horse, ":modifier"),
 			###DEBUG
 			##(display_message,"@setting horse modifier"),
     (try_end),

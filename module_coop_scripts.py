@@ -3456,7 +3456,7 @@ coop_scripts = [
           # (dict_set_int, "$coop_dict", "@hero_{reg21}_gld", ":gold"),
         (try_end),
 
-				(str_store_troop_name, s0, ":cur_troop"),
+        (str_store_troop_name, s0, ":cur_troop"),
         (troop_get_xp, ":xp", ":cur_troop"),
         (store_troop_health, ":health", ":cur_troop"),
         (dict_set_str, "$coop_dict", "@hero_{reg21}_name", s0),
@@ -3500,6 +3500,13 @@ coop_scripts = [
             (dict_set_int, "$coop_dict", "@hero_{reg21}_itm{reg20}", ":item"),
             (dict_set_int, "$coop_dict", "@hero_{reg21}_imd{reg20}", ":imod"),
           (try_end),
+
+        ### Mod Begin - Save building bonuses levels
+          (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
+            (troop_get_slot,":bonus_lvl",":cur_troop",reg20),
+            (dict_set_int, "$coop_dict", "@hero_{reg21}_building_bonus{reg20}", ":bonus_lvl"),
+          (try_end),
+        ### Mod END
 
         (try_end),
 
@@ -3601,7 +3608,15 @@ coop_scripts = [
             (try_end),
           (try_end),
         (try_end),
-#NEW
+        
+        
+        ### MOD BEGIN - Read building bonuses levels
+        (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
+          (dict_get_int, ":bonus_lvl", "$coop_dict", "@hero_{reg21}_building_bonus{reg20}"),
+          (troop_set_slot,":cur_troop",reg20,":bonus_lvl"),
+        (try_end),
+        ### MOD END
+#NEW    
         (try_begin),#only set face in MP
           (game_in_multiplayer_mode),
           (dict_get_str, s0, "$coop_dict", "@hero_{reg21}_face"),
