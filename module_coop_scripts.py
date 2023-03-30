@@ -3500,16 +3500,13 @@ coop_scripts = [
             (dict_set_int, "$coop_dict", "@hero_{reg21}_itm{reg20}", ":item"),
             (dict_set_int, "$coop_dict", "@hero_{reg21}_imd{reg20}", ":imod"),
           (try_end),
-
-        ### Mod Begin - Save building bonuses levels
-          (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
+        (try_end),
+    ### Mod Begin - Save building bonuses levels
+        (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
             (troop_get_slot,":bonus_lvl",":cur_troop",reg20),
             (dict_set_int, "$coop_dict", "@hero_{reg21}_building_bonus{reg20}", ":bonus_lvl"),
-          (try_end),
-        ### Mod END
-
         (try_end),
-
+    ### Mod END
       (try_end), #end of hero loop
 
 
