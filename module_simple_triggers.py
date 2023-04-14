@@ -2621,6 +2621,18 @@ simple_triggers = [
       (try_begin),
         (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
         (str_store_party_name, s4, ":center_no"),
+        
+        #### DEBUG
+        (troop_get_slot,":smithy_lvl","trp_player",slot_troop_built_smithy),
+        (troop_get_slot,":armorer_lvl","trp_player",slot_troop_built_armorer),
+        (troop_get_slot,":stables_lvl","trp_player",slot_troop_built_stables),
+        (troop_get_slot,":bowyer_lvl","trp_player",slot_troop_built_bowyer),
+        (assign,reg0,":smithy_lvl"),
+        (assign,reg1,":armorer_lvl"),
+        (assign,reg2,":stables_lvl"),
+        (assign,reg3,":bowyer_lvl"),
+        (display_log_message, "@LVLS  {reg0}, {reg1}, {reg2}, {reg3}"),
+        #### DEBUG
         (display_log_message, "@Building of {s0} in {s4} has been completed."),
       (try_end),
       (try_begin),

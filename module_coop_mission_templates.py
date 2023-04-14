@@ -966,11 +966,11 @@ coop_mission_templates = [
             (str_store_troop_name,s2, ":party_leader"),
             (display_message,"@Troop: {s2}"),
         (try_end),
-        (try_begin),
+        
         #(is_between,":party_leader",kings_begin, lords_end),
-            (call_script,"script_check_troop_built_improvements",":party_leader"),
-            (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
-        (try_end),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
+        (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+        
         (try_begin),
         (this_or_next|gt,reg0,0),
         (gt,reg3,0),	
