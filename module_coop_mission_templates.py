@@ -320,7 +320,9 @@ effects_on_troops =  (
 	(store_trigger_param_1, ":agent"),
 	(agent_is_human,":agent"),
 	(agent_set_kick_allowed, ":agent", 1),
-	(agent_get_party_id,":agent_party",":agent"),
+    
+    (agent_get_slot,":agent_party",":agent",slot_agent_coop_spawn_party), #getting agent party
+    (display_message,"@Party {reg1}"),
 	# (try_begin),
 	# (eq,":agent_party","p_main_party"),
 		# (try_begin), ### if party uses alcohol - alcohol unlocked and in inventory
@@ -362,34 +364,42 @@ effects_on_troops =  (
     
     
  
-    (try_begin),  ### if party is not - town/castle/village
- #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
+    # (try_begin),  ### if party is not - town/castle/village
+ # #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
 
-#    (else_try), ### if party is town/castle/village
-    (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
-    (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
-    (party_slot_eq,":agent_party",slot_party_type, spt_castle),
-        (party_get_slot, ":party_leader", ":agent_party", slot_town_lord),
-        (str_store_troop_name,s2,":party_leader"),
+# #    (else_try), ### if party is town/castle/village
+    # (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
+    # (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
+    # (party_slot_eq,":agent_party",slot_party_type, spt_castle),
+        # (party_get_slot, ":party_leader", ":agent_party", slot_town_lord),
+        # (str_store_troop_name,s2,":party_leader"),
         
-        (call_script,"script_check_troop_built_improvements",":party_leader"),
-        #### DEBUG
-        #(assign,reg2,":party_leader"),
-       # (display_message,"@party_leader {s2}"),
-        #### DEBUG END
-    (else_try),
-        (party_stack_get_troop_id, ":party_leader",":agent_party",0),
-        (str_store_troop_name,s2,":party_leader"),
-        (call_script,"script_check_troop_built_improvements",":party_leader"),
-        #### DEBUG
-        #(assign,reg0,":party_leader"),
-       # (display_message,"@party_leader {s2}"),
-        #### DEBUG END
-    (try_end),
+        # (call_script,"script_check_troop_built_improvements",":party_leader"),
+        # #### DEBUG
+        # #(assign,reg2,":party_leader"),
+       # # (display_message,"@party_leader {s2}"),
+        # #### DEBUG END
+    # (else_try),
+        # (party_stack_get_troop_id, ":party_leader",":agent_party",0),
+        # (str_store_troop_name,s2,":party_leader"),
+        # (call_script,"script_check_troop_built_improvements",":party_leader"),
+        # #### DEBUG
+        # #(assign,reg0,":party_leader"),
+       # # (display_message,"@party_leader {s2}"),
+        # #### DEBUG END
+    # (try_end),
 	###DEBUG
 	#(display_message,"@ reg0 {reg0}, reg1 {reg1}, reg2 {reg2}, reg3 {reg3}"),
-    
-    
+    (try_begin),
+    (gt,":agent_party",-1),
+        (party_stack_get_troop_id, ":party_leader",":agent_party",0),
+        (str_store_troop_name,s2,":party_leader"),
+        (display_message,"@Troop: {s2}"),
+    (try_end),
+    (try_begin),
+    #(is_between,":party_leader",kings_begin, lords_end),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
+    (try_end),
     (try_begin),
     (this_or_next|gt,reg0,0),
     (gt,reg3,0),	
@@ -554,7 +564,7 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  #ai_kick_enhancement_mp,
       ai_kick_enhancement,
-      effects_on_troops,
+
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 
   #    common_battle_order_panel,
@@ -822,7 +832,9 @@ coop_mission_templates = [
 
 
         ]),
- 
+        
+        
+     # effects_on_troops,
  #### mod end
  
  
@@ -944,7 +956,88 @@ coop_mission_templates = [
           (multiplayer_send_int_to_server, multiplayer_event_change_team_no, "$coop_my_team"),
           (multiplayer_send_int_to_server, multiplayer_event_change_troop_id, "$coop_my_troop_no"),
         (try_end),
-		
+        (agent_set_slot, ":agent_no", slot_agent_coop_spawn_party, "$coop_agent_party"), #store party of agent
+       # (assign,reg2,"$coop_agent_party"),
+       # (display_message,"@Party: {reg2}"),
+        (try_begin),
+        (gt,"$coop_agent_party",-1),
+           # (party_stack_get_troop_id, ":party_leader","$coop_agent_party",0),
+            (party_get_slot,":party_leader", "$coop_agent_party", coop_party_leader),
+            (str_store_troop_name,s2, ":party_leader"),
+            (display_message,"@Troop: {s2}"),
+        (try_end),
+        (try_begin),
+        #(is_between,":party_leader",kings_begin, lords_end),
+            (call_script,"script_check_troop_built_improvements",":party_leader"),
+            (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+        (try_end),
+        (try_begin),
+        (this_or_next|gt,reg0,0),
+        (gt,reg3,0),	
+            (try_for_range,":item_slot",ek_item_0,ek_head),
+                (store_add,":slot",reg0,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ":item_slot"),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_type, ":item_type", ":item_no"),
+                (try_begin),	### melee weapons
+                (gt,reg0,0),
+                (this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+                (this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+                (this_or_next|eq,":item_type",itp_type_polearm),
+                (eq,":item_type",itp_type_shield),
+                    (item_get_slot,":modifier",":item_no", ":slot"),
+                    (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                    ###DEBUG
+                    #(display_message,"@setting melee weapon modifier"),
+                (try_end),            
+                (store_add,":slot",reg3,slot_item_is_blocked),
+                (try_begin),## ranged weapons
+                (gt,reg3,0),
+                (this_or_next|eq,":item_type",itp_type_bow),
+                (this_or_next|eq,":item_type",itp_type_arrows),
+                (this_or_next|eq,":item_type",itp_type_crossbow),
+                (this_or_next|eq,":item_type",itp_type_bolts),
+                (eq,":item_type",itp_type_thrown),
+                    (item_get_slot,":modifier",":item_no", ":slot"),
+                    (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                    ###DEBUG
+                    #(display_message,"@setting ranged weapon modifier"),
+                (try_end),
+            (try_end),
+        (try_end),
+        
+        (try_begin),##armors
+        (gt,reg1,0),
+            (try_for_range,":item_slot",ek_head,ek_horse),
+                (store_add,":slot",reg1,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ":item_slot"),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                ###DEBUG
+                #(display_message,"@setting armor parts modifier"),
+            (try_end),
+        (try_end),
+        
+        (try_begin),###horses
+        (gt,reg2,0),
+                (store_add,":slot",reg2,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ek_horse),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent_no", ek_horse, ":modifier"),
+                ###DEBUG
+                ##(display_message,"@setting horse modifier"),
+        (try_end),
+    
+        
+        
+        
+        
+        
 		#### MOD begin		10.12.2021
 		##### 	- UNEQUIPING SPAWNING AGENTS ITEMS FOR CLIENTS	( WITHOUT IT IT CREATES CONFLICTS LIKE AGENTS HAS ITEMS THAT CAN ONLY BE ACCESSED BY NUMERIC KEYBOARD 1-4 AND NOT BY THE NEXT WEAPON BTN)
 		#####   - ADDING ITEMS FOR AGENTS AFTER THEY SPAWN
@@ -957,7 +1050,12 @@ coop_mission_templates = [
 		# (try_end),
          
 		]),
- 
+        
+        
+      
+       
+       
+       
 	  # (ti_on_agent_spawn,0,0,[],
 	  # [
 		# (this_or_next|multiplayer_is_dedicated_server),

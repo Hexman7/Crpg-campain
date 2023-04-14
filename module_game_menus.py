@@ -3456,14 +3456,9 @@ game_menus = [
 
 	   ("camp_get_upgrade",
        [(eq,"$cheat_mode",1)
-        ], "CHEAT!: Get Upgrade",
+        ], "CHEAT!: Get Building Improvements",
        [
-	    #(troop_set_upgrade_path,"trp_player_recruit",0,999),
-	    (troop_get_upgrade_path,reg5, "trp_player_recruit",0),
-		
-		#(display_message,"@moja funkcja {reg0}, {reg1}, {reg2}"),
-		#(display_message,"@funkcja wb {reg4}"),
-		(display_message,"@reserved {reg5}"),
+        (call_script,"script_check_troop_built_improvements","trp_player"),
 		
         ],
        ),		  	

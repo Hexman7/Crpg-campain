@@ -2116,6 +2116,11 @@ coop_temp_casualties_enemy_begin   = coop_temp_party_enemy_begin + 40 # 4x this 
 coop_temp_party_ally_begin         = coop_temp_casualties_enemy_begin + 40
 coop_temp_casualties_ally_begin    = coop_temp_party_ally_begin + 40
 
+
+### mod begin - party slot
+coop_party_leader = 500
+
+### mod end
 #battle size
 coop_min_battle_size               = 30
 coop_def_battle_size               = 100

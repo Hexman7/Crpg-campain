@@ -56896,7 +56896,10 @@ scripts = [
     (assign,reg1,":armorer_lvl"),
     (assign,reg2,":stables_lvl"),
     (assign,reg3,":bowyer_lvl"),
- 
+   
+   #### DEBUG
+    (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+    ### DEBUG
  ]),
     
 	
