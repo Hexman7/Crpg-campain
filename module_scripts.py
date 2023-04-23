@@ -33485,12 +33485,15 @@ scripts = [
     (get_scene_boundaries, pos2, pos3),
     
     (team_get_movement_order, ":cur_order", ":player_team", grc_infantry),
-    (assign, reg0, ":player_agent"),
-    (display_message,"@player agent: {reg0}"),
-    (assign, reg0, ":player_team"),
-    (display_message,"@player team: {reg0}"),
-    (assign, reg0, ":cur_order"),
-    (display_message,"@CUR ORDER: {reg0}"),
+    
+    ### DEBUG
+    # (assign, reg0, ":player_agent"),
+    # (display_message,"@player agent: {reg0}"),
+    # (assign, reg0, ":player_team"),
+    # (display_message,"@player team: {reg0}"),
+    # (assign, reg0, ":cur_order"),
+    # (display_message,"@CUR ORDER: {reg0}"),
+    ### DEBUG
     (try_begin),
       (eq, ":cur_order", mordr_hold),
       (team_get_order_position, pos1, ":player_team", grc_infantry),
@@ -56844,7 +56847,7 @@ scripts = [
     (try_end),
  ]),
     
-###Script get_troop_built_improvements
+### script_check_troop_built_improvements
 ### checking if lord has built any improvements (smithy,armorer,stables,bowyer)
 ("check_troop_built_improvements",
   [
@@ -56910,7 +56913,7 @@ scripts = [
     (assign,reg3,":bowyer_lvl"),
    
    #### DEBUG
-    (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+   # (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
     ### DEBUG
  ]),
     

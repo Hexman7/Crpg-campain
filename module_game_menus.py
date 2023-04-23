@@ -7630,7 +7630,7 @@ game_menus = [
            (lt, ":reln", 5),	##28.04.2018
            (lt, "$g_encountered_party_2", 1),
            (call_script, "script_party_count_fit_for_battle","p_main_party"),
-           (gt, reg(0), 5),
+           (gt, reg(0), 25),    ### changed from 5. 
            (try_begin),
              (party_slot_eq, "$g_encountered_party", slot_party_type, spt_town),
              (assign, reg6, 1),
@@ -10025,8 +10025,8 @@ game_menus = [
   (
     "village_hunt_down_fugitive_defeated",0,
     "A heavy blow from the fugitive sends you to the ground, and your vision spins and goes dark.\
- Time passes. When you open your eyes again you find yourself battered and bloody,\
- but luckily none of the wounds appear to be lethal.",
+    Time passes. When you open your eyes again you find yourself battered and bloody,\
+    but luckily none of the wounds appear to be lethal.",
     "none",
     [],
     [
@@ -10105,7 +10105,6 @@ game_menus = [
      #Add normal reward
        (call_script, "script_change_player_relation_with_center", "$g_encountered_party", 4),
      (try_end),
-   
      (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
      (try_for_range, ":slot_no", num_equipment_kinds ,max_inventory_items + num_equipment_kinds),
         (store_random_in_range, ":rand", 0, 100),
@@ -10114,7 +10113,7 @@ game_menus = [
      (try_end),
     ],
     [
-      ("village_bandits_defeated_accept",[],"Take it as your just due.",[(jump_to_menu, "mnu_village"),
+      ("village_bandits_defeated_accept",[],"Take it as your just due.",[(jump_to_menu, "mnu_victory_over_bandits"),    # changed from (jump_to_menu, "mnu_village"),
                                                                          (party_get_slot, ":merchant_troop", "$current_town", slot_town_elder),
                                                                          (troop_sort_inventory, ":merchant_troop"),
                                                                          (change_screen_loot, ":merchant_troop"),
@@ -10123,9 +10122,42 @@ game_menus = [
       ("village_bandits_defeated_cont",[],  "Refuse, stating that they need these items more than you do.",
 	  [	(call_script, "script_change_player_relation_with_center", "$g_encountered_party", 3),
 		(call_script, "script_change_player_honor", 1),	  
-		(jump_to_menu, "mnu_village")]),
+		(jump_to_menu, "mnu_victory_over_bandits"),# changed from (jump_to_menu, "mnu_village"),
+            ]),  
     ],
   ),
+  
+  
+
+  (
+    "victory_over_bandits", 0,
+    "You shouldn't be reading this... {s9}",
+    "none",
+    [     
+        (jump_to_menu, "mnu_village"),
+        ### getting prisoners
+        (party_clear, "p_temp_party"),
+        (call_script, "script_party_add_wounded_members_as_prisoners", "p_temp_party", "p_total_enemy_casualties"),
+      
+        (party_get_num_companions, ":num_rescued_prisoners", "p_temp_party"),
+        (party_get_num_prisoners,  ":num_captured_enemies", "p_temp_party"),
+
+        (store_add, ":total_capture_size", ":num_rescued_prisoners", ":num_captured_enemies"),
+      
+        (gt, ":total_capture_size", 0),          
+        (change_screen_exchange_with_party, "p_temp_party"),
+      
+    ],
+    [
+      ("continue",[],"Continue...",[
+        
+      ]),
+        ]
+  ),
+  
+  
+  
+  
 
   (
     "center_manage",0,

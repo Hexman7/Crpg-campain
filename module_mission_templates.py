@@ -1386,12 +1386,16 @@ effects_on_troops =  (
         ### TO DO: make an if statement for lords to not let them build all buildings which gives better eq for troops - DONE
     (try_end),
     
-    
+    (assign,reg0,0),
+    (assign,reg1,0),
+    (assign,reg2,0),
+    (assign,reg3,0),
  
-    (try_begin),  ### if party is not - town/castle/village
+    (try_begin),  ### if party is  - town/castle/village
  #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
 
 #    (else_try), ### if party is town/castle/village
+    (gt,":agent_party",0),
     (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
     (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
     (party_slot_eq,":agent_party",slot_party_type, spt_castle),
@@ -1404,6 +1408,7 @@ effects_on_troops =  (
        # (display_message,"@party_leader {s2}"),
         #### DEBUG END
     (else_try),
+    (gt,":agent_party",0),
         (party_stack_get_troop_id, ":party_leader",":agent_party",0),
         (str_store_troop_name,s2,":party_leader"),
         (call_script,"script_check_troop_built_improvements",":party_leader"),
@@ -3509,6 +3514,11 @@ mission_templates = [
         (call_script, "script_count_mission_casualties_from_agents"),
         (finish_mission,0),]),
 
+
+      (ti_before_mission_start, 0, 0, [],
+       [
+         (party_clear, "p_total_enemy_casualties"),
+        ]),
       (0, 0, ti_once, [], [(assign, "$g_battle_won", 0),
                            (assign, "$defender_reinforcement_stage", 0),
                            (assign, "$attacker_reinforcement_stage", 0),
@@ -3538,6 +3548,31 @@ mission_templates = [
               # (finish_mission, 0),
 			  ]),
 
+#### mod added (copied from village_raid) for getting prisoners after attacking bandits in village
+	  (ti_on_agent_killed_or_wounded, 0, 0, [],### 08.05.2018
+       [
+        (store_trigger_param_1, ":dead_agent_no"),
+        #(store_trigger_param_2, ":killer_agent_no"),
+        (store_trigger_param_3, ":is_wounded"),
+
+        (try_begin),
+          (ge, ":dead_agent_no", 0),
+          (neg|agent_is_ally, ":dead_agent_no"),
+          (agent_is_human, ":dead_agent_no"),
+          (agent_get_troop_id, ":dead_agent_troop_id", ":dead_agent_no"),
+##          (str_store_troop_name, s6, ":dead_agent_troop_id"),
+##          (assign, reg0, ":dead_agent_no"),
+##          (assign, reg1, ":killer_agent_no"),
+##          (assign, reg2, ":is_wounded"),
+##          (agent_get_team, reg3, ":dead_agent_no"),          
+          #(display_message, "@{!}dead agent no : {reg0} ; killer agent no : {reg1} ; is_wounded : {reg2} ; dead agent team : {reg3} ; {s6} is added"), 
+          (party_add_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), #addition_to_p_total_enemy_casualties
+          (eq, ":is_wounded", 1),
+          (party_wound_members, "p_total_enemy_casualties", ":dead_agent_troop_id", 1), 
+        (try_end),
+
+       ]),
+### MOD END
       common_battle_inventory,      
       common_battle_order_panel,
       common_battle_order_panel_tick,
