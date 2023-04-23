@@ -3414,6 +3414,18 @@ game_menus = [
 	 ("camp_set_eatable_goods",[],"Block some of goods from being eat.",
        [ (jump_to_menu, "mnu_set_eatable_goods"),
         ]
+       ),	 
+       
+       ("camp_test",[],"Camp Testing.",
+       [ 
+            (assign,":troop","trp_kingdom_7_lord"),
+            (troop_get_slot, ":banner", ":troop", slot_troop_banner_scene_prop),
+            (assign, reg1, ":troop"),
+            (store_sub, ":banner_no",":banner", banner_scene_props_begin),
+            (store_add, ":banner", banner_meshes_begin, ":banner_no"),
+            (assign,reg8, ":banner"),
+            (start_presentation, "prsnt_lord_defection_to_player_faction"),
+        ]
        ),
 	   
 	   	   ###TO DO:  a menu with values of probability troops will spawn with given items to set
