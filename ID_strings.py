@@ -3451,5 +3451,6 @@ str_faction_6_descr = 3449
 str_faction_7_descr = 3450
 str_faction_8_descr = 3451
 str_faction_9_descr = 3452
+str_relations_prsnt_string = 3453
 
 

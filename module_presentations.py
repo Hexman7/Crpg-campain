@@ -16915,15 +16915,15 @@ presentations = [
             (store_div, ":str_offset", ":normalized_relation", 10),
             (val_clamp, ":str_offset", 0, 20),
             (store_add, ":str_id", "str_relation_mnus_100_ns",  ":str_offset"),
-            (neq, ":str_id", "str_relation_plus_0_ns"),
             (str_store_string, s60, "@{reg3?She:He}"),
             (str_store_string, s59, ":str_id"),
-            (assign,":string","@{s60} {s59}"),
-            #(str_store_string, s59, "@{!}^{s59}"),
+            (str_store_string, s59, "@{!}^{s59}"),
         (try_end),
          
-
-        (create_text_overlay, ":relations", ":string"),
+         #### if for all LREP slot_lord_reputation_type to print which one is it
+         
+        
+        (create_text_overlay, ":relations", s59),
         (position_set_x, pos1, 1200),
         (position_set_y, pos1, 1200),
         (overlay_set_size, ":relations", pos1),
