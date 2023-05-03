@@ -1508,6 +1508,10 @@ scripts = [
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_1_cavalry, "trp_order_nobleman"),
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_2_cavalry, "trp_order_knight"),	  
 
+        #### mod begin
+        # initialize item modifiers
+      (call_script,"script_initialize_item_modifiers"),
+    ## mod end
       #for multiplayer mode
       (assign, "$g_multiplayer_selected_map", multiplayer_scenes_begin),
       (assign, "$g_multiplayer_respawn_period", 5),
@@ -33481,12 +33485,15 @@ scripts = [
     (get_scene_boundaries, pos2, pos3),
     
     (team_get_movement_order, ":cur_order", ":player_team", grc_infantry),
-    (assign, reg0, ":player_agent"),
-    (display_message,"@player agent: {reg0}"),
-    (assign, reg0, ":player_team"),
-    (display_message,"@player team: {reg0}"),
-    (assign, reg0, ":cur_order"),
-    (display_message,"@CUR ORDER: {reg0}"),
+    
+    ### DEBUG
+    # (assign, reg0, ":player_agent"),
+    # (display_message,"@player agent: {reg0}"),
+    # (assign, reg0, ":player_team"),
+    # (display_message,"@player team: {reg0}"),
+    # (assign, reg0, ":cur_order"),
+    # (display_message,"@CUR ORDER: {reg0}"),
+    ### DEBUG
     (try_begin),
       (eq, ":cur_order", mordr_hold),
       (team_get_order_position, pos1, ":player_team", grc_infantry),
@@ -56840,7 +56847,7 @@ scripts = [
     (try_end),
  ]),
     
-###Script get_troop_built_improvements
+### script_check_troop_built_improvements
 ### checking if lord has built any improvements (smithy,armorer,stables,bowyer)
 ("check_troop_built_improvements",
   [
@@ -56858,17 +56865,21 @@ scripts = [
 	(try_begin),
 	(eq, ":smithy_lvl", slot_center_has_smithy),
 		(assign, ":smithy_lvl", 1),
+    (else_try),
 	(eq, ":smithy_lvl", slot_center_has_large_smithy),
 		(assign, ":smithy_lvl", 2),
-	(eq, ":smithy_lvl", slot_center_has_kings_smithy),
+	(else_try),
+    (eq, ":smithy_lvl", slot_center_has_kings_smithy),
 		(assign, ":smithy_lvl", 3),
 	(try_end),
 	
 	(try_begin),
 	(eq, ":armorer_lvl", slot_center_has_armorer),
 		(assign, ":armorer_lvl", 1),
+    (else_try),
 	(eq, ":armorer_lvl", slot_center_has_large_armorer),
 		(assign, ":armorer_lvl", 2),
+    (else_try),
 	(eq, ":armorer_lvl", slot_center_has_kings_armorer),
 		(assign, ":armorer_lvl", 3),
 	(try_end),
@@ -56876,8 +56887,10 @@ scripts = [
 	(try_begin),
 	(eq, ":stables_lvl", slot_center_has_stables),
 		(assign, ":stables_lvl", 1),
+    (else_try),
 	(eq, ":stables_lvl", slot_center_has_large_stables),
 		(assign, ":stables_lvl", 2),
+    (else_try),
 	(eq, ":stables_lvl", slot_center_has_kings_stables),
 		(assign, ":stables_lvl", 3),
 	(try_end),
@@ -56885,8 +56898,10 @@ scripts = [
 	(try_begin),
 	(eq, ":bowyer_lvl", slot_center_has_bowyer),
 		(assign, ":bowyer_lvl", 1),
+    (else_try),
 	(eq, ":bowyer_lvl", slot_center_has_large_bowyer),
 		(assign, ":bowyer_lvl", 2),
+    (else_try),
 	(eq, ":bowyer_lvl", slot_center_has_kings_bowyer),
 		(assign, ":bowyer_lvl", 3),
 	(try_end),
@@ -56896,7 +56911,10 @@ scripts = [
     (assign,reg1,":armorer_lvl"),
     (assign,reg2,":stables_lvl"),
     (assign,reg3,":bowyer_lvl"),
- 
+   
+   #### DEBUG
+   # (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+    ### DEBUG
  ]),
     
 	
@@ -56984,6 +57002,22 @@ scripts = [
 		(try_end),
 	(try_end),
  
+ ]),
+     
+     
+###script_get_lords_improvements
+### getting improvements for given troop
+### IN: troop
+### out: reg0, reg1, reg2, reg3
+("get_lords_improvements",
+  [
+    (store_script_param_1,":troop"),
+
+    (troop_get_slot,reg0,":troop",slot_troop_built_smithy),
+    (troop_get_slot,reg1,":troop",slot_troop_built_armorer),
+    (troop_get_slot,reg2,":troop",slot_troop_built_stables),
+    (troop_get_slot,reg3,":troop",slot_troop_built_bowyer),
+
  ]),
      
     

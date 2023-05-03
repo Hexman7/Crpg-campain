@@ -16881,6 +16881,117 @@ presentations = [
   ]),
   
 
+
+
+### pops up when lord defects 
+## 
+    ("lord_defection_to_player_faction", 0, mesh_load_window, [
+    (ti_on_presentation_load,
+      [
+        (presentation_set_duration, 999999),
+        (set_fixed_point_multiplier, 1000),
+
+        (create_text_overlay, ":description", "@Here will be description of defection. Which lord and what was his faction"),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":description", pos1),
+        (position_set_x, pos1, 50),
+        (position_set_y, pos1, 600),
+        (overlay_set_position, ":description", pos1),
+
+
+        (assign,":troop_no",reg1),
+        (troop_get_type, reg3, ":troop_no"),
+        (troop_get_slot, reg5, ":troop_no", slot_troop_renown),
+        (troop_get_slot, reg15, ":troop_no", slot_troop_controversy),
+		  
+        (str_clear, s59),
+        
+        (try_begin),
+            (call_script, "script_troop_get_player_relation", ":troop_no"),
+            (assign, ":relation", reg0),
+            (store_add, ":normalized_relation", ":relation", 100),
+            (val_add, ":normalized_relation", 5),
+            (store_div, ":str_offset", ":normalized_relation", 10),
+            (val_clamp, ":str_offset", 0, 20),
+            (store_add, ":str_id", "str_relation_mnus_100_ns",  ":str_offset"),
+            (str_store_string, s60, "@{reg3?She:He}"),
+            (str_store_string, s59, ":str_id"),
+            (str_store_string, s59, "@{!}^{s59}"),
+        (try_end),
+         
+         #### if for all LREP slot_lord_reputation_type to print which one is it
+         
+        
+        (create_text_overlay, ":relations", s59),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":relations", pos1),
+        (position_set_x, pos1, 200),
+        (position_set_y, pos1, 400),
+        (overlay_set_position, ":relations", pos1),         
+         
+        (create_text_overlay, ":renown", "@Renown: {reg5}"),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":renown", pos1),
+        (position_set_x, pos1, 200),
+        (position_set_y, pos1, 350),
+        (overlay_set_position, ":renown", pos1),        
+         
+         
+        (create_button_overlay, "$g_presentation_accept_lord", "@Accept"),
+        (position_set_x, pos1, 400),
+        (position_set_y, pos1, 100),
+        (overlay_set_position, "$g_presentation_accept_lord", pos1),
+
+         
+        (create_button_overlay, "$g_presentation_reject_lord", "@Reject"),
+        (position_set_x, pos1, 500),
+        (position_set_y, pos1, 100),
+        (overlay_set_position, "$g_presentation_reject_lord", pos1),
+
+
+          
+        (create_mesh_overlay, ":banner_mesh", reg8),       ### reg0 - input from trigger   
+        (position_set_x, pos1, 140),
+        (position_set_y, pos1, 140),
+        (overlay_set_size, ":banner_mesh", pos1),
+        (position_set_x, pos1, 120),
+        (position_set_y, pos1, 500),
+        (overlay_set_position, ":banner_mesh", pos1),
+      
+        (create_mesh_overlay_with_tableau_material, ":lord", -1, "tableau_game_character_sheet", ":troop_no"),
+        (position_set_x, pos1, 1000),
+		(position_set_y, pos1, 1000),
+		(overlay_set_size, ":lord", pos1),
+		(position_set_x, pos1, 700),
+		(position_set_y, pos1, 195),
+		(overlay_set_position, ":lord", pos1),
+     ]),
+	  
+	(ti_on_presentation_mouse_enter_leave,
+      [
+        
+      ]),
+ 
+    (ti_on_presentation_event_state_change,
+      [
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":value"),
+        
+        (try_begin),
+        (eq, ":object", "$g_presentation_reject_lord"),
+            (presentation_set_duration, 0),
+        (else_try),
+        (eq, ":object", "$g_presentation_accept_lord"),
+            (presentation_set_duration, 0),
+        (try_end),
+      ]),
+
+  ]),
+
+
 	
 #COOP BEGIN #########################################
   ] + coop_presentations 

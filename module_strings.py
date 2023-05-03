@@ -4442,7 +4442,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ("faction_7_descr","Eques. Who are known of their ... . Their ruler is King Atze."),
   ("faction_8_descr","Norse. Who are known of their ... . Their ruler is King Norr."),
   ("faction_9_descr","Order de l'Etoile. Who are known of their ... .Their ruler is King Thorvic."),
-  ### mod end
+ 
+
+  ("relations_prsnt_string","{s60} {s59}"),
+
+ ### mod end
   
 
 ]

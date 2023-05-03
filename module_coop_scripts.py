@@ -2856,6 +2856,7 @@ coop_scripts = [
         (party_get_attached_party_with_rank, ":party_no", "$coop_encountered_party", ":attached_party_rank"),
       (try_end),
 
+      
       (assign, ":banner_spr", 0), 
       (assign, ":banner_mesh", "mesh_banners_default_d"),  
       (try_begin),
@@ -2867,11 +2868,28 @@ coop_scripts = [
         (ge, ":cur_leader", 0),
         (troop_get_slot, ":banner_spr", ":cur_leader", slot_troop_banner_scene_prop),
         (dict_set_int, "$coop_dict", "@p_garrison_banner", ":banner_spr"),
+        (dict_set_int, "$coop_dict", "@p_enemy_party{reg20}leader",":cur_leader"), ### saving location lord 
+        ### saving buildings lvls
+        (assign,reg5, ":cur_leader"),
+        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
+        (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
       (else_try),
         (party_stack_get_troop_id, ":leader_troop", ":party_no", 0),
         (troop_slot_eq, ":leader_troop", slot_troop_occupation, slto_kingdom_hero),
         (troop_get_slot, ":banner_spr", ":leader_troop", slot_troop_banner_scene_prop),
-      (try_end),
+        (dict_set_int, "$coop_dict", "@p_enemy_party{reg20}leader",":leader_troop"), ### saving party leader 
+        ### saving buildings lvls
+        (assign,reg5, ":cur_leader"),
+        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
+        (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
+ 
+    (try_end),
       (try_begin),
         (store_add, ":banner_scene_props_end", banner_scene_props_end_minus_one, 1),
         (is_between, ":banner_spr", banner_scene_props_begin, ":banner_scene_props_end"),
@@ -2959,10 +2977,30 @@ coop_scripts = [
         (ge, ":cur_leader", 0),
         (troop_get_slot, ":banner_spr", ":cur_leader", slot_troop_banner_scene_prop),
         (dict_set_int, "$coop_dict", "@p_garrison_banner", ":banner_spr"),
-      (else_try),
+        (dict_set_int, "$coop_dict", "@p_ally_party{reg20}leader",":cur_leader"), ### saving location lord 
+        ### saving buildings lvls
+        (assign,reg5, ":cur_leader"),
+        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
+        (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
+       (else_try),
         (party_stack_get_troop_id, ":leader_troop", ":party_no", 0),
         (troop_is_hero, ":leader_troop"),
+        ### DEBUG
+        # (assign,reg10,":leader_troop"),
+        # (display_message,"@ leader troop: {reg10}"),
+        ### DEBUG
         (troop_get_slot, ":banner_spr", ":leader_troop", slot_troop_banner_scene_prop),
+        (dict_set_int, "$coop_dict", "@p_ally_party{reg20}leader",":leader_troop"), ### saving party leader 
+        ### saving buildings lvls
+        (assign,reg5, ":cur_leader"),
+        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
+        (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
+        (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
       (try_end),
       (try_begin),
         (store_add, ":banner_scene_props_end", banner_scene_props_end_minus_one, 1),
@@ -3085,6 +3123,21 @@ coop_scripts = [
             (party_add_members, coop_temp_party_enemy_heroes, ":stack_troop", 1),
           (try_end),
         (try_end),
+        
+        (dict_get_int, ":leader_troop", "$coop_dict", "@p_enemy_party{reg20}leader"),
+        (party_set_slot,":party_no", coop_party_leader, ":leader_troop"),
+        
+        ### getting building lvls
+        (assign,reg5,":leader_troop"),
+        (dict_get_int, ":smithy_lvl", "$coop_dict", "@trp_{reg5}smithy"),
+        (dict_get_int, ":armory_lvl", "$coop_dict", "@trp_{reg5}armory"),
+        (dict_get_int, ":stables_lvl", "$coop_dict", "@trp_{reg5}stables"),
+        (dict_get_int, ":bowyer_lvl", "$coop_dict", "@trp_{reg5}bowyer"),
+        (troop_set_slot,":leader_troop",slot_troop_built_smithy,":smithy_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_armorer,":armory_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_stables,":stables_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_bowyer,":bowyer_lvl"),
+        
       (try_end), #end enemy parties
       # (troop_set_slot, "trp_temp_array_a", 100, ":cur_slot"),# slot 100 = 100 + number heroes + 1
       (assign, "$coop_num_bots_team_1", ":total_enemy_troops"), #count troops in battle
@@ -3121,6 +3174,24 @@ coop_scripts = [
           (try_end),
 
         (try_end),
+        
+        (dict_get_int, ":leader_troop", "$coop_dict", "@p_ally_party{reg20}leader"),
+        (party_set_slot,":party_no", coop_party_leader, ":leader_troop"),
+        ### getting building lvls
+        (assign,reg5,":leader_troop"),
+        (dict_get_int, ":smithy_lvl", "$coop_dict", "@trp_{reg5}smithy"),
+        (dict_get_int, ":armory_lvl", "$coop_dict", "@trp_{reg5}armory"),
+        (dict_get_int, ":stables_lvl", "$coop_dict", "@trp_{reg5}stables"),
+        (dict_get_int, ":bowyer_lvl", "$coop_dict", "@trp_{reg5}bowyer"),
+        (troop_set_slot,":leader_troop",slot_troop_built_smithy,":smithy_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_armorer,":armory_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_stables,":stables_lvl"),
+        (troop_set_slot,":leader_troop",slot_troop_built_bowyer,":bowyer_lvl"),
+        
+      ### DEBUG
+        # (assign,reg10,":leader_troop"),
+        # (display_message,"@ leader troop: {reg10}"),
+        ### DEBUG
       (try_end), #end ally parties
       # (troop_set_slot, "trp_temp_array_b", 100, ":cur_slot"),# slot 100 = 100 + number heroes + 1
       (assign, "$coop_num_bots_team_2", ":total_ally_troops"), #count troops in battle
@@ -3456,7 +3527,7 @@ coop_scripts = [
           # (dict_set_int, "$coop_dict", "@hero_{reg21}_gld", ":gold"),
         (try_end),
 
-				(str_store_troop_name, s0, ":cur_troop"),
+        (str_store_troop_name, s0, ":cur_troop"),
         (troop_get_xp, ":xp", ":cur_troop"),
         (store_troop_health, ":health", ":cur_troop"),
         (dict_set_str, "$coop_dict", "@hero_{reg21}_name", s0),
@@ -3500,9 +3571,13 @@ coop_scripts = [
             (dict_set_int, "$coop_dict", "@hero_{reg21}_itm{reg20}", ":item"),
             (dict_set_int, "$coop_dict", "@hero_{reg21}_imd{reg20}", ":imod"),
           (try_end),
-
         (try_end),
-
+    ### Mod Begin - Save building bonuses levels
+        (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
+            (troop_get_slot,":bonus_lvl",":cur_troop",reg20),
+            (dict_set_int, "$coop_dict", "@hero_{reg21}_building_bonus{reg20}", ":bonus_lvl"),
+        (try_end),
+    ### Mod END
       (try_end), #end of hero loop
 
 
@@ -3601,7 +3676,15 @@ coop_scripts = [
             (try_end),
           (try_end),
         (try_end),
-#NEW
+        
+        
+        ### MOD BEGIN - Read building bonuses levels
+        (try_for_range, reg20, slot_troop_built_smithy, slot_troop_is_constructing_building), 
+          (dict_get_int, ":bonus_lvl", "$coop_dict", "@hero_{reg21}_building_bonus{reg20}"),
+          (troop_set_slot,":cur_troop",reg20,":bonus_lvl"),
+        (try_end),
+        ### MOD END
+#NEW    
         (try_begin),#only set face in MP
           (game_in_multiplayer_mode),
           (dict_get_str, s0, "$coop_dict", "@hero_{reg21}_face"),
