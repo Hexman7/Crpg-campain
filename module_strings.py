@@ -2397,6 +2397,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ### mod begin
 ("credits_13","Models with textures \
 ^Dupre for permissions to use crpg items\
+^Siniša Vučković aka Zimke Zlovoljni\
 ^Raylin - crpg mod items\
 ^Shredzors\
 ^Faradon\
