@@ -16890,8 +16890,12 @@ presentations = [
       [
         (presentation_set_duration, 999999),
         (set_fixed_point_multiplier, 1000),
+        (assign,"$g_lord_no",reg1),
+        
+        (troop_get_slot, ":original_faction", "$g_lord_no", slot_troop_original_faction),
+        (str_store_troop_name, s10, ":original_faction"),
 
-        (create_text_overlay, ":description", "@Here will be description of defection. Which lord and what was his faction"),
+        (create_text_overlay, ":description", "@This lord is willing to join your faction. He's last faction was {s10}. Will you accept his offer or deny it?"),
         (position_set_x, pos1, 1200),
         (position_set_y, pos1, 1200),
         (overlay_set_size, ":description", pos1),
@@ -16899,16 +16903,14 @@ presentations = [
         (position_set_y, pos1, 600),
         (overlay_set_position, ":description", pos1),
 
-
-        (assign,":troop_no",reg1),
-        (troop_get_type, reg3, ":troop_no"),
-        (troop_get_slot, reg5, ":troop_no", slot_troop_renown),
-        (troop_get_slot, reg15, ":troop_no", slot_troop_controversy),
+        (troop_get_type, reg3, "$g_lord_no"),
+        (troop_get_slot, reg5, "$g_lord_no", slot_troop_renown),
+        (troop_get_slot, reg15, "$g_lord_no", slot_troop_controversy),
 		  
         (str_clear, s59),
         
         (try_begin),
-            (call_script, "script_troop_get_player_relation", ":troop_no"),
+            (call_script, "script_troop_get_player_relation", "$g_lord_no"),
             (assign, ":relation", reg0),
             (store_add, ":normalized_relation", ":relation", 100),
             (val_add, ":normalized_relation", 5),
@@ -16961,7 +16963,7 @@ presentations = [
         (position_set_y, pos1, 500),
         (overlay_set_position, ":banner_mesh", pos1),
       
-        (create_mesh_overlay_with_tableau_material, ":lord", -1, "tableau_game_character_sheet", ":troop_no"),
+        (create_mesh_overlay_with_tableau_material, ":lord", -1, "tableau_game_character_sheet", "$g_lord_no"),
         (position_set_x, pos1, 1000),
 		(position_set_y, pos1, 1000),
 		(overlay_set_size, ":lord", pos1),
@@ -16982,9 +16984,28 @@ presentations = [
         
         (try_begin),
         (eq, ":object", "$g_presentation_reject_lord"),
+        	(call_script, "script_troop_change_relation_with_troop", "$g_lord_no", "trp_player", -10),
+            (call_script, "script_lord_find_alternative_faction", "$g_lord_no"),
+            (assign, ":new_faction", reg0),
+            (try_begin),
+                (is_between, ":new_faction", kingdoms_begin, kingdoms_end),
+                (troop_get_slot, ":old_faction", "$g_lord_no", slot_troop_original_faction),
+                (str_store_troop_name, s1, "$g_lord_no"),
+                (str_store_faction_name, s2, ":new_faction"),	
+                (str_store_faction_name, s3, ":old_faction"),
+            
+                (troop_set_slot, "$g_lord_no", slot_troop_occupation, slto_kingdom_hero),
+                (call_script, "script_change_troop_faction", "$g_lord_no", ":new_faction"),
+            
+                (troop_get_type, reg4, "$g_lord_no"),
+                (display_message, "str_lord_defects_ordinary"),
+            (else_try),
+                (call_script, "script_change_troop_faction", "$g_lord_no", "fac_outlaws"),
+            (try_end),
             (presentation_set_duration, 0),
         (else_try),
         (eq, ":object", "$g_presentation_accept_lord"),
+            (troop_set_slot, "$g_lord_no", slot_troop_occupation, slto_kingdom_hero),
             (presentation_set_duration, 0),
         (try_end),
       ]),
