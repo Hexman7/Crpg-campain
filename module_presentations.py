@@ -16884,7 +16884,7 @@ presentations = [
 
 
 ### pops up when lord defects 
-## 
+## reg1 = lord_no
     ("lord_defection_to_player_faction", 0, mesh_load_window, [
     (ti_on_presentation_load,
       [
@@ -16925,7 +16925,7 @@ presentations = [
          #### if for all LREP slot_lord_reputation_type to print which one is it
          
 		 
-		(troop_get_slot,":reputation",":troop_no",slot_lord_reputation_type),
+		(troop_get_slot,":reputation","$g_lord_no",slot_lord_reputation_type),
 		(try_begin),
 		(eq,":reputation",lrep_none),
 			(str_store_string,s61,"@None"),

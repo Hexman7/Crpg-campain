@@ -3418,7 +3418,7 @@ game_menus = [
        
        ("camp_test",[],"Camp Testing.",
        [ 
-            (assign,":troop","trp_kingdom_7_lord"),
+            (assign,":troop","trp_knight_1_2"),
             (troop_get_slot, ":banner", ":troop", slot_troop_banner_scene_prop),
             (assign, reg1, ":troop"),
             (store_sub, ":banner_no",":banner", banner_scene_props_begin),

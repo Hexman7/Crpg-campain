@@ -1077,6 +1077,10 @@ simple_triggers = [
 				  (str_store_faction_name_link, s2, ":new_faction"),	
 				  (str_store_faction_name_link, s3, ":faction"),
 				  (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
+                  ## MOD begin - trigger for prsnt lord defection to player faction pop up
+                  (assign,reg1,":troop_no"),
+                  (start_presentation, "prsnt_lord_defection_to_player_faction"),
+                  ## MOD end
 				  (try_begin),
 					(ge, "$cheat_mode", 1),
 					(str_store_troop_name, s4, ":troop_no"),
@@ -1099,7 +1103,7 @@ simple_triggers = [
 			(le, reg0, -50), #was -75
             #(call_script, "script_indict_lord_for_treason", ":troop_no", ":faction"),
           (try_end),		  
-       (else_try),  #Take a stand on an issue
+        (else_try),  #Take a stand on an issue
           (neq, ":troop_no", "trp_player"),
           (store_faction_of_troop, ":faction", ":troop_no"),
           (faction_slot_ge, ":faction", slot_faction_political_issue, 1),
