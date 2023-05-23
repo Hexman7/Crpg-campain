@@ -16890,12 +16890,15 @@ presentations = [
       [
         (presentation_set_duration, 999999),
         (set_fixed_point_multiplier, 1000),
-        (assign,"$g_lord_no",reg1),
+        
         
         (troop_get_slot, ":original_faction", "$g_lord_no", slot_troop_original_faction),
-        (str_store_troop_name, s10, ":original_faction"),
+        (str_store_faction_name, s10, ":original_faction"),
+        (str_store_troop_name, s11, "$g_lord_no"),
 
-        (create_text_overlay, ":description", "@This lord is willing to join your faction. He's last faction was {s10}. Will you accept his offer or deny it?"),
+		(troop_get_type, reg3, "$g_lord_no"),
+		
+        (create_text_overlay, ":description", "@{s11} is willing to join your faction. {reg3?Her:His} last faction was {s10}. Will you accept his offer or deny it?"),
         (position_set_x, pos1, 1200),
         (position_set_y, pos1, 1200),
         (overlay_set_size, ":description", pos1),
@@ -16961,9 +16964,9 @@ presentations = [
 			(str_store_string,s61,"str_mercantile"),
 		(try_end),
         
-		(str_store_string,s61,"@{!}^{s61}"),
+		#(str_store_string,s61,"@{!}^{s61}"),
 		        
-        (create_text_overlay, ":reputation_text", s61),
+        (create_text_overlay, ":reputation_text", "@Reputation: {s61}"),
         (position_set_x, pos1, 1200),
         (position_set_y, pos1, 1200),
         (overlay_set_size, ":reputation_text", pos1),
