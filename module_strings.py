@@ -2412,6 +2412,11 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Sonyer, Rgcotl , Sumskilz , Sarrie \
 ^ Kovas, Brego, MADTAO - Teutonic and Lithuanian items\
 ^ Kovas - reworked native items\
+^ Lecram - Eques Banner\
+^ DaRkSouL_Gjallar - Norse Banner\
+^  - Grey Order Banner\
+^ Riddaren - Kalmarunion Banner\
+^ \
 "), 
 
 ("credits_14","OSP Scripts \
