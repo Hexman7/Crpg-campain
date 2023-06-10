@@ -2414,7 +2414,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^ Kovas - reworked native items\
 ^ Lecram - Eques Banner\
 ^ DaRkSouL_Gjallar - Norse Banner\
-^  - Grey Order Banner\
+^ Arris - Grey Order Banner\
 ^ Riddaren - Kalmarunion Banner\
 ^ \
 "), 
