@@ -3416,7 +3416,7 @@ game_menus = [
         ]
        ),	 
        
-       ("camp_test",[],"Camp Testing.",
+       ("camp_test",[(ge, "$cheat_mode", 1)],"Camp Testing.",
        [ 
             (assign,":troop","trp_knight_1_2"),
             (troop_get_slot, ":banner", ":troop", slot_troop_banner_scene_prop),
@@ -3534,7 +3534,7 @@ game_menus = [
        ),
 	   
 	   ("camp_attack_capitol",
-       [#(eq,"$cheat_mode",1)
+       [(gt,"$cheat_mode",1)
         ], "CHEAT!: attack capitol",
        [
 	    (faction_get_slot,":capitol","$character_faction",slot_faction_capitol),
