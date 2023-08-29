@@ -4193,8 +4193,10 @@ coop_scripts = [
 	
 	(store_current_day,":day"),
 	
-	(assign,reg0,":day"),
-	(display_message,"@ Day of game:{reg0}"),
+	## DEBUG
+	#(assign,reg0,":day"),
+	#(display_message,"@ Day of game:{reg0}"),
+	## DEBUG
 	(try_begin),
 	(gt,":day", -1),
 		(assign,"$troops_have_to_be_copied_after_saveload",1),

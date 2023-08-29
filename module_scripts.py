@@ -17308,7 +17308,9 @@ scripts = [
   ("party_calculate_loot",
     [
       (store_script_param_1, ":enemy_party"), #Enemy Party_id
-      (display_message,"@looting"),      
+      ### DEBUG
+	  #(display_message,"@looting"),
+	  ### DEBUG      
       (call_script, "script_calculate_main_party_shares"),
       (assign, ":num_player_party_shares", reg0),
             

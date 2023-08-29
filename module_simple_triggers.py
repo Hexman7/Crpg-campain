@@ -3304,8 +3304,8 @@ simple_triggers = [
                #army is assaulting the center
                (assign, ":result", ":quest_no"),
                (quest_set_slot, ":result", slot_quest_target_center, ":ai_object"),
-               (quest_set_slot, ":result", slot_quest_expiration_days, 2),
-               (quest_set_slot, ":result", slot_quest_dont_give_again_period, 15),
+               (quest_set_slot, ":result", slot_quest_expiration_days, 3),		## was 2
+               (quest_set_slot, ":result", slot_quest_dont_give_again_period, 5),	## was 15
              (try_end),
            (else_try),
              (eq, ":quest_no", "qst_scout_waypoints"),
