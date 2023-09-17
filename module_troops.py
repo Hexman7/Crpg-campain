@@ -355,7 +355,7 @@ troops = [
   ["caravan_guard","Caravan Guard","Caravan Guards",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_horse|tf_guarantee_shield,no_scene,0,fac_commoners,
    [itm_spear,itm_fighting_pick,itm_sword_medieval_a,itm_voulge,itm_tab_shield_round_b,itm_tab_shield_round_c,
     itm_leather_jerkin,itm_leather_vest,itm_hide_boots,itm_padded_coif,itm_nasal_helmet,itm_footman_helmet,itm_saddle_horse],
-   str_12 | agi_9 | int_4 | cha_4|level(17),wp_one_handed(120)|wp_two_handed(120)|wp_polearm(120)|wp_archery(10)|wp_crossbow(10)|wp_throwing(80),knows_common|knows_power_strike_4|knows_ironflesh_3|knows_shield_2|knows_athletics_3|knows_riding_3|knows_power_throw_2,mercenary_face_1, mercenary_face_2],
+   str_12 | agi_9 | int_4 | cha_4|level(14),wp_one_handed(120)|wp_two_handed(120)|wp_polearm(120)|wp_archery(10)|wp_crossbow(10)|wp_throwing(80),knows_common|knows_power_strike_4|knows_ironflesh_3|knows_shield_2|knows_athletics_3|knows_riding_3|knows_power_throw_2,mercenary_face_1, mercenary_face_2],
   ["mercenary_swordsman","Mercenary Swordsman","Mercenary Swordsmen",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_shield,no_scene,reserved,fac_commoners,
    [itm_bastard_sword_a,itm_sword_medieval_b,itm_sword_medieval_b_small,itm_tab_shield_heater_c,
     itm_mail_hauberk,itm_haubergeon,itm_leather_boots,itm_mail_chausses,itm_kettle_hat,itm_mail_coif,itm_flat_topped_helmet, itm_helmet_with_neckguard],
@@ -365,9 +365,21 @@ troops = [
     itm_haubergeon,itm_mail_chausses,itm_iron_greaves,itm_plate_boots,itm_guard_helmet,itm_great_helmet,itm_bascinet, itm_leather_gloves],
    str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_strike_8|knows_ironflesh_5|knows_shield_5|knows_athletics_7|knows_power_throw_4,mercenary_face_1, mercenary_face_2],
   ["mercenary_crossbowman","Mercenary Crossbowman","Mercenary Crossbowmen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_ranged,no_scene,reserved,fac_commoners,
-   [itm_bolts,itm_spiked_club,itm_fighting_pick,itm_sword_medieval_a,itm_boar_spear,itm_crossbow,itm_tab_shield_pavise_a,itm_tab_shield_round_b,
+   [itm_bolts,itm_spiked_club,itm_fighting_pick,itm_sword_medieval_a,itm_boar_spear,itm_light_crossbow,itm_tab_shield_pavise_a,itm_tab_shield_round_b,
     itm_padded_cloth,itm_leather_jerkin,itm_leather_cap,itm_padded_coif,itm_footman_helmet,itm_nomad_boots,itm_wrapping_boots],
-   str_11 | agi_9 | int_4 | cha_4|level(14),wp_one_handed(70)|wp_two_handed(30)|wp_polearm(60)|wp_archery(115)|wp_crossbow(115)|wp_throwing(115),knows_common|knows_power_strike_3|knows_ironflesh_2|knows_athletics_5,mercenary_face_1, mercenary_face_2],
+   str_11 | agi_9 | int_4 | cha_4|level(12),wp_one_handed(60)|wp_two_handed(30)|wp_polearm(60)|wp_archery(105)|wp_crossbow(105)|wp_throwing(105),knows_common|knows_power_strike_3|knows_ironflesh_2|knows_athletics_5,mercenary_face_1, mercenary_face_2],
+  ["mercenary_trained_crossbowman","Mercenary Trained Crossbowman","Mercenary Trained Crossbowmen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_ranged|tf_guarantee_helmet,no_scene,reserved,fac_commoners,
+   [itm_crossbow,itm_light_crossbow,itm_bolts,itm_sword_medieval_a,itm_sword_medieval_b,itm_fighting_pick,
+    itm_hide_boots,itm_nomad_boots,itm_ragged_outfit,itm_padded_cloth,itm_footman_helmet,itm_nasal_helmet,itm_norman_helmet,itm_leather_gloves],
+   str_11 | agi_9 | int_4 | cha_4|level(14),wp_one_handed(70)|wp_two_handed(30)|wp_polearm(60)|wp_archery(115)|wp_crossbow(115)|wp_throwing(115),knows_common|knows_power_strike_3|knows_ironflesh_2|knows_athletics_5,khergit_face_young_1, khergit_face_older_2],
+  ["mercenary_veteran_crossbowman","Mercenary Veteran Crossbowman","Mercenary Veteran Crossbowmen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_ranged|tf_guarantee_helmet,no_scene,reserved,fac_commoners,
+   [itm_crossbow,itm_bolts,itm_heavy_crossbow,itm_steel_bolts,itm_sword_medieval_c,itm_sword_medieval_b,itm_military_pick,itm_military_cleaver_b,
+    itm_hose_kneecops_red,itm_brigandine_purple,itm_brigandine_green,itm_brigandine_brown,itm_chapel_de_fer_e,itm_chapel_de_fer_f,itm_chapel_de_fer_d,itm_leather_gloves],
+   str_13 | agi_12 | int_4 | cha_4|level(18),wp_one_handed(80)|wp_two_handed(40)|wp_polearm(70)|wp_archery(140)|wp_crossbow(140)|wp_throwing(140),knows_common|knows_power_strike_4|knows_ironflesh_3|knows_athletics_6,khergit_face_young_1, khergit_face_older_2],
+  ["mercenary_elite_crossbowman","Mercenary Elite Crossbowman","Mercenary Elite Crossbowmen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_ranged|tf_guarantee_helmet|tf_guarantee_gloves,no_scene,reserved,fac_commoners,
+   [itm_heavy_crossbow,itm_crossbow,itm_steel_bolts,itm_sword_medieval_c_long,itm_sword_medieval_d_long,itm_sword_medieval_c,itm_military_hammer,itm_military_cleaver_c,
+    itm_hose_kneecops_green,itm_hose_kneecops_red,itm_brigandine_brown_a,itm_brigandine_purple_a,itm_brigandine_green_b,itm_chapel_de_fer_c,itm_chapel_de_fer_b,itm_chapel_de_fer_a,itm_mail_gauntlets,itm_mail_gauntlets],
+   str_15 | agi_15 | int_4 | cha_4|level(24),wp_one_handed(95)|wp_two_handed(50)|wp_polearm(80)|wp_archery(180)|wp_crossbow(180)|wp_throwing(180),knows_common|knows_power_strike_5|knows_ironflesh_5|knows_athletics_7,khergit_face_young_1, khergit_face_older_2],
   ["mercenary_horseman","Mercenary Horseman","Mercenary Horsemen",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield,no_scene,reserved,fac_commoners,
    [itm_lance,itm_bastard_sword_a,itm_sword_medieval_b,itm_tab_shield_heater_c,
     itm_mail_shirt,itm_haubergeon,itm_leather_boots,itm_norman_helmet,itm_mail_coif,itm_helmet_with_neckguard,itm_saddle_horse,itm_courser],
@@ -3843,10 +3855,14 @@ upgrade2(troops,"townsman","watchman","mercenary_soldier")	## mod edited
 upgrade2(troops,"watchman","caravan_guard","mercenary_crossbowman")
 upgrade2(troops,"caravan_guard","mercenary_swordsman","mercenary_horseman")
 upgrade(troops,"mercenary_swordsman","hired_blade")
-upgrade2(troops,"mercenary_horseman","mercenary_cavalry","mercenary_horse_crossbowman")
+upgrade(troops,"mercenary_horseman","mercenary_cavalry")
+
+upgrade2(troops,"mercenary_crossbowman","mercenary_trained_crossbowman","mercenary_horse_crossbowman")
+upgrade(troops,"mercenary_trained_crossbowman","mercenary_veteran_crossbowman")
+upgrade(troops,"mercenary_veteran_crossbowman","mercenary_elite_crossbowman")
 
 ## mod begin
-upgrade(troops,"mercenary_soldier","mercenary_axeman")
+upgrade2(troops,"mercenary_soldier","mercenary_axeman","mercenary_horse_thrower")
 upgrade(troops,"mercenary_axeman","mercenary_veteran_axeman")
 ## mod end
 
