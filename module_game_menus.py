@@ -11068,7 +11068,8 @@ game_menus = [
             (val_add, ":cur_probability", reg0),
             (val_mul, ":cur_probability", 4),
             (val_mul, ":cur_probability", average_price_factor),
-            (val_div, ":cur_probability", ":cur_price"),
+			(gt,":cur_price",0),	### mod added
+				(val_div, ":cur_probability", ":cur_price"),
 			#first only simulation
             #(set_item_probability_in_merchandise,":cur_goods",":cur_probability"),						  
 			(val_add, ":total_probability", ":cur_probability"),
@@ -11084,10 +11085,12 @@ game_menus = [
             (val_add, ":cur_probability", reg0),
             (val_mul, ":cur_probability", 4),
             (val_mul, ":cur_probability", average_price_factor),
-            (val_div, ":cur_probability", ":cur_price"),
+			(gt,":cur_price",0),	### mod added
+				(val_div, ":cur_probability", ":cur_price"),
 			(val_mul, ":cur_probability", num_merchandise_goods),
 			(val_mul, ":cur_probability", 100),
-			(val_div, ":cur_probability", ":total_probability"),
+			(gt,":total_probability",0),	### mod added
+				(val_div, ":cur_probability", ":total_probability"),
 
             (set_item_probability_in_merchandise,":cur_goods",":cur_probability"),						  
           (try_end),
