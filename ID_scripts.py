@@ -702,14 +702,15 @@ script_coop_copy_parties_to_file_mp = 700
 script_coop_copy_file_to_parties_sp = 701
 script_coop_copy_register_to_hero_xp = 702
 script_coop_copy_hero_to_file = 703
-script_coop_copy_file_to_hero = 704
-script_coop_save_eq_to_file = 705
-script_coop_read_eq_from_file = 706
-script_coop_read_eq_from_file_to_troops = 707
-script_coop_save_troops_equipment_to_file = 708
-script_coop_read_eq_from_troop = 709
-script_wse_savegame_loaded = 710
-script_cf_check_file_exist = 711
-script_cf_wse_window_opened = 712
+script_coop_get_party_id_from_file = 704
+script_coop_copy_file_to_hero = 705
+script_coop_save_eq_to_file = 706
+script_coop_read_eq_from_file = 707
+script_coop_read_eq_from_file_to_troops = 708
+script_coop_save_troops_equipment_to_file = 709
+script_coop_read_eq_from_troop = 710
+script_wse_savegame_loaded = 711
+script_cf_check_file_exist = 712
+script_cf_wse_window_opened = 713
 
 

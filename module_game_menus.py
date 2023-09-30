@@ -5500,7 +5500,11 @@ game_menus = [
 		### MOD BEGIN - Saving player troops to file	03.11.2022
 	    (call_script, "script_coop_save_troops_equipment_to_file"), # set coop_battle_state to 1
 		
-		
+		### MOD - autosave 
+        (auto_save),
+        ### MOD end
+        
+        
 		### MOD END
       ]),	
 
@@ -5517,6 +5521,14 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
         (call_script, "script_calculate_renown_value"),
@@ -5533,11 +5545,12 @@ game_menus = [
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		 
  
-      ("encounter_save",[],"Give me time to save.",
-      [
+      ("encounter_save",[#(eq,1,0),
+      ],"Clear battle result.",
+      [ 
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+       # (leave_encounter),
+       # (change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),		  
 #COOP END##########################################	  
@@ -6845,6 +6858,9 @@ game_menus = [
         (try_end),
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
       ]),	
 	  
       ("quit",[
@@ -6860,6 +6876,14 @@ game_menus = [
       ("coop_use_result",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
 
@@ -6876,11 +6900,12 @@ game_menus = [
 		(assign, "$coop_multiplayer_battle_result", 1),
 		## mod end
       ]),		 
-      ("encounter_save",[],"Give me time to save.",
+      ("encounter_save",[#(eq,1,0),
+      ],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+        #(leave_encounter),
+        #(change_screen_return),
         # (rest_for_hours, 1, 1, 0),#rest while not attackable
 
       ]),		  
@@ -7320,6 +7345,9 @@ game_menus = [
         (try_end),
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
       ("quit",[
@@ -7335,6 +7363,14 @@ game_menus = [
       ("coop_use_result",[
         (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
         (call_script, "script_calculate_renown_value"),
@@ -7367,11 +7403,12 @@ game_menus = [
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
 
-      ("encounter_save",[],"Give me time to save.",
+      ("encounter_save",[#(eq,1,0),
+      ],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+       # (leave_encounter),
+       #(change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),		  
 #COOP END#################################################		 
@@ -8155,7 +8192,9 @@ game_menus = [
 #           (else_try),
 #             (set_jump_mission,"mt_castle_attack_walls_ladder"),
 #           (try_end),
-
+		### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
 
@@ -8176,6 +8215,14 @@ game_menus = [
          (ge, "$g_siege_method", 1),
          (store_current_hours, ":cur_hours"),
          (ge, ":cur_hours", "$g_siege_method_finish_hours"),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
 
@@ -8195,11 +8242,13 @@ game_menus = [
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
 
-      ("encounter_save",[(ge, "$g_siege_method", 1)],"Give me time to save.",
+      ("encounter_save",[(ge, "$g_siege_method", 1),
+      #(eq,1,0),
+      ],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+        #(leave_encounter),
+        #(change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),	
 #COOP END#################################################	   
@@ -9323,6 +9372,9 @@ game_menus = [
         (try_end),
 		### mod begin
 		(call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
 
@@ -9339,6 +9391,14 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
         (call_script, "script_calculate_renown_value"),
@@ -9356,11 +9416,12 @@ game_menus = [
 
       ]),		  
 
-	  ("encounter_save",[],"Give me time to save.",
+	  ("encounter_save",[#(eq,1,0),
+      ],"Clear battle result.",
 	  [
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+        #(leave_encounter),
+        #(change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),		  
 #COOP END#################################################			  
@@ -9819,6 +9880,9 @@ game_menus = [
         (try_end),        
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
       ("quit",[
@@ -9835,7 +9899,15 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
-        (party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+         (party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
 
@@ -9850,10 +9922,11 @@ game_menus = [
         (jump_to_menu, "mnu_battle_debrief"),
       ]),		  
  
-      ("encounter_save",[(party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1)],"Give me time to save.",
+      ("encounter_save",[#(eq,1,0),
+      (party_slot_ge, "$current_town", slot_village_infested_by_bandits, 1)],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (change_screen_return),
+       # (change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),  
           
@@ -10885,6 +10958,9 @@ game_menus = [
         (try_end),
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
 
@@ -10901,6 +10977,14 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
 		  (store_faction_of_party, ":village_faction", "$current_town"),
@@ -10931,10 +11015,11 @@ game_menus = [
 
       ]),		  
 
-      ("encounter_save",[],"Give me time to save.",
+      ("encounter_save",[#(eq,1,0),
+      ],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (change_screen_return),
+       # (change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),		
           
@@ -13510,6 +13595,9 @@ game_menus = [
         (try_end),
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
       ("quit",[
@@ -13525,6 +13613,14 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
       ],"Use multiplayer battle results.", 
       [
 
@@ -16904,6 +17000,9 @@ game_menus = [
         (try_end),
         # mod begin
         (call_script,"script_coop_save_troops_equipment_to_file"),
+        ### MOD - autosave 
+        (auto_save),
+        ### MOD end
        ]),	
 	  
 
@@ -16920,6 +17019,14 @@ game_menus = [
       ("coop_use_result",[
          (this_or_next|ge, "$cheat_mode", 1),#always allow in cheat mode
          (eq, "$coop_battle_state", coop_battle_state_end_mp),
+         ### mod added 01.10.2023
+         (call_script,"script_coop_get_party_id_from_file"),
+         (try_begin),
+         (neq,"$g_encountered_party",reg5),
+            (disable_menu_option),
+            (display_message,"@Can't use multiplayer battle result for this party"),
+         (try_end),
+         ### mod end
 
         (party_stack_get_troop_id, ":bandit_type", "$g_encountered_party", 0),
 		    (is_between, ":bandit_type", bandits_begin, bandits_end),     #dont include looter lair
@@ -16947,14 +17054,15 @@ game_menus = [
       ]),		  
 
       ("encounter_save",[
+        #(eq,1,0),
         (party_slot_eq, "$g_encountered_party", slot_party_ai_substate, 0), 
         (party_stack_get_troop_id, ":bandit_type", "$g_encountered_party", 0),
 		    (is_between, ":bandit_type", bandits_begin, bandits_end),     #dont include looter lair
-        ],"Give me time to save.",
+        ],"Clear battle result.",
       [
         (call_script, "script_coop_get_battle_state", 2),
-        (leave_encounter),
-        (change_screen_return),
+       # (leave_encounter),
+       # (change_screen_return),
        # (rest_for_hours, 1, 1, 0),#rest while not attackable
       ]),		  	  
 #COOP END#################################################		

@@ -2646,7 +2646,12 @@ coop_scripts = [
       (assign, ":scene_street", 0),
       (assign, ":scene_party", 0),
       (assign, ":encountered_party", "$g_encountered_party"),
-
+    
+      ##### MOD Added
+      (dict_set_int, "$coop_dict", "@encountered_party", ":encountered_party"),
+      
+      ##### MOD end
+    
       (try_begin),
         (this_or_next|eq, "$coop_battle_type", coop_battle_type_siege_player_defend),
         (eq, "$coop_battle_type", coop_battle_type_siege_player_attack),
@@ -3214,7 +3219,9 @@ coop_scripts = [
       (dict_load_file, "$coop_dict", "@coop_battle", 2),
 
         (dict_set_int, "$coop_dict", "@battle_state", coop_battle_state_end_mp),
-
+    
+        (dict_get_int, reg3, "$coop_dict", "@encountered_party"),
+        (display_message,"@Encountered party: {reg3}"),
         (call_script, "script_coop_copy_settings_to_file"),	
 
 #At end of MP battle:
@@ -3603,6 +3610,21 @@ coop_scripts = [
     ]),	 
 
 
+  # script_coop_get_party_id_from_file
+  # Input: none
+  # Output: reg5 = encountered_party
+  ("coop_get_party_id_from_file",
+    [
+    (try_begin), 
+    (neg|is_vanilla_warband),
+        (dict_create, ":dict"),
+        (dict_load_file, ":dict", "@coop_battle", 2),
+        (dict_get_int, reg5, ":dict", "@encountered_party"),
+        (dict_free, ":dict"),
+    (else_try),
+        (display_message, "@Error: WSE is not running."),
+    (try_end),
+    ]),	
 
 # SET heroes SKILL/EQUIPMENT 
   # script_coop_copy_file_to_hero
@@ -4168,6 +4190,10 @@ coop_scripts = [
 		# (try_end),
 	 # ]),
 	 
+     
+     
+     
+ 
 ### WSE addons begin
 
 #script_wse_multiplayer_message_received
