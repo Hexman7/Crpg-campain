@@ -57126,7 +57126,9 @@ scripts = [
             (get_party_ai_current_behavior,":ai_bhvr",":party"),
 			(party_get_attached_to, ":attached_to", ":party"),
 			(party_get_slot,":party_center",":party",slot_party_center),
-			
+			(assign,reg0,":ai_bhvr"),
+            (display_message,"@AI BHVR{reg0}"),
+            
             (try_begin),
             (eq,":ai_bhvr",ai_bhvr_hold),
                 (party_set_ai_object,":party",":party_center"),
@@ -57134,15 +57136,11 @@ scripts = [
                # (party_attach_to_party, ":party", ":party_center"),
                 (display_message,"@calling back reinforcements"),
             (else_try),
-            (eq,":ai_bhvr",ai_bhvr_travel_to_party),
-				(party_get_slot,":party_center",":party",slot_party_center),
-				(store_distance_to_party_from_party,":distance",":party",":party_center"),
-                (lt,":distance",2),
-			    (party_attach_to_party, ":party", ":party_center"),
-				(party_set_ai_behavior,":party",ai_bhvr_in_town),
-			(else_try),
-			(eq,":ai_bhvr",ai_bhvr_in_town),
+			#(eq,":ai_bhvr",ai_bhvr_in_town),
 			(eq,":attached_to",":party_center"),
+            
+                (display_message,"@merging parties"),
+                
 				(party_get_num_companion_stacks, ":num_stacks",":party"),
 				(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
 					(party_stack_get_troop_id,     ":stack_troop",":party",":stack_no"),
@@ -57160,7 +57158,21 @@ scripts = [
 				(try_end),
 				
 				(remove_party,":party"), 
+            (else_try),
+            (eq,":ai_bhvr",ai_bhvr_travel_to_party),
+				(party_get_slot,":party_center",":party",slot_party_center),
+				(store_distance_to_party_from_party,":distance",":party",":party_center"),
+                (display_message,"@checking distance"),
+                
+                (try_begin),
+                (lt,":distance",3),
+                (neq,":attached_to",":party_center"),
+                    (party_attach_to_party, ":party", ":party_center"),
+                    (display_message,"@attaching party"),
+                (try_end),
+
             (try_end),
+            
         (try_end),
     (try_end),
  ]),
