@@ -57131,7 +57131,7 @@ scripts = [
                 (party_get_slot,":party_center",":party",slot_party_center),
                 (party_set_ai_object,":party",":party_center"),
                 (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
-                (party_attach_to_party, ":party", ":party_center"),
+               # (party_attach_to_party, ":party", ":party_center"),
                 (display_message,"@calling back reinforcements"),
             (else_try),
             (eq,":ai_bhvr",ai_bhvr_attack_party),
