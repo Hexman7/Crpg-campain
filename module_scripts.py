@@ -24979,6 +24979,14 @@ scripts = [
              (store_distance_to_party_from_party, ":distance", ":village_no", ":raider_party"),
              (lt, ":distance", raid_distance),
              (assign, ":raid_ended", 0),
+             #### MOD - getting reinforcements from castle/city
+             
+             (try_begin),
+             (neq|party_slot_eq, ":village_no",slot_center_received_reinforcements, 1),
+                (call_script,"script_get_reinforcements_from_nearby_castle_or_city",":village_no",":raider_party"),
+             (try_end),
+             
+             #### MOD END
            (try_end),
                      
           ####  mod fix for raiding villages while lord is having a battle 
@@ -57030,6 +57038,97 @@ scripts = [
  ]),
      
     
+    
+    
+    
+###script_get_reinforcements_from_nearby_castle_or_city
+### getting reinforcements from nearby city or castle to village that is being raided
+### IN: 
+### out: 
+("get_reinforcements_from_nearby_castle_or_city",
+  [
+    (store_script_param_1,":village_no"),
+    (store_script_param_2,":raider_party"),
+    
+    (assign,":portion", 0),
+    
+    ## get town or castle of village
+    (party_get_slot,":bound_center",":village_no",slot_village_bound_center),
+    (store_party_size, ":bound_center_garrison", ":bound_center"),
+    
+    ### get portion of garisson depending on center type
+    (try_begin),
+    (is_between,":bound_center",towns_begin,towns_end),
+       (assign,":portion",5),
+    (else_try),
+        (assign,":portion",2),
+    (try_end),
+    
+    
+    ##calculate strenghts
+    (store_div,":reinforcements_strenghts",":bound_center_garrison",":portion"),
+    
+    
+    ## raider party size + 15 - reinforcements needs advantage to attack
+    (store_party_size, ":raider_party_size", ":raider_party"),
+    (val_add,":raider_party_size",15), 
+    
+    ## decide go or not go to help village
+    (try_begin), #go
+    (neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
+    (gt,":reinforcements_strenghts",":raider_party_size"),
+        (set_spawn_radius,1),
+        (spawn_around_party,":bound_center","pt_patrol_party"),
+        (assign,":patrol_party",reg0),
+        (party_set_faction,":patrol_party","fac_neutrals"),
+        
+        (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
+        (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+            (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
+            (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
+            (store_div,":number_to_move", ":stack_size", ":portion"),
+            (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
+            (assign, ":number_moved", reg0),
+            (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
+        (try_end),
+        ## DEBUG
+        (display_message,"@Sending reinforcements"),
+        ## DEBUG
+        (party_set_ai_object,":patrol_party",":raider_party"),
+        (party_set_ai_behavior,":patrol_party",ai_bhvr_attack_party),
+        (party_set_slot,":patrol_party",slot_party_center,":bound_center"),
+        #(party_set_helpfulness, ":patrol_party", 50), 
+        
+        
+        (party_set_slot,":village_no",slot_center_received_reinforcements,1),
+    ## DEBUG
+    (else_try),
+        (display_message,"@Nope"),
+    ## DEBUG
+    (try_end),
+    
+ ]),
+ 
+ 
+ ###script_cf_call_back_reinforcements
+### calling back reinforcements to the city
+### IN: 
+### out: 
+("cf_call_back_reinforcements",
+  [
+    (store_random_party_of_template,":patrol_party","pt_patrol_party"),
+    (get_party_ai_current_behavior,":ai_bhvr",":patrol_party"),
+    
+    (party_is_active,"p_main_party"),
+        (display_message,"@ACTIVE"),
+    (try_begin),
+    (neg|party_is_active,"p_main_party"),
+        (party_get_slot,":party_center",":patrol_party",slot_party_center),
+        (party_set_ai_object,":patrol_party",":party_center"),
+        (party_set_ai_behavior,":patrol_party",ai_bhvr_travel_to_party),
+        (display_message,"@calling back reinforcements"),
+    (try_end),
+ ]),
      
 #COOP BEGIN ###################
 ] + coop_scripts 

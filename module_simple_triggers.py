@@ -4224,7 +4224,15 @@ simple_triggers = [
     (call_script, "script_change_party_name"),
   ]),
 ##   
-   
+
+###call back reinforcements that were send to deal with raiding party 
+
+ (2,
+  [
+    (call_script, "script_cf_call_back_reinforcements"),
+  ]),
+##   
+ 
   (24,
    []),
   (24,

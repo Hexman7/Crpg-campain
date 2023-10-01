@@ -352,6 +352,11 @@ slot_castle_exterior    = slot_town_center
 slot_center_native_faction = 73	## crpg-campaign: center slot for setting it's native faction
 slot_town_is_capitol = 74 ### crpg-campaign: center is capitol
 
+### mod begin
+slot_center_received_reinforcements = 75
+slot_party_center = 76
+
+## mod end
 
 #slot_town_rebellion_contact   = 76
 #trs_not_yet_approached  = 0
