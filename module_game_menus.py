@@ -14950,6 +14950,16 @@ game_menus = [
          (store_sub, ":kingdom_hero_id", ":party_leader", active_npcs_begin),
          (set_achievement_stat, ACHIEVEMENT_BARON_GOT_BACK, ":kingdom_hero_id", 1),
        (try_end),
+       
+       (party_get_template_id,":template","$g_encountered_party"),
+
+       (try_begin),
+       (eq,":template","pt_village_patrol_party"),
+            (party_set_ai_object,"$g_encountered_party",-1),
+            (party_set_ai_behavior,"$g_encountered_party",ai_bhvr_hold),
+          
+          (display_message,"@DUDUDUDUDUDUDPA"),
+       (try_end),
               
        (jump_to_menu, "mnu_captivity_wilderness_taken_prisoner"),
     ],

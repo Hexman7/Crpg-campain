@@ -74,6 +74,7 @@ party_templates = [
   ("forager_party","Foraging Party",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("scout_party","Scouts",icon_gray_knight|carries_goods(1)|pf_show_faction,0,fac_commoners,bandit_personality,[]),
   ("patrol_party","Patrol",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,soldier_personality,[]),
+  ("village_patrol_party","Patrol",icon_gray_knight|carries_goods(5)|pf_show_faction|pf_default_behavior,0,fac_commoners,soldier_personality,[]),
 #  ("war_party", "War Party",icon_gray_knight|carries_goods(3),0,fac_commoners,soldier_personality,[]),
   ("messenger_party","Messenger",icon_gray_knight|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("raider_party","Raiders",icon_gray_knight|carries_goods(16)|pf_quest_party,0,fac_commoners,bandit_personality,[]),

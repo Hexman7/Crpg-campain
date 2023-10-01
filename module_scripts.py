@@ -57078,7 +57078,7 @@ scripts = [
     (neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
     (gt,":reinforcements_strenghts",":raider_party_size"),
         (set_spawn_radius,1),
-        (spawn_around_party,":bound_center","pt_patrol_party"),
+        (spawn_around_party,":bound_center","pt_village_patrol_party"),
         (assign,":patrol_party",reg0),
         (party_set_faction,":patrol_party","fac_neutrals"),
         
@@ -57116,17 +57116,32 @@ scripts = [
 ### out: 
 ("cf_call_back_reinforcements",
   [
-    (store_random_party_of_template,":patrol_party","pt_patrol_party"),
-    (get_party_ai_current_behavior,":ai_bhvr",":patrol_party"),
-    
-    (party_is_active,"p_main_party"),
-        (display_message,"@ACTIVE"),
-    (try_begin),
-    (neg|party_is_active,"p_main_party"),
-        (party_get_slot,":party_center",":patrol_party",slot_party_center),
-        (party_set_ai_object,":patrol_party",":party_center"),
-        (party_set_ai_behavior,":patrol_party",ai_bhvr_travel_to_party),
-        (display_message,"@calling back reinforcements"),
+  
+    (try_for_parties,":party"),
+        (party_get_template_id,":template",":party"),
+        
+        (try_begin),
+        (eq,":template","pt_village_patrol_party"),
+            
+            (get_party_ai_current_behavior,":ai_bhvr",":party"),
+        
+
+            (try_begin),
+            (neq,":ai_bhvr",ai_bhvr_attack_party),
+                (party_get_slot,":party_center",":party",slot_party_center),
+                (party_set_ai_object,":party",":party_center"),
+                (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
+                (party_attach_to_party, ":party", ":party_center"),
+                (display_message,"@calling back reinforcements"),
+            (else_try),
+            (eq,":ai_bhvr",ai_bhvr_attack_party),
+                (party_get_attached_to, ":attached_to_party", ":party"),
+                (is_between, ":attached_to_party", centers_begin, centers_end),
+                (assign, ":party_is_in_town", ":attached_to_party"),
+                (party_set_ai_object,":party",-1),
+                (party_set_ai_behavior,":party",ai_bhvr_in_town),
+            (try_end),
+        (try_end),
     (try_end),
  ]),
      
