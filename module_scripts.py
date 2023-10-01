@@ -24801,7 +24801,7 @@ scripts = [
 		(try_begin),
         (lt, ":party_size", ":ideal_size"),
 			(try_begin),
-			(lt, ":party_size", 5),
+			(lt, ":party_size", -1), ### disabled 
 				(party_get_slot,":faction",":village_no",slot_center_native_faction),
 				(try_begin),
 				(eq,":faction",1), ## swadia
@@ -24825,7 +24825,7 @@ scripts = [
 					(assign,":party_template",	"pt_village_defenders"),
 				(try_end),
 			(else_try),
-			(lt, ":party_size", 15),
+			(lt, ":party_size", 5),### changed after added village reinforcements patrol 
 				(party_get_slot,":faction",":village_no",slot_center_native_faction),
 				(try_begin),
 				(eq,":faction",1), ## swadia
@@ -57073,14 +57073,19 @@ scripts = [
     (store_party_size, ":raider_party_size", ":raider_party"),
     (val_add,":raider_party_size",15), 
     
+    (store_party_size, ":center_party_size", ":bound_center"),
+    
     ## decide go or not go to help village
     (try_begin), #go
     (neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
+    (gt,":center_party_size",60),
     (gt,":reinforcements_strenghts",":raider_party_size"),
+    
         (set_spawn_radius,1),
         (spawn_around_party,":bound_center","pt_village_patrol_party"),
         (assign,":patrol_party",reg0),
-        (party_set_faction,":patrol_party","fac_neutrals"),
+        (store_faction_of_party, ":party_fac", ":bound_center"),
+        (party_set_faction,":patrol_party",":party_fac"),
         
         (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
         (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
