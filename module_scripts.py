@@ -35170,7 +35170,7 @@ scripts = [
 			(assign,":volunteer_troop","trp_player_recruit"),
 	   (else_try),
 			(assign,":volunteer_troop","trp_armed_farmer"),
-            # (store_random_in_range, ":random_no", 0, 100),
+            # (store_random_in_range, ":random_no", 0, 100),	## changed to armed peasant - lower lvl, more fair compared to other factions
             # (try_begin),
             # (lt, ":random_no", 50),
                 # (assign,":volunteer_troop","trp_watchman"),
