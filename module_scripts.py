@@ -24801,7 +24801,7 @@ scripts = [
 		(try_begin),
         (lt, ":party_size", ":ideal_size"),
 			(try_begin),
-			(lt, ":party_size", 10),
+			(lt, ":party_size", 5),
 				(party_get_slot,":faction",":village_no",slot_center_native_faction),
 				(try_begin),
 				(eq,":faction",1), ## swadia
@@ -24825,7 +24825,7 @@ scripts = [
 					(assign,":party_template",	"pt_village_defenders"),
 				(try_end),
 			(else_try),
-			(lt, ":party_size", 20),
+			(lt, ":party_size", 15),
 				(party_get_slot,":faction",":village_no",slot_center_native_faction),
 				(try_begin),
 				(eq,":faction",1), ## swadia
