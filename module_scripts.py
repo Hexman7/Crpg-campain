@@ -57240,7 +57240,8 @@ scripts = [
                     (party_attach_to_party, ":party", ":party_center"),
                     (display_message,"@attaching party"),
                 (try_end),
-
+            (else_try),
+				(display_message,"@something's wrong, I can feel it."),
             (try_end),
             
         (try_end),
