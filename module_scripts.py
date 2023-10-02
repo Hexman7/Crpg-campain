@@ -5533,7 +5533,7 @@ scripts = [
   ("game_event_battle_end",
     [
 ##       (store_script_param_1, ":root_defender_party"),
-##       (store_script_param_2, ":root_attacker_party"),
+       (store_script_param_2, ":root_attacker_party"),
         
       #Fixing deleted heroes
       (try_for_range, ":cur_troop", active_npcs_begin, active_npcs_end),
@@ -5626,6 +5626,27 @@ scripts = [
           (try_end),
         (try_end),
       (try_end),
+      
+      #### MOD BEGIN - village reinforcements
+      (try_begin),
+      (party_is_active,":root_attacker_party"),
+          (str_store_party_name,s1,":root_attacker_party"),
+          ### DEBUG
+          (display_message,"@Party: {s1}"),
+          ### DEBUG
+          (party_get_template_id,":template",":root_attacker_party"),
+          
+          (try_begin),
+          (eq,":template","pt_village_patrol_party"),
+            (party_set_ai_object,":root_attacker_party",-1),
+            (party_set_ai_behavior,":root_attacker_party",ai_bhvr_hold),
+            ### DEBUG
+            (display_message,"@Setting patrol ai to hold"),
+            ### DEBUG
+          (try_end),
+      (try_end),
+      #### MOD END
+      
   ]),   
   
   #script_order_best_besieger_party_to_guard_center:
@@ -57060,42 +57081,79 @@ scripts = [
     (try_begin),
     (is_between,":bound_center",towns_begin,towns_end),
        (assign,":portion",5),
+       (assign,":size",200),
     (else_try),
-        (assign,":portion",2),
+       (assign,":portion",2),
+       (assign,":size",70),
     (try_end),
-    
     
     ##calculate strenghts
     (store_div,":reinforcements_strenghts",":bound_center_garrison",":portion"),
-    
     
     ## raider party size + 15 - reinforcements needs advantage to attack
     (store_party_size, ":raider_party_size", ":raider_party"),
     (val_add,":raider_party_size",15), 
     
+    ## alternative:
+    ## compare levels sum of troops in both parties 
+    (call_script,"script_get_party_level_sum",":raider_party"),
+    (assign,":raider_party_levels",reg0),
+    (val_add,":raider_party_levels",100),
+    (assign,reg5,":raider_party_levels"),
+    (display_message,"@Raider party levels{reg5}"),
+    
+    ## creating and spawning party to check if they have better quality troops
+    (set_spawn_radius,1),
+    (spawn_around_party,":bound_center","pt_village_patrol_party"),
+    (assign,":patrol_party",reg0),
+    (store_faction_of_party, ":party_fac", ":bound_center"),
+    (party_set_faction,":patrol_party",":party_fac"),
+    
+    (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
+    (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+        (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
+        (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
+        (store_div,":number_to_move", ":stack_size", ":portion"),
+        (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
+        (assign, ":number_moved", reg0),
+        (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
+    (try_end),
+    (call_script,"script_get_party_level_sum",":patrol_party"),
+    (assign,":patrol_party_levels",reg0),
+    
+    
+    
+    ## get center garrison size
     (store_party_size, ":center_party_size", ":bound_center"),
     
+    ### 
+    (call_script,"script_check_enemies_nearby_party",":village_no",":raider_party"),
+    (assign,reg1,reg0),
+    (call_script,"script_check_enemies_nearby_party",":bound_center",":raider_party"),
     ## decide go or not go to help village
     (try_begin), #go
     (neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
-    (gt,":center_party_size",60),
+    (ge,":center_party_size",":size"),
     (gt,":reinforcements_strenghts",":raider_party_size"),
+    (gt,":patrol_party_levels",":raider_party_levels"),
+   # (eq,reg1,0),
+   # (eq,reg0,0),
     
-        (set_spawn_radius,1),
-        (spawn_around_party,":bound_center","pt_village_patrol_party"),
-        (assign,":patrol_party",reg0),
-        (store_faction_of_party, ":party_fac", ":bound_center"),
-        (party_set_faction,":patrol_party",":party_fac"),
+        # (set_spawn_radius,1),
+        # (spawn_around_party,":bound_center","pt_village_patrol_party"),
+        # (assign,":patrol_party",reg0),
+        # (store_faction_of_party, ":party_fac", ":bound_center"),
+        # (party_set_faction,":patrol_party",":party_fac"),
         
-        (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
-        (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
-            (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
-            (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
-            (store_div,":number_to_move", ":stack_size", ":portion"),
-            (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
-            (assign, ":number_moved", reg0),
-            (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
-        (try_end),
+        # (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
+        # (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+            # (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
+            # (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
+            # (store_div,":number_to_move", ":stack_size", ":portion"),
+            # (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
+            # (assign, ":number_moved", reg0),
+            # (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
+        # (try_end),
         ## DEBUG
         (display_message,"@Sending reinforcements"),
         ## DEBUG
@@ -57108,6 +57166,14 @@ scripts = [
         (party_set_slot,":village_no",slot_center_received_reinforcements,1),
     ## DEBUG
     (else_try),
+        (party_get_num_companion_stacks, ":num_stacks",":patrol_party"),
+        (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+            (party_stack_get_troop_id,     ":stack_troop",":patrol_party",":stack_no"),
+            (party_stack_get_size,    ":stack_size",":patrol_party",":stack_no"),
+            (party_remove_members, ":patrol_party", ":stack_troop", ":stack_size"),
+            (party_add_members, ":bound_center", ":stack_troop", ":stack_size"),
+        (try_end),
+        (remove_party,":patrol_party"), 
         (display_message,"@Nope"),
     ## DEBUG
     (try_end),
@@ -57141,9 +57207,8 @@ scripts = [
                # (party_attach_to_party, ":party", ":party_center"),
                 (display_message,"@calling back reinforcements"),
             (else_try),
-			#(eq,":ai_bhvr",ai_bhvr_in_town),
+			(this_or_next|eq,":ai_bhvr",ai_bhvr_in_town),
 			(eq,":attached_to",":party_center"),
-            
                 (display_message,"@merging parties"),
                 
 				(party_get_num_companion_stacks, ":num_stacks",":party"),
@@ -57181,6 +57246,74 @@ scripts = [
         (try_end),
     (try_end),
  ]),
+     
+     
+     
+     
+###script_check_enemies_nearby_party
+### checking if there are enemy parties near party_no excluding raiding_party
+### IN: param1: :party_no, param2 excluded party = :raiding_party
+### out: reg0
+("check_enemies_nearby_party",
+  [
+    (store_script_param_1,":party_no"),
+    (store_script_param_2,":raiding_party"),
+    
+    (store_faction_of_party, ":party_no_faction", ":party_no"),
+    (assign,reg0,0),
+    
+    (try_for_parties,":party"),
+        (str_store_party_name,s1,":party"),
+        (store_faction_of_party, ":party_faction", ":party"),
+        (try_begin),
+        (neq,":party",":raiding_party"),
+        (is_between,":party_faction",kingdoms_begin, kingdoms_end),
+            (store_relation,":faction_relations",":party_faction",":party_no_faction"),
+            (store_distance_to_party_from_party,":distance",":party",":party_no"),
+            
+            (try_begin),
+            (lt,":faction_relations",0),
+            (lt,":distance",10),
+                (display_message,"@enemies nearby {s1}"),
+                (assign,reg0,1),
+            (try_end),
+        (try_end),
+    (try_end),
+  
+ ]),
+ 
+ 
+##script_get_party_level_sum
+### calling back reinforcements to the city
+### IN: 
+### out: 
+("get_party_level_sum",
+  [
+    (store_script_param_1,":party_no"),
+    (assign,":level_sum",0),
+
+    (party_get_num_companion_stacks, ":num_stacks",":party_no"),
+    (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+        (party_stack_get_troop_id,     ":stack_troop",":party_no",":stack_no"),
+        (party_stack_get_size,    ":stack_size",":party_no",":stack_no"),
+        
+        (store_character_level, ":troop_level", ":stack_troop"),
+        (store_mul,":value",":troop_level",":stack_size"),
+        (val_add,":level_sum",":value"),
+    (try_end),
+    
+    (assign,reg0,":level_sum"),
+    
+    #### DEBUG
+    (display_message,"@levels_sum {reg0}"),
+    #### DEBUG
+    
+    
+    
+  
+ ]),
+ 
+ 
      
 #COOP BEGIN ###################
 ] + coop_scripts 
