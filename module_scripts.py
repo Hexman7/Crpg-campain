@@ -5532,7 +5532,7 @@ scripts = [
   # param2: Attacker Party
   ("game_event_battle_end",
     [
-##       (store_script_param_1, ":root_defender_party"),
+       (store_script_param_1, ":root_defender_party"),
        (store_script_param_2, ":root_attacker_party"),
         
       #Fixing deleted heroes
@@ -5626,25 +5626,49 @@ scripts = [
           (try_end),
         (try_end),
       (try_end),
-      
+	  
+	  # (str_store_party_name,s1,":root_attacker_party"),
+	  # (str_store_party_name,s2,":root_defender_party"),
+	  # (display_message,"@ ===================================="),
+	  # (display_message,"@ Defender: {s1}, Attacker: {s2}"),
+	  # (display_message,"@ ===================================="),
+	  
       #### MOD BEGIN - village reinforcements
       (try_begin),
       (party_is_active,":root_attacker_party"),
           (str_store_party_name,s1,":root_attacker_party"),
           ### DEBUG
-          (display_message,"@Party: {s1}"),
+          #(display_message,"@Atacker party: {s1}"),
           ### DEBUG
           (party_get_template_id,":template",":root_attacker_party"),
           
           (try_begin),
           (eq,":template","pt_village_patrol_party"),
+			(display_message,"@Atacker party: {s1}"),
             (party_set_ai_object,":root_attacker_party",-1),
             (party_set_ai_behavior,":root_attacker_party",ai_bhvr_hold),
             ### DEBUG
             (display_message,"@Setting patrol ai to hold"),
             ### DEBUG
           (try_end),
-      (try_end),
+	  (else_try),
+      (party_is_active,":root_defender_party"),	  
+		  (str_store_party_name,s1,":root_defender_party"),
+          ### DEBUG
+          #(display_message,"@Defender party: {s1}"),
+          ### DEBUG
+          (party_get_template_id,":template",":root_defender_party"),
+          
+          (try_begin),
+          (eq,":template","pt_village_patrol_party"),
+			(display_message,"@Defender party: {s1}"),
+            (party_set_ai_object,":root_defender_party",-1),
+            (party_set_ai_behavior,":root_defender_party",ai_bhvr_hold),
+            ### DEBUG
+            (display_message,"@Setting patrol ai to hold"),
+            ### DEBUG
+          (try_end),
+	  (try_end),
       #### MOD END
       
   ]),   
@@ -57072,112 +57096,130 @@ scripts = [
     (store_script_param_2,":raider_party"),
     
     (assign,":portion", 0),
-    
+	
+
+	
     ## get town or castle of village
     (party_get_slot,":bound_center",":village_no",slot_village_bound_center),
     (store_party_size, ":bound_center_garrison", ":bound_center"),
     
-    ### get portion of garisson depending on center type
-    (try_begin),
-    (is_between,":bound_center",towns_begin,towns_end),
-       (assign,":portion",5),
-       (assign,":size",200),
-    (else_try),
-       (assign,":portion",2),
-       (assign,":size",70),
+	(party_get_slot,":center_received_reinforcements",":village_no",slot_center_received_reinforcements),
+
+	
+	(try_begin),
+	(neq, ":center_received_reinforcements", 1),
+	
+		### get portion of garisson depending on center type
+		(try_begin),
+		(is_between,":bound_center",towns_begin,towns_end),
+		   (assign,":portion",5),
+		   (assign,":size",200),
+		(else_try),
+		   (assign,":portion",2),
+		   (assign,":size",70),
+		(try_end),
+		
+		##calculate strenghts
+		(store_div,":reinforcements_strenghts",":bound_center_garrison",":portion"),
+		
+		## raider party size + 15 - reinforcements needs advantage to attack
+		(store_party_size, ":raider_party_size", ":raider_party"),
+		(val_add,":raider_party_size",15), 
+		
+		## alternative:
+		## compare levels sum of troops in both parties 
+		(call_script,"script_get_party_level_sum",":raider_party"),
+		(assign,":raider_party_levels",reg0),
+		(val_add,":raider_party_levels",100),
+		(assign,reg5,":raider_party_levels"),
+		(display_message,"@ ===================================="),
+		(display_message,"@Raider party levels{reg5}"),
+		(display_message,"@ ===================================="),
+		
+		## creating and spawning party to check if they have better quality troops
+		(set_spawn_radius,1),
+		(spawn_around_party,":bound_center","pt_village_patrol_party"),
+		(assign,":patrol_party",reg0),
+		(store_faction_of_party, ":party_fac", ":bound_center"),
+		(party_set_faction,":patrol_party",":party_fac"),
+		
+		(party_get_num_companion_stacks, ":num_stacks",":bound_center"),
+		(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+			(party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
+			(party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
+			(store_div,":number_to_move", ":stack_size", ":portion"),
+			(party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
+			(assign, ":number_moved", reg0),
+			(party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
+		(try_end),
+		(call_script,"script_get_party_level_sum",":patrol_party"),
+		(assign,":patrol_party_levels",reg0),
+		
+		
+		
+		## get center garrison size
+		(store_party_size, ":center_party_size", ":bound_center"),
+		
+		### 
+		(call_script,"script_check_enemies_nearby_party",":village_no",":raider_party"),
+		(assign,reg1,reg0),
+		(call_script,"script_check_enemies_nearby_party",":bound_center",":raider_party"),
+		## decide go or not go to help village
+		(try_begin), #go
+		(neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
+		(ge,":center_party_size",":size"),
+		(gt,":reinforcements_strenghts",":raider_party_size"),
+		(gt,":patrol_party_levels",":raider_party_levels"),
+	   # (eq,reg1,0),
+	   # (eq,reg0,0),
+		
+			# (set_spawn_radius,1),
+			# (spawn_around_party,":bound_center","pt_village_patrol_party"),
+			# (assign,":patrol_party",reg0),
+			# (store_faction_of_party, ":party_fac", ":bound_center"),
+			# (party_set_faction,":patrol_party",":party_fac"),
+			
+			# (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
+			# (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+				# (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
+				# (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
+				# (store_div,":number_to_move", ":stack_size", ":portion"),
+				# (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
+				# (assign, ":number_moved", reg0),
+				# (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
+			# (try_end),
+			## DEBUG
+			(display_message,"@ ===================================="),
+			(display_message,"@Sending reinforcements"),
+			(display_message,"@ ===================================="),
+			## DEBUG
+			(party_set_ai_object,":patrol_party",":raider_party"),
+			(party_set_ai_behavior,":patrol_party",ai_bhvr_attack_party),
+			(party_set_slot,":patrol_party",slot_party_center,":bound_center"),
+			#(party_set_helpfulness, ":patrol_party", 50), 
+			
+			
+			(party_set_slot,":village_no",slot_center_received_reinforcements,1),
+		## DEBUG
+		(else_try),
+			(party_get_num_companion_stacks, ":num_stacks",":patrol_party"),
+			(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
+				(party_stack_get_troop_id,     ":stack_troop",":patrol_party",":stack_no"),
+				(party_stack_get_size,    ":stack_size",":patrol_party",":stack_no"),
+				(party_remove_members, ":patrol_party", ":stack_troop", ":stack_size"),
+				(party_add_members, ":bound_center", ":stack_troop", ":stack_size"),
+			(try_end),
+			(remove_party,":patrol_party"), 
+			(display_message,"@ ===================================="),
+			(display_message,"@Nope"),
+			(display_message,"@ ===================================="),
+		## DEBUG
+		(try_end),
+	(else_try),
+		(display_message,"@ ===================================="),
+		(display_message,"@Reinforcements already sent"),
+		(display_message,"@ ===================================="),
     (try_end),
-    
-    ##calculate strenghts
-    (store_div,":reinforcements_strenghts",":bound_center_garrison",":portion"),
-    
-    ## raider party size + 15 - reinforcements needs advantage to attack
-    (store_party_size, ":raider_party_size", ":raider_party"),
-    (val_add,":raider_party_size",15), 
-    
-    ## alternative:
-    ## compare levels sum of troops in both parties 
-    (call_script,"script_get_party_level_sum",":raider_party"),
-    (assign,":raider_party_levels",reg0),
-    (val_add,":raider_party_levels",100),
-    (assign,reg5,":raider_party_levels"),
-    (display_message,"@Raider party levels{reg5}"),
-    
-    ## creating and spawning party to check if they have better quality troops
-    (set_spawn_radius,1),
-    (spawn_around_party,":bound_center","pt_village_patrol_party"),
-    (assign,":patrol_party",reg0),
-    (store_faction_of_party, ":party_fac", ":bound_center"),
-    (party_set_faction,":patrol_party",":party_fac"),
-    
-    (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
-    (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
-        (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
-        (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
-        (store_div,":number_to_move", ":stack_size", ":portion"),
-        (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
-        (assign, ":number_moved", reg0),
-        (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
-    (try_end),
-    (call_script,"script_get_party_level_sum",":patrol_party"),
-    (assign,":patrol_party_levels",reg0),
-    
-    
-    
-    ## get center garrison size
-    (store_party_size, ":center_party_size", ":bound_center"),
-    
-    ### 
-    (call_script,"script_check_enemies_nearby_party",":village_no",":raider_party"),
-    (assign,reg1,reg0),
-    (call_script,"script_check_enemies_nearby_party",":bound_center",":raider_party"),
-    ## decide go or not go to help village
-    (try_begin), #go
-    (neg|party_slot_eq,":bound_center", slot_village_state, svs_under_siege),
-    (ge,":center_party_size",":size"),
-    (gt,":reinforcements_strenghts",":raider_party_size"),
-    (gt,":patrol_party_levels",":raider_party_levels"),
-   # (eq,reg1,0),
-   # (eq,reg0,0),
-    
-        # (set_spawn_radius,1),
-        # (spawn_around_party,":bound_center","pt_village_patrol_party"),
-        # (assign,":patrol_party",reg0),
-        # (store_faction_of_party, ":party_fac", ":bound_center"),
-        # (party_set_faction,":patrol_party",":party_fac"),
-        
-        # (party_get_num_companion_stacks, ":num_stacks",":bound_center"),
-        # (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
-            # (party_stack_get_troop_id,     ":stack_troop",":bound_center",":stack_no"),
-            # (party_stack_get_size,    ":stack_size",":bound_center",":stack_no"),
-            # (store_div,":number_to_move", ":stack_size", ":portion"),
-            # (party_remove_members, ":bound_center", ":stack_troop", ":number_to_move"),
-            # (assign, ":number_moved", reg0),
-            # (party_add_members, ":patrol_party", ":stack_troop", ":number_moved"),
-        # (try_end),
-        ## DEBUG
-        (display_message,"@Sending reinforcements"),
-        ## DEBUG
-        (party_set_ai_object,":patrol_party",":raider_party"),
-        (party_set_ai_behavior,":patrol_party",ai_bhvr_attack_party),
-        (party_set_slot,":patrol_party",slot_party_center,":bound_center"),
-        #(party_set_helpfulness, ":patrol_party", 50), 
-        
-        
-        (party_set_slot,":village_no",slot_center_received_reinforcements,1),
-    ## DEBUG
-    (else_try),
-        (party_get_num_companion_stacks, ":num_stacks",":patrol_party"),
-        (try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
-            (party_stack_get_troop_id,     ":stack_troop",":patrol_party",":stack_no"),
-            (party_stack_get_size,    ":stack_size",":patrol_party",":stack_no"),
-            (party_remove_members, ":patrol_party", ":stack_troop", ":stack_size"),
-            (party_add_members, ":bound_center", ":stack_troop", ":stack_size"),
-        (try_end),
-        (remove_party,":patrol_party"), 
-        (display_message,"@Nope"),
-    ## DEBUG
-    (try_end),
-    
  ]),
  
  
@@ -57198,19 +57240,25 @@ scripts = [
 			(party_get_attached_to, ":attached_to", ":party"),
 			(party_get_slot,":party_center",":party",slot_party_center),
 			(assign,reg0,":ai_bhvr"),
+			(display_message,"@ ===================================="),
             (display_message,"@AI BHVR{reg0}"),
-            
+            (display_message,"@ ===================================="),
+			
             (try_begin),
             (eq,":ai_bhvr",ai_bhvr_hold),
                 (party_set_ai_object,":party",":party_center"),
                 (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
                # (party_attach_to_party, ":party", ":party_center"),
+			    (display_message,"@ ===================================="),
                 (display_message,"@calling back reinforcements"),
+				(display_message,"@ ===================================="),
             (else_try),
 			(this_or_next|eq,":ai_bhvr",ai_bhvr_in_town),
 			(eq,":attached_to",":party_center"),
+				(display_message,"@ ===================================="),
                 (display_message,"@merging parties"),
-                
+                (display_message,"@ ===================================="),
+				
 				(party_get_num_companion_stacks, ":num_stacks",":party"),
 				(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
 					(party_stack_get_troop_id,     ":stack_troop",":party",":stack_no"),
@@ -57232,16 +57280,21 @@ scripts = [
             (eq,":ai_bhvr",ai_bhvr_travel_to_party),
 				(party_get_slot,":party_center",":party",slot_party_center),
 				(store_distance_to_party_from_party,":distance",":party",":party_center"),
+				(display_message,"@ ===================================="),
                 (display_message,"@checking distance"),
-                
+                (display_message,"@ ===================================="),
                 (try_begin),
                 (lt,":distance",3),
                 (neq,":attached_to",":party_center"),
                     (party_attach_to_party, ":party", ":party_center"),
+					(display_message,"@ ===================================="),
                     (display_message,"@attaching party"),
+					(display_message,"@ ===================================="),
                 (try_end),
             (else_try),
+				(display_message,"@ ===================================="),
 				(display_message,"@something's wrong, I can feel it."),
+				(display_message,"@ ===================================="),
             (try_end),
             
         (try_end),
@@ -57275,7 +57328,9 @@ scripts = [
             (try_begin),
             (lt,":faction_relations",0),
             (lt,":distance",10),
+				(display_message,"@ ===================================="),
                 (display_message,"@enemies nearby {s1}"),
+				(display_message,"@ ===================================="),
                 (assign,reg0,1),
             (try_end),
         (try_end),
@@ -57306,7 +57361,9 @@ scripts = [
     (assign,reg0,":level_sum"),
     
     #### DEBUG
+	(display_message,"@ ===================================="),
     (display_message,"@levels_sum {reg0}"),
+	(display_message,"@ ===================================="),
     #### DEBUG
     
     
@@ -57314,6 +57371,37 @@ scripts = [
   
  ]),
  
+ 
+##script_cf_send_party_back_to_center
+### calling back reinforcements to the city
+### IN: 
+### out: 
+("cf_send_party_back_to_center",
+  [
+	(store_script_param_1,":root_attacker_party"),
+	
+	(str_store_party_name,s1,":root_attacker_party"),
+	### DEBUG
+	# (display_message,"@ ===================================="),
+	# (display_message,"@Atacker party: {s1}"),
+	# (display_message,"@ ===================================="),
+	### DEBUG
+	(party_get_template_id,":template",":root_attacker_party"),
+	  
+	(try_begin),
+	(eq,":template","pt_village_patrol_party"),
+		(party_set_ai_object,":root_attacker_party",-1),
+		(party_set_ai_behavior,":root_attacker_party",ai_bhvr_hold),
+		### DEBUG
+		(display_message,"@ ===================================="),
+		(display_message,"@Setting patrol ai to hold"),
+		(display_message,"@ ===================================="),
+		### DEBUG
+	(try_end),
+    
+    
+  
+ ]),
  
      
 #COOP BEGIN ###################
