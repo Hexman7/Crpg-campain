@@ -57142,6 +57142,9 @@ scripts = [
 		(assign,":patrol_party",reg0),
 		(store_faction_of_party, ":party_fac", ":bound_center"),
 		(party_set_faction,":patrol_party",":party_fac"),
+		(party_set_ai_object,":patrol_party",":bound_center"),
+		(party_set_ai_behavior,":patrol_party",ai_bhvr_patrol_location),
+		
 		
 		(party_get_num_companion_stacks, ":num_stacks",":bound_center"),
 		(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
@@ -57170,8 +57173,8 @@ scripts = [
 		(ge,":center_party_size",":size"),
 		(gt,":reinforcements_strenghts",":raider_party_size"),
 		(gt,":patrol_party_levels",":raider_party_levels"),
-	   # (eq,reg1,0),
-	   # (eq,reg0,0),
+	    (eq,reg1,0),
+	    (eq,reg0,0),
 		
 			# (set_spawn_radius,1),
 			# (spawn_around_party,":bound_center","pt_village_patrol_party"),
