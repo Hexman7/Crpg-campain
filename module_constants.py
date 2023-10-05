@@ -355,7 +355,7 @@ slot_town_is_capitol = 74 ### crpg-campaign: center is capitol
 ### mod begin
 slot_center_received_reinforcements = 75
 slot_party_center = 76
-
+slot_party_reinforcements_center = 77
 ## mod end
 
 #slot_town_rebellion_contact   = 76

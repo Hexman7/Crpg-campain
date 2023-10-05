@@ -57132,9 +57132,11 @@ scripts = [
 		(assign,":raider_party_levels",reg0),
 		(val_add,":raider_party_levels",100),
 		(assign,reg5,":raider_party_levels"),
-		(display_message,"@ ===================================="),
-		(display_message,"@Raider party levels{reg5}"),
-		(display_message,"@ ===================================="),
+		#### DEBUG
+		# (display_message,"@ ===================================="),
+		# (display_message,"@Raider party levels{reg5}"),
+		# (display_message,"@ ===================================="),
+		#### DEBUG
 		
 		## creating and spawning party to check if they have better quality troops
 		(set_spawn_radius,1),
@@ -57203,7 +57205,8 @@ scripts = [
 			
 			
 			(party_set_slot,":village_no",slot_center_received_reinforcements,1),
-		## DEBUG
+			(party_set_slot,":patrol_party",slot_party_reinforcements_center,":village_no"),
+		
 		(else_try),
 			(party_get_num_companion_stacks, ":num_stacks",":patrol_party"),
 			(try_for_range_backwards, ":stack_no", 0, ":num_stacks"),
@@ -57213,9 +57216,10 @@ scripts = [
 				(party_add_members, ":bound_center", ":stack_troop", ":stack_size"),
 			(try_end),
 			(remove_party,":patrol_party"), 
-			(display_message,"@ ===================================="),
-			(display_message,"@Nope"),
-			(display_message,"@ ===================================="),
+		#### DEBUG
+			# (display_message,"@ ===================================="),
+			# (display_message,"@Nope"),
+			# (display_message,"@ ===================================="),
 		## DEBUG
 		(try_end),
 	(else_try),
@@ -57278,6 +57282,8 @@ scripts = [
 					(party_add_prisoners, ":party_center", ":stack_troop", ":stack_size"),
 				(try_end),
 				
+				(party_get_slot,":village",":party",slot_party_reinforcements_center),
+				(party_set_slot,":village",slot_center_received_reinforcements,0),
 				(remove_party,":party"), 
             (else_try),
             (eq,":ai_bhvr",ai_bhvr_travel_to_party),
@@ -57331,9 +57337,11 @@ scripts = [
             (try_begin),
             (lt,":faction_relations",0),
             (lt,":distance",10),
-				(display_message,"@ ===================================="),
-                (display_message,"@enemies nearby {s1}"),
-				(display_message,"@ ===================================="),
+				#### DEBUG
+				# (display_message,"@ ===================================="),
+                # (display_message,"@enemies nearby {s1}"),
+				# (display_message,"@ ===================================="),
+				#### DEBUG
                 (assign,reg0,1),
             (try_end),
         (try_end),
@@ -57364,9 +57372,9 @@ scripts = [
     (assign,reg0,":level_sum"),
     
     #### DEBUG
-	(display_message,"@ ===================================="),
-    (display_message,"@levels_sum {reg0}"),
-	(display_message,"@ ===================================="),
+	# (display_message,"@ ===================================="),
+    # (display_message,"@levels_sum {reg0}"),
+	# (display_message,"@ ===================================="),
     #### DEBUG
     
     

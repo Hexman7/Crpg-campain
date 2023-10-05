@@ -4654,7 +4654,7 @@ game_menus = [
        [], "Create Party.",
        [
 		(set_spawn_radius,1),
-		(spawn_around_party,"p_village_84","pt_village_patrol_party"),
+		(spawn_around_party,"p_village_84","pt_raider_party"),
 		(assign,"$village_attackers",reg0),
 		(party_set_faction,"$village_attackers","fac_kingdom_2"),
 		(party_add_members, "$village_attackers", "trp_mercenary_soldier", 30),
