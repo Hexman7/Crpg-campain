@@ -1510,7 +1510,7 @@ scripts = [
 
         #### mod begin
         # initialize item modifiers
-      (call_script,"script_initialize_item_modifiers"),
+  #    (call_script,"script_initialize_item_modifiers"),
     ## mod end
       #for multiplayer mode
       (assign, "$g_multiplayer_selected_map", multiplayer_scenes_begin),
