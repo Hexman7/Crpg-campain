@@ -5633,7 +5633,7 @@ scripts = [
 	  # (display_message,"@ Defender: {s1}, Attacker: {s2}"),
 	  # (display_message,"@ ===================================="),
 	  
-      #### MOD BEGIN - village reinforcements
+      #### MOD BEGIN - village reinforcements - set AI behavior to Hold after battle
       (try_begin),
       (party_is_active,":root_attacker_party"),
           (str_store_party_name,s1,":root_attacker_party"),
@@ -57200,6 +57200,12 @@ scripts = [
 			## DEBUG
 			(party_set_ai_object,":patrol_party",":raider_party"),
 			(party_set_ai_behavior,":patrol_party",ai_bhvr_attack_party),
+			# (party_set_ai_object,":patrol_party",":village_no"),
+			# (party_set_ai_behavior,":patrol_party",ai_bhvr_patrol_location),
+            # (party_get_position, pos1, ":village_no"),
+            # (party_set_ai_patrol_radius, ":patrol_party", 5),
+            # (party_set_ai_target_position, ":patrol_party", pos1),
+            # (party_set_flags, ":patrol_party", pf_default_behavior, 0),
 			(party_set_slot,":patrol_party",slot_party_center,":bound_center"),
 			#(party_set_helpfulness, ":patrol_party", 50), 
 			
@@ -57316,7 +57322,7 @@ scripts = [
 ###script_check_enemies_nearby_party
 ### checking if there are enemy parties near party_no excluding raiding_party
 ### IN: param1: :party_no, param2 excluded party = :raiding_party
-### out: reg0
+### out: reg0 : 1 - if there are enemies nearby, 0 - if there isn't
 ("check_enemies_nearby_party",
   [
     (store_script_param_1,":party_no"),
@@ -57351,9 +57357,9 @@ scripts = [
  
  
 ##script_get_party_level_sum
-### calling back reinforcements to the city
-### IN: 
-### out: 
+### getting party's levels sum
+### IN: party_no
+### out:  reg0 - summed party levels
 ("get_party_level_sum",
   [
     (store_script_param_1,":party_no"),
