@@ -700,6 +700,8 @@ spvr_undefined = -1
 spvr_riding_out_to_patrol = 2
 spvr_patrolling_around_center = 3
 spvr_going_back_to_center = 4
+spvr_entered_center = 5
+spvr_waiting_after_battle = 6
 #spvr_
 
 

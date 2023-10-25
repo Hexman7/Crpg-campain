@@ -4231,7 +4231,9 @@ simple_triggers = [
 
  (3,
   [
-    (call_script, "script_cf_call_back_reinforcements"),
+    #(call_script, "script_cf_call_back_reinforcements"),
+    (call_script, "script_cf_handle_reinforcement_parties_ais"),
+    
   ]),
 ##   
  
