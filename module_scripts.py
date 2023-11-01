@@ -56845,7 +56845,7 @@ scripts = [
   ]),       
 ###
 	
-###Script initialize_item_modifiers
+###script_initialize_item_modifiers
 ### initializes items modifiers: +1, +2 ,+3
 ("initialize_item_modifiers",
   [
