@@ -694,6 +694,7 @@ pis_ship                        = 2
 
 slot_village_reinforcements_action = 251
 slot_village_reinforcements_action_time = 252
+slot_village_reinforcements_action_max_time = 253
 
 ## slot party village reinforcements
 spvr_undefined = -1

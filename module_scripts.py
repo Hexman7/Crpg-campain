@@ -5645,12 +5645,7 @@ scripts = [
           (try_begin),
           (eq,":template","pt_village_patrol_party"),
 			(display_message,"@Atacker party: {s1}"),
-            (party_set_ai_object,":root_attacker_party",-1),
-            (party_set_ai_behavior,":root_attacker_party",ai_bhvr_hold),
-            (party_set_slot,":root_attacker_party",slot_village_reinforcements_action,spvr_waiting_after_battle),
-            ### DEBUG
-            (display_message,"@Setting patrol ai to hold"),
-            ### DEBUG
+            (call_script,"script_village_reinforcements_after_battle",":root_attacker_party",":root_defender_party"),
           (try_end),
 	  (else_try),
       (party_is_active,":root_defender_party"),	  
@@ -5659,16 +5654,11 @@ scripts = [
           #(display_message,"@Defender party: {s1}"),
           ### DEBUG
           (party_get_template_id,":template",":root_defender_party"),
-          
+
           (try_begin),
           (eq,":template","pt_village_patrol_party"),
 			(display_message,"@Defender party: {s1}"),
-            (party_set_ai_object,":root_defender_party",-1),
-            (party_set_ai_behavior,":root_defender_party",ai_bhvr_hold),
-            (party_set_slot,":root_defender_party",slot_village_reinforcements_action,spvr_waiting_after_battle),
-            ### DEBUG
-            (display_message,"@Setting patrol ai to hold"),
-            ### DEBUG
+            (call_script,"script_village_reinforcements_after_battle",":root_defender_party",":root_attacker_party"),
           (try_end),
 	  (try_end),
       #### MOD END
@@ -57503,10 +57493,10 @@ scripts = [
 	    (eq,reg1,0),
 	    (eq,reg0,0),  
 
-        
+            (str_store_party_name,s1,":village_no"),
             ## DEBUG
             (display_message,"@ ===================================="),
-            (display_message,"@Sending reinforcements"),
+            (display_message,"@Sending reinforcements to {s1}"),
             (display_message,"@ ===================================="),
             ## DEBUG
         
@@ -57518,10 +57508,21 @@ scripts = [
             (party_set_ai_target_position, ":patrol_party", pos1),
             (party_set_flags, ":patrol_party", pf_default_behavior, 0),
             
+            ### setting initiative and aggressiveness so patrol wont waste time for bandit parties nearby
+            (party_set_ai_initiative, ":patrol_party", 20),
+            (party_set_aggressiveness, ":patrol_party", 3),
+            
             ## set party's center (which it came from)
             (party_set_slot,":patrol_party",slot_party_center,":bound_center"),
             (party_set_slot,":village_no",slot_center_received_reinforcements,1),
             (party_set_slot,":patrol_party",slot_party_reinforcements_center,":village_no"),
+            
+            
+            #### setting max action time
+            (store_current_hours, ":cur_hours"),
+            (store_add,":max_hours",":cur_hours",72),
+            (party_set_slot,":patrol_party",slot_village_reinforcements_action_max_time,":max_hours"),
+            
             
         (else_try),### center can't send reinforcements (remove created party)
 			(party_get_num_companion_stacks, ":num_stacks",":patrol_party"),
@@ -57560,26 +57561,58 @@ scripts = [
     (try_begin),
     (eq,":template","pt_village_patrol_party"),
     
-    (party_get_attached_to, ":attached_to", ":party"),
-    (party_get_slot,":party_center",":party",slot_party_center),
-    (party_get_slot,":party_action",":party",slot_village_reinforcements_action),
-    (party_get_slot,":village_no",":party",slot_party_reinforcements_center),
+        (party_get_attached_to, ":attached_to", ":party"),
+        (party_get_slot,":party_center",":party",slot_party_center),
+        (party_get_slot,":party_action",":party",slot_village_reinforcements_action),
+        (party_get_slot,":village_no",":party",slot_party_reinforcements_center),
+        
+        
+        (party_get_slot,":max_time",":party",slot_village_reinforcements_action_max_time),
+        (store_current_hours, ":cur_hours"),
+        (party_get_battle_opponent, ":opponent", ":party"),
+        
+        (try_begin),
+        (gt,":cur_hours",":max_time"),
+        (le,":opponent",0), ## and is not in a figth
+        (neq,":party_action",spvr_going_back_to_center),
+        (neq,":party_action",spvr_entered_center),
+            (party_set_slot,":party",slot_village_reinforcements_action,spvr_going_back_to_center),
+            (party_set_slot,":party",slot_village_reinforcements_action_time,-1),
+            (party_set_ai_object,":party",":party_center"),
+            (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
+            (party_set_ai_initiative, ":party", 20),
+            (party_set_aggressiveness, ":party", 3),
+            ### DEBUG
+            (display_message,"@ ===================================="),
+            (display_message,"@calling back reinforcements after breaching action max time"),
+            (display_message,"@ ===================================="),
+            ### DEBUG
+        
+        
+        (try_end),
+        
     
         (get_party_ai_current_behavior,":ai_bhvr",":party"),
         (store_distance_to_party_from_party,":distance",":party",":village_no"),
         (try_begin),
         (neq,":party_action",spvr_riding_out_to_patrol),
         (eq,":ai_bhvr",ai_bhvr_attack_party),
-        (ge,":distance",10),
+        (ge,":distance",8),
         
+            ## party will go back to village victinity and continue patrolling from there
+            (party_set_slot,":party",slot_village_reinforcements_action,spvr_riding_out_to_patrol),
             (party_set_ai_object,":party",":village_no"),
-            (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
+            (party_get_position, pos1, ":village_no"),
+            (party_set_ai_behavior,":party",ai_bhvr_travel_to_point),
+            (party_set_ai_target_position, ":party", pos1),
+            (party_set_flags, ":party", pf_default_behavior, 0),
             (party_set_ai_initiative, ":party", 20),
             (party_set_aggressiveness, ":party", 3),
             ### DEBUG
             (display_message,"@ ===================================="),
             (display_message,"@Calling back patrol. It's too far."),
             (display_message,"@ ===================================="),
+        
             ### DEBUG
         (try_end),
         
@@ -57595,7 +57628,10 @@ scripts = [
                 (party_set_slot,":party",slot_village_reinforcements_action_time,":cur_hours"),
                 (party_set_ai_object,":party",":village_no"),
                 (party_set_ai_behavior,":party",ai_bhvr_patrol_location),
-                (party_set_ai_patrol_radius, ":party", 6), ## to be tested
+                (party_set_ai_patrol_radius, ":party", 3), ## to be tested
+                ### setting initiative and aggressiveness back to normal
+                (party_set_ai_initiative, ":party", 100),
+                (party_set_aggressiveness, ":party", 6),
                 
                 ### DEBUG
                 (display_message,"@ ===================================="),
@@ -57608,7 +57644,7 @@ scripts = [
            (party_get_slot,":party_action_time",":party",slot_village_reinforcements_action_time),
            (store_current_hours, ":cur_hours"),
            (store_sub,":patrolling_time",":cur_hours",":party_action_time"),
-           (party_get_battle_opponent, ":opponent", ":party"),
+           
            
            (try_begin), ## if party patrol time is equal or more than 12hours
            (ge,":patrolling_time",12),
@@ -57690,6 +57726,30 @@ scripts = [
   (try_end),
 ]), 
      
+     
+     
+###script_village_reinforcements_after_battle
+### do stuff after battle
+### IN: 
+### out: 
+("village_reinforcements_after_battle",
+  [    
+     (store_script_param_1,":village_reinforcements_party"),
+     (store_script_param_2,":enemy_party"),
+     
+     (party_get_slot,":village_no",":village_reinforcements_party",slot_party_reinforcements_center),
+     (party_get_slot, ":raider_party", ":village_no", slot_village_raided_by),
+     
+     (try_begin),
+     (eq,":raider_party",":enemy_party"),
+         (party_set_ai_object,":village_reinforcements_party",-1),
+         (party_set_ai_behavior,":village_reinforcements_party",ai_bhvr_hold),
+         (party_set_slot,":village_reinforcements_party", slot_village_reinforcements_action,spvr_waiting_after_battle),
+         ### DEBUG
+         (display_message,"@Setting patrol ai to hold"),
+         ### DEBUG
+     (try_end),
+ ]), 
 #COOP BEGIN ###################
 ] + coop_scripts 
 #COOP END####################
