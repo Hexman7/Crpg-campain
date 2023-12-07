@@ -1551,11 +1551,12 @@ remove_duplicated_item_types =  (
 	  [],
 	  [
 		(store_trigger_param_1, ":agent"),
-		(get_player_agent_no, ":player_agent"),
+		(agent_get_troop_id,":troop_no", ":agent"),
 		(try_begin),
 		(agent_is_human, ":agent"),
 		(agent_is_alive, ":agent"),
-		(neq,":agent",":player_agent"),
+		(agent_is_non_player, ":agent"),
+		(neg|troop_is_hero,":troop_no"),
 			(array_create, ":agent_weapons", 0, 4),
 			(array_set_val_all, ":agent_weapons", -1),
 			
