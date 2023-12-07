@@ -355,7 +355,7 @@ slot_town_is_capitol = 74 ### crpg-campaign: center is capitol
 ### mod begin
 slot_center_received_reinforcements = 75
 slot_party_center = 76
-
+slot_party_reinforcements_center = 77
 ## mod end
 
 #slot_town_rebellion_contact   = 76
@@ -687,6 +687,28 @@ pis_normal                      = 0
 pis_camping                     = 1
 pis_ship                        = 2
 
+
+
+
+### MOD BEGIN - Village Reinforcements Slots
+
+slot_village_reinforcements_action = 251
+slot_village_reinforcements_action_time = 252
+slot_village_reinforcements_action_max_time = 253
+
+## slot party village reinforcements
+spvr_undefined = -1
+spvr_riding_out_to_patrol = 2
+spvr_patrolling_around_center = 3
+spvr_going_back_to_center = 4
+spvr_entered_center = 5
+spvr_waiting_after_battle = 6
+#spvr_
+
+
+
+
+### MOD END
 
 ########################################################
 ##  SCENE SLOTS            #############################

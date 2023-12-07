@@ -2639,9 +2639,11 @@ simple_triggers = [
         (assign,reg1,":armorer_lvl"),
         (assign,reg2,":stables_lvl"),
         (assign,reg3,":bowyer_lvl"),
-        (display_log_message, "@LVLS  {reg0}, {reg1}, {reg2}, {reg3}"),
-        #### DEBUG
-        (display_log_message, "@Building of {s0} in {s4} has been completed."),
+         #### DEBUG
+        # (display_log_message, "@LVLS  {reg0}, {reg1}, {reg2}, {reg3}"),
+       
+        # (display_log_message, "@Building of {s0} in {s4} has been completed."),
+         #### DEBUG
       (try_end),
       (try_begin),
         (is_between, ":center_no", villages_begin, villages_end),
@@ -4227,9 +4229,11 @@ simple_triggers = [
 
 ###call back reinforcements that were send to deal with raiding party 
 
- (2,
+ (3,
   [
-    (call_script, "script_cf_call_back_reinforcements"),
+    #(call_script, "script_cf_call_back_reinforcements"),
+    (call_script, "script_cf_handle_reinforcement_parties_ais"),
+    
   ]),
 ##   
  

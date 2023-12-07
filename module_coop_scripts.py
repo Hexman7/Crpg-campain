@@ -4208,13 +4208,15 @@ coop_scripts = [
 
 #script_wse_game_saved
 # Called each time after game is saved successfully
-# ("wse_game_saved", [
-# ]),
+#("wse_game_saved", [
+#	(store_script_param, ":savegame_no", 1),
+#]),
+
 
 #script_wse_savegame_loaded
 # Called each time after savegame is loaded successfully
  ("wse_savegame_loaded", [
-	
+	#(store_script_param, ":savegame_no", 1),
 
 	
 	(store_current_day,":day"),
@@ -4330,7 +4332,13 @@ coop_scripts = [
 	# (store_script_param, ":missile_no", 6),
 # ]),
 
-
+#script_wse_get_server_info
+# Called each time a http request for server info received (http://server_ip:server_port/)
+# OUTPUT
+# trigger result = anything non-zero replace message text for response info 
+# result string =  message text for response info 
+#("wse_get_server_info", [
+#]),
 
 ### WSE addons end
    

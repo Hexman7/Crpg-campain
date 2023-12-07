@@ -3390,6 +3390,10 @@ game_menus = [
        [(jump_to_menu, "mnu_camp_action"),
         ]
        ),
+	  ("village_reinforcements_test",[],"Village reinforcements test.",
+       [(jump_to_menu, "mnu_reinforcement_test"),
+        ]
+       ),
       ("camp_wait_here",[],"Wait here for some time.",
        [
            (assign,"$g_camp_mode", 1),
@@ -4637,6 +4641,67 @@ game_menus = [
 		),
       ]
   ),
+  
+
+("reinforcement_test",0,			##### mod begin 02.10.2023
+   "testing:",
+   "none",
+   [
+     ],
+    [  
+	
+	("create_party",
+       [], "Create Party.",
+       [
+		(set_spawn_radius,1),
+		(spawn_around_party,"p_village_84","pt_raider_party"),
+		(assign,"$village_attackers",reg0),
+		(party_set_faction,"$village_attackers","fac_kingdom_2"),
+		(party_add_members, "$village_attackers", "trp_mercenary_soldier", 30),
+		
+		(jump_to_menu,"mnu_reinforcement_test"),
+        ],
+    ),
+	
+	("raid_village",
+       [], "Raid_village",
+       [
+	    (party_get_position, pos1, "p_village_84"),
+		(map_get_random_position_around_position, pos2, pos1, 1),
+		(party_set_ai_behavior, "$village_attackers", ai_bhvr_travel_to_point),
+		(party_set_ai_target_position, "$village_attackers", pos2),
+		(party_set_ai_object, "$village_attackers", "p_village_84"),
+		(party_set_slot, "$village_attackers", slot_party_ai_substate, 1),
+		
+	    (party_slot_eq, "p_village_84", slot_village_state, 0),
+	    (call_script, "script_village_set_state", "p_village_84", svs_being_raided),
+	    (party_set_slot, "p_village_84", slot_village_raided_by, "$village_attackers"),
+		
+		(jump_to_menu,"mnu_reinforcement_test"),
+        ],
+    ),
+	
+	("block_category3",
+       [], "Alcohols.",
+       [
+		(jump_to_menu,"mnu_reinforcement_test"),
+        ],
+    ),
+	("block_category4",
+       [], "Spices.",
+       [
+		(jump_to_menu,"mnu_reinforcement_test"),
+        ],
+    ),
+	
+	("go_back",
+	   [], "Go back.",
+	   [
+		(jump_to_menu,"mnu_camp"),
+		],
+	),
+  ]
+),
 	
 	
 	("camp_action",0,
@@ -14950,17 +15015,17 @@ game_menus = [
          (store_sub, ":kingdom_hero_id", ":party_leader", active_npcs_begin),
          (set_achievement_stat, ACHIEVEMENT_BARON_GOT_BACK, ":kingdom_hero_id", 1),
        (try_end),
-       
-       (party_get_template_id,":template","$g_encountered_party"),
+	   
+	   
+	   #### MOD BEGIN - village reinforcements
+	   (party_get_template_id,":template","$g_encountered_party"),
 
        (try_begin),
        (eq,":template","pt_village_patrol_party"),
             (party_set_ai_object,"$g_encountered_party",-1),
             (party_set_ai_behavior,"$g_encountered_party",ai_bhvr_hold),
-          
-          (display_message,"@DUDUDUDUDUDUDPA"),
        (try_end),
-              
+	   #### MOD BEGIN - village reinforcements
        (jump_to_menu, "mnu_captivity_wilderness_taken_prisoner"),
     ],
     []
