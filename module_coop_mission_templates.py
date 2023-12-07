@@ -466,8 +466,74 @@ effects_on_troops =  (
     
 	
 	])	       
-       
-       
+
+
+### removing same type items from agents (so they wont have two bardiches for instance...)   
+remove_duplicated_item_types =  (
+	 ti_on_agent_spawn, 0, 0,
+	  [],
+	  [
+		(store_trigger_param_1, ":agent"),
+		(get_player_agent_no, ":player_agent"),
+		(try_begin),
+		(agent_is_human, ":agent"),
+		(agent_is_alive, ":agent"),
+		(neq,":agent",":player_agent"),
+			(array_create, ":agent_weapons", 0, 4),
+			(array_set_val_all, ":agent_weapons", -1),
+			
+
+			
+			(try_for_range, ":slot",0,4),
+				(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+				(try_begin),
+				(neq,":agent_item",-1),
+					(item_get_type, ":item_type", ":agent_item"),
+					(array_set_val, ":agent_weapons", ":item_type", ":slot"),
+				(try_end),
+			(try_end),
+			
+			(assign,":duplicate",0),
+			
+			(try_for_range, ":slot",0,4),
+				(array_get_val, ":item_type", ":agent_weapons", ":slot"),
+				
+				(try_begin),
+				(ge,":duplicate",1),
+				(neq,":item_type",-1),
+					(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+					(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#(display_message,"@Droppping duplicated item"),
+				(try_end),
+				
+				(try_begin),
+				(eq,":item_type",itp_type_one_handed_wpn),
+				#(this_or_next|eq,":item_type","itp_type_two_handed_wpn"),
+					(val_add,":duplicate",1),
+				(try_end),
+			(try_end),
+			
+			(assign,":duplicate",0),
+			
+			(try_for_range, ":slot",0,4),
+				(array_get_val, ":item_type", ":agent_weapons", ":slot"),
+				
+				(try_begin),
+				(ge,":duplicate",1),
+				(neq,":item_type",-1),
+					(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+					(neq,":agent_item",-1),
+					(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#(display_message,"@Droppping duplicated item"),
+				(try_end),
+				
+				(try_begin),
+				(eq,":item_type",itp_type_two_handed_wpn),
+					(val_add,":duplicate",1),
+				(try_end),
+			(try_end),
+		(try_end),
+  ])     
   
 #### MOD END   
 
@@ -566,6 +632,7 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  #ai_kick_enhancement_mp,
       ai_kick_enhancement,
+	  remove_duplicated_item_types,
 
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 
@@ -1580,6 +1647,7 @@ coop_mission_templates = [
       coop_store_respawn_as_bot,
 	  lance_breaking_multiplayer,
 	  ai_kick_enhancement,
+	  remove_duplicated_item_types,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 #      common_battle_order_panel,
 #      common_battle_order_panel_tick,

@@ -2423,6 +2423,8 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Woyeyeh - script for better handing out fiefs by kings  \
 ^Mad Vader - death camera\
 ^Crossbow Pig - changing parties names script\
+^Dalion - script for started battles and passable allies\
+^AndyYa Alive Horses\
 "), 
 
 ## mod end

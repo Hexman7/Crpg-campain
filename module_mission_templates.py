@@ -1545,6 +1545,76 @@ ai_kick_enhancement =  (
             (try_end),
        (try_end),
        ])	
+
+remove_duplicated_item_types =  (
+	 ti_on_agent_spawn, 0, 0,
+	  [],
+	  [
+		(store_trigger_param_1, ":agent"),
+		(get_player_agent_no, ":player_agent"),
+		(try_begin),
+		(agent_is_human, ":agent"),
+		(agent_is_alive, ":agent"),
+		(neq,":agent",":player_agent"),
+			(array_create, ":agent_weapons", 0, 4),
+			(array_set_val_all, ":agent_weapons", -1),
+			
+
+			
+			(try_for_range, ":slot",0,4),
+				(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+				(try_begin),
+				(neq,":agent_item",-1),
+					(item_get_type, ":item_type", ":agent_item"),
+					(array_set_val, ":agent_weapons", ":item_type", ":slot"),
+				(try_end),
+			(try_end),
+			
+			(assign,":duplicate",0),
+			
+			(try_for_range, ":slot",0,4),
+				(array_get_val, ":item_type", ":agent_weapons", ":slot"),
+				
+				(try_begin),
+				(ge,":duplicate",1),
+				(neq,":item_type",-1),
+					(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+					(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#(display_message,"@Droppping duplicated item"),
+				(try_end),
+				
+				(try_begin),
+				(eq,":item_type",itp_type_one_handed_wpn),
+				#(this_or_next|eq,":item_type","itp_type_two_handed_wpn"),
+					(val_add,":duplicate",1),
+				(try_end),
+			(try_end),
+			
+			(assign,":duplicate",0),
+			
+			(try_for_range, ":slot",0,4),
+				(array_get_val, ":item_type", ":agent_weapons", ":slot"),
+				
+				(try_begin),
+				(ge,":duplicate",1),
+				(neq,":item_type",-1),
+					(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+					(neq,":agent_item",-1),
+					(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#(display_message,"@Droppping duplicated item"),
+				(try_end),
+				
+				(try_begin),
+				(eq,":item_type",itp_type_two_handed_wpn),
+					(val_add,":duplicate",1),
+				(try_end),
+			(try_end),
+		(try_end),
+])
+
+
+
+
 # ### mod end	   
 	
 	
@@ -2986,9 +3056,9 @@ mission_templates = [
 	  ]),
 	
 	######
-	   passable_allies,
-	   effects_on_troops,
-      (ti_on_agent_spawn, 0, 0, [],
+	  passable_allies,
+	  effects_on_troops,
+     (ti_on_agent_spawn, 0, 0, [],
        [
          (store_trigger_param_1, ":agent_no"),
          (call_script, "script_agent_reassign_team", ":agent_no"),
@@ -3303,6 +3373,7 @@ mission_templates = [
 		 
         ]),
 
+	  remove_duplicated_item_types,
       common_battle_init_banner,
 		 
       (ti_on_agent_killed_or_wounded, 0, 0, [],
@@ -3500,6 +3571,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  passable_allies,
 	  effects_on_troops,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -3652,6 +3724,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  passable_allies,
 	  effects_on_troops,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin### 08.05.2018
       common_init_deathcam,
       common_start_deathcam,
@@ -3956,6 +4029,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  effects_on_troops,
 	  passable_allies,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4031,6 +4105,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  effects_on_troops,
 	  passable_allies,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4113,6 +4188,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  effects_on_troops,
 	  passable_allies,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4227,6 +4303,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  effects_on_troops,
 	  passable_allies,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4331,6 +4408,7 @@ mission_templates = [
 	  ai_kick_enhancement,
 	  effects_on_troops,
 	  passable_allies,
+	  remove_duplicated_item_types,
 ## MadVader deathcam begin
       common_init_deathcam,
       common_start_deathcam,
@@ -4493,7 +4571,9 @@ mission_templates = [
           (display_message, "@You got keys of dungeon."),
         (try_end),
       ]),     
-
+	  
+	  remove_duplicated_item_types,
+	  
       #JAILBREAK TRIGGERS 
       #Civilians get out of the way
       (1, 0, 0,
@@ -5133,6 +5213,7 @@ mission_templates = [
 		#### Pickable Items for sneaking 
 		pickable_items,
 		ai_kick_enhancement,
+		remove_duplicated_item_types,
 		###
 	  
 	  
@@ -8923,6 +9004,7 @@ mission_templates = [
       common_inventory_not_available,
 	  ai_kick_enhancement,
 	  passable_allies,
+	  remove_duplicated_item_types,
       (ti_before_mission_start, 0, 0, [],
        [
          (scene_set_day_time, 15),
@@ -9007,6 +9089,7 @@ mission_templates = [
       common_battle_init_banner,
 	  ai_kick_enhancement,
 	  passable_allies,
+	  remove_duplicated_item_types,
       (0, 0, ti_once,
        [
          (assign, "$defender_team", 0),
@@ -16035,6 +16118,7 @@ mission_templates = [
     
       common_inventory_not_available,
       ai_kick_enhancement,
+	  remove_duplicated_item_types,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),
@@ -16421,6 +16505,7 @@ mission_templates = [
     
       common_inventory_not_available,
       ai_kick_enhancement,
+	  remove_duplicated_item_types,
       (ti_on_agent_spawn, 0, 0, [],
       [              
         (store_trigger_param_1, ":agent_no"),
@@ -16765,6 +16850,7 @@ mission_templates = [
     [
       common_battle_init_banner,
       ai_kick_enhancement,
+	  remove_duplicated_item_types,
       (ti_on_agent_spawn, 0, 0, [],
       [
         (store_trigger_param_1, ":agent_no"),

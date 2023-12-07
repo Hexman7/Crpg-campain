@@ -3221,7 +3221,9 @@ coop_scripts = [
         (dict_set_int, "$coop_dict", "@battle_state", coop_battle_state_end_mp),
     
         (dict_get_int, reg3, "$coop_dict", "@encountered_party"),
-        (display_message,"@Encountered party: {reg3}"),
+		##### DEBUG
+       # (display_message,"@Encountered party: {reg3}"),
+	   ##### DEBUG
         (call_script, "script_coop_copy_settings_to_file"),	
 
 #At end of MP battle:
