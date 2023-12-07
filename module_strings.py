@@ -2396,6 +2396,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 "),
 ### mod begin
 ("credits_13","Models with textures \
+^Dupre for permissions to use crpg items\
+^Zimke Zlovoljni\
+^Raylin - crpg mod items\
 ^Shredzors\
 ^Faradon\
 ^Jan Tumans\
@@ -2406,10 +2409,20 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Frell - kazakh pack\
 ^Yamabushi\
 ^DRZ_Kopcap_osa\
+^Sonyer, Rgcotl , Sumskilz , Sarrie \
+^ Kovas, Brego, MADTAO - Teutonic and Lithuanian items\
+^ Kovas - reworked native items\
+^ Lecram - Eques Banner\
+^ DaRkSouL_Gjallar - Norse Banner\
+^ Arris - Grey Order Banner\
+^ Riddaren - Kalmarunion Banner\
+^ \
 "), 
 
 ("credits_14","OSP Scripts \
 ^Woyeyeh - script for better handing out fiefs by kings  \
+^Mad Vader - death camera\
+^Crossbow Pig - changing parties names script\
 "), 
 
 ## mod end
@@ -4424,7 +4437,22 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   
   ("lord_s1_votes_reg3","{s1} - Votes: {reg3}"),
   
-  ### mod end
+  
+  ### faction descriptions
+  ("faction_1_descr","Polanie. Who are known of their powerfull cavalry. Their ruler is King Dawo."),
+  ("faction_2_descr","Grey Order. Who are known of their great discipline. Their ruler is Hetman."),
+  ("faction_3_descr","Warriors of Tengri. Who are known of their ... . Their rulers is Sultan Azap."),
+  ("faction_4_descr","Kalmarunion. Who are known of their great trading skills. Their ruler is Queen Margaret."),
+  ("faction_5_descr","Druzhina. Who are known of their archery skills. Their ruler is King Nebun."),
+  ("faction_6_descr","Templars. Who are known of their ... . Their ruler is King Casimir."),
+  ("faction_7_descr","Eques. Who are known of their ... . Their ruler is King Atze."),
+  ("faction_8_descr","Norse. Who are known of their ... . Their ruler is King Norr."),
+  ("faction_9_descr","Order de l'Etoile. Who are known of their ... .Their ruler is King Thorvic."),
+ 
+
+  ("relations_prsnt_string","{s60} {s59}"),
+
+ ### mod end
   
 
 ]

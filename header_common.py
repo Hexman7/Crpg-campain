@@ -61,6 +61,7 @@ multiplayer_event_mod_send_file_to_server_prepare			  = 49
 multiplayer_event_mod_send_file_to_server_key		  		  = 50
 multiplayer_event_mod_send_file_to_player_request		  	  = 51
 multiplayer_event_set_invisible                 			  = 52
+multiplayer_event_mod_send_troops_file_to_server_key		  = 53
 ##mod end
 
 

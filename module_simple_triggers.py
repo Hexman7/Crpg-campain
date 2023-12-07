@@ -1000,12 +1000,12 @@ simple_triggers = [
                 (this_or_next|eq, ":troop_reputation", lrep_selfrighteous),
                 (this_or_next|eq, ":troop_reputation", lrep_cunning),
                 (eq, ":troop_reputation", lrep_debauched),
-                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -4),
-                (val_add, "$total_no_fief_changes", -4),
+                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),#was 4
+                (val_add, "$total_no_fief_changes", -2),    #was 4
               (else_try),
                 (eq, ":troop_reputation", lrep_martial),
-                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -2),
-                (val_add, "$total_no_fief_changes", -2),
+                (call_script, "script_troop_change_relation_with_troop", ":troop_no", ":faction_leader", -1), #was 2
+                (val_add, "$total_no_fief_changes", -1), #was 1
               (try_end),
             (try_end),
           (try_end),
@@ -1045,52 +1045,60 @@ simple_triggers = [
 		  (try_end),
 			
           (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":faction_leader"),
-          (this_or_next|le, reg0, -50), #was -75
+          (this_or_next|le, reg0, -75), #was -50  - mod edited
 		  (eq, ":num_centers", 0), #if there is no walled centers that faction has defection happens 100%.
 
           (call_script, "script_cf_troop_can_intrigue", ":troop_no", 0), #Should include battle, prisoner, in a castle with others 
-          (store_random_in_range, ":who_moves_first", 0, 2),
-		   (store_current_day,":cur_day"), ### mod 20.11.2018
-           (try_begin),### mod
-		   (gt,":cur_day",120), 
+          (store_random_in_range, ":who_moves_first", 0, 4),        ## was 0, 2
+		  (store_current_day,":cur_day"), ### mod 20.11.2018
+          (try_begin),### mod
+		  (gt,":cur_day",120), 
 			   (try_begin),
-				(this_or_next|eq, ":num_centers", 0), #Thanks Caba`drin & Osviux
-				(neq, ":who_moves_first", 0),
-				(neq, ":troop_no", "trp_player"),
+			   (this_or_next|eq, ":num_centers", 0), #Thanks Caba`drin & Osviux
+			   (eq, ":who_moves_first", 0),        # was (neq, ":who_moves_first", 0),  
+			   (neq, ":troop_no", "trp_player"),
 					
-							#do a defection
-							(try_begin), 
-							  (neq, ":num_centers", 0), 
-							  (assign, "$g_give_advantage_to_original_faction", 1), 
-							(try_end),
+					#do a defection
+					(try_begin), 
+					  (neq, ":num_centers", 0), 
+					  (assign, "$g_give_advantage_to_original_faction", 1), 
+					(try_end),
 				#(assign, "$g_give_advantage_to_original_faction", 1),
 			
-				(store_faction_of_troop, ":orig_faction", ":troop_no"),
-				(call_script, "script_lord_find_alternative_faction", ":troop_no"),
-				(assign, ":new_faction", reg0),			
-				(assign, "$g_give_advantage_to_original_faction", 0),
-				(try_begin),
-				  (neq, ":new_faction", ":orig_faction"),			  
-				
-				  (is_between, ":new_faction", kingdoms_begin, kingdoms_end),
-				  (str_store_troop_name_link, s1, ":troop_no"),
-				  (str_store_faction_name_link, s2, ":new_faction"),	
-				  (str_store_faction_name_link, s3, ":faction"),
-				  (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
-				  (try_begin),
-					(ge, "$cheat_mode", 1),
-					(str_store_troop_name, s4, ":troop_no"),
-					(display_message, "@{!}DEBUG - {s4} faction changed in defection"), 
-				  (try_end),	
-				  (troop_get_type, reg4, ":troop_no"),
-				  (str_store_string, s4, "str_lord_defects_ordinary"),
-				  (display_log_message, "@{!}{s4}"),
-				  (try_begin),
-					(eq, "$cheat_mode", 1),
-					(this_or_next|eq, ":new_faction", "$players_kingdom"),
-					(eq, ":faction", "$players_kingdom"),
-					(call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
-				  (try_end),				
+					(store_faction_of_troop, ":orig_faction", ":troop_no"),
+					(call_script, "script_lord_find_alternative_faction", ":troop_no"),
+					(assign, ":new_faction", reg0),			
+					(assign, "$g_give_advantage_to_original_faction", 0),
+					(try_begin),
+					  (neq, ":new_faction", ":orig_faction"),			  
+					
+					  (is_between, ":new_faction", kingdoms_begin, kingdoms_end),
+					  (str_store_troop_name_link, s1, ":troop_no"),
+					  (str_store_faction_name_link, s2, ":new_faction"),	
+					  (str_store_faction_name_link, s3, ":faction"),
+					  (call_script, "script_change_troop_faction", ":troop_no", ":new_faction"),
+					  ## MOD begin - trigger for prsnt lord defection to player faction pop up
+					  (try_begin),
+					  (eq,":new_faction","fac_player_supporters_faction"),
+						#  (str_store_faction_name, s10, ":original_faction"),
+						  (assign,"$g_lord_no",":troop_no"),
+						  (start_presentation, "prsnt_lord_defection_to_player_faction"),
+					  (try_end),
+					  ## MOD end
+					  (try_begin),
+						(ge, "$cheat_mode", 1),
+						(str_store_troop_name, s4, ":troop_no"),
+						(display_message, "@{!}DEBUG - {s4} faction changed in defection"), 
+					  (try_end),	
+					  (troop_get_type, reg4, ":troop_no"),
+					  (str_store_string, s4, "str_lord_defects_ordinary"),
+					  (display_log_message, "@{!}{s4}"),
+					  (try_begin),
+						(eq, "$cheat_mode", 1),
+						(this_or_next|eq, ":new_faction", "$players_kingdom"),
+						(eq, ":faction", "$players_kingdom"),
+						(call_script, "script_add_notification_menu", "mnu_notification_lord_defects", ":troop_no", ":faction"),
+					  (try_end),				
 				(try_end),
 			(try_end),
           (else_try),	
@@ -1099,7 +1107,7 @@ simple_triggers = [
 			(le, reg0, -50), #was -75
             #(call_script, "script_indict_lord_for_treason", ":troop_no", ":faction"),
           (try_end),		  
-       (else_try),  #Take a stand on an issue
+        (else_try),  #Take a stand on an issue
           (neq, ":troop_no", "trp_player"),
           (store_faction_of_troop, ":faction", ":troop_no"),
           (faction_slot_ge, ":faction", slot_faction_political_issue, 1),
@@ -2573,6 +2581,10 @@ simple_triggers = [
   # Checking center upgrades
   (12,
    [(try_for_range, ":center_no", centers_begin, centers_end),
+   #### Mod if center has no lord, freeze building progress
+      (party_get_slot,":center_lord",":center_no",slot_town_lord),
+	  (gt,":center_lord",-1),
+	### to be tested
       (party_get_slot, ":cur_improvement", ":center_no", slot_center_current_improvement),
       (gt, ":cur_improvement", 0),
       (party_get_slot, ":cur_improvement_end_time", ":center_no", slot_center_improvement_end_hour),
@@ -2580,10 +2592,55 @@ simple_triggers = [
       (ge, ":cur_hours", ":cur_improvement_end_time"),
       (party_set_slot, ":center_no", ":cur_improvement", 1),
       (party_set_slot, ":center_no", slot_center_current_improvement, 0),
+      #### MOD BEGIN  -- set center lord slot according to building level
+      
+      (troop_set_slot,":center_lord",slot_troop_is_constructing_building,0), ## lord finished builing
+      (try_begin),
+      (this_or_next|eq,":cur_improvement", slot_center_has_smithy),
+      (this_or_next|eq,":cur_improvement", slot_center_has_large_smithy),
+      (eq,":cur_improvement", slot_center_has_kings_smithy),
+        (troop_get_slot,":builidng_lvl",":center_lord",slot_troop_built_smithy),
+        (gt, ":cur_improvement" ,":builidng_lvl"),
+        (troop_set_slot,":center_lord",slot_troop_built_smithy,":cur_improvement"),
+      (else_try),
+      (this_or_next|eq,":cur_improvement", slot_center_has_armorer),
+      (this_or_next|eq,":cur_improvement", slot_center_has_large_armorer),
+      (eq,":cur_improvement", slot_center_has_kings_armorer),        
+        (troop_get_slot,":builidng_lvl",":center_lord",slot_troop_built_armorer),
+        (gt, ":cur_improvement" ,":builidng_lvl"),
+        (troop_set_slot,":center_lord",slot_troop_built_armorer,":cur_improvement"),
+      (else_try),
+      (this_or_next|eq,":cur_improvement", slot_center_has_stables),
+      (this_or_next|eq,":cur_improvement", slot_center_has_large_stables),
+      (eq,":cur_improvement", slot_center_has_kings_stables),        
+        (troop_get_slot,":builidng_lvl",":center_lord",slot_troop_built_stables),
+        (gt, ":cur_improvement" ,":builidng_lvl"),
+        (troop_set_slot,":center_lord",slot_troop_built_stables,":cur_improvement"),
+      (else_try),
+      (this_or_next|eq,":cur_improvement", slot_center_has_bowyer),
+      (this_or_next|eq,":cur_improvement", slot_center_has_large_bowyer),
+      (eq,":cur_improvement", slot_center_has_kings_bowyer),        
+        (troop_get_slot,":builidng_lvl",":center_lord",slot_center_has_bowyer),
+        (gt, ":cur_improvement" ,":builidng_lvl"),
+        (troop_set_slot,":center_lord",slot_center_has_bowyer,":cur_improvement"),
+      (try_end),
+      #### MOD END
       (call_script, "script_get_improvement_details", ":cur_improvement"),
       (try_begin),
         (party_slot_eq, ":center_no", slot_town_lord, "trp_player"),
         (str_store_party_name, s4, ":center_no"),
+        
+        #### DEBUG
+        (troop_get_slot,":smithy_lvl","trp_player",slot_troop_built_smithy),
+        (troop_get_slot,":armorer_lvl","trp_player",slot_troop_built_armorer),
+        (troop_get_slot,":stables_lvl","trp_player",slot_troop_built_stables),
+        (troop_get_slot,":bowyer_lvl","trp_player",slot_troop_built_bowyer),
+        (assign,reg0,":smithy_lvl"),
+        (assign,reg1,":armorer_lvl"),
+        (assign,reg2,":stables_lvl"),
+        (assign,reg3,":bowyer_lvl"),
+        (display_log_message, "@LVLS  {reg0}, {reg1}, {reg2}, {reg3}"),
+        #### DEBUG
         (display_log_message, "@Building of {s0} in {s4} has been completed."),
       (try_end),
       (try_begin),
@@ -3247,8 +3304,8 @@ simple_triggers = [
                #army is assaulting the center
                (assign, ":result", ":quest_no"),
                (quest_set_slot, ":result", slot_quest_target_center, ":ai_object"),
-               (quest_set_slot, ":result", slot_quest_expiration_days, 2),
-               (quest_set_slot, ":result", slot_quest_dont_give_again_period, 15),
+               (quest_set_slot, ":result", slot_quest_expiration_days, 3),		## was 2
+               (quest_set_slot, ":result", slot_quest_dont_give_again_period, 5),	## was 15
              (try_end),
            (else_try),
              (eq, ":quest_no", "qst_scout_waypoints"),
@@ -4167,7 +4224,15 @@ simple_triggers = [
     (call_script, "script_change_party_name"),
   ]),
 ##   
-   
+
+###call back reinforcements that were send to deal with raiding party 
+
+ (2,
+  [
+    (call_script, "script_cf_call_back_reinforcements"),
+  ]),
+##   
+ 
   (24,
    []),
   (24,

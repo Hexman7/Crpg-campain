@@ -74,11 +74,12 @@ party_templates = [
   ("forager_party","Foraging Party",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("scout_party","Scouts",icon_gray_knight|carries_goods(1)|pf_show_faction,0,fac_commoners,bandit_personality,[]),
   ("patrol_party","Patrol",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,soldier_personality,[]),
+  ("village_patrol_party","Patrol",icon_gray_knight|carries_goods(5)|pf_show_faction|pf_default_behavior,0,fac_commoners,soldier_personality,[]),
 #  ("war_party", "War Party",icon_gray_knight|carries_goods(3),0,fac_commoners,soldier_personality,[]),
   ("messenger_party","Messenger",icon_gray_knight|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("raider_party","Raiders",icon_gray_knight|carries_goods(16)|pf_quest_party,0,fac_commoners,bandit_personality,[]),
   ("raider_captives","Raider Captives",0,0,fac_commoners,0,[(trp_peasant_woman,6,30,pmf_is_prisoner)]),
-  ("kingdom_caravan_party","Caravan",icon_mule|carries_goods(25)|pf_show_faction,0,fac_commoners,merchant_personality,[(trp_caravan_master,1,1),(trp_caravan_guard,12,40)]),
+  ("kingdom_caravan_party","Caravan",icon_mule|carries_goods(40)|pf_show_faction,0,fac_commoners,merchant_personality,[(trp_caravan_master,1,1),(trp_caravan_guard,12,40)]), ##carries_goods was 25
   ("prisoner_train_party","Prisoner Train",icon_gray_knight|carries_goods(5)|pf_show_faction,0,fac_commoners,merchant_personality,[]),
   ("default_prisoners","Default Prisoners",0,0,fac_commoners,0,[(trp_bandit,5,10,pmf_is_prisoner)]),
 
@@ -197,4 +198,8 @@ party_templates = [
   ("bandit_lair_templates_end","{!}bandit_lair_templates_end",icon_axeman|carries_goods(2)|pf_is_static,0,fac_outlaws,bandit_personality,[(trp_sea_raider,15,50)]),
 
   ("leaded_looters","Band of robbers",icon_axeman|carries_goods(8)|pf_quest_party,0,fac_neutral,bandit_personality,[(trp_looter_leader,1,1),(trp_looter,3,3)]),
+  
+  ("player_troops_company_25", "{!}player_troops_company_25", 0, 0, fac_commoners, 0, [(trp_player_recruit,5,5),(trp_player_footman,5,5),(trp_player_trained_footman,3,3),(trp_player_skirmisher,5,5),(trp_player_archer,3,3),(trp_player_horseman,4,4)]),
+  ("player_troops_company_50", "{!}player_troops_company_50", 0, 0, fac_commoners, 0, [(trp_player_recruit,10,10),(trp_player_footman,10,10),(trp_player_trained_footman,6,6),(trp_player_skirmisher,10,10),(trp_player_archer,6,6),(trp_player_horseman,8,8)]),
+  ("player_troops_company_75", "{!}player_troops_company_75", 0, 0, fac_commoners, 0, [(trp_player_recruit,15,15),(trp_player_footman,15,15),(trp_player_trained_footman,9,9),(trp_player_skirmisher,15,15),(trp_player_archer,9,9),(trp_player_horseman,12,12)]),
 ]

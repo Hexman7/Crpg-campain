@@ -1579,26 +1579,86 @@ triggers = [
   ],
   [    
   
-	(try_for_range,":try",0,5),
-			(assign,":faction_no_1",-1),
-			(assign,":faction_no_2",-1),
+  
+    (try_for_range,":faction_a",kingdoms_begin, kingdoms_end),
+        (try_for_range,":faction_b", kingdoms_begin, kingdoms_end),
+            (store_add, ":truce_slot", ":faction_b", slot_faction_truce_days_with_factions_begin),
+            (val_sub, ":truce_slot", kingdoms_begin),
+            (faction_set_slot, ":faction_a", ":truce_slot", 0),
+     
+            (store_add, ":truce_slot", ":faction_a", slot_faction_truce_days_with_factions_begin),
+            (val_sub, ":truce_slot", kingdoms_begin),
+            (faction_set_slot, ":faction_b", ":truce_slot", 0),
+            (call_script, "script_update_faction_notes", ":faction_a"),
+            (call_script, "script_update_faction_notes", ":faction_b"),
+        (try_end),
+    (try_end),
+  
+	(try_for_range,reg0,0,7),
+			(assign,":kingdom_a",-1),
+			(assign,":kingdom_b",-1),
 			(assign,":end_cond",1000),
-			(assign,":try",0),
-			(val_add,":try",0),
 			
-			(try_for_range, ":try", 0, ":end_cond"),
+			(try_for_range, reg5, 0, ":end_cond"),
 				(try_begin),
-				(eq, ":faction_no_1", ":faction_no_2"),	
+				(eq, ":kingdom_a", ":kingdom_b"),	
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":faction_no_1", reg2),
+					### DEBUG
+					 (assign, ":kingdom_a", reg2),
+                    # (display_message,"@FACTION 1: {reg2}"),
+					### DEBUG
 					(call_script, "script_get_random_faction_for_war"),
-					(assign, ":faction_no_2", reg2),
+					### DEBUG
+					 (assign, ":kingdom_b", reg2),
+                    # (display_message,"@FACTION 2: {reg2}"),
+					### DEBUG
 				(else_try),
 					(assign,":end_cond",-1),
 				(try_end),
 			(try_end),
-		(call_script, "script_diplomacy_start_war_between_kingdoms", ":faction_no_1", ":faction_no_2", 1),
-	(try_end),
+	#	(call_script, "script_diplomacy_start_war_between_kingdoms", ":kingdom_a", ":kingdom_b", 1),
+        
+      (call_script, "script_add_log_entry", logent_faction_declares_war_to_curb_power, ":kingdom_a", 0, 0, ":kingdom_b"),
+	  (call_script, "script_faction_follows_controversial_policy", ":kingdom_a", logent_policy_ruler_declares_war_with_justification),
+
+      (store_relation, ":relation", ":kingdom_a", ":kingdom_b"),
+      (val_min, ":relation", -10),
+      (val_add, ":relation", -30),
+      (set_relation, ":kingdom_a", ":kingdom_b", ":relation"),
+      
+      (str_store_faction_name_link, s1, ":kingdom_a"),
+      (str_store_faction_name_link, s2, ":kingdom_b"),
+      (display_log_message, "@{s1} has declared war against {s2}."),
+
+      (store_current_hours, ":hours"),
+      (faction_set_slot, ":kingdom_a", slot_faction_ai_last_decisive_event, ":hours"),
+      (faction_set_slot, ":kingdom_b", slot_faction_ai_last_decisive_event, ":hours"),
+
+    #set provocation and truce days
+      (store_add, ":truce_slot", ":kingdom_b", slot_faction_truce_days_with_factions_begin),
+      (store_add, ":provocation_slot", ":kingdom_b", slot_faction_provocation_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (val_sub, ":provocation_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_a", ":truce_slot", 0),
+      (faction_set_slot, ":kingdom_a", ":provocation_slot", 0),
+
+      (store_add, ":truce_slot", ":kingdom_a", slot_faction_truce_days_with_factions_begin),
+      (store_add, ":provocation_slot", ":kingdom_a", slot_faction_provocation_days_with_factions_begin),
+      (val_sub, ":truce_slot", kingdoms_begin),
+      (val_sub, ":provocation_slot", kingdoms_begin),
+      (faction_set_slot, ":kingdom_b", ":truce_slot", 0),
+      (faction_set_slot, ":kingdom_b", ":provocation_slot", 0),
+
+      (call_script, "script_add_notification_menu", "mnu_notification_war_declared", ":kingdom_a", ":kingdom_b"),
+
+      (call_script, "script_update_faction_notes", ":kingdom_a"),
+      (call_script, "script_update_faction_notes", ":kingdom_b"),
+      (assign, "$g_recalculate_ais", 1),
+
+
+
+      
+    (try_end),
 
   ]),   
   
@@ -1662,7 +1722,7 @@ triggers = [
 
    
     (store_skill_level,":skill_weapon_master",skl_weapon_master,"trp_player"),
-	(store_div,":skill_weapon_master",":skill_weapon_master",2),
+	(store_div,":skill_weapon_master",":skill_weapon_master",2),	
 	
     (try_for_range,":wpt", wpt_one_handed_weapon, wpt_firearm),
 		(assign,":offset",16),
@@ -1670,16 +1730,17 @@ triggers = [
 		(assign,":off",0),
 	
 	
-		(store_proficiency_level,":proficiency_level","trp_player",":wpt"),
+		(store_proficiency_level,":proficiency_level","trp_player",":wpt"),	
 		
 		(try_begin),
 		(gt,":proficiency_level",100),
-			(store_sub,":off",":max_wpf",":proficiency_level"),
-			(store_div,":off",":off",100),
-			(store_mul,":off",":off",2),
-			(store_sub,":offset",":offset",":off"),
-			(store_sub,":offset",":offset",":skill_weapon_master"),
+			(store_sub,":off",":max_wpf",":proficiency_level"),	
+			(store_div,":off",":off",100),		
+			(store_mul,":off",":off",3),	
+			(store_sub,":offset",":offset",":off"),	
+			(store_sub,":offset",":offset",":skill_weapon_master"),		
 			
+			(gt,":offset",0),
 			(store_sub,":proficiency_level",":proficiency_level",":offset"),
 			(troop_set_proficiency,"trp_player", ":wpt", ":proficiency_level"),
 		(try_end),
@@ -1735,14 +1796,124 @@ triggers = [
 	# (store_proficiency_level,":xbow_wpf","trp_player",wpt_crossbow),
 	# (store_proficiency_level,":throwing_wpf","trp_player",wpt_throwing),
 	# (store_proficiency_level,":archery_wpf","trp_player",wpt_archery),   
-	
-	
-	
-	
-   
-   
-
   ]), 
+   
+   
+#######	 SCRIPT for constructing buildings by lords
+####### 
+  (72, 0, 0, [],		
+  [    
+	### look for lords with fiefs or go through fiefs and check center lords
+	(try_for_range,":center_no",centers_begin, centers_end), ### for every center
+        (party_get_slot,":center_lord", ":center_no", slot_town_lord), ## get center owner
+        (gt,":center_lord",-1), ## if center has owner 
+        (neq,":center_lord","trp_player"), ## and owner is not the player
+        (neq,":center_lord","trp_kingdom_neutral_lord"),
+        (troop_get_slot,":troop_gold",":center_lord",slot_troop_wealth),
+        ## DEBUG 
+      #  (str_store_troop_name,s1,":center_lord"),
+        (assign,reg0 , ":troop_gold"),
+      #  (display_message, "@ LORD: {s1}, gold: {reg0}"),
+        ## DEBUG END
+        (assign,":index",0),
+        (array_create, ":affordable_buildings", 0, 0),
+        (try_begin), ### if there is one of the unique buildings built
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_smithy,1),
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_armorer,1),
+        (this_or_next|troop_slot_ge,":center_lord",slot_troop_built_stables,1),
+        (troop_slot_ge,":center_lord",slot_troop_built_bowyer,1),
+            (try_for_range,":building", slot_center_has_smithy, capitol_improvements_end), ## then find wich one
+                (try_begin), 
+                (party_slot_eq,":center_no",":building",1), 
+                (neg|is_between, ":building", capitol_improvements_begin, capitol_improvements_end),
+                    (val_add,":building",4), ### move building id by 4 to get higher lvl
+                    (call_script, "script_get_improvement_details", ":building"),
+                    (assign, ":improvement_cost", reg0),
+                    (store_add,":cost", 5000, ":improvement_cost"),
+                    (try_begin),
+                    (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
+                    (party_slot_eq,":center_no",":building",0), ## building is not already built
+                        (array_resize_dim, ":affordable_buildings", 0, 1),
+                        (array_set_val, ":affordable_buildings", ":building", 0),   ## add it to buildins that can be built
+                        (val_add,":index",1),
+                    (try_end),
+                (try_end),
+            (try_end),
+            (assign,":end",slot_center_has_smithy),
+        (else_try),
+            (assign,":end",capitol_improvements_end),
+        (try_end),
+        ### for every center check every building type: if its not build get the price of it and choose the 
+        (try_for_range,":building", village_improvements_begin, ":end"),
+            (call_script, "script_get_improvement_details", ":building"),
+            (assign, ":improvement_cost", reg0),
+            (store_add,":cost", 5000, ":improvement_cost"),
+            (try_begin),
+            (ge,":troop_gold",":cost"), ### if center ruler has more than improvement_cost + 5000 gold
+            (party_slot_eq,":center_no",":building",0), ## building is not already built
+                (store_add,":size",":index",1),
+                (array_resize_dim, ":affordable_buildings", 0, ":size"),
+                (array_set_val, ":affordable_buildings", ":building", ":index"),
+                (val_add,":index",1),
+            (try_end),
+        (try_end),
+        (array_get_dim_size, ":array_size", ":affordable_buildings", 0),
+        #### DEBUG
+        # (try_for_range,":x",0,":array_size"),
+            # (array_get_val, reg2, ":affordable_buildings", ":x"),
+            # (display_message,"@Building: {reg2}"),
+        # (try_end),
+        #### DEBUG
+        
+        (try_begin), ## get random building to construct and construct it
+        (gt, ":array_size", 0),
+            (store_random_in_range,":build_chance", 0, 100),
+            (try_begin),
+            (lt,":build_chance",50),
+            (troop_slot_eq,":center_lord",slot_troop_is_constructing_building,0),
+                (store_random_in_range,":random", 0, ":array_size"),
+                (array_get_val, reg2, ":affordable_buildings", ":random"), ## get building to build
+                (store_skill_level, ":max_skill", "skl_engineer", ":center_lord"), ## get lord's engineering lvl
+                (store_sub, ":multiplier", 20, ":max_skill"),
+                (call_script, "script_get_improvement_details", reg2),
+                (assign, ":improvement_cost", reg0),
+                (val_sub,":troop_gold",":improvement_cost"),
+                (troop_set_slot, ":center_lord", slot_troop_wealth, ":troop_gold"),
+                (val_mul, ":improvement_cost", ":multiplier"),
+                (val_div, ":improvement_cost", 20),
+                (store_div, ":improvement_time", ":improvement_cost", 500),
+                (val_add, ":improvement_time", 3),
+                (assign,reg3,":troop_gold"),
+                (party_set_slot, ":center_no", slot_center_current_improvement, reg2),
+                (store_current_hours, ":cur_hours"),
+                (store_mul, ":hours_takes", ":improvement_time", 24),
+                (val_add, ":hours_takes", ":cur_hours"),
+                (party_set_slot, ":center_no", slot_center_improvement_end_hour, ":hours_takes"),
+                (troop_set_slot,":center_lord",slot_troop_is_constructing_building,1),
+                ## DEBUG
+               # (str_store_party_name,s2,":center_no"),
+               # (display_message,"@Constructing building:{reg2} in {s2}. Improvement cost: {reg0}, gold left: {reg3}  "),
+                ##DEBUG
+            (try_end),
+        (try_end),
+        
+       # (array_free, ":affordable_buildings"),
+
+        ### get building to build
+        ### 50% chance to build - will result in constructing building not only in first center for lord that has more than 1
+        ### remove gold
+        ### start building
+        ### Maybe destroy building after raid/siege ?
+   
+        
+        
+    
+    (try_end),
+    
+    
+  ]),    
+   
+   
    
    
 ## MOD END

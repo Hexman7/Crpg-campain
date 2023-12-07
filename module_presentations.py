@@ -6,6 +6,7 @@ from header_operations import *
 from header_triggers import *
 from module_constants import *
 from header_terrain_types import *
+from module_skills import *
 import string
 #COOP BEGIN#######################################
 from module_coop_presentations import *
@@ -3014,7 +3015,10 @@ presentations = [
 		(eq, ":object", "$g_presentation_obj_admin_panel_45"),
 		(multiplayer_send_message_to_server, multiplayer_event_mod_send_file_to_server_prepare),
 		#(multiplayer_send_string_to_player, ":player_no", multiplayer_event_show_server_message, "@Sending file..."),
-	    (call_script,"script_multiplayer_send_file"),
+	    (str_store_string,s11,"@coop_battle"),
+		(call_script,"script_multiplayer_send_file"),
+		(str_store_string,s11,"@coop_troops"),
+		(call_script,"script_multiplayer_send_file"),
 		(presentation_set_duration, 0),
 		(display_message,"@Sending file..."),
 		#(start_presentation, "prsnt_game_multiplayer_admin_panel"),
@@ -7909,11 +7913,18 @@ presentations = [
         (position_set_y, pos1, ":cur_y"),
 		(position_set_x, pos1, 30),
         (overlay_set_position, "$g_presentation_obj_escape_menu_invisible_off", pos1),
+	  (try_end),      
+	  (try_begin),
+        (ge, "$g_presentation_obj_escape_menu_11", 0),
+        (val_sub, ":cur_y", escape_menu_item_height),
+        (position_set_y, pos1, ":cur_y"),
+		(position_set_x, pos1, 130),
+        (overlay_set_position, "$g_presentation_obj_escape_menu_11", pos1),
 	  (try_end),
 	  (position_set_x, pos1, 130),
       #(val_sub, ":cur_y", escape_menu_item_height),
-      (position_set_y, pos1, ":cur_y"),
-      (overlay_set_position, "$g_presentation_obj_escape_menu_11", pos1),
+#      (position_set_y, pos1, ":cur_y"),
+#      (overlay_set_position, "$g_presentation_obj_escape_menu_11", pos1),
       (try_begin),
         (ge, "$g_presentation_obj_escape_menu_12", 0),
         (val_sub, ":cur_y", escape_menu_item_height),
@@ -9238,7 +9249,7 @@ presentations = [
         (try_begin),
           (eq, ":object", "$g_presentation_obj_banner_selection_1"),
           (val_add, "$g_presentation_page_no", 1),
-          (val_mod, "$g_presentation_page_no", 8),
+          (val_mod, "$g_presentation_page_no", 11),	#### fixing bug with not showing banners_i and banners_j packs of banners
           (start_presentation, "prsnt_banner_selection"),
         (else_try),
           (store_sub, ":selected_banner", ":object", "$g_presentation_banner_start"),
@@ -15382,9 +15393,6 @@ presentations = [
 	  (position_set_y, pos1, 590),
 	  (overlay_set_position, "$g_present_lords_text", pos1),
 	 
-
-	 
-	 
 	  (try_begin),
 	  (eq, "$character_faction", "fac_kingdom_1"),
 		(assign, ":begin", lords_begin),
@@ -15557,6 +15565,283 @@ presentations = [
 		 
 	  ]),
     ]),
+    
+    
+    ("present_lords_new", prsntf_manual_end_only, mesh_load_window, [		#17.01.2023
+    (ti_on_presentation_load, [      
+      (set_fixed_point_multiplier, 1000),
+	    
+        
+      ### Setting description
+      (try_begin),
+      (eq,"$character_faction","fac_kingdom_1"),
+        (str_store_string,s1,"str_faction_1_descr"),
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_2"),
+        (str_store_string,s1,"str_faction_2_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_3"),
+        (str_store_string,s1,"str_faction_3_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_4"),
+        (str_store_string,s1,"str_faction_4_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_5"),
+        (str_store_string,s1,"str_faction_5_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_6"),
+        (str_store_string,s1,"str_faction_6_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_7"),
+        (str_store_string,s1,"str_faction_7_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_8"),
+        (str_store_string,s1,"str_faction_8_descr"),        
+      (else_try),
+      (eq,"$character_faction","fac_kingdom_9"),
+        (str_store_string,s1,"str_faction_9_descr"),        
+      (else_try),
+        (str_store_string,s1,"str_faction_1_descr"),
+      (try_end),
+      
+      (str_store_string, s10, "@You are a Lady or Lord of {s1} Which one of Lords or Ladies are you ?"),
+      
+      
+      ### description
+	  (create_text_overlay, "$g_present_lords_text", s10,tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_text", pos1),
+	  (position_set_x, pos1, 500),
+	  (position_set_y, pos1, 650),
+	  (overlay_set_position, "$g_present_lords_text", pos1),
+      
+      ### lords combo btn + text
+      (create_text_overlay, "$g_present_lords_factions_text", "@Faction", tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_factions_text", pos1),
+	  (position_set_x, pos1, 150),
+	  (position_set_y, pos1, 590),
+	  (overlay_set_position, "$g_present_lords_factions_text", pos1),
+	
+      (create_combo_button_overlay, "$present_lords_factions"),
+      (position_set_x, pos1, 800),
+      (position_set_y, pos1, 800),
+      (overlay_set_size, "$present_lords_factions", pos1),
+      (position_set_x, pos1, 150),
+      (position_set_y, pos1, 550),
+      (overlay_set_position, "$present_lords_factions", pos1),
+	 
+      ### faction combo btn + text
+      (create_text_overlay, "$g_present_lords_factions_text", "@Lord/Lady", tf_center_justify|tf_double_space|tf_vertical_align_center),
+	  (position_set_x, pos1, 1200),
+	  (position_set_y, pos1, 1200),
+	  (overlay_set_size, "$g_present_lords_factions_text", pos1),
+	  (position_set_x, pos1, 400),
+	  (position_set_y, pos1, 590),
+	  (overlay_set_position, "$g_present_lords_factions_text", pos1),
+     
+      (create_combo_button_overlay, "$present_lords_lords"),
+      (position_set_x, pos1, 800),
+      (position_set_y, pos1, 800),
+      (overlay_set_size, "$present_lords_lords", pos1),
+      (position_set_x, pos1, 400),
+      (position_set_y, pos1, 550),
+      (overlay_set_position, "$present_lords_lords", pos1),
+	  
+      
+     
+      ### adding factions to faction combo box
+	  (try_for_range,":faction", npc_kingdoms_begin, npc_kingdoms_end),
+          (str_store_faction_name,s1,":faction"),
+          (overlay_add_item, "$present_lords_factions", s1),
+	  (try_end),
+      
+      (overlay_set_val, "$present_lords_factions", "$faction_choose"),
+      
+     ### adding lords to lords combo box
+      (store_mul, "$lords_start", "$faction_choose", 20),
+      # (assign, reg1, "$lords_start"),
+      # (display_message,"@ Lords start: {reg1}"),
+      (val_add, "$lords_start", lords_begin),
+      # (assign, reg1, "$lords_start"),
+      # (display_message,"@ Lords start: {reg1}"),
+      (store_add, ":lords_end", "$lords_start", 20),
+      # (assign, reg1, ":lords_end"),
+      # (display_message,"@ Lords end: {reg1}"),
+      (try_for_range,":lord", "$lords_start", ":lords_end"),
+          (str_store_troop_name,s1,":lord"),
+          (overlay_add_item, "$present_lords_lords", s1),
+      (try_end),
+      
+      (overlay_set_val, "$present_lords_lords", "$lord_choose"),
+      
+      ### display troop
+      
+      (store_add, ":troop", "$lord_choose", "$lords_start"),
+      (create_mesh_overlay_with_tableau_material, "$g_presentation_troop_mesh", -1, "tableau_game_character_sheet", ":troop"),
+      (position_set_x, pos1, 1000),
+      (position_set_y, pos1, 1000),
+      (overlay_set_size, "$g_presentation_troop_mesh", pos1),
+      (position_set_x, pos1, 100),
+      (position_set_y, pos1, 100),
+      (overlay_set_position, "$g_presentation_troop_mesh", pos1),
+      
+      
+      ### display skills, attr and wpf
+      # store_character_level
+      
+      (assign, ":y", 560),
+      ## go through skills 
+      (try_for_range, ":skill", skl_trade, skl_reserved_14),
+        (try_begin),
+        (neg|is_between, ":skill", skl_reserved_1,skl_persuasion),
+        (neg|is_between, ":skill", skl_reserved_5,skl_looting),
+        (neg|is_between, ":skill", skl_reserved_9,skl_power_draw),
+        (neg|ge, ":skill", skl_reserved_14),
+            (str_store_skill_name, s1, ":skill"),
+            #(display_message,"@{s1}"),
+            (store_skill_level, reg0, ":skill", ":troop"),
+            (str_store_string, s2, "str_reg0"),
+            #### skill name text
+            (create_text_overlay, ":skill_name_text", s1),
+            (position_set_x, pos1, 1000),
+            (position_set_y, pos1, 1000),
+            (overlay_set_size, ":skill_name_text", pos1),
+            (position_set_x, pos1, 700),
+            (position_set_y, pos1, ":y"),
+            (overlay_set_position, ":skill_name_text", pos1),
+            
+            ### skill level text
+            (create_text_overlay, ":skill_lvl_text", s2),
+            (position_set_x, pos1, 1000),
+            (position_set_y, pos1, 1000),
+            (overlay_set_size, ":skill_lvl_text", pos1),
+            (position_set_x, pos1, 900),
+            (position_set_y, pos1, ":y"),
+            (overlay_set_position, ":skill_lvl_text", pos1),
+            
+            (val_sub, ":y", 20),
+        (try_end),
+      (try_end),
+      
+      ####attributes
+      (assign, ":y", 420),
+      (call_script,"script_present_attributes",ca_strength,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_agility,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_intelligence,":y",":troop"),
+      (val_sub, ":y", 30),
+      (call_script,"script_present_attributes",ca_charisma,":y",":troop"),
+      (val_sub, ":y", 80),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_one_handed_weapon,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_two_handed_weapon,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_polearm,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_archery,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_crossbow,":y",":troop"),
+      (val_sub, ":y", 30),        
+      (call_script,"script_present_weapon_proficiency_points",wpt_throwing,":y",":troop"),
+      (val_sub, ":y", 30),        
+      
+      
+      ### troop level label
+      (assign, ":y", 470),
+      (create_text_overlay, ":character_level_label", "@Level"),
+      (position_set_x, pos1, 1500),
+      (position_set_y, pos1, 1500),
+      (overlay_set_size, ":character_level_label", pos1),
+      (position_set_x, pos1, 400),
+      (position_set_y, pos1, ":y"),
+      (overlay_set_position, ":character_level_label", pos1),
+      
+      ### troop level val
+      (store_character_level,reg0,":troop"),
+      (str_store_string, s2, "str_reg0"),
+      (create_text_overlay, ":character_level_text", s2),
+      (position_set_x, pos1, 1500),
+      (position_set_y, pos1, 1500),
+      (overlay_set_size, ":character_level_text", pos1),
+      (position_set_x, pos1, 600),
+      (position_set_y, pos1, ":y"),
+      (overlay_set_position, ":character_level_text", pos1),
+      
+      
+      
+      #### done btn
+      (create_game_button_overlay,"$g_presentation_done_btn", "@Done"), 
+      (position_set_x, pos1, 900),
+      (position_set_y, pos1, 50),
+      (overlay_set_position, "$g_presentation_done_btn", pos1),
+
+      
+	  (presentation_set_duration, 999999),
+    ]),
+	  (ti_on_presentation_run, [
+
+      ]),    
+	  
+	  (ti_on_presentation_event_state_change, [
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":value"),
+	
+        (try_begin),
+        (eq, ":object" ,"$present_lords_factions"),
+            (assign,"$faction_choose",":value"),
+            (store_add,":faction","$faction_choose",npc_kingdoms_begin),
+            (assign, "$character_faction", ":faction"),
+            (presentation_set_duration, 0),
+            (start_presentation,"prsnt_present_lords_new"),
+            (presentation_set_duration,99999),
+           # (display_message,"@Faction"),
+        (else_try),
+        (eq, ":object", "$present_lords_lords"),
+            (assign,"$lord_choose",":value"),
+            (presentation_set_duration, 0),
+            (start_presentation,"prsnt_present_lords_new"),
+            (presentation_set_duration,99999),
+        (else_try),
+        (eq,":object","$g_presentation_done_btn"),
+            (store_add, "$current_hero", "$lord_choose","$lords_start"),
+            # (str_store_troop_name, s1, "$current_hero"),
+            # (display_message, "@ Character: {s1}"),
+            (store_add,":faction","$faction_choose",npc_kingdoms_begin),
+            # (str_store_faction_name, s1, ":faction"),
+            # (display_message, "@ Faction: {s1}"),
+            (assign, "$character_faction", ":faction"),
+            
+            (troop_get_type,":troop_type","$current_hero"),
+            (try_begin),
+            (eq,":troop_type",0),
+                (assign,"$character_gender",tf_male),
+                (troop_set_type,"trp_player", 0),
+            (else_try),
+            (eq,":troop_type",1),
+                (troop_set_type, "trp_player", 1),
+                (assign,"$character_gender",tf_female),
+            (try_end),				
+
+            
+            (presentation_set_duration, 0),
+            (jump_to_menu, "mnu_start_character_2_crpg_campaign"),
+            
+        (try_end),
+        
+		   
+        
+
+		 
+	  ]),
+    ]),
+    
+    
+    
+    
 		
 	("present_lord_votes", prsntf_manual_end_only, mesh_load_window, [		#19.03.2019
     (ti_on_presentation_load, [      
@@ -16595,6 +16880,187 @@ presentations = [
 
   ]),
   
+
+
+
+### pops up when lord defects 
+## reg1 = lord_no
+    ("lord_defection_to_player_faction", 0, mesh_load_window, [
+    (ti_on_presentation_load,
+      [
+        (presentation_set_duration, 999999),
+        (set_fixed_point_multiplier, 1000),
+        
+        
+        (troop_get_slot, ":original_faction", "$g_lord_no", slot_troop_original_faction),
+        (str_store_faction_name, s10, ":original_faction"),
+        (str_store_troop_name, s11, "$g_lord_no"),
+
+		(troop_get_type, reg3, "$g_lord_no"),
+		
+        (create_text_overlay, ":description", "@{s11} is willing to join your faction. {reg3?Her:His} last faction was {s10}. Will you accept his offer or deny it?"),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":description", pos1),
+        (position_set_x, pos1, 50),
+        (position_set_y, pos1, 600),
+        (overlay_set_position, ":description", pos1),
+
+        (troop_get_type, reg3, "$g_lord_no"),
+        (troop_get_slot, reg5, "$g_lord_no", slot_troop_renown),
+        (troop_get_slot, reg15, "$g_lord_no", slot_troop_controversy),
+		  
+        (str_clear, s59),
+        
+        (try_begin),
+            (call_script, "script_troop_get_player_relation", "$g_lord_no"),
+            (assign, ":relation", reg0),
+            (store_add, ":normalized_relation", ":relation", 100),
+            (val_add, ":normalized_relation", 5),
+            (store_div, ":str_offset", ":normalized_relation", 10),
+            (val_clamp, ":str_offset", 0, 20),
+            (store_add, ":str_id", "str_relation_mnus_100_ns",  ":str_offset"),
+            (str_store_string, s60, "@{reg3?She:He}"),
+            (str_store_string, s59, ":str_id"),
+            (str_store_string, s59, "@{!}^{s59}"),
+        (try_end),
+         
+         #### if for all LREP slot_lord_reputation_type to print which one is it
+         
+		 
+		(troop_get_slot,":reputation","$g_lord_no",slot_lord_reputation_type),
+		(try_begin),
+		(eq,":reputation",lrep_none),
+			(str_store_string,s61,"@None"),
+		(else_try),
+		(eq,":reputation",lrep_martial),
+			(str_store_string,s61,"str_martial"),
+		(else_try),
+		(eq,":reputation",lrep_quarrelsome),
+			(str_store_string,s61,"str_quarrelsome"),
+		(else_try),
+		(eq,":reputation",lrep_selfrighteous),
+			(str_store_string,s61,"str_selfrighteous"),
+		(else_try),
+		(eq,":reputation",lrep_cunning),
+			(str_store_string,s61,"str_cunning"),
+		(else_try),
+		(eq,":reputation",lrep_debauched),
+			(str_store_string,s61,"str_debauched"),
+		(else_try),
+		(eq,":reputation",lrep_goodnatured),
+			(str_store_string,s61,"str_goodnatured"),
+		(else_try),
+		(eq,":reputation",lrep_upstanding),
+			(str_store_string,s61,"str_upstanding"),
+		(else_try),
+		(eq,":reputation",lrep_roguish),
+			(str_store_string,s61,"str_roguish"),
+		(else_try),
+		(eq,":reputation",lrep_benefactor),
+			(str_store_string,s61,"str_benevolent"),
+		(else_try),
+		(eq,":reputation",lrep_custodian),
+			(str_store_string,s61,"str_mercantile"),
+		(try_end),
+        
+		#(str_store_string,s61,"@{!}^{s61}"),
+		        
+        (create_text_overlay, ":reputation_text", "@Reputation: {s61}"),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":reputation_text", pos1),
+        (position_set_x, pos1, 200),
+        (position_set_y, pos1, 450),
+        (overlay_set_position, ":reputation_text", pos1),   
+		
+        (create_text_overlay, ":relations", s59),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":relations", pos1),
+        (position_set_x, pos1, 200),
+        (position_set_y, pos1, 400),
+        (overlay_set_position, ":relations", pos1),         
+         
+        (create_text_overlay, ":renown", "@Renown: {reg5}"),
+        (position_set_x, pos1, 1200),
+        (position_set_y, pos1, 1200),
+        (overlay_set_size, ":renown", pos1),
+        (position_set_x, pos1, 200),
+        (position_set_y, pos1, 350),
+        (overlay_set_position, ":renown", pos1),        
+         
+         
+        (create_button_overlay, "$g_presentation_accept_lord", "@Accept"),
+        (position_set_x, pos1, 400),
+        (position_set_y, pos1, 100),
+        (overlay_set_position, "$g_presentation_accept_lord", pos1),
+
+         
+        (create_button_overlay, "$g_presentation_reject_lord", "@Reject"),
+        (position_set_x, pos1, 500),
+        (position_set_y, pos1, 100),
+        (overlay_set_position, "$g_presentation_reject_lord", pos1),
+
+
+          
+        (create_mesh_overlay, ":banner_mesh", reg8),       ### reg0 - input from trigger   
+        (position_set_x, pos1, 140),
+        (position_set_y, pos1, 140),
+        (overlay_set_size, ":banner_mesh", pos1),
+        (position_set_x, pos1, 120),
+        (position_set_y, pos1, 500),
+        (overlay_set_position, ":banner_mesh", pos1),
+      
+        (create_mesh_overlay_with_tableau_material, ":lord", -1, "tableau_game_character_sheet", "$g_lord_no"),
+        (position_set_x, pos1, 1000),
+		(position_set_y, pos1, 1000),
+		(overlay_set_size, ":lord", pos1),
+		(position_set_x, pos1, 700),
+		(position_set_y, pos1, 195),
+		(overlay_set_position, ":lord", pos1),
+     ]),
+	  
+	(ti_on_presentation_mouse_enter_leave,
+      [
+        
+      ]),
+ 
+    (ti_on_presentation_event_state_change,
+      [
+        (store_trigger_param_1, ":object"),
+        (store_trigger_param_2, ":value"),
+        
+        (try_begin),
+        (eq, ":object", "$g_presentation_reject_lord"),
+        	(call_script, "script_troop_change_relation_with_troop", "$g_lord_no", "trp_player", -10),
+            (call_script, "script_lord_find_alternative_faction", "$g_lord_no"),
+            (assign, ":new_faction", reg0),
+            (try_begin),
+                (is_between, ":new_faction", kingdoms_begin, kingdoms_end),
+                (troop_get_slot, ":old_faction", "$g_lord_no", slot_troop_original_faction),
+                (str_store_troop_name, s1, "$g_lord_no"),
+                (str_store_faction_name, s2, ":new_faction"),	
+                (str_store_faction_name, s3, ":old_faction"),
+            
+                (troop_set_slot, "$g_lord_no", slot_troop_occupation, slto_kingdom_hero),
+                (call_script, "script_change_troop_faction", "$g_lord_no", ":new_faction"),
+            
+                (troop_get_type, reg4, "$g_lord_no"),
+                (display_message, "str_lord_defects_ordinary"),
+            (else_try),
+                (call_script, "script_change_troop_faction", "$g_lord_no", "fac_outlaws"),
+            (try_end),
+            (presentation_set_duration, 0),
+        (else_try),
+        (eq, ":object", "$g_presentation_accept_lord"),
+            (troop_set_slot, "$g_lord_no", slot_troop_occupation, slto_kingdom_hero),
+            (presentation_set_duration, 0),
+        (try_end),
+      ]),
+
+  ]),
+
 
 	
 #COOP BEGIN #########################################

@@ -54,7 +54,12 @@ slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be mov
 
 slot_selected_item = 62
 
-slot_item_is_blocked = 63		### mod 21.09.2018
+slot_item_is_blocked = 63		### mod 21.09.2018      cant'be moved down the next one
+#### slots for item modifiers: +1, +2, +3
+slot_item_modifier_first_level  = 64
+slot_item_modifier_second_level = 65 
+slot_item_modifier_third_level  = 66
+
 
 ########################################################
 ##  AGENT SLOTS            #############################
@@ -345,8 +350,13 @@ slot_castle_exterior    = slot_town_center
 
 
 slot_center_native_faction = 73	## crpg-campaign: center slot for setting it's native faction
+slot_town_is_capitol = 74 ### crpg-campaign: center is capitol
 
+### mod begin
+slot_center_received_reinforcements = 75
+slot_party_center = 76
 
+## mod end
 
 #slot_town_rebellion_contact   = 76
 #trs_not_yet_approached  = 0
@@ -420,8 +430,6 @@ slot_center_improvement_end_hour  = 125
 
 slot_party_last_traded_center     = 126 
 
-
-
 slot_center_has_manor            = 130 #village
 slot_center_has_fish_pond        = 131 #village
 slot_center_has_watch_tower      = 132 #village
@@ -429,20 +437,46 @@ slot_center_has_school           = 133 #village
 slot_center_has_messenger_post   = 134 #town, castle, village
 slot_center_has_prisoner_tower   = 135 #town, castle
 
+## MOD BEGIN
+slot_center_has_smithy			 = 136
+slot_center_has_armorer			 = 137
+slot_center_has_stables			 = 138
+slot_center_has_bowyer 			 = 139
+
+slot_center_has_large_smithy	 = 140
+slot_center_has_large_armorer	 = 141
+slot_center_has_large_stables	 = 142
+slot_center_has_large_bowyer	 = 143
+
+slot_center_has_kings_smithy	 = 144
+slot_center_has_kings_armorer	 = 145
+slot_center_has_kings_stables 	 = 146
+slot_center_has_kings_bowyer	 = 147
+
 village_improvements_begin = slot_center_has_manor
-village_improvements_end          = 135
+village_improvements_end          = slot_center_has_smithy
 
 walled_center_improvements_begin = slot_center_has_messenger_post
 walled_center_improvements_end               = 136
 
-slot_center_player_enterprise     				  = 137 #noted with the item produced
-slot_center_player_enterprise_production_order    = 138
-slot_center_player_enterprise_consumption_order   = 139 #not used
-slot_center_player_enterprise_days_until_complete = 139 #Used instead
+castle_improvements_begin = slot_center_has_messenger_post
+castle_improvements_end = slot_center_has_large_smithy
 
-slot_center_player_enterprise_balance             = 140 #not used
-slot_center_player_enterprise_input_price         = 141 #not used
-slot_center_player_enterprise_output_price        = 142 #not used
+town_improvements_begin = slot_center_has_messenger_post
+town_improvements_end = slot_center_has_kings_smithy
+
+capitol_improvements_begin = slot_center_has_messenger_post
+capitol_improvements_end = 147
+#### MOD END
+
+slot_center_player_enterprise     				  = 148 #noted with the item produced
+slot_center_player_enterprise_production_order    = 149
+slot_center_player_enterprise_consumption_order   = 150 #not used
+slot_center_player_enterprise_days_until_complete = 151 #Used instead
+
+slot_center_player_enterprise_balance             = 152 #not used
+slot_center_player_enterprise_input_price         = 153 #not used
+slot_center_player_enterprise_output_price        = 154 #not used
 
 
 
@@ -982,9 +1016,17 @@ troop_slots_reserved_for_relations_start        = 165 #this is based on id_troop
 
 slot_troop_relations_begin				= 0 #this creates an array for relations between troops
 											#Right now, lords start at 165 and run to around 290, including pretenders
-											
-											
-											
+	
+### MOD BEGIN - slots for buildings for lords, players, kings    
+slot_troop_built_smithy = 320        ## 1 - lvl 1 building, 2 - lvl 2 - large smith, 3 - lvl 3 - kings smith. Same for below
+slot_troop_built_armorer = 321									
+slot_troop_built_stables = 322
+slot_troop_built_bowyer = 323       ## 1,2,3 lvl
+
+slot_troop_is_constructing_building = 324
+
+
+                
 ########################################################
 ##  PLAYER SLOTS           #############################
 ########################################################
@@ -1865,8 +1907,15 @@ grey_banners_end_offset = 39
 khergit_banners_begin_offset = 63
 khergit_banners_end_offset = 84
 
+
 sarranid_banners_begin_offset = 105
 sarranid_banners_end_offset = 125
+
+
+### mod begin
+kalmar_banners_begin_offset = 146
+kalmar_banners_end_offset = 167
+### mod end
 
 banners_end_offset = 199
 
@@ -2072,6 +2121,11 @@ coop_temp_casualties_enemy_begin   = coop_temp_party_enemy_begin + 40 # 4x this 
 coop_temp_party_ally_begin         = coop_temp_casualties_enemy_begin + 40
 coop_temp_casualties_ally_begin    = coop_temp_party_ally_begin + 40
 
+
+### mod begin - party slot
+coop_party_leader = 500
+
+### mod end
 #battle size
 coop_min_battle_size               = 30
 coop_def_battle_size               = 100

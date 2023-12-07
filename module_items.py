@@ -25,22 +25,22 @@ from header_triggers import *
 
 # Some constants for ease of use.
 imodbits_none = 0
-imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn
-imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened
-imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
-imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly
-imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_balanced
-imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_thick | imodbit_reinforced
-imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered
-imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork
-imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy
-imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_heavy
-imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_balanced | imodbit_heavy
-imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_strong |imodbit_masterwork
-imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_masterwork
-imodbits_missile   = imodbit_bent | imodbit_large_bag
-imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag
-imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag
+imodbits_horse_basic = imodbit_swaybacked|imodbit_lame|imodbit_spirited|imodbit_heavy|imodbit_stubborn|imodbit_champion     ### +1,+2,+3 (spirited=, heavy= , champion=,                    1
+imodbits_cloth  = imodbit_tattered | imodbit_ragged | imodbit_sturdy | imodbit_thick | imodbit_hardened                     ### +1,+2,+3 (sturdy=, thick= , hardened=,                      2 
+imodbits_armor  = imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly     ### +1,+2,+3 (thick=, reinforced= , lordly=,                    3
+imodbits_plate  = imodbit_cracked | imodbit_rusty | imodbit_battered | imodbit_crude | imodbit_thick | imodbit_reinforced |imodbit_lordly   ### +1,+2,+3 (thick=, reinforced= , lordly=,    3
+imodbits_polearm = imodbit_cracked | imodbit_bent | imodbit_fine |imodbit_balanced | imodbit_masterwork             ### +1,+2,+3 (fine=, balanced= , masterwork=,                           4
+imodbits_shield  = imodbit_cracked | imodbit_battered |imodbit_heavy |imodbit_thick | imodbit_reinforced            ### +1,+2,+3 (heavy=35c, thick=36c , reinforced=37c,                    5
+imodbits_sword   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork          ### +1,+2,+3 (Balanced=35c, tempered=36c , masterwork=37c,              6
+imodbits_sword_high   = imodbit_rusty | imodbit_chipped | imodbit_balanced |imodbit_tempered|imodbit_masterwork     ### +1,+2,+3 (Heavy=38c ,Balanced=39c, masterwork=41c,                  7
+imodbits_axe   = imodbit_rusty | imodbit_chipped | imodbit_heavy |imodbit_balanced| imodbit_masterwork            ### +1,+2,+3 (fine=38c ,Balanced=39c, masterwork=41c,                    7  
+imodbits_mace   = imodbit_rusty | imodbit_chipped | imodbit_fine|imodbit_heavy|imodbit_masterwork                 ### +1,+2,+3 (fine=33b ,Balanced=34b, masterwork=37b                         8
+imodbits_pick   = imodbit_rusty | imodbit_chipped | imodbit_fine | imodbit_heavy|imodbit_masterwork               ### +1,+2,+3 (fine=32k ,Balanced=34p, masterwork=36k,                        8
+imodbits_bow = imodbit_cracked | imodbit_bent | imodbit_fine |imodbit_strong|imodbit_masterwork                     ### +1,+2,+3 (fine= ,strong=, masterwork=,                              9
+imodbits_crossbow = imodbit_cracked | imodbit_bent | imodbit_fine | imodbit_heavy|imodbit_masterwork                 ### +1,+2,+3 (heavy= ,strong=, masterwork=,                            10
+imodbits_missile   = imodbit_bent | imodbit_large_bag|imodbit_fine|imodbit_heavy                                       ### +1,+2,+3 (large_bag= ,fine=, heavy=,                             11
+imodbits_thrown   = imodbit_bent | imodbit_heavy| imodbit_balanced| imodbit_large_bag |imodbit_masterwork              ### +1,+2,+3 (heavy= ,balanced=, masterwork=,                        12
+imodbits_thrown_minus_heavy = imodbit_bent | imodbit_balanced| imodbit_large_bag|imodbit_masterwork                 ### +1,+2,+3 (large_bag= ,balanced=, masterwork=,                       13
 
 itc_warclub = itc_cut_two_handed |  itcf_thrust_polearm | itc_parry_two_handed |itc_dagger
 itc_greatsword = itc_cut_two_handed |  itcf_thrust_twohanded | itc_parry_two_handed |itcf_thrust_onehanded_lance
@@ -316,15 +316,15 @@ items = [
  ["arrows","Arrows", [("arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver", ixmesh_carry)], itp_type_arrows|itp_merchandise|itp_default_ammo, itcf_carry_quiver_back, 
 84,weight(6)|abundance(160)|weapon_length(95)|thrust_damage(4,cut)|max_ammo(24),imodbits_missile],
  ["khergit_arrows","Tatar Arrows", [("arrow_b",0),("flying_missile",ixmesh_flying_ammo),("quiver_b", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-347,weight(6)|abundance(30)|weapon_length(95)|thrust_damage(6,cut)|max_ammo(20),imodbits_missile],
+347,weight(6)|abundance(30)|weapon_length(95)|thrust_damage(6,cut)|max_ammo(22),imodbits_missile],
  ["barbed_arrows","Barbed Arrows", [("barbed_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_d", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-267,weight(6)|abundance(70)|weapon_length(95)|thrust_damage(5,cut)|max_ammo(18),imodbits_missile],
+267,weight(6)|abundance(70)|weapon_length(95)|thrust_damage(5,cut)|max_ammo(20),imodbits_missile],
  ["bodkin_arrows","Bodkin Arrows", [("piercing_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_c", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(1,pierce)|max_ammo(15),imodbits_missile],
+376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(1,pierce)|max_ammo(20),imodbits_missile],
  ["bolts","Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag", ixmesh_carry),("bolt_bag_b", ixmesh_carry|imodbit_large_bag)], itp_type_bolts|itp_merchandise|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 
-218,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(8,pierce)|max_ammo(15),imodbits_missile],
+218,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(8,pierce)|max_ammo(24),imodbits_missile],
  ["steel_bolts","Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_merchandise|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 
-367,weight(2.5)|abundance(20)|weapon_length(63)|thrust_damage(15,pierce)|max_ammo(12),imodbits_missile],
+367,weight(2.5)|abundance(20)|weapon_length(63)|thrust_damage(15,pierce)|max_ammo(18),imodbits_missile],
  ["cartridges","Cartridges", [("cartridge_a",0)], itp_type_bullets|itp_merchandise|itp_can_penetrate_shield|itp_default_ammo, 0, 
 433,weight(2.25)|abundance(90)|weapon_length(3)|thrust_damage(10,pierce)|max_ammo(50),imodbits_missile],
 
@@ -2426,22 +2426,22 @@ items = [
 
 #TODO:
 ["darts",         "Darts", [("dart_b",0),("dart_b_bag", ixmesh_carry)], itp_type_thrown |itp_merchandise|itp_primary ,itcf_throw_javelin|itcf_carry_quiver_right_vertical|itcf_show_holster_when_drawn, 
-211 , weight(4)|difficulty(1)|spd_rtng(95) | shoot_speed(28) | thrust_damage(22 ,  pierce)|max_ammo(5)|weapon_length(32),imodbits_thrown ],
+211 , weight(4)|difficulty(1)|spd_rtng(95) | shoot_speed(28) | thrust_damage(22 ,  pierce)|max_ammo(8)|weapon_length(32),imodbits_thrown ],
 ["war_darts",         "War Darts", [("dart_a",0),("dart_a_bag", ixmesh_carry)], itp_type_thrown |itp_merchandise|itp_primary ,itcf_throw_javelin|itcf_carry_quiver_back|itcf_show_holster_when_drawn, 
-324 , weight(5)|difficulty(1)|spd_rtng(93) | shoot_speed(27) | thrust_damage(25 ,  pierce)|max_ammo(5)|weapon_length(45),imodbits_thrown ],
+324 , weight(5)|difficulty(1)|spd_rtng(93) | shoot_speed(27) | thrust_damage(25 ,  pierce)|max_ammo(8)|weapon_length(45),imodbits_thrown ],
 
 ["javelin",         "Javelins", [("javelin",0),("javelins_quiver_new", ixmesh_carry)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee ,itcf_throw_javelin|itcf_carry_quiver_back|itcf_show_holster_when_drawn, 
-424, weight(4)|difficulty(1)|spd_rtng(91) | shoot_speed(25) | thrust_damage(34 ,  pierce)|max_ammo(4)|weapon_length(75),imodbits_thrown ],
+424, weight(4)|difficulty(1)|spd_rtng(91) | shoot_speed(25) | thrust_damage(34 ,  pierce)|max_ammo(6)|weapon_length(75),imodbits_thrown ],
 ["javelin_melee",         "Javelin", [("javelin",0)], itp_type_polearm|itp_primary|itp_wooden_parry , itc_staff, 
 424, weight(1)|difficulty(11)|spd_rtng(95) |swing_damage(12, cut)| thrust_damage(14,  pierce)|weapon_length(75),imodbits_polearm ],
 
 ["throwing_spears",         "Throwing Spears", [("jarid_new_b",0),("jarid_new_b_bag", ixmesh_carry)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee ,itcf_throw_javelin|itcf_carry_quiver_back|itcf_show_holster_when_drawn, 
-740 , weight(3)|difficulty(2)|spd_rtng(87) | shoot_speed(22) | thrust_damage(44 ,  pierce)|max_ammo(4)|weapon_length(65),imodbits_thrown ],
+740 , weight(3)|difficulty(2)|spd_rtng(87) | shoot_speed(22) | thrust_damage(44 ,  pierce)|max_ammo(6)|weapon_length(65),imodbits_thrown ],
 ["throwing_spear_melee",         "Throwing Spear", [("jarid_new_b",0),("javelins_quiver", ixmesh_carry)],itp_type_polearm|itp_primary|itp_wooden_parry , itc_staff, 
 740 , weight(1)|difficulty(11)|spd_rtng(91) | swing_damage(18, cut) | thrust_damage(23 ,  pierce)|weapon_length(75),imodbits_thrown ],
 
 ["jarid",         "Jarids", [("jarid_new",0),("jarid_quiver", ixmesh_carry)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee ,itcf_throw_javelin|itcf_carry_quiver_back|itcf_show_holster_when_drawn, 
-665 , weight(2.75)|difficulty(2)|spd_rtng(89) | shoot_speed(24) | thrust_damage(45 ,  pierce)|max_ammo(3)|weapon_length(65),imodbits_thrown ],
+665 , weight(2.75)|difficulty(2)|spd_rtng(89) | shoot_speed(24) | thrust_damage(45 ,  pierce)|max_ammo(5)|weapon_length(65),imodbits_thrown ],
 ["jarid_melee",         "Jarid", [("jarid_new",0),("jarid_quiver", ixmesh_carry)], itp_type_polearm|itp_primary|itp_wooden_parry , itc_staff,
 665 , weight(1)|difficulty(11)|spd_rtng(93) | swing_damage(16, cut) | thrust_damage(20 ,  pierce)|weapon_length(65),imodbits_thrown ],
 
@@ -2449,19 +2449,19 @@ items = [
 #TODO:
 #TODO: Heavy throwing Spear
 ["stones",         "Stones", [("throwing_stone",0)], itp_type_thrown |itp_merchandise|itp_primary ,itcf_throw_stone, 
- 1 , weight(4)|difficulty(0)|spd_rtng(97) | shoot_speed(30) | thrust_damage(11 ,  blunt)|max_ammo(18)|weapon_length(8),imodbit_large_bag ],
+ 1 , weight(4)|difficulty(0)|spd_rtng(97) | shoot_speed(30) | thrust_damage(11 ,  blunt)|max_ammo(24)|weapon_length(8),imodbit_large_bag ],
 
 ["throwing_knives", "Throwing Knives", [("throwing_knife",0)], itp_type_thrown |itp_merchandise|itp_primary ,itcf_throw_knife, 
- 76 , weight(2.5)|difficulty(1)|spd_rtng(121) | shoot_speed(25) | thrust_damage(22 ,  cut)|max_ammo(4)|weapon_length(0),imodbits_thrown ],
+ 76 , weight(2.5)|difficulty(1)|spd_rtng(121) | shoot_speed(25) | thrust_damage(22 ,  cut)|max_ammo(6)|weapon_length(0),imodbits_thrown ],
 ["throwing_daggers", "Throwing Daggers", [("throwing_dagger",0)], itp_type_thrown |itp_merchandise|itp_primary ,itcf_throw_knife, 
- 93 , weight(2.5)|difficulty(1)|spd_rtng(110) | shoot_speed(24) | thrust_damage(27 ,  cut)|max_ammo(5)|weapon_length(0),imodbits_thrown ],
+ 93 , weight(2.5)|difficulty(1)|spd_rtng(110) | shoot_speed(24) | thrust_damage(27 ,  cut)|max_ammo(6)|weapon_length(0),imodbits_thrown ],
 #TODO: Light Trowing axe, Heavy Throwing Axe
 ["light_throwing_axes", "Light Throwing Axes", [("francisca",0)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee,itcf_throw_axe,
- 443, weight(5)|difficulty(2)|spd_rtng(99) | shoot_speed(18) | thrust_damage(35,cut)|max_ammo(3)|weapon_length(53),imodbits_thrown_minus_heavy ],
+ 443, weight(5)|difficulty(2)|spd_rtng(99) | shoot_speed(18) | thrust_damage(35,cut)|max_ammo(5)|weapon_length(53),imodbits_thrown_minus_heavy ],
 ["light_throwing_axes_melee", "Light Throwing Axe", [("francisca",0)], itp_type_one_handed_wpn |itp_primary|itp_bonus_against_shield,itc_scimitar,
  443, weight(1)|difficulty(11)|spd_rtng(99)|weapon_length(53)| swing_damage(26,cut),imodbits_thrown_minus_heavy ],
 ["throwing_axes", "Throwing Axes", [("throwing_axe_a",0)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee,itcf_throw_axe,
- 546, weight(5)|difficulty(3)|spd_rtng(98) | shoot_speed(18) | thrust_damage(39,cut)|max_ammo(3)|weapon_length(53),imodbits_thrown_minus_heavy ],
+ 546, weight(5)|difficulty(3)|spd_rtng(98) | shoot_speed(18) | thrust_damage(39,cut)|max_ammo(4)|weapon_length(53),imodbits_thrown_minus_heavy ],
 ["throwing_axes_melee", "Throwing Axe", [("throwing_axe_a",0)], itp_type_one_handed_wpn |itp_primary|itp_bonus_against_shield,itc_scimitar,
  546, weight(1)|difficulty(11)|spd_rtng(98) | swing_damage(29,cut)|weapon_length(53),imodbits_thrown_minus_heavy ],
 ["heavy_throwing_axes", "Heavy Throwing Axes", [("throwing_axe_b",0)], itp_type_thrown |itp_merchandise|itp_primary|itp_next_item_as_melee,itcf_throw_axe,

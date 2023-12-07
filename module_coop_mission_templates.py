@@ -36,6 +36,21 @@ from module_mission_templates import *
 # 
 ####################################################################################################################
 
+common_battle_order_panel = (
+  0, 0, 0, [],
+  [
+    (game_key_clicked, gk_view_orders),
+    (neg|is_presentation_active, "prsnt_battle"),
+    (start_presentation, "prsnt_battle"),
+    ])
+
+common_battle_order_panel_tick = (
+  0.1, 0, 0, [],
+  [
+    (is_presentation_active, "prsnt_battle"),
+    (call_script, "script_update_order_panel_statistics_and_map"),
+    ])
+
 
 coop_server_check_polls = (
   1, 5, 0,
@@ -233,58 +248,226 @@ lance_breaking_multiplayer = (
 	
     ])
 
-###	   AI_kick_enhancement for multiplayer
-## based on singleplayer version. 
-#by Rider of Rohirrim
-	   
-ai_kick_enhancement_mp =  (
+
+#### AI_kick_enhancement - https://forums.taleworlds.com/index.php?threads/python-script-scheme-exchange.8652/page-39#post-9634677
+## by KnowsCount
+ai_kick_enhancement =  (
     2, 0, 0,
     [], [
-	(multiplayer_is_server),
-	
+    (try_begin),
+    (neg|multiplayer_is_server),
+        (get_player_agent_no,":player"),
+	(else_try),
+		(assign,":player",-1),
+    (try_end),
     (try_for_agents, ":agent"),
+		(neq, ":agent", ":player"),
 		(agent_is_non_player, ":agent"),
-		(agent_is_human, ":agent"),
-		(agent_is_alive, ":agent"),
-		(agent_is_active, ":agent"),	
+        (agent_is_alive, ":agent"),
+        (agent_is_human, ":agent"),
+        (agent_is_active, ":agent"),
+        (agent_slot_eq, ":agent", slot_agent_is_running_away, 0),
 		(agent_get_horse,":horse",":agent"),	### kicker is not mounted
-		(eq,":horse",-1),	  
-		##He's an eligible human.  Now see if he's in a position to kick.
-		(agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
-		(agent_get_defend_action, ":defend_action", ":agent"),
-		(this_or_next|eq,":attack_action",4),
-		(this_or_next|eq,":defend_action",1), # defend enemy
-		##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
-		(agent_get_team, ":team", ":agent"),
-		(assign, ":maximum_distance", 100),
-		# get target
-		(agent_ai_get_look_target,":suspect",":agent"),
-		(gt,":suspect",0),
-		(agent_is_alive, ":suspect"),
-		(agent_is_human, ":suspect"),
-		(agent_is_active, ":suspect"),
-		(agent_get_team, ":suspect_team", ":suspect"),
-		(neq, ":suspect_team", ":team"),
+		(eq,":horse",-1),
+        (agent_get_animation,":anim",":agent",0),
+        (neg|is_between,":anim","anim_fall_face_hold","anim_strike_chest_front_stop"), ### checking if agent didnt just fall of horse and is getting up
+
+        ##He's an eligible human.  Now see if he's in a position to kick.
+        (agent_get_attack_action, ":attack_action", ":agent"), # return value: spare - 0, prepare - 1, attack - 2, hit - 3, was defended - 4, reload - 5, release - 6, cancel - 7
+        (agent_get_defend_action, ":defend_action", ":agent"),
+        (this_or_next|eq,":attack_action",4),
+        (this_or_next|eq,":defend_action",1), # defend enemy
+        ##So he'll only try to kick if he just parried an enemy attack, or his own attack just got parried.
+        (agent_get_team, ":team", ":agent"),
+        (assign, ":maximum_distance", 100),
+        # get target
+        (agent_ai_get_look_target,":suspect",":agent"),
+        (gt,":suspect",0),
+        (agent_is_alive, ":suspect"),
+        (agent_is_human, ":suspect"),
+        (agent_is_active, ":suspect"),
+        (agent_get_team, ":suspect_team", ":suspect"),
+        (neq, ":suspect_team", ":team"),
 		(agent_get_horse,":horse_suspect",":suspect"),	### enemy is not mounted
 		(eq,":horse_suspect",-1),
-		(agent_get_position, pos1, ":agent"), # distance check
-		(agent_get_position, pos2, ":suspect"),
-		(neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
-		(get_distance_between_positions, ":distance", pos1, pos2),
-		(le, ":distance", ":maximum_distance"),
-		(store_random_in_range,":kickchance", 1, 10),
-		(try_begin),
-		(lt,":kickchance",2),
-			#(display_message, "@Agent kicks."),
-			(agent_set_animation, ":agent", "anim_prepare_kick_0"),
-			(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
-			(agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
-			#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
-		(try_end),
+        (agent_get_position, pos1, ":agent"), # distance check
+        (agent_get_position, pos2, ":suspect"),
+        (neg|position_is_behind_position, pos2, pos1), #enemy cannot be behind player
+        (get_distance_between_positions, ":distance", pos1, pos2),
+        (le, ":distance", ":maximum_distance"),
+        (store_random_in_range,":kickchance", 1, 10),
+        (try_begin),
+            (lt,":kickchance",2),
+               # (display_message, "@Agent kicks."),
+                (agent_set_animation, ":agent", "anim_prepare_kick_0"),
+                (agent_set_animation, ":agent", "anim_kick_right_leg"),### added 13.03.2023
+				(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"), ### it was after agent_deliver_damage_to_agent
+                (agent_deliver_damage_to_agent, ":agent", ":suspect", 3),
+				#(agent_set_animation, ":suspect", "anim_strike3_abdomen_front"),
+            (try_end),
+       (try_end),
+       ])	
+       
+       
+       
+#### trigger for changing agents modifiers according to:		
+### kingdom building bonuses 
+### alcohol use	- ###### mod, party drinking script
+# by Rider of Rohirrim
+effects_on_troops =  (
+    ti_on_agent_spawn, 0, 0,
+    [], [
+	(store_trigger_param_1, ":agent"),
+	(agent_is_human,":agent"),
+	(agent_set_kick_allowed, ":agent", 1),
+    
+    (agent_get_slot,":agent_party",":agent",slot_agent_coop_spawn_party), #getting agent party
+    (display_message,"@Party {reg1}"),
+	# (try_begin),
+	# (eq,":agent_party","p_main_party"),
+		# (try_begin), ### if party uses alcohol - alcohol unlocked and in inventory
+		# (eq,"$party_was_drinking",1),
+			# (store_random_in_range,":rand",0,100),
+			# (try_begin),
+			# (lt,":rand",51),		## 50% chance for agent got drunk before battle 
+				# ## 20 % penalty in everything ( horse speed 10% penalty)
+				# (agent_set_damage_modifier, ":agent", 80),
+				# (agent_set_accuracy_modifier, ":agent", 80),
+				# (agent_set_speed_modifier, ":agent", 80),
+				# (agent_set_reload_speed_modifier, ":agent", 80),
+				# (agent_set_use_speed_modifier, ":agent", 80),
+				# (agent_set_ranged_damage_modifier, ":agent", 80),
+				# (agent_set_horse_speed_factor, ":agent", 90),
+				# #bonus to health
+				# (store_agent_hit_points,":current_hp",":agent",1),
+				# #(assign,reg3,":current_hp"),#DEBUG
+				# #(display_message,"@ agent hp before change: {reg3}"),
+				# (store_mul,":new_hp",":current_hp",3),
+				# (val_div,":new_hp",2),
+				# (agent_set_max_hit_points,":agent",":new_hp",1),
+				# (agent_set_hit_points,":agent",":new_hp",1),
+				# #(store_agent_hit_points,reg3,":agent",1), #DEBUG
+				# #(assign,reg4,":new_hp"),	
+				# #(display_message,"@ agent hp after change: {reg3} new: {reg4}"),
+			# (try_end),
+		# (try_end),
+		
+        
+		# ### if player has built buildings: smith, ...   (agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>),
+        # #####           Check if item is between e.g. - 1h swords begin - 1h swords end - set modifiers for 1h swords ### +1,+2,+3 (Balanced=35c, tempered=36c , masterwork=37c,    - DONE
+		# ### to do: variable for player, lords if they have built buildings - DONE
+		# #### to do: randomly build buildings in lords centers  -  DONE
+		# ### bonus for troops in castles/towns and lord's party  -  
+		# ### deleting buildings  or transforming  -  
+        # ### TO DO: make an if statement for lords to not let them build all buildings which gives better eq for troops - DONE
+    # (try_end),
+    
+    
+ 
+    # (try_begin),  ### if party is not - town/castle/village
+ # #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
+
+# #    (else_try), ### if party is town/castle/village
+    # (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
+    # (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
+    # (party_slot_eq,":agent_party",slot_party_type, spt_castle),
+        # (party_get_slot, ":party_leader", ":agent_party", slot_town_lord),
+        # (str_store_troop_name,s2,":party_leader"),
+        
+        # (call_script,"script_check_troop_built_improvements",":party_leader"),
+        # #### DEBUG
+        # #(assign,reg2,":party_leader"),
+       # # (display_message,"@party_leader {s2}"),
+        # #### DEBUG END
+    # (else_try),
+        # (party_stack_get_troop_id, ":party_leader",":agent_party",0),
+        # (str_store_troop_name,s2,":party_leader"),
+        # (call_script,"script_check_troop_built_improvements",":party_leader"),
+        # #### DEBUG
+        # #(assign,reg0,":party_leader"),
+       # # (display_message,"@party_leader {s2}"),
+        # #### DEBUG END
+    # (try_end),
+	###DEBUG
+	#(display_message,"@ reg0 {reg0}, reg1 {reg1}, reg2 {reg2}, reg3 {reg3}"),
+    (try_begin),
+    (gt,":agent_party",-1),
+        (party_stack_get_troop_id, ":party_leader",":agent_party",0),
+		### DEBUG
+        #(str_store_troop_name,s2,":party_leader"),
+        #(display_message,"@Troop: {s2}"),
+		### DEBUG
+    (try_end),
+    (try_begin),
+    #(is_between,":party_leader",kings_begin, lords_end),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
+    (try_end),
+    (try_begin),
+    (this_or_next|gt,reg0,0),
+    (gt,reg3,0),	
+        (try_for_range,":item_slot",ek_item_0,ek_head),
+            (store_add,":slot",reg0,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
+			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
+			(item_get_type, ":item_type", ":item_no"),
+            (try_begin),	### melee weapons
+            (gt,reg0,0),
+            (this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+            (this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+            (this_or_next|eq,":item_type",itp_type_polearm),
+            (eq,":item_type",itp_type_shield),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+				###DEBUG
+				#(display_message,"@setting melee weapon modifier"),
+            (try_end),            
+            (store_add,":slot",reg3,slot_item_is_blocked),
+            (try_begin),## ranged weapons
+            (gt,reg3,0),
+            (this_or_next|eq,":item_type",itp_type_bow),
+            (this_or_next|eq,":item_type",itp_type_arrows),
+            (this_or_next|eq,":item_type",itp_type_crossbow),
+            (this_or_next|eq,":item_type",itp_type_bolts),
+            (eq,":item_type",itp_type_thrown),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+				###DEBUG
+				#(display_message,"@setting ranged weapon modifier"),
+            (try_end),
+        (try_end),
 	(try_end),
 	
-	])
-
+    (try_begin),##armors
+    (gt,reg1,0),
+        (try_for_range,":item_slot",ek_head,ek_horse),
+            (store_add,":slot",reg1,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", ":item_slot"),
+			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
+            (item_get_slot,":modifier",":item_no", ":slot"),
+            (agent_set_item_slot_modifier, ":agent", ":item_slot", ":modifier"),
+			###DEBUG
+			#(display_message,"@setting armor parts modifier"),
+        (try_end),
+    (try_end),
+	
+	(try_begin),###horses
+    (gt,reg2,0),
+            (store_add,":slot",reg2,slot_item_is_blocked),
+            (agent_get_item_slot, ":item_no", ":agent", ek_horse),
+			(gt,":item_no",-1),
+			(lt,":item_no","itm_items_end"),
+            (item_get_slot,":modifier",":item_no", ":slot"),
+            (agent_set_item_slot_modifier, ":agent", ek_horse, ":modifier"),
+			###DEBUG
+			##(display_message,"@setting horse modifier"),
+    (try_end),
+    
+	
+	])	       
+       
+       
   
 #### MOD END   
 
@@ -381,10 +564,14 @@ coop_mission_templates = [
       coop_respawn_as_bot,
       coop_store_respawn_as_bot,
 	  lance_breaking_multiplayer,
-	  ai_kick_enhancement_mp,
+	  #ai_kick_enhancement_mp,
+      ai_kick_enhancement,
+
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
-     # common_battle_order_panel,
-     # common_battle_order_panel_tick,
+
+  #    common_battle_order_panel,
+  #    common_battle_order_panel_tick,
+
 
 #multiplayer_once_at_the_first_frame
       
@@ -477,7 +664,7 @@ coop_mission_templates = [
 
         (try_begin),
           (multiplayer_is_server),
-          (assign, "$coop_reinforce_size", 10),
+          (assign, "$coop_reinforce_size", 25), ## was 10
           (assign, "$coop_reinforce", 1),
           (assign, "$coop_alive_team1", 0),#store count for reinforcement spawn
           (assign, "$coop_alive_team2", 0),
@@ -522,21 +709,13 @@ coop_mission_templates = [
            (assign, "$coop_inventory_box", reg0),
 
         (try_end),
-
-		
-		
-		
 		
 			## MOD BEGIN Rewrite of items of troops
 			(call_script,"script_coop_read_eq_from_file_to_troops"),
 			## MOD END
 
 		
-			
-		
-		
         ]),
-
 
 
  #multiplayer_server_spawn_bots
@@ -650,26 +829,14 @@ coop_mission_templates = [
             (val_sub, "$coop_num_bots_team_2", 1),
           (try_end),
         (try_end),    
-        (try_end),    
-		
-		
-		
 
-		
-		
-		
-		
-		
-		
+        (try_end),   
+
+
         ]),
- 
-
- 
- 
-
- 
- 
- 
+        
+        
+     # effects_on_troops,
  #### mod end
  
  
@@ -725,8 +892,6 @@ coop_mission_templates = [
           (try_end),
 
         ]),
-
- 
 
 		
 		
@@ -793,7 +958,91 @@ coop_mission_templates = [
           (multiplayer_send_int_to_server, multiplayer_event_change_team_no, "$coop_my_team"),
           (multiplayer_send_int_to_server, multiplayer_event_change_troop_id, "$coop_my_troop_no"),
         (try_end),
-		
+        (agent_set_slot, ":agent_no", slot_agent_coop_spawn_party, "$coop_agent_party"), #store party of agent
+       # (assign,reg2,"$coop_agent_party"),
+       # (display_message,"@Party: {reg2}"),
+        (try_begin),
+        (gt,"$coop_agent_party",-1),
+           # (party_stack_get_troop_id, ":party_leader","$coop_agent_party",0),
+            (party_get_slot,":party_leader", "$coop_agent_party", coop_party_leader),
+			### DEBUG
+            # (str_store_troop_name,s2, ":party_leader"),
+            # (display_message,"@Troop: {s2}"),
+			### DEBUG
+        (try_end),
+        
+        #(is_between,":party_leader",kings_begin, lords_end),
+        (call_script,"script_check_troop_built_improvements",":party_leader"),
+		### DEBUG
+        ##(display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+        ### DEBUG
+        (try_begin),
+        (this_or_next|gt,reg0,0),
+        (gt,reg3,0),	
+            (try_for_range,":item_slot",ek_item_0,ek_head),
+                (store_add,":slot",reg0,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ":item_slot"),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_type, ":item_type", ":item_no"),
+                (try_begin),	### melee weapons
+                (gt,reg0,0),
+                (this_or_next|eq,":item_type",itp_type_one_handed_wpn),
+                (this_or_next|eq,":item_type",itp_type_two_handed_wpn),
+                (this_or_next|eq,":item_type",itp_type_polearm),
+                (eq,":item_type",itp_type_shield),
+                    (item_get_slot,":modifier",":item_no", ":slot"),
+                    (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                    ###DEBUG
+                    #(display_message,"@setting melee weapon modifier"),
+                (try_end),            
+                (store_add,":slot",reg3,slot_item_is_blocked),
+                (try_begin),## ranged weapons
+                (gt,reg3,0),
+                (this_or_next|eq,":item_type",itp_type_bow),
+                (this_or_next|eq,":item_type",itp_type_arrows),
+                (this_or_next|eq,":item_type",itp_type_crossbow),
+                (this_or_next|eq,":item_type",itp_type_bolts),
+                (eq,":item_type",itp_type_thrown),
+                    (item_get_slot,":modifier",":item_no", ":slot"),
+                    (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                    ###DEBUG
+                    #(display_message,"@setting ranged weapon modifier"),
+                (try_end),
+            (try_end),
+        (try_end),
+        
+        (try_begin),##armors
+        (gt,reg1,0),
+            (try_for_range,":item_slot",ek_head,ek_horse),
+                (store_add,":slot",reg1,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ":item_slot"),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
+                ###DEBUG
+                #(display_message,"@setting armor parts modifier"),
+            (try_end),
+        (try_end),
+        
+        (try_begin),###horses
+        (gt,reg2,0),
+                (store_add,":slot",reg2,slot_item_is_blocked),
+                (agent_get_item_slot, ":item_no", ":agent_no", ek_horse),
+                (gt,":item_no",-1),
+                (lt,":item_no","itm_items_end"),
+                (item_get_slot,":modifier",":item_no", ":slot"),
+                (agent_set_item_slot_modifier, ":agent_no", ek_horse, ":modifier"),
+                ###DEBUG
+                ##(display_message,"@setting horse modifier"),
+        (try_end),
+    
+        
+        
+        
+        
+        
 		#### MOD begin		10.12.2021
 		##### 	- UNEQUIPING SPAWNING AGENTS ITEMS FOR CLIENTS	( WITHOUT IT IT CREATES CONFLICTS LIKE AGENTS HAS ITEMS THAT CAN ONLY BE ACCESSED BY NUMERIC KEYBOARD 1-4 AND NOT BY THE NEXT WEAPON BTN)
 		#####   - ADDING ITEMS FOR AGENTS AFTER THEY SPAWN
@@ -806,7 +1055,12 @@ coop_mission_templates = [
 		# (try_end),
          
 		]),
- 
+        
+        
+      
+       
+       
+       
 	  # (ti_on_agent_spawn,0,0,[],
 	  # [
 		# (this_or_next|multiplayer_is_dedicated_server),
@@ -1172,6 +1426,35 @@ coop_mission_templates = [
 
 	#mod end
 
+    # #AI Triggers
+     # (0, 5, ti_once, [
+          # (this_or_next|multiplayer_is_server),
+          # (multiplayer_is_dedicated_server),
+          # (store_mission_timer_a,":mission_time"),(ge,":mission_time",6),
+         # # (eq,"$load_ai_tactics",1),
+          # ],
+        # [
+        # # (try_for_range,":team_no",-1,10),
+            # # (team_get_leader, ":ai_leader", ":team_no"),
+            # # (assign,reg1,":ai_leader"),
+            
+            # # (display_message,"@AI leader: {reg1}"),
+           
+        # # (try_end),
+         # (try_begin),
+         # (num_active_teams_le,2),
+            # (display_message,"@ Less teams than 2"),
+         # (else_try),
+            # (display_message,"@ More teams than 2"),
+         # (try_end),
+         # (call_script, "script_select_battle_tactic_mp"),
+         # (call_script, "script_battle_tactic_init_mp"),
+        # #(call_script, "script_battle_calculate_initial_powers"), #deciding run away method changed and that line is erased
+        # ]),
+ 
+
+
+
 #	 END BATTLE ##################	
       (3, 4, ti_once, [(eq, "$g_round_ended", 1)],
        [
@@ -1296,7 +1579,7 @@ coop_mission_templates = [
       coop_respawn_as_bot,
       coop_store_respawn_as_bot,
 	  lance_breaking_multiplayer,
-	  ai_kick_enhancement_mp,
+	  ai_kick_enhancement,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 #      common_battle_order_panel,
 #      common_battle_order_panel_tick,
@@ -1398,7 +1681,7 @@ coop_mission_templates = [
 
         (try_begin),
           (multiplayer_is_server),
-          (assign, "$coop_reinforce_size", 10), #size of reinforcement wave
+          (assign, "$coop_reinforce_size", 25), #size of reinforcement wave # was 10
           (assign, "$coop_reinforce", 1),
           (assign, "$coop_alive_team1", 0),#store count for reinforcement spawn
           (assign, "$coop_alive_team2", 0),
@@ -1470,7 +1753,7 @@ coop_mission_templates = [
           (eq, "$coop_round", coop_round_castle_hall),
           (val_div, ":battle_size", 4),
           (val_max, ":battle_size", coop_min_battle_size),
-          (assign, "$coop_reinforce_size",4),
+          (assign, "$coop_reinforce_size",10),	# was 4
         (try_end),
 
         #regulate troop spawn
@@ -1619,7 +1902,7 @@ coop_mission_templates = [
         ]),
  
 
-      (ti_on_agent_spawn, af_override_weapons, 0, [],
+      (ti_on_agent_spawn, 0, 0, [],
        [
         (store_trigger_param_1, ":agent_no"),
         (try_begin),
@@ -1754,7 +2037,7 @@ coop_mission_templates = [
          ]),
 
 
-	  (ti_on_agent_spawn,af_override_weapons,0,[],
+	  (ti_on_agent_spawn,0,0,[],
 	  [
 		(multiplayer_is_dedicated_server),
 		(store_trigger_param_1, ":agent_no"),
@@ -1786,252 +2069,252 @@ coop_mission_templates = [
 		# (try_end),
 		############## TO DO : 
 		
-		(try_begin),
-		(get_player_agent_no, ":player_agent"),				#this_or_next|
-		(this_or_next|neg|is_between, ":troop_no",troops_not_matching_begin, troops_not_matching_end),
-		(eq, ":agent_no", ":player_agent"),
-			# (display_message,"@lord/lady/gracz/npc"),
-			(call_script,"script_select_items_for_lords",":troop_no"),
+		# (try_begin),
+		# (get_player_agent_no, ":player_agent"),				#this_or_next|
+		# (this_or_next|neg|is_between, ":troop_no",troops_not_matching_begin, troops_not_matching_end),
+		# (eq, ":agent_no", ":player_agent"),
+			# # (display_message,"@lord/lady/gracz/npc"),
+			# (call_script,"script_select_items_for_lords",":troop_no"),
 			
-			(try_begin),
-			(neg|eq,reg45,-1),
-				(agent_equip_item, ":agent_no", reg45, 1),
-			(try_end),
+			# (try_begin),
+			# (neg|eq,reg45,-1),
+				# (agent_equip_item, ":agent_no", reg45, 1),
+			# (try_end),
 			
-			(try_begin),
-			(neg|eq,reg46,-1),
-				(agent_equip_item, ":agent_no", reg46, 2),
-			(try_end),
+			# (try_begin),
+			# (neg|eq,reg46,-1),
+				# (agent_equip_item, ":agent_no", reg46, 2),
+			# (try_end),
 			
-			(try_begin),
-			(neg|eq,reg47,-1),
-				(agent_equip_item, ":agent_no", reg47, 3),
-			(try_end),
+			# (try_begin),
+			# (neg|eq,reg47,-1),
+				# (agent_equip_item, ":agent_no", reg47, 3),
+			# (try_end),
 			
-			(try_begin),
-			(neg|eq,reg48,-1),
-				(agent_equip_item, ":agent_no", reg48, 4),
-			(try_end),
+			# (try_begin),
+			# (neg|eq,reg48,-1),
+				# (agent_equip_item, ":agent_no", reg48, 4),
+			# (try_end),
 
-		(else_try),	
-		(troop_get_class, ":trp_type",":troop_no"),
-		(eq,":trp_type",1),### Ranged troops	
-		#(neq, ":agent_no", ":player_agent"),
-		#(this_or_next|neg|eq,reg40,0),
-		#(neg|eq,reg41,0),
-			(try_begin),
-			(neg|eq,reg31,0),
-				(call_script,"script_select_items_1h"),	
-				(agent_equip_item, ":agent_no", reg0, 1),	
-		#		(display_message,"@item{reg0}"),
-			(try_end),
+		# (else_try),	
+		# (troop_get_class, ":trp_type",":troop_no"),
+		# (eq,":trp_type",1),### Ranged troops	
+		# #(neq, ":agent_no", ":player_agent"),
+		# #(this_or_next|neg|eq,reg40,0),
+		# #(neg|eq,reg41,0),
+			# (try_begin),
+			# (neg|eq,reg31,0),
+				# (call_script,"script_select_items_1h"),	
+				# (agent_equip_item, ":agent_no", reg0, 1),	
+		# #		(display_message,"@item{reg0}"),
+			# (try_end),
 			
-
-			
-			
-			(try_begin),		
-			(neg|eq,reg40,0),
-				(call_script,"script_select_items_bow",":troop_no"),
-				(agent_equip_item, ":agent_no", reg5, 2),	
-				(try_begin),				
-				(neg|eq,reg42,0),
-					(call_script,"script_select_items_arrows",":troop_no"),
-			#		(display_message,"@item{reg2}"),
-			#		(display_message,"@item{reg3}"),
-					(agent_equip_item, ":agent_no", reg2, 3),					
-					#(agent_equip_item, ":agent_no", reg2, 4),
-				(try_end),	
-	#			(display_message,"@item{reg5}"),
-			(try_end),				
-			
-			(try_begin),		
-			(neg|eq,reg41,0),
-				(call_script,"script_select_items_xbow",":troop_no"),
-				(agent_equip_item, ":agent_no", reg10, 2),
-				(try_begin),				
-				(neg|eq,reg43,0),
-					(call_script,"script_select_items_bolts",":troop_no"),
-			#		(display_message,"@item{reg2}"),
-			#		(display_message,"@item{reg3}"),
-					(agent_equip_item, ":agent_no", reg3, 3),					
-					#(agent_equip_item, ":agent_no", reg3, 4),
-				(try_end),						
-	#			(display_message,"@item{reg5}"),
-			(try_end),		
 
 			
 			
+			# (try_begin),		
+			# (neg|eq,reg40,0),
+				# (call_script,"script_select_items_bow",":troop_no"),
+				# (agent_equip_item, ":agent_no", reg5, 2),	
+				# (try_begin),				
+				# (neg|eq,reg42,0),
+					# (call_script,"script_select_items_arrows",":troop_no"),
+			# #		(display_message,"@item{reg2}"),
+			# #		(display_message,"@item{reg3}"),
+					# (agent_equip_item, ":agent_no", reg2, 3),					
+					# #(agent_equip_item, ":agent_no", reg2, 4),
+				# (try_end),	
+	# #			(display_message,"@item{reg5}"),
+			# (try_end),				
+			
+			# (try_begin),		
+			# (neg|eq,reg41,0),
+				# (call_script,"script_select_items_xbow",":troop_no"),
+				# (agent_equip_item, ":agent_no", reg10, 2),
+				# (try_begin),				
+				# (neg|eq,reg43,0),
+					# (call_script,"script_select_items_bolts",":troop_no"),
+			# #		(display_message,"@item{reg2}"),
+			# #		(display_message,"@item{reg3}"),
+					# (agent_equip_item, ":agent_no", reg3, 3),					
+					# #(agent_equip_item, ":agent_no", reg3, 4),
+				# (try_end),						
+	# #			(display_message,"@item{reg5}"),
+			# (try_end),		
+
+			
+			
 
 
-		(else_try),
-		#(is_between,":troop_no",player_cav_begin,player_cav_end),### Cavalry
+		# (else_try),
+		# #(is_between,":troop_no",player_cav_begin,player_cav_end),### Cavalry
 			
-			# (assign,":licznik_1h",0),
-			# (assign,":licznik_2h",0),
-			# (assign,":licznik_polearm",0),
+			# # (assign,":licznik_1h",0),
+			# # (assign,":licznik_2h",0),
+			# # (assign,":licznik_polearm",0),
 
-			(call_script,"script_set_probability_values"),	######################################
+			# (call_script,"script_set_probability_values"),	######################################
 			
 
-			(store_random_in_range,":los",0,1000),	
-			(assign,reg60,":los"),
+			# (store_random_in_range,":los",0,1000),	
+			# (assign,reg60,":los"),
 			
-			(try_begin),
-						##### TEST begin
-			(troop_has_flag, ":troop_no", tf_guarantee_ranged),
+			# (try_begin),
+						# ##### TEST begin
+			# (troop_has_flag, ":troop_no", tf_guarantee_ranged),
 				
-				(try_begin),
-				(neg|eq,reg31,0),
-					(call_script,"script_select_items_1h"),	
-					(agent_equip_item, ":agent_no", reg0, 1),	
-			#		(display_message,"@item{reg0}"),
-				(try_end),
+				# (try_begin),
+				# (neg|eq,reg31,0),
+					# (call_script,"script_select_items_1h"),	
+					# (agent_equip_item, ":agent_no", reg0, 1),	
+			# #		(display_message,"@item{reg0}"),
+				# (try_end),
 				
-				(try_begin),		
-				(neg|eq,reg40,0),
-					(call_script,"script_select_items_bow",":troop_no"),
-					(agent_equip_item, ":agent_no", reg5, 2),	
-					(try_begin),				
-					(neg|eq,reg42,0),
-						(call_script,"script_select_items_arrows",":troop_no"),
-				#		(display_message,"@item{reg2}"),
-				#		(display_message,"@item{reg3}"),
-						(agent_equip_item, ":agent_no", reg2, 3),					
-						#(agent_equip_item, ":agent_no", reg2, 4),
-					(try_end),	
-		#			(display_message,"@item{reg5}"),
-				(try_end),	
+				# (try_begin),		
+				# (neg|eq,reg40,0),
+					# (call_script,"script_select_items_bow",":troop_no"),
+					# (agent_equip_item, ":agent_no", reg5, 2),	
+					# (try_begin),				
+					# (neg|eq,reg42,0),
+						# (call_script,"script_select_items_arrows",":troop_no"),
+				# #		(display_message,"@item{reg2}"),
+				# #		(display_message,"@item{reg3}"),
+						# (agent_equip_item, ":agent_no", reg2, 3),					
+						# #(agent_equip_item, ":agent_no", reg2, 4),
+					# (try_end),	
+		# #			(display_message,"@item{reg5}"),
+				# (try_end),	
 				
 				
-				(try_begin),		
-				(neg|eq,reg41,0),
-					(call_script,"script_select_items_xbow",":troop_no"),
-					(agent_equip_item, ":agent_no", reg10, 2),
-					(try_begin),				
-					(neg|eq,reg43,0),
-						(call_script,"script_select_items_bolts",":troop_no"),
-				#		(display_message,"@item{reg2}"),
-				#		(display_message,"@item{reg3}"),
-						(agent_equip_item, ":agent_no", reg3, 3),					
-						#(agent_equip_item, ":agent_no", reg3, 4),
-					(try_end),						
-		#			(display_message,"@item{reg5}"),
-				(try_end),	
+				# (try_begin),		
+				# (neg|eq,reg41,0),
+					# (call_script,"script_select_items_xbow",":troop_no"),
+					# (agent_equip_item, ":agent_no", reg10, 2),
+					# (try_begin),				
+					# (neg|eq,reg43,0),
+						# (call_script,"script_select_items_bolts",":troop_no"),
+				# #		(display_message,"@item{reg2}"),
+				# #		(display_message,"@item{reg3}"),
+						# (agent_equip_item, ":agent_no", reg3, 3),					
+						# #(agent_equip_item, ":agent_no", reg3, 4),
+					# (try_end),						
+		# #			(display_message,"@item{reg5}"),
+				# (try_end),	
 				
-				(try_begin),
-				(neg|eq,reg44,0),
-					(call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
-					(agent_equip_item, ":agent_no", reg9, 2),
-				(try_end),	
+				# (try_begin),
+				# (neg|eq,reg44,0),
+					# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
+					# (agent_equip_item, ":agent_no", reg9, 2),
+				# (try_end),	
 			
-				(try_begin),
-				(neg|eq,reg44,0),
-					(call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
-					(agent_equip_item, ":agent_no", reg9, 3),
-				(try_end),		
+				# (try_begin),
+				# (neg|eq,reg44,0),
+					# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
+					# (agent_equip_item, ":agent_no", reg9, 3),
+				# (try_end),		
 				
-				(try_begin),
-				(neg|eq,reg44,0),
-					(call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
-					(agent_equip_item, ":agent_no", reg9, 4),
-				(try_end),	
+				# (try_begin),
+				# (neg|eq,reg44,0),
+					# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
+					# (agent_equip_item, ":agent_no", reg9, 4),
+				# (try_end),	
 			
-			(else_try),
-			#### TEST end
-			(assign,":los2_1",0),
-			(assign,":los2_2",0),
-			(assign,":los2_22",0),
-			(assign,":los2_3",0),
-			(assign,":los2_4",0),
-			(assign,":los3_1",0),
-			(assign,":los4_1",0),
-			(is_between,":los",-1.0,"$los2"),
-				(call_script,"script_select_items_1h"),	##returns reg0 - 1h weapon
-				(agent_equip_item, ":agent_no", reg0, 1),
+			# (else_try),
+			# #### TEST end
+			# (assign,":los2_1",0),
+			# (assign,":los2_2",0),
+			# (assign,":los2_22",0),
+			# (assign,":los2_3",0),
+			# (assign,":los2_4",0),
+			# (assign,":los3_1",0),
+			# (assign,":los4_1",0),
+			# (is_between,":los",-1.0,"$los2"),
+				# (call_script,"script_select_items_1h"),	##returns reg0 - 1h weapon
+				# (agent_equip_item, ":agent_no", reg0, 1),
 				
-				(try_begin),
-				(neg|eq,reg34,0),	
-					(store_mul,":los2_1","$los2",9.8),
-					(store_div,":los2_1",":los2_1",10.0),
-				#	(assign,reg51,":los2_1"),
-				#	(display_message,"@ los2_1 : {reg51}"),
-					(try_begin),
-					(is_between,":los",0.0,":los2_1"),				# 70% chance to get shield and 1h		
-						(call_script,"script_select_items_shield",":troop_no"), ##returns reg8 - shield
-						(agent_equip_item, ":agent_no", reg8, 4),
-					(try_end),
-				(try_end),	
+				# (try_begin),
+				# (neg|eq,reg34,0),	
+					# (store_mul,":los2_1","$los2",9.8),
+					# (store_div,":los2_1",":los2_1",10.0),
+				# #	(assign,reg51,":los2_1"),
+				# #	(display_message,"@ los2_1 : {reg51}"),
+					# (try_begin),
+					# (is_between,":los",0.0,":los2_1"),				# 70% chance to get shield and 1h		
+						# (call_script,"script_select_items_shield",":troop_no"), ##returns reg8 - shield
+						# (agent_equip_item, ":agent_no", reg8, 4),
+					# (try_end),
+				# (try_end),	
 				
-				(try_begin),
-				(neg|eq,reg33,0),	
-					(store_mul,":los2_2","$los2",4),
-					(store_div,":los2_2",":los2_2",10),
-					(store_mul,":los2_22","$los2",8),
-					(store_div,":los2_22",":los2_22",10),
+				# (try_begin),
+				# (neg|eq,reg33,0),	
+					# (store_mul,":los2_2","$los2",4),
+					# (store_div,":los2_2",":los2_2",10),
+					# (store_mul,":los2_22","$los2",8),
+					# (store_div,":los2_22",":los2_22",10),
 					
-			############### TODO: if weapon has 'cannot be used with shield' dont add it		
-				#	(assign,reg51,":los2_2"),
-				#	(assign,reg52,":los2_22"),
-				#	(display_message,"@ los2_2 : {reg51}"),
-				#	(display_message,"@ los2_22 : {reg52}"),
-					(try_begin),
-					(is_between,":los",":los2_2",":los2_22"),	# 40% chance to get polearm and 1h
-						(call_script,"script_select_items_polearm",":troop_no"),##returns reg7 - polearm weapon
-						(agent_equip_item, ":agent_no", reg7, 3),	
-					(try_end),
-				(else_try),
-				(neg|eq,reg44,0),
-					(store_div,":los2_4","$los2",10),	
-					(store_mul,":los2_3","$los2",4),							
-					(store_div,":los2_3",":los2_3",10),		
-				#	(assign,reg51,":los2_3"),
-				#	(assign,reg52,":los2_4"),
-				#	(display_message,"@ los2_3 : {reg51}, los2_4 {reg52}"),	
-					(try_begin),
-					(is_between,":los",":los2_4",":los2_3"),
-						(call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
-						(agent_equip_item, ":agent_no", reg9, 3),
-					(try_end),
-				(try_end),		
-			(else_try),
-			(is_between,":los","$los2","$los3"),	
-				(try_begin),
-				(neg|eq,reg32,0),
-					(call_script,"script_select_items_2h",":troop_no"),	##returns reg6	- 2h weapon
-					(agent_equip_item, ":agent_no", reg6, 1),						
-					(try_begin),
-					(neg|eq,reg44,0),
-						(store_mul,":los3_1","$los3",6),		
-						(store_div,":los3_1",":los3_1",10),		
-					#	(assign,reg51,":los3_1"),
-					#	(display_message,"@ los3_1 : {reg51}"),
-						(try_begin),
-						(is_between,":los",":los3_1","$los3"),	# 40% chances to get throwings + 2h
-							(call_script,"script_select_items_throwings",":troop_no"),##returns reg9	- throwing weapon
-							(agent_equip_item, ":agent_no", reg9, 2),
-						(try_end),									
-					(try_end),
-				(try_end),	
-			(else_try),
-			(is_between,":los","$los3","$los4"),	
-				(try_begin),
-				(neg|eq,reg33,0),
-					(call_script,"script_select_items_polearm",":troop_no"),##returns reg7	- polearm weapon
-					(agent_equip_item, ":agent_no", reg7, 1),	
-					(try_begin),
-					(neg|eq,reg44,0),
-						(store_mul,":los4_1","$los4",6),	 
-						(store_div,":los4_1",":los4_1",10),		
-					#	(assign,reg51,":los4_1"),
-					#	(display_message,"@ los4_1 : {reg51}"),
-						(try_begin),
-						(is_between,":los",":los4_1","$los4"),	
-							(call_script,"script_select_items_throwings",":troop_no"),##returns reg9	- throwing weapon
-							(agent_equip_item, ":agent_no", reg9, 2),	
-						(try_end),
-					(try_end),
-				(try_end),
-			(try_end),
+			# ############### TODO: if weapon has 'cannot be used with shield' dont add it		
+				# #	(assign,reg51,":los2_2"),
+				# #	(assign,reg52,":los2_22"),
+				# #	(display_message,"@ los2_2 : {reg51}"),
+				# #	(display_message,"@ los2_22 : {reg52}"),
+					# (try_begin),
+					# (is_between,":los",":los2_2",":los2_22"),	# 40% chance to get polearm and 1h
+						# (call_script,"script_select_items_polearm",":troop_no"),##returns reg7 - polearm weapon
+						# (agent_equip_item, ":agent_no", reg7, 3),	
+					# (try_end),
+				# (else_try),
+				# (neg|eq,reg44,0),
+					# (store_div,":los2_4","$los2",10),	
+					# (store_mul,":los2_3","$los2",4),							
+					# (store_div,":los2_3",":los2_3",10),		
+				# #	(assign,reg51,":los2_3"),
+				# #	(assign,reg52,":los2_4"),
+				# #	(display_message,"@ los2_3 : {reg51}, los2_4 {reg52}"),	
+					# (try_begin),
+					# (is_between,":los",":los2_4",":los2_3"),
+						# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9 - throwing weapon
+						# (agent_equip_item, ":agent_no", reg9, 3),
+					# (try_end),
+				# (try_end),		
+			# (else_try),
+			# (is_between,":los","$los2","$los3"),	
+				# (try_begin),
+				# (neg|eq,reg32,0),
+					# (call_script,"script_select_items_2h",":troop_no"),	##returns reg6	- 2h weapon
+					# (agent_equip_item, ":agent_no", reg6, 1),						
+					# (try_begin),
+					# (neg|eq,reg44,0),
+						# (store_mul,":los3_1","$los3",6),		
+						# (store_div,":los3_1",":los3_1",10),		
+					# #	(assign,reg51,":los3_1"),
+					# #	(display_message,"@ los3_1 : {reg51}"),
+						# (try_begin),
+						# (is_between,":los",":los3_1","$los3"),	# 40% chances to get throwings + 2h
+							# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9	- throwing weapon
+							# (agent_equip_item, ":agent_no", reg9, 2),
+						# (try_end),									
+					# (try_end),
+				# (try_end),	
+			# (else_try),
+			# (is_between,":los","$los3","$los4"),	
+				# (try_begin),
+				# (neg|eq,reg33,0),
+					# (call_script,"script_select_items_polearm",":troop_no"),##returns reg7	- polearm weapon
+					# (agent_equip_item, ":agent_no", reg7, 1),	
+					# (try_begin),
+					# (neg|eq,reg44,0),
+						# (store_mul,":los4_1","$los4",6),	 
+						# (store_div,":los4_1",":los4_1",10),		
+					# #	(assign,reg51,":los4_1"),
+					# #	(display_message,"@ los4_1 : {reg51}"),
+						# (try_begin),
+						# (is_between,":los",":los4_1","$los4"),	
+							# (call_script,"script_select_items_throwings",":troop_no"),##returns reg9	- throwing weapon
+							# (agent_equip_item, ":agent_no", reg9, 2),	
+						# (try_end),
+					# (try_end),
+				# (try_end),
+			# (try_end),
 
 		 
  #### mod begin		26.02.2020
