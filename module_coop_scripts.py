@@ -2241,7 +2241,7 @@ coop_scripts = [
           (eq, ":player_party_no", "$coop_garrison_commander_party"), #and player is commander of garrison
           (assign, ":player_party_no", ":agent_party_no"), #then player is also part of garrison party
         (try_end),
-        (eq, ":agent_party_no", ":player_party_no"), #remove this if hero should command troops in other parties
+      #  (eq, ":agent_party_no", ":player_party_no"), #remove this if hero should command troops in other parties
         (try_begin),
           (eq, ":agent_class", grc_infantry),
           (player_get_slot, ":type_2_wanted", ":cur_player", slot_player_bot_type_2_wanted),
@@ -2339,7 +2339,7 @@ coop_scripts = [
             (eq, ":player_party_no", "$coop_garrison_commander_party"), #and player is commander of garrison
             (assign, ":player_party_no", ":agent_party_no"), #then player is also part of garrison party
           (try_end),
-          (eq, ":player_party_no",":agent_party_no"), #remove this if hero should command troops in other parties
+       #   (eq, ":player_party_no",":agent_party_no"), #remove this if hero should command troops in other parties
           (this_or_next|eq, ":agent_group", -1),#not already commanded
           (eq, ":agent_group", ":cur_player"),#commanded by me
           (player_get_slot, ":type_1_wanted", ":cur_player", slot_player_bot_type_1_wanted),
