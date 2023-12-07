@@ -1899,11 +1899,16 @@ can_fail_operations = [ge,
                        item_has_modifier,
                        item_has_faction
                        ]
+### WSE Addons ver 4.9.2
 
 #Add the following definitions to the end (!) of header_operations.py
-break_loop                   = 8 #(break_loop), #Break out of a loop, no matter how deeply nested in try_begin blocks (requires allow_wse_execute_statement_blocks = 1 in wse_settings.ini)
-continue_loop                = 9 #(continue_loop), #Continue to the next iteration of a loop, no matter how deeply nested in try_begin blocks (requires allow_wse_execute_statement_blocks = 1 in wse_settings.ini)
-try_for_dict_keys            = 18 #(try_for_dict_keys, <cur_key_string_register>, <dict>), #Loops through keys of <2> (requires allow_wse_execute_statement_blocks = 1 in wse_settings.ini)
+break_loop                   = 8 #(break_loop), #Break out of a loop, no matter how deeply nested in try_begin blocks
+continue_loop                = 9 #(continue_loop), #Continue to the next iteration of a loop, no matter how deeply nested in try_begin blocks
+try_for_dict_keys            = 18 #(try_for_dict_keys, <cur_key_string_register>, <dict>), #Loops through keys of <2>
+key_is_down                  = 70 #(key_is_down, <key>, [<bypass_console_check>]), #Fails if <key> is not currently down
+key_clicked                  = 71 #(key_clicked, <key>, [<bypass_console_check>]), #Fails if <key> is not clicked on the specific frame
+game_key_is_down             = 72 #(game_key_is_down, <game_key_no>, [<bypass_console_check>]), #Fails if <game_key_no> is not currently down
+game_key_clicked             = 73 #(game_key_clicked, <game_key_no>, [<bypass_console_check>]), #Fails if <game_key_no> is not clicked on the specific frame
 server_set_max_num_players   = 491 #(server_set_max_num_players, <max_players>, [<max_private_players>]), #Sets maximum players to <max_players> and maximum private players to [<max_private_players>] (default = same as <max_players>). Both values must be in the range 2-250, [<max_private_players>] can't be lower than <max_players>
 position_rotate_x            = 723 #(position_rotate_x, <position_register>, <angle>, [<use_global_axis>]), #Rotates <position_register> around the x-axis by <angle> degrees
 position_rotate_y            = 724 #(position_rotate_y, <position_register>, <angle>, [<use_global_axis>]), #Rotates <position_register> around the y-axis by <angle> degrees
@@ -1912,7 +1917,11 @@ position_rotate_z_floating   = 734 #(position_rotate_z_floating, <position_regis
 position_rotate_x_floating   = 738 #(position_rotate_x_floating, <position_register>, <angle_fixed_point>, [<use_global_axis>]), #Rotates <position_register> around the x-axis by <angle_fixed_point> degrees
 position_rotate_y_floating   = 739 #(position_rotate_y_floating, <position_register>, <angle_fixed_point>, [<use_global_axis>]), #Rotates <position_register> around the y-axis by <angle_fixed_point> degrees
 is_vanilla_warband           = 1004 #(is_vanilla_warband), #Fails only when WSE is running
+start_map_conversation       = 1025 #(start_map_conversation, <troop_id>, [<troop_dna>], [<set_dialog_state>], [<dialog_state>]), #Starts a conversation with the selected <troop_id>. Can be called directly from global map or game menus. [<troop_dna>] parameter allows you to randomize non-hero troop appearances. If [<set_dialog_state>] sets, then [<dialog_state>] used instead dlg_event_triggered
+agent_set_animation_progress = 1743 #(agent_set_animation_progress, <agent_no>, <value_fixed_point>, [<channel_no>]), #Sets <agent_no>'s channel [<channel_no>] animation progress to <value_fixed_point>
 prop_instance_receive_damage = 1877 #(prop_instance_receive_damage, <prop_instance_no>, <agent_no>, <damage>, [<advanced>]), #<prop_instance_no> received <damage> damage from <agent_no>. If [<advanced>] is non-zero ti_on_scene_prop_hit will be called and the damage dealt will be sent to clients.
+add_point_light              = 1960 #(add_point_light, [<flicker_magnitude>], [<flicker_interval>], [<range>]), #Adds a point light with [<flicker_magnitude>] and [<flicker_interval>] ([<range>] if set - in meters)
+add_point_light_to_entity    = 1961 #(add_point_light_to_entity, [<flicker_magnitude>], [<flicker_interval>], [<range>]), #Adds a point light to entity with [<flicker_magnitude>] and [<flicker_interval>] ([<range>] if set - in meters)
 
 val_shr    = 2800 #(val_shr, <value>, <shift>), #Performs an arithmetic right bit shift by <shift> on <value>
 store_shr  = 2801 #(store_shr, <destination>, <value>, <shift>), #Performs an arithmetic right bit shift by <shift> on <value> and stores the result into <destination>
@@ -1930,6 +1939,7 @@ player_stop_controlling_agent = 2901 #(player_stop_controlling_agent, <player_no
 player_set_banner_id          = 2902 #(player_set_banner_id, <player_no>, <banner_no>), #Sets <player_no>'s banner to <banner_no>
 player_set_username           = 2903 #(player_set_username, <player_no>, <string_no>), #Sets <player_no>'s username to <string_no>
 player_temp_ban               = 2904 #(player_temp_ban, <player_no>, <ban_time>), #Bans <player_no> temporarily for <ban_time> seconds
+player_get_wse2_version       = 2905 #(player_get_wse2_version, <destination>, <player_no>), #Stores <player_no>'s WSE2 version into <destination>. Works only on servers. 0 - vanilla Warband engine (requires WSE2)
 
 register_get                      = 3000 #(register_get, <destination>, <index>), #Stores the value of register <index> into <destination>
 register_set                      = 3001 #(register_set, <index>, <value>), #Sets the value of register <index> to <value>
@@ -1964,22 +1974,28 @@ shell_open_url                    = 3029 #(shell_open_url, <url>), #Opens <url> 
 set_main_party                    = 3030 #(set_main_party, <party_no>), #Sets player's main party to <party_no>. Dynamic spawned party (not listed in module_parties.py) will corrupt the savegame!
 get_main_party                    = 3031 #(get_main_party, <destination>), #Stores player's main party to <destination>
 make_screenshot                   = 3032 #(make_screenshot, <format>, <file>), #Make game screenshot. For security reasons, <file> will be saved into a Screenshots directory. Supported <format>s: BMP - 0, JPG - 1, TGA - 2, PNG - 3.
-send_post_message_to_url_advanced = 3033 #(send_post_message_to_url_advanced, <url_string>, <user_agent_string>, <post_data>, [<success_callback_script_no>], [<failure_callback_script_no>], [<skip_parsing>], [<timeout>]), #Sends a HTTP POST request to <url_string> with <user_agent_string> and <post_data>. If the request succeeds, [<success_callback_script_no>] will be called. The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero, in which case the script will receive no arguments and s0 will contain the full response. If the request fails, [<failure_callback_script_no>] will be called.
+send_post_message_to_url_advanced = 3033 #(send_post_message_to_url_advanced, <url_string>, <user_agent_string>, <post_data>, [<success_callback_script_no>], [<failure_callback_script_no>], [<skip_parsing>], [<timeout>]), #Sends a HTTP POST (application/x-www-form-urlencoded) request to <url_string> with <user_agent_string> and <post_data>. If the request succeeds, [<success_callback_script_no>] will be called. The script will behave like game_receive_url_response, unless [<skip_parsing>] is non-zero, in which case the script will receive no arguments and s0 will contain the full response. If the request fails, [<failure_callback_script_no>] will be called.
+set_random_seed                   = 3034 #(set_random_seed, <value>), #Seeds the random generator with <value>
+store_application_time            = 3035 #(store_application_time, <destination>), #Stores application time into <destination> in milliseconds
+is_party_skill                    = 3036 #(is_party_skill, <skill_no>), #Fails if <skill_no> is not effects party
+get_campaign_time                 = 3037 #(get_campaign_time, <destination>), #Stores campaign time into <destination>. 100000 = 1 game hour
+set_campaign_time                 = 3038 #(set_campaign_time, <value>), #Sets campaign time to <value>. 100000 = 1 game hour
+get_mouse_map_coordinates         = 3039 #(get_mouse_map_coordinates, <position_register>), #Stores mouse map coordinates into <position_register> (requires WSE2)
 
 game_key_get_key  = 3100 #(game_key_get_key, <destination>, <game_key_no>), #Stores the key mapped to <game_key_no> into <destination>
-key_released      = 3101 #(key_released, <key>), #Fails if <key> wasn't released in the current frame
-game_key_released = 3102 #(game_key_released, <game_key_no>), #Fails if <game_key_no> wasn't released in the current frame
+key_released      = 3101 #(key_released, <key>, [<bypass_console_check>]), #Fails if <key> wasn't released in the current frame
+game_key_released = 3102 #(game_key_released, <game_key_no>, [<bypass_console_check>]), #Fails if <game_key_no> wasn't released in the current frame
 
 dict_create                = 3200 #(dict_create, <destination>), #Creates an empty dictionary object and stores it into <destination>
 dict_free                  = 3201 #(dict_free, <dict>), #Frees the dictionary object <dict>. A dictionary can't be used after freeing it
-dict_load_file             = 3202 #(dict_load_file, <dict>, <file>, [<mode>]), #Loads a dictionary file into <dict>. Setting [<mode>] to 0 (default) clears <dict> and then loads the file, setting [<mode>] to 1 doesn't clear <dict> but overrides any key that's already present, [<mode>] to 2 doesn't clear <dict> and doesn't overwrite keys that are already present
+dict_load_file             = 3202 #(dict_load_file, <dict>, <file>, [<mode>], [<ini>]), #Loads a dictionary file into <dict>. Setting [<mode>] to 0 (default) clears <dict> and then loads the file, setting [<mode>] to 1 doesn't clear <dict> but overrides any key that's already present, [<mode>] to 2 doesn't clear <dict> and doesn't overwrite keys that are already present. Set [<ini>] to 1 to use ini file instead of binary
 dict_load_dict             = 3203 #(dict_load_dict, <dict_1>, <dict_2>, [<mode>]), #Loads <dict_2> into <dict_1>. [<mode>]: see above
-dict_save                  = 3204 #(dict_save, <dict>, <file>), #Saves <dict> into a file. For security reasons, <file> is just a name, not a full path, and will be stored into a WSE managed directory
+dict_save                  = 3204 #(dict_save, <dict>, <file>, [<ini>]), #Saves <dict> into a file. For security reasons, <file> is just a name, not a full path, and will be stored into a WSE managed directory. Set [<ini>] to 1 to use ini file instead of binary
 dict_clear                 = 3205 #(dict_clear, <dict>), #Clears all key-value pairs from <dict>
 dict_is_empty              = 3206 #(dict_is_empty, <dict>), #Fails if <dict> is not empty
 dict_has_key               = 3207 #(dict_has_key, <dict>, <key>), #Fails if <key> is not present in <dict>
 dict_get_size              = 3208 #(dict_get_size, <destination>, <dict>), #Stores the count of key-value pairs in <dict> into <destination>
-dict_delete_file           = 3209 #(dict_delete_file, <file>), #Deletes dictionary file <file> from disk
+dict_delete_file           = 3209 #(dict_delete_file, <file>, [<ini>]), #Deletes dictionary file <file> from disk. Set [<ini>] to 1 to use ini file instead of binary
 dict_get_str               = 3210 #(dict_get_str, <string_register>, <dict>, <key>, [<default>]), #Stores the string value paired to <key> into <string_register>. If the key is not found and [<default>] is set, [<default>] will be stored instead. If [<default>] is not set, an empty string will be stored
 dict_get_int               = 3211 #(dict_get_int, <destination>, <dict>, <key>, [<default>]), #Stores the numeric value paired to <key> into <destination>. If the key is not found and [<default>] is set, [<default>] will be stored instead. If [<default>] is not set, 0 will be stored
 dict_set_str               = 3212 #(dict_set_str, <dict>, <key>, <string_no>), #Adds (or changes) <string_no> as the string value paired to <key>
@@ -1992,31 +2008,46 @@ dict_save_json             = 3218 #(dict_save_json, <dict>, <file>), #Saves <dic
 dict_from_url_encoded_json = 3219 #(dict_from_url_encoded_json, <dict>, <string>, [<mode>]), #Loads a url encoded json <string> into <dict>. [<mode>]: see above
 dict_to_url_encoded_json   = 3220 #(dict_to_url_encoded_json, <string_register>, <dict>), #Saves <dict> into a url encoded json and stores into <string_register>
 dict_erase                 = 3221 #(dict_erase, <dict>, <key>), #Removes value from <dict> paired to <key>
+dict_delete_file_json      = 3222 #(dict_delete_file_json, <file>), #Deletes dictionary json file <file> from disk
 
-agent_get_item_modifier                         = 3300 #(agent_get_item_modifier, <destination>, <agent_no>), #Stores <agent_no>'s horse item modifier (-1 if agent is not a horse) into <destination>
-agent_get_item_slot_modifier                    = 3301 #(agent_get_item_slot_modifier, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> modifier into <destination>
-agent_get_animation_progress                    = 3302 #(agent_get_animation_progress, <destination>, <agent_no>, [<channel_no>]), #Stores <agent_no>'s channel [<channel_no>] animation progress (in %%) into <destination>
-agent_get_dna                                   = 3303 #(agent_get_dna, <destination>, <agent_no>), #Stores <agent_no>'s dna into <destination>
-agent_get_ground_scene_prop                     = 3304 #(agent_get_ground_scene_prop, <destination>, <agent_no>), #Stores the prop instance on which <agent_no> is standing into <destination>
-agent_set_item_slot_ammo                        = 3305 #(agent_set_item_slot_ammo, <agent_no>, <item_slot_no>, <value>), #Sets <agent_no>'s <item_slot_no> ammo count to <value>
-agent_get_item_slot_hit_points                  = 3306 #(agent_get_item_slot_hit_points, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> shield hitpoints into <destination>
-agent_set_item_slot_hit_points                  = 3307 #(agent_set_item_slot_hit_points, <agent_no>, <item_slot_no>, <value>), #Sets <agent_no>'s <item_slot_no> shield hitpoints to <value>
-agent_get_wielded_item_slot_no                  = 3308 #(agent_get_wielded_item_slot_no, <destination>, <agent_no>, [<hand_no>]), #Stores <agent_no>'s wielded item slot for [<hand_no>] into <destination>
-agent_get_scale                                 = 3309 #(agent_get_scale, <destination_fixed_point>, <agent_no>), #Stores <agent_no>'s scale into <destination_fixed_point>
-agent_set_forced_lod                            = 3310 #(agent_set_forced_lod, <agent_no>, <lod_level>), #Forces <agent_no>'s LOD level to <lod_level> (0 = auto)
-agent_get_item_slot_flags                       = 3311 #(agent_get_item_slot_flags, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> item slot flags into <destination>
-agent_ai_get_move_target_position               = 3312 #(agent_ai_get_move_target_position, <position_register>, <agent_no>), #Stores <agent_no>'s move target position agent into <position_register>
-agent_set_horse                                 = 3313 #(agent_set_horse, <agent_no>, <horse_agent_no>), #Sets <agent_no>'s horse to <horse_agent_no> (-1 for no horse)
-agent_ai_set_simple_behavior                    = 3314 #(agent_ai_set_simple_behavior, <agent_no>, <simple_behavior>, [<guaranteed_time>]), #Sets <agent_no>'s behavior to <simple_behavior> and guarantees it won't be changed for [<guaranteed_time>] seconds. If [<guaranteed_time>] is not specified or <= 0, it won't be changed until agent_force_rethink is called
-agent_accelerate                                = 3315 #(agent_accelerate, <agent_no>, <position_register_no>), #Uses x, y, z components of <position_register_no> to apply acceleration to <agent_no>
-agent_set_item_slot_modifier                    = 3316 #(agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>), #Sets <agent_no>'s <item_slot_no> modifier to <item_modifier_no>
-agent_body_meta_mesh_set_vertex_keys_time_point = 3317 #(agent_body_meta_mesh_set_vertex_keys_time_point, <agent_no>, <body_meta_mesh>, <time_point>), #Sets <agent_no>'s <body_meta_mesh> vertex keys time point to <time_point>
-agent_body_meta_mesh_set_visibility             = 3318 #(agent_body_meta_mesh_set_visibility, <agent_no>, <body_meta_mesh>, <value>), #Shows (<value> = 1) or hides (<value> = 0) <agent_no>'s <body_meta_mesh>
-agent_set_personal_animation                    = 3319 #(agent_set_personal_animation, <agent_no>, <anim_no>, <anim_no>), #Replaces <agent_no>'s default <anim_no> to personal <anim_no>
-agent_get_personal_animation                    = 3320 #(agent_get_personal_animation, <destination>, <agent_no>, <anim_no>), #Stores <agent_no>'s personal <anim_no> into <destination>
-agent_set_default_animations                    = 3321 #(agent_set_default_animations, <agent_no>), #Removes <agent_no>'s personal animations
-agent_cancel_current_animation                  = 3322 #(agent_cancel_current_animation, <agent_no>, <channel_no>), #Cancels <agent_no>'s channel <2> animation
-agent_get_ranged_damage_modifier                = 3323 #(agent_get_ranged_damage_modifier, <destination>, <agent_no>), #Stores <agent_no>'s ranged damage modifier into <destination>
+agent_get_item_modifier                          = 3300 #(agent_get_item_modifier, <destination>, <agent_no>), #Stores <agent_no>'s horse item modifier (-1 if agent is not a horse) into <destination>
+agent_get_item_slot_modifier                     = 3301 #(agent_get_item_slot_modifier, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> modifier into <destination>
+agent_get_animation_progress                     = 3302 #(agent_get_animation_progress, <destination>, <agent_no>, [<channel_no>]), #Stores <agent_no>'s channel [<channel_no>] animation progress (in %%) into <destination>
+agent_get_dna                                    = 3303 #(agent_get_dna, <destination>, <agent_no>), #Stores <agent_no>'s dna into <destination>
+agent_get_ground_scene_prop                      = 3304 #(agent_get_ground_scene_prop, <destination>, <agent_no>), #Stores the prop instance on which <agent_no> is standing into <destination>
+agent_set_item_slot_ammo                         = 3305 #(agent_set_item_slot_ammo, <agent_no>, <item_slot_no>, <value>), #Sets <agent_no>'s <item_slot_no> ammo count to <value>
+agent_get_item_slot_hit_points                   = 3306 #(agent_get_item_slot_hit_points, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> shield hitpoints into <destination>
+agent_set_item_slot_hit_points                   = 3307 #(agent_set_item_slot_hit_points, <agent_no>, <item_slot_no>, <value>), #Sets <agent_no>'s <item_slot_no> shield hitpoints to <value>
+agent_get_wielded_item_slot_no                   = 3308 #(agent_get_wielded_item_slot_no, <destination>, <agent_no>, [<hand_no>]), #Stores <agent_no>'s wielded item slot for [<hand_no>] into <destination>
+agent_get_scale                                  = 3309 #(agent_get_scale, <destination_fixed_point>, <agent_no>), #Stores <agent_no>'s scale into <destination_fixed_point>
+agent_set_forced_lod                             = 3310 #(agent_set_forced_lod, <agent_no>, <lod_level>), #Forces <agent_no>'s LOD level to <lod_level> (0 = auto)
+agent_get_item_slot_flags                        = 3311 #(agent_get_item_slot_flags, <destination>, <agent_no>, <item_slot_no>), #Stores <agent_no>'s <item_slot_no> item slot flags into <destination>
+agent_ai_get_move_target_position                = 3312 #(agent_ai_get_move_target_position, <position_register>, <agent_no>), #Stores <agent_no>'s move target position agent into <position_register>
+agent_set_horse                                  = 3313 #(agent_set_horse, <agent_no>, <horse_agent_no>), #Sets <agent_no>'s horse to <horse_agent_no> (-1 for no horse)
+agent_ai_set_simple_behavior                     = 3314 #(agent_ai_set_simple_behavior, <agent_no>, <simple_behavior>, [<guaranteed_time>]), #Sets <agent_no>'s behavior to <simple_behavior> and guarantees it won't be changed for [<guaranteed_time>] seconds. If [<guaranteed_time>] is not specified or <= 0, it won't be changed until agent_force_rethink is called
+agent_accelerate                                 = 3315 #(agent_accelerate, <agent_no>, <position_register_no>, [<movement_timer_fixed_point>]), #Uses x, y, z components of <position_register_no> to apply acceleration to <agent_no>. Specify [<movement_timer_fixed_point>] for ghosting time
+agent_set_item_slot_modifier                     = 3316 #(agent_set_item_slot_modifier, <agent_no>, <item_slot_no>, <item_modifier_no>), #Sets <agent_no>'s <item_slot_no> modifier to <item_modifier_no>
+agent_body_meta_mesh_set_vertex_keys_time_point  = 3317 #(agent_body_meta_mesh_set_vertex_keys_time_point, <agent_no>, <body_meta_mesh>, <time_point>), #Sets <agent_no>'s <body_meta_mesh> vertex keys time point to <time_point>
+agent_body_meta_mesh_set_visibility              = 3318 #(agent_body_meta_mesh_set_visibility, <agent_no>, <body_meta_mesh>, <value>), #Shows (<value> = 1) or hides (<value> = 0) <agent_no>'s <body_meta_mesh>
+agent_set_personal_animation                     = 3319 #(agent_set_personal_animation, <agent_no>, <anim_no>, <anim_no>), #Replaces <agent_no>'s default <anim_no> to personal <anim_no>
+agent_get_personal_animation                     = 3320 #(agent_get_personal_animation, <destination>, <agent_no>, <anim_no>), #Stores <agent_no>'s personal <anim_no> into <destination>
+agent_set_default_animations                     = 3321 #(agent_set_default_animations, <agent_no>), #Removes <agent_no>'s personal animations
+agent_cancel_current_animation                   = 3322 #(agent_cancel_current_animation, <agent_no>, <channel_no>), #Cancels <agent_no>'s channel <2> animation
+agent_get_ranged_damage_modifier                 = 3323 #(agent_get_ranged_damage_modifier, <destination>, <agent_no>), #Stores <agent_no>'s ranged damage modifier into <destination>
+agent_add_stun                                   = 3324 #(agent_add_stun, <agent_no>, <duration>), #Adds stun to <agent_no> for <duration> milliseconds
+agent_body_meta_mesh_deform_in_range             = 3325 #(agent_body_meta_mesh_deform_in_range, <agent_no>, <body_meta_mesh>, <start_frame>, <end_frame>, <time_period>), #Animates <agent_no>'s <body_meta_mesh> from <start_frame> to <end_frame> within the specified <time_period> (in milliseconds)
+agent_body_meta_mesh_deform_in_cycle_loop        = 3326 #(agent_body_meta_mesh_deform_in_cycle_loop, <agent_no>, <body_meta_mesh>, <start_frame>, <end_frame>, <time_period>), #Performs looping animation of  <agent_no>'s <body_meta_mesh> from <start_frame> to <end_frame> and within the specified <time_period> (in milliseconds)
+agent_body_meta_mesh_get_current_deform_progress = 3327 #(agent_body_meta_mesh_get_current_deform_progress, <destination>, <agent_no>, <body_meta_mesh>), #Stores <agent_no>'s <body_meta_mesh> deform progress percentage value between 0 and 100 if animation is still in progress into <destination>. Returns 100 otherwise
+agent_body_meta_mesh_get_current_deform_frame    = 3328 #(agent_body_meta_mesh_get_current_deform_frame, <destination>, <agent_no>, <body_meta_mesh>), #Stores <agent_no>'s <body_meta_mesh> current deform frame, rounded to nearest integer value, into <destination>
+agent_set_footstep_sound                         = 3329 #(agent_set_footstep_sound, <agent_no>, <type>, <sound_no>), #Sets <agent_no>'s footstep <sound_no> for <type>. For human type: 0 - water, 1 - indoors, 2 - outdoors. For horse type: 0 - water, 1 - walk, 2 - trot, 3 - canter, 4 - gallop. For mute use sound_no = -1
+agent_get_horse_rotation_velocity                = 3330 #(agent_get_horse_rotation_velocity, <destination_fixed_point>, <agent_no>), #Stores <agent_no>'s horse rotation velocity into <destination_fixed_point>
+agent_get_current_vertical_speed                 = 3331 #(agent_get_current_vertical_speed, <destination>, <agent_no>), #Stores <agent_no>'s current vertical speed into <destination> (in centimeters per second)
+agent_set_current_vertical_speed                 = 3332 #(agent_set_current_vertical_speed, <agent_no>, <value>), #Sets <agent_no>'s current vertical speed to <value> (in centimeters per second)
+agent_get_position_in_group                      = 3333 #(agent_get_position_in_group, <position_register>, <agent_no>), #Stores <agent_no>'s position in group into <position_register> (requires WSE2)
+agent_get_current_ai_mesh_face_group             = 3334 #(agent_get_current_ai_mesh_face_group, <destination>, <agent_no>), #Stores <agent_no>'s current ai mesh face group into <destination> (requires WSE2)
+agent_set_time_speed_multiplier                  = 3335 #(agent_set_time_speed_multiplier, <agent_no>, <value_fixed_point>), #Sets <agent_no>'s time speed multiplier to <value_fixed_point> (requires WSE2)
+agent_get_time_speed_multiplier                  = 3336 #(agent_get_time_speed_multiplier, <destination_fixed_point>, <agent_no>), #Stores <agent_no>'s time speed multiplier into <destination_fixed_point> (requires WSE2)
+agent_kick                                       = 3337 #(agent_kick, <agent_no>), #AI <agent_no> performs kick (requires WSE2)
 
 multiplayer_send_chat_message_to_player      = 3400 #(multiplayer_send_chat_message_to_player, <player_no>, <sender_player_no>, <text>, [<type>]), #Sends <text> to <player_no> as a (native compatible) chat message by <sender_player_no>. Works only on servers. [<type>]: 0 = chat, 1 = team chat
 multiplayer_send_composite_message_to_player = 3401 #(multiplayer_send_composite_message_to_player, <player_no>, <message_type>, <message_register>), #Sends <message_register> with <message_type> to <player_no> (requires network_compatible = 0 in wse_settings.ini)
@@ -2033,6 +2064,7 @@ multiplayer_cur_message_get_int              = 3411 #(multiplayer_cur_message_ge
 multiplayer_cur_message_get_position         = 3412 #(multiplayer_cur_message_get_position, <position_register>, [<local>]), #Stores a position from the current message register into <position_register>. [<local>] MUST match the type sent (requires network_compatible = 0 in wse_settings.ini)
 multiplayer_cur_message_get_coordinate       = 3413 #(multiplayer_cur_message_get_coordinate, <position_register>, [<local>]), #Stores x, y, z coordinates from the current message register into <position_register>. [<local>] MUST match the type sent (requires network_compatible = 0 in wse_settings.ini)
 multiplayer_cur_profile_get_skin             = 3414 #(multiplayer_cur_profile_get_skin, <destination>), #Stores current profile's skin into <destination>
+multiplayer_connect_to_server                = 3415 #(multiplayer_connect_to_server, <address>, <password>), #Connect to server with <address> and <password> (requires WSE2)
 
 server_set_password_admin      = 3500 #(server_set_password_admin, <password>), #Sets <password> as server administrator password
 server_set_password_private    = 3501 #(server_set_password_private, <password>), #Sets <password> as server private player password
@@ -2049,22 +2081,31 @@ server_set_show_crosshair      = 3511 #(server_set_show_crosshair, <value>), #En
 get_server_option_at_connect   = 3512 #(get_server_option_at_connect, <destination>, [<index>]), #Stores option [<index>] into <destination>
 server_set_password_rcon       = 3513 #(server_set_password_rcon, <password>), #Sets <password> as server RCON password
 execute_server_console_command = 3514 #(execute_server_console_command, <string_register>, <command>), #Executes dedicated server console command <command> and stores result string into <string_register>
+add_anonymous_player           = 3515 #(add_anonymous_player, <unique_id>, <name>), #Sets <name> pseudonym for multiplayer player <unique_id> (requires WSE2)
+remove_anonymous_player        = 3516 #(remove_anonymous_player, <unique_id>), #Removes pseudonym for multiplayer player <unique_id> (requires WSE2)
+clear_anonymous_players        = 3517 #(clear_anonymous_players), #Clears pseudonyms for multiplayer players (requires WSE2)
 
-store_cur_mission_template_no    = 3600 #(store_cur_mission_template_no, <destination>), #Stores the current mission template into <destination>
-set_show_use_tooltip             = 3601 #(set_show_use_tooltip, <tooltip_type>, [<value>]), #Enables or disables use tooltips. See header_common_addon.py for possible types
-set_ally_collision_threshold     = 3602 #(set_ally_collision_threshold, <low_boundary>, <high_boundary>), #Changes the animation progress boundaries (in percents) that determine if attacks on allies will collide (default: 45% <= x <= 60%)
-particle_system_remove           = 3603 #(particle_system_remove, [<particle_system_no>]), #Removes [<particle_system_no>] (all particle systems if not set or -1) from the current entity (can be used in several in triggers)
-get_spectated_agent_no           = 3604 #(get_spectated_agent_no, <destination>), #Stores spectated agent no into <destination>
-prop_instance_set_forced_lod     = 3605 #(prop_instance_set_forced_lod, <prop_instance_no>, <lod_level>), #Forces <prop_instance_no>'s LOD level to <lod_level> (0 = auto)
-prop_instance_set_variation_id   = 3606 #(prop_instance_set_variation_id, <prop_instance_no>, <value>), #Sets <prop_instance_no>'s variation id to <value>
-prop_instance_set_variation_id_2 = 3607 #(prop_instance_set_variation_id_2, <prop_instance_no>, <value>), #Sets <prop_instance_no>'s variation id 2 to <value>
-stop_time                        = 3608 #(stop_time, <value>), #Stops/resumes the mission. Works only in singleplayer with cheat mode enabled.
-missile_get_path_point_position  = 3609 #(missile_get_path_point_position, <position_register>, <path_point_no>, <missile_no>), #Stores the position of the <missile_no>'s <path_point_no> (0-499) into <position_register>
-get_water_level                  = 3610 #(get_water_level, <destination_fixed_point>), #Stores the water level into <destination_fixed_point>
-missile_remove_on_hit            = 3611 #(missile_remove_on_hit), #Causes a missile item not to spawn on hit (can be only used inside ti_on_missile_hit)
-missile_is_valid                 = 3612 #(missile_is_valid, <missile_no>), #Fails if <missile_no> is not valid
-missile_get_cur_position         = 3613 #(missile_get_cur_position, <position_register>, <missile_no>), #Stores <missile_no>'s current position into <position_register>
-set_prop_collision_threshold     = 3614 #(set_prop_collision_threshold, <attack_direction>, <low_boundary>, <high_boundary>), #Changes the animation progress boundaries (in percents) that determine if swing attacks on props will collide (default: 40% <= x <= 80% (75% for overheads))
+store_cur_mission_template_no        = 3600 #(store_cur_mission_template_no, <destination>), #Stores the current mission template into <destination>
+set_show_use_tooltip                 = 3601 #(set_show_use_tooltip, <tooltip_type>, [<value>]), #Enables or disables use tooltips. See header_common_addon.py for possible types
+set_ally_collision_threshold         = 3602 #(set_ally_collision_threshold, <low_boundary>, <high_boundary>), #Changes the animation progress boundaries (in percents) that determine if attacks on allies will collide (default: 45% <= x <= 60%)
+particle_system_remove               = 3603 #(particle_system_remove, [<particle_system_no>]), #Removes [<particle_system_no>] (all particle systems if not set or -1) from the current entity (can be used in several in triggers)
+get_spectated_agent_no               = 3604 #(get_spectated_agent_no, <destination>), #Stores spectated agent no into <destination>
+prop_instance_set_forced_lod         = 3605 #(prop_instance_set_forced_lod, <prop_instance_no>, <lod_level>), #Forces <prop_instance_no>'s LOD level to <lod_level> (0 = auto)
+prop_instance_set_variation_id       = 3606 #(prop_instance_set_variation_id, <prop_instance_no>, <value>), #Sets <prop_instance_no>'s variation id to <value>
+prop_instance_set_variation_id_2     = 3607 #(prop_instance_set_variation_id_2, <prop_instance_no>, <value>), #Sets <prop_instance_no>'s variation id 2 to <value>
+stop_time                            = 3608 #(stop_time, <value>), #Stops/resumes the mission. Works only in singleplayer with cheat mode enabled.
+missile_get_path_point_position      = 3609 #(missile_get_path_point_position, <position_register>, <path_point_no>, <missile_no>), #Stores the position of the <missile_no>'s <path_point_no> (0-499) into <position_register>
+get_water_level                      = 3610 #(get_water_level, <destination_fixed_point>), #Stores the water level into <destination_fixed_point>
+missile_remove_on_hit                = 3611 #(missile_remove_on_hit), #Causes a missile item not to spawn on hit (can be only used inside ti_on_missile_hit)
+missile_is_valid                     = 3612 #(missile_is_valid, <missile_no>), #Fails if <missile_no> is not valid
+missile_get_cur_position             = 3613 #(missile_get_cur_position, <position_register>, <missile_no>), #Stores <missile_no>'s current position into <position_register>
+set_prop_collision_threshold         = 3614 #(set_prop_collision_threshold, <attack_direction>, <low_boundary>, <high_boundary>), #Changes the animation progress boundaries (in percents) that determine if swing attacks on props will collide (default: 40% <= x <= 80% (75% for overheads))
+get_camera_position                  = 3615 #(get_camera_position, <position_register_no>), #Stores camera position and rotation into <position_register_no>
+prop_instance_remove_particle_system = 3616 #(prop_instance_remove_particle_system, <prop_instance_no>, [<particle_system_no>]), #Removes [<particle_system_no>] (all particle systems if not set or -1) from <prop_instance_no>
+prop_instance_remove_light           = 3617 #(prop_instance_remove_light, <prop_instance_no>), #Removes light from <prop_instance_no>
+prop_instance_get_sound_progress     = 3618 #(prop_instance_get_sound_progress, <destination>, <scene_prop_id>), #Stores <scene_prop_id>'s sound_progress into <destination>. Returned value can be between 0-100, or -1 if nothing is being played. (requires WSE2)
+set_horse_friendly_fire              = 3619 #(set_horse_friendly_fire, <value>), #Enables or disables horse friendly fire for singleplayer
+cast_ray_agents                      = 3620 #(cast_ray_agents, <destination>, <hit_position_register>, <ray_position_register>, [<ray_length_fixed_point>]), #Casts a ray of length [<ray_length_fixed_point>] starting from <ray_position_register> and stores the closest agent's hit position into <hit_position_register> (fails if no hits). Agent's id will be stored into <destination> and bone no will be stored into reg0 (requires WSE2)
 
 troop_get_skill_points       = 3700 #(troop_get_skill_points, <destination>, <troop_no>), #Stores <troop_no>'s unused skill points into <destination>
 troop_set_skill_points       = 3701 #(troop_set_skill_points, <troop_no>, <value>), #Sets <troop_no>'s unused skill points to <value>
@@ -2077,30 +2118,33 @@ troop_set_skill              = 3707 #(troop_set_skill, <troop_no>, <skill_no>, <
 troop_set_attribute          = 3708 #(troop_set_attribute, <troop_no>, <attribute>, <value>), #Sets <troop_no>'s <attribute> to <value>
 troop_set_proficiency        = 3709 #(troop_set_proficiency, <troop_no>, <proficiency>, <value>), #Sets <troop_no>'s <proficiency> to <value>
 
-#### mod added test
-troop_get_upgrade_path   	 = 3710 #(troop_get_upgrade_path, <destination>, <troop_no>, <upgrade_path>), #upgrade_path can be: 0 = get first node, 1 = get second node 2 = get third node (returns -1 if not available)
-troop_set_upgrade_path		 = 3711 #(troop_get_upgrade_path, <troop_no>, <upgrade_path>, <value>), # sets troop_no's upgrade path to value; upgrade_path can be 0,1,2,3
-
- 
- ###
-item_set_thrust_damage         = 3800 #(item_set_thrust_damage, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage to <value>
-item_set_thrust_damage_type    = 3801 #(item_set_thrust_damage_type, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage type to <value>
-item_set_swing_damage          = 3802 #(item_set_swing_damage, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage to <value>
-item_set_swing_damage_type     = 3803 #(item_set_swing_damage_type, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage type to <value>
-item_set_head_armor            = 3804 #(item_set_head_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s head armor to <value>
-item_set_body_armor            = 3805 #(item_set_body_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s body armor to <value>
-item_set_leg_armor             = 3806 #(item_set_leg_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s leg armor to <value>
-item_set_speed_rating          = 3807 #(item_set_speed_rating, <item_kind_no>, <value>), #Sets <item_kind_no>'s speed rating to <value>
-item_set_missile_speed         = 3808 #(item_set_missile_speed, <item_kind_no>, <value>), #Sets <item_kind_no>'s missile speed to <value>
-item_set_horse_blood_particles = 3809 #(item_set_horse_blood_particles, <item_kind_no>, <particle_1_no>, <particle_2_no>), #Sets <item_kind_no>'s horse blood <particle_1_no> and <particle_2_no>
+item_set_thrust_damage          = 3800 #(item_set_thrust_damage, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage to <value>
+item_set_thrust_damage_type     = 3801 #(item_set_thrust_damage_type, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage type to <value>
+item_set_swing_damage           = 3802 #(item_set_swing_damage, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage to <value>
+item_set_swing_damage_type      = 3803 #(item_set_swing_damage_type, <item_kind_no>, <value>), #Sets <item_kind_no>'s thrust damage type to <value>
+item_set_head_armor             = 3804 #(item_set_head_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s head armor to <value>
+item_set_body_armor             = 3805 #(item_set_body_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s body armor to <value>
+item_set_leg_armor              = 3806 #(item_set_leg_armor, <item_kind_no>, <value>), #Sets <item_kind_no>'s leg armor to <value>
+item_set_speed_rating           = 3807 #(item_set_speed_rating, <item_kind_no>, <value>), #Sets <item_kind_no>'s speed rating to <value>
+item_set_missile_speed          = 3808 #(item_set_missile_speed, <item_kind_no>, <value>), #Sets <item_kind_no>'s missile speed to <value>
+item_set_horse_blood_particles  = 3809 #(item_set_horse_blood_particles, <item_kind_no>, <particle_1_no>, <particle_2_no>), #Sets <item_kind_no>'s horse blood <particle_1_no> and <particle_2_no>
+item_set_horse_blood_color      = 3810 #(item_set_horse_blood_color, <item_kind_no>, <color>), #Sets <item_kind_no>'s horse blood <color> (requires WSE2)
+cur_item_mesh_set_color         = 3811 #(cur_item_mesh_set_color, <mesh_no>, <color>), #Sets item <mesh_no> color to <color>. Only call inside ti_on_init_item in module_items.
+cur_item_add_mesh_with_material = 3812 #(cur_item_add_mesh_with_material, <mesh_name_string_no>, <material_name_string_no>, [<lod_begin>], [<lod_end>], [<color>]), #Adds another <mesh_name_string_no> to item. Replaces item material to <material_name_string_no>. Sets item color to [<color>]. Only call inside ti_on_init_item in module_items.
 
 party_stack_get_experience      = 3900 #(party_stack_get_experience, <destination>, <party_no>, <party_stack_no>), #Stores the experience of <party_no>'s <party_stack_no> into <destination>
 party_stack_get_num_upgradeable = 3901 #(party_stack_get_num_upgradeable, <destination>, <party_no>, <party_stack_no>), #Stores the amount of upgradeable troops in <party_no>'s <party_stack_no> into <destination>
 party_has_flag                  = 3902 #(party_has_flag, <party_no>, <flag>), #Fails if <party_no> doesn't have <flag>
 party_heal_members              = 3903 #(party_heal_members, <party_no>, <troop_no>, <number>), #Heals <number> <troop_no> of <party_no>
+party_switch_stacks             = 3904 #(party_switch_stacks, <party_no>, <party_stack_no_1>, <party_stack_no_2>), #Switches <party_no>'s <party_stack_no_1> and <party_stack_no_2>
+party_stack_upgrade             = 3905 #(party_stack_upgrade, <party_no>, <party_stack_no>, <amount>, <upgrade_path>), #Upgrades <party_no>'s <party_stack_no>'s <amount> of troops (<upgrade_path> can be 0 or 1) (requires WSE2)
+party_stack_set_num_upgradeable = 3906 #(party_stack_set_num_upgradeable, <party_no>, <party_stack_no>, <value>), #Sets <party_no>'s <party_stack_no>'s amount of upgradeable troops to <value>
 
 position_get_vector_to_position = 4100 #(position_get_vector_to_position, <destination_fixed_point>, <dest_position_register>, <position_register_1>, <position_register_2>), #Stores the vector from <position_register_1> to <position_register_2> into <dest_position_register> and its length into <destination_fixed_point>
 position_align_to_ground        = 4101 #(position_align_to_ground, <position_register>, [<point_up>], [<set_z_to_ground_level>]), #Aligns <position_register> to the ground (or to the ground normal if [<point_up>] is set)
+position_get_length             = 4102 #(position_get_length, <destination_fixed_point>, <position_register>), #Stores <position_register> length into <destination_fixed_point>
+get_dot_product_of_positions    = 4103 #(get_dot_product_of_positions, <destination_fixed_point>, <position_register_1>, <position_register_2>), #Stores <position_register_1> and <position_register_2> dot product into <destination_fixed_point>
+get_cross_product_of_positions  = 4104 #(get_cross_product_of_positions, <dest_position_register>, <position_register_1>, <position_register_2>), #Stores <position_register_1> and <position_register_2> cross product into <dest_position_register>
 
 str_equals                                = 4200 #(str_equals, <string_1>, <string_2>, [<case_insensitive>]), #Fails if <string_1> is not equal to <string_2>
 str_contains                              = 4201 #(str_contains, <string_1>, <string_2>, [<case_insensitive>]), #Fails if <string_1> doesn't contain <string_2>
@@ -2147,6 +2191,7 @@ str_regex_search                          = 4241 #(str_regex_search, <string_1>,
 str_regex_get_matches                     = 4242 #(str_regex_get_matches, <destination>, <string_register>, <string_1>, <string_regex>, [<max>]), #Stores all matches of <string_regex> that occur in <string_1> into a range of string registers, starting from <string_register>, storing [[<max>]] substrings at most (default = unlimited). Stores the amount of matches into <destination>
 str_store_regex_replace                   = 4243 #(str_store_regex_replace, <string_register>, <string_1>, <string_regex>, <string_2>), #Stores <string_1> into <string_register>, replacing occurrences of <string_regex> with <string_2>
 str_decode_url                            = 4244 #(str_decode_url, <string_register>, <string_1>), #Decode url encoded <string_1> and stores it into <string_register>. Note that it doesn't convert +'s to spaces(as per the spec)
+str_store_skill_desc                      = 4245 #(str_store_skill_desc, <string_register>, <skill_no>), #Stores the description of <skill_no> into <string_register>
 
 options_get_verbose_casualties  = 4300 #(options_get_verbose_casualties, <destination>), #Stores verbose casualties enabled/disabled into <destination>
 options_set_verbose_casualties  = 4301 #(options_set_verbose_casualties, <value>), #Enables or disables verbose casualties
@@ -2220,6 +2265,7 @@ edit_mode_deselect_prop_instance          = 4603 #(edit_mode_deselect_prop_insta
 edit_mode_get_highlighted_prop_instance   = 4604 #(edit_mode_get_highlighted_prop_instance, <destination>), #Stores the highlighted prop instance into <destination>
 edit_mode_set_highlighted_prop_instance   = 4605 #(edit_mode_set_highlighted_prop_instance, [<prop_instance_no>]), #Stores the <1>th selected prop instance into instance no into [<prop_instance_no>]
 edit_mode_set_enabled                     = 4606 #(edit_mode_set_enabled, <value>), #Enables or disables edit mode
+edit_mode_in_edit_objects_mode            = 4607 #(edit_mode_in_edit_objects_mode), #Fails if the game is not in edit objects mode
 
 update_material = 4700 #(update_material, <material_name>, <new_material_name>), #Updates <material_name> with <new_material_name>
 
@@ -2228,8 +2274,13 @@ menu_add_item        = 4801 #(menu_add_item, <menu_no>, <text>, [<conditions_scr
 menu_clear_items     = 4802 #(menu_clear_items, <menu_no>), #Removes all menu items from <menu_no>
 menu_clear_generated = 4803 #(menu_clear_generated), #Removes all dynamic menus
 
-overlay_get_val       = 4900 #(overlay_get_val, <destination>, <overlay_no>), #Stores <overlay_no>'s value into <destination>
-presentation_activate = 4901 #(presentation_activate, <presentation_no>), #Activates <presentation_no>. Fails if <presentation_no> is not running
+overlay_get_val         = 4900 #(overlay_get_val, <destination>, <overlay_no>), #Stores <overlay_no>'s value into <destination>
+presentation_activate   = 4901 #(presentation_activate, <presentation_no>), #Activates <presentation_no>. Fails if <presentation_no> is not running
+overlay_button_set_type = 4902 #(overlay_button_set_type, <overlay_no>, <toggle_or_not>, <deselectable_or_not>), #Sets <overlay_no>'s <toggle_or_not> and <deselectable_or_not>
+overlay_get_scroll_pos  = 4903 #(overlay_get_scroll_pos, <destination_fixed_point>, <overlay_no>), #Stores <overlay_no>'s scroll pos into <destination_fixed_point>
+overlay_set_scroll_pos  = 4904 #(overlay_set_scroll_pos, <overlay_no>, <value_fixed_point>), #Sets <overlay_no>'s scroll pos <value_fixed_point>
+overlay_enable          = 4905 #(overlay_enable, <overlay_no>, <enable_or_disable>), #Sets <overlay_no>'s <enable_or_disable>
+overlay_item_set_text   = 4906 #(overlay_item_set_text, <overlay_no>, <item_no>, <text>), #Changes the <overlay_no>'s <item_no>'s <text>. Items are indexed from 0 (requires WSE2)
 
 array_create        = 5000 #(array_create, <destination>, <type_id>, <Dim 0>, [<Dim 1>], [<Dim 2>], [<Dim 3>], [<Dim 4>], [<Dim 5>], [<Dim 6>], [<Dim 7>], [<Dim 8>], [<Dim 9>], [<Dim 10>], [<Dim 11>], [<Dim 12>], [<Dim 13>]), #Creates an array object of <type_id> (0: Integer, 1: String, 2: Position) and stores its ID into <destination>. You can specify up to 14 dimensions, from <Dim 0> to [<Dim 13>]. The array will be initialized by default with 0 / empty string / 0-position.
 array_free          = 5001 #(array_free, <arrayID>), #Frees array with <arrayID>.
@@ -2268,15 +2319,22 @@ lua_push_str        = 5109 #(lua_push_str, <string_1>), #Pushes <string_1> onto 
 lua_push_pos        = 5110 #(lua_push_pos, <pos_register>), #Pushes the position in <pos_register> onto the lua stack.
 lua_get_type        = 5111 #(lua_get_type, <destination>), #Stores the type of the value at <1> in the stack into <destination>. Return types can be found in header_common(_addon).py (LUA_T*)
 lua_call            = 5112 #(lua_call, <func_name>, <num_args>), #Calls the lua function with name <func_name>, using the lua stack to pass <num_args> arguments and to return values. The first argument is pushed first. All arguments get removed from the stack automatically. The last return value will be at the top of the stack.
-lua_triggerCallback = 5113 #(lua_triggerCallback, <reference>), #Calls the lua trigger callback with <reference>. This operation is utilized internally and should not be used, unless you know what you are doing.
+lua_triggerCallback = 5113 #(lua_triggerCallback, <reference>, <triggerPart>, [<context>]), #Calls the lua trigger callback with <reference>. This operation is utilized internally and should not be used, unless you know what you are doing.
+
+skin_set_blood_color = 5200 #(skin_set_blood_color, <skin_no>, <color>), #Sets <skin_no>'s blood <color> (requires WSE2)
 
 lhs_operations += [
+	agent_get_ammo_for_slot,
+	agent_get_item_cur_ammo,
 	agent_get_damage_modifier,
 	agent_get_accuracy_modifier,
 	agent_get_speed_modifier,
 	agent_get_reload_speed_modifier,
 	agent_get_use_speed_modifier,
 	store_trigger_param,
+	store_random,
+	store_random_in_range,
+	face_keys_get_morph_key,
 	val_shr,
 	store_shr,
 	val_lshr,
@@ -2287,6 +2345,7 @@ lhs_operations += [
 	store_xor,
 	val_not,
 	store_not,
+	player_get_wse2_version,
 	register_get,
 	store_wse_version,
 	store_current_trigger,
@@ -2296,6 +2355,8 @@ lhs_operations += [
 	get_time,
 	timer_get_elapsed_time,
 	get_main_party,
+	store_application_time,
+	get_campaign_time,
 	game_key_get_key,
 	dict_create,
 	dict_get_size,
@@ -2311,6 +2372,12 @@ lhs_operations += [
 	agent_get_item_slot_flags,
 	agent_get_personal_animation,
 	agent_get_ranged_damage_modifier,
+	agent_body_meta_mesh_get_current_deform_progress,
+	agent_body_meta_mesh_get_current_deform_frame,
+	agent_get_horse_rotation_velocity,
+	agent_get_current_vertical_speed,
+	agent_get_current_ai_mesh_face_group,
+	agent_get_time_speed_multiplier,
 	multiplayer_get_cur_profile,
 	multiplayer_get_num_profiles,
 	multiplayer_cur_message_get_int,
@@ -2324,13 +2391,16 @@ lhs_operations += [
 	store_cur_mission_template_no,
 	get_spectated_agent_no,
 	get_water_level,
+	prop_instance_get_sound_progress,
+	cast_ray_agents,
 	troop_get_skill_points,
 	troop_get_attribute_points,
 	troop_get_proficiency_points,
-	troop_get_upgrade_path,
 	party_stack_get_experience,
 	party_stack_get_num_upgradeable,
 	position_get_vector_to_position,
+	position_get_length,
+	get_dot_product_of_positions,
 	str_length,
 	str_index_of,
 	str_last_index_of,
@@ -2348,6 +2418,7 @@ lhs_operations += [
 	edit_mode_get_highlighted_prop_instance,
 	menu_create_new,
 	overlay_get_val,
+	overlay_get_scroll_pos,
 	array_create,
 	array_copy,
 	array_load_file,
@@ -2362,6 +2433,10 @@ lhs_operations += [
 ]
 
 can_fail_operations += [
+	key_is_down,
+	key_clicked,
+	game_key_is_down,
+	game_key_clicked,
 	is_vanilla_warband,
 	item_slot_gt,
 	party_template_slot_gt,
@@ -2375,11 +2450,13 @@ can_fail_operations += [
 	agent_slot_gt,
 	scene_prop_slot_gt,
 	order_flag_is_active,
+	is_party_skill,
 	key_released,
 	game_key_released,
 	dict_is_empty,
 	dict_has_key,
 	missile_is_valid,
+	cast_ray_agents,
 	troop_has_flag,
 	party_has_flag,
 	str_equals,
@@ -2397,6 +2474,7 @@ can_fail_operations += [
 	flt,
 	fge,
 	fle,
+	edit_mode_in_edit_objects_mode,
 	presentation_activate,
 	array_eq,
 	array_neq,
@@ -2404,6 +2482,8 @@ can_fail_operations += [
 	array_ge,
 	array_lt,
 	array_le,
+	lua_call,
 	lua_triggerCallback,
 ]
+
 ### WSE Addons End

@@ -648,8 +648,8 @@ spf_team_1_walkers_spawn_at_high_points      = 0x00000400,
 spf_try_to_spawn_close_to_at_least_one_enemy = 0x00000800,
 spf_care_agent_to_agent_distances_less       = 0x00001000,
 
-
-#### WSE Addons MOD BEGIN
+## MOD BEGIN
+### WSE Addons ver 4.9.2
 #Tooltip types
 tooltip_agent = 1
 tooltip_horse = 2
@@ -753,6 +753,14 @@ bmm_left_bracer = 24
 bmm_right_bracer = 25
 bmm_banner = 26
 bmm_name = 27
+
+#Dialog states
+dlg_start              = 0
+dlg_party_encounter    = 1
+dlg_event_triggered    = 5
+dlg_close_window       = 6
+dlg_member_chat        = 13
+dlg_prisoner_chat      = 14
 
 #Floating point registers
 fp0 = 0

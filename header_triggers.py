@@ -24,6 +24,8 @@ ti_battle_window_opened  = -24.0 #can only be used in module_mission_templates t
 ti_on_agent_spawn        = -25.0 #can only be used in module_mission_templates triggers
 ti_on_agent_killed_or_wounded = -26.0 #can only be used in module_mission_templates triggers
 ti_on_agent_knocked_down = -27.0 #can only be used in module_mission_templates triggers
+
+### WSE Addons ver 4.9.2
 ti_on_agent_hit = -28.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: receiver agent no
 # Trigger Param 2: dealer agent no
@@ -39,6 +41,8 @@ ti_on_agent_hit = -28.0 #can only be used in module_mission_templates triggers
 # Position Register 0: position of the blow
 #                      rotation gives the direction of the blow
 # Trigger Result: if set, damage dealt to agent
+
+### WSE END
 
 ti_on_player_exit        = -29.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: player_id
@@ -137,7 +141,7 @@ ti_once        = 100000000.0
 
 
 
-### WSE addons begin
+### WSE Addons ver 4.9.2
 
 ti_on_agent_hit = -28.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: receiver agent no
@@ -192,6 +196,11 @@ ti_on_agent_start_reloading = -105.0 #can only be used in module_mission_templat
 
 ti_on_agent_end_reloading = -106.0 #can only be used in module_mission_templates triggers
 # Trigger Param 1: agent no
+
+ti_on_scene_prop_is_deforming = -108.0 #can only be used in module_scene_props triggers
+# Trigger Param 1: prop instance no
+# Trigger Param 2: remaining deform time (1/1000th of second)
+
 
 
 
