@@ -1560,8 +1560,17 @@ remove_duplicated_item_types =  (
 			(array_create, ":agent_weapons", 0, 4),
 			(array_set_val_all, ":agent_weapons", -1),
 			
+### create dynamic table and resize it 
+### 3 dimensional array ( item_id, item_type, item_slot)
+### if array_len  == 1 check if:
+###     item is pike or long spear
+###         create list of 1h items
+###         then add 1h weapon that troop has in his inventory
+###     item is jousting lance, great lance etc
+###         create list of 1h and 2h items
+###         then add 1h or 2h that troop has in his inventory
 
-			
+	
 			(try_for_range, ":slot",0,4),
 				(agent_get_item_slot, ":agent_item",":agent", ":slot"),
 				(try_begin),
