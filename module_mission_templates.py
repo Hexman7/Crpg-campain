@@ -1890,6 +1890,7 @@ tournament_triggers = [
   ]
 
 #### MOD BEGIN    
+## by Rider of Rohirrim
 lance_breaking = (
   ti_on_agent_hit, 0, 0, [],
   [

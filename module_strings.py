@@ -2421,10 +2421,12 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 
 ("credits_14","OSP Scripts \
 ^Woyeyeh - script for better handing out fiefs by kings  \
-^Mad Vader - death camera\
+^Mad Vader - death camera scripts\
 ^Crossbow Pig - changing parties names script\
-^Dalion - script for started battles and passable allies\
-^AndyYa Alive Horses\
+^Dalion - scripts for started battles and passable allies\
+^AndyYa - Alive Horses script\
+^Caba'drin - bodyguards script\
+^KnowsCount - Kicking AI script\
 "), 
 
 ## mod end
