@@ -5638,13 +5638,13 @@ scripts = [
       (party_is_active,":root_attacker_party"),
           (str_store_party_name,s1,":root_attacker_party"),
           ### DEBUG
-          #(display_message,"@Atacker party: {s1}"),
+          #(display_message,"@Attacker party: {s1}"),
           ### DEBUG
           (party_get_template_id,":template",":root_attacker_party"),
           
           (try_begin),
           (eq,":template","pt_village_patrol_party"),
-			(display_message,"@Atacker party: {s1}"),
+		#	(display_message,"@Attacker party: {s1}"),
             (call_script,"script_village_reinforcements_after_battle",":root_attacker_party",":root_defender_party"),
           (try_end),
 	  (else_try),
@@ -5657,7 +5657,7 @@ scripts = [
 
           (try_begin),
           (eq,":template","pt_village_patrol_party"),
-			(display_message,"@Defender party: {s1}"),
+		#	(display_message,"@Defender party: {s1}"),
             (call_script,"script_village_reinforcements_after_battle",":root_defender_party",":root_attacker_party"),
           (try_end),
 	  (try_end),
@@ -57172,9 +57172,9 @@ scripts = [
 	    (eq,reg0,0),
 		
 			## DEBUG
-			(display_message,"@ ===================================="),
-			(display_message,"@Sending reinforcements"),
-			(display_message,"@ ===================================="),
+		#	(display_message,"@ ===================================="),
+		#	(display_message,"@Sending reinforcements"),
+		#	(display_message,"@ ===================================="),
 			## DEBUG
 			(party_set_ai_object,":patrol_party",":raider_party"),
 			(party_set_ai_behavior,":patrol_party",ai_bhvr_attack_party),
@@ -57499,9 +57499,9 @@ scripts = [
 
             (str_store_party_name,s1,":village_no"),
             ## DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@Sending reinforcements to {s1}"),
-            (display_message,"@ ===================================="),
+           # (display_message,"@ ===================================="),
+           # (display_message,"@Sending reinforcements to {s1}"),
+           # (display_message,"@ ===================================="),
             ## DEBUG
         
             ### Setting patrol action slot and ai variables
@@ -57587,9 +57587,9 @@ scripts = [
             (party_set_ai_initiative, ":party", 20),
             (party_set_aggressiveness, ":party", 3),
             ### DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@calling back reinforcements after breaching action max time"),
-            (display_message,"@ ===================================="),
+       #     (display_message,"@ ===================================="),
+       #     (display_message,"@calling back reinforcements after breaching action max time"),
+       #     (display_message,"@ ===================================="),
             ### DEBUG
         
         
@@ -57613,9 +57613,9 @@ scripts = [
             (party_set_ai_initiative, ":party", 20),
             (party_set_aggressiveness, ":party", 3),
             ### DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@Calling back patrol. It's too far."),
-            (display_message,"@ ===================================="),
+       #     (display_message,"@ ===================================="),
+       #     (display_message,"@Calling back patrol. It's too far."),
+       #     (display_message,"@ ===================================="),
         
             ### DEBUG
         (try_end),
@@ -57638,9 +57638,9 @@ scripts = [
                 (party_set_aggressiveness, ":party", 6),
                 
                 ### DEBUG
-                (display_message,"@ ===================================="),
-                (display_message,"@Starting to patrol around the village."),
-				(display_message,"@ ===================================="),
+		#		(display_message,"@ ===================================="),
+		#		(display_message,"@Starting to patrol around the village."),
+		#		(display_message,"@ ===================================="),
                 ### DEBUG
             (try_end),
         (else_try), ## checking conditions for party when during village patrol
@@ -57659,18 +57659,18 @@ scripts = [
                 (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
                 
                 ### DEBUG
-                (display_message,"@ ===================================="),
-                (display_message,"@calling back reinforcements"),
-				(display_message,"@ ===================================="),
+         #       (display_message,"@ ===================================="),
+         #       (display_message,"@calling back reinforcements"),
+		#		(display_message,"@ ===================================="),
                 ### DEBUG
            (try_end),
         (else_try),
         (eq,":party_action",spvr_going_back_to_center),
             (store_distance_to_party_from_party,":distance",":party",":party_center"),
             ### DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@checking distance"),
-            (display_message,"@ ===================================="),
+      #      (display_message,"@ ===================================="),
+      #      (display_message,"@checking distance"),
+      #      (display_message,"@ ===================================="),
             ### DEBUG
             (try_begin),
             (lt,":distance",3),
@@ -57678,9 +57678,9 @@ scripts = [
                 (party_attach_to_party, ":party", ":party_center"),
                 (party_set_slot,":party",slot_village_reinforcements_action,spvr_entered_center),
                 ### DEBUG
-                (display_message,"@ ===================================="),
-                (display_message,"@attaching party"),
-                (display_message,"@ ===================================="),
+        #        (display_message,"@ ===================================="),
+        #        (display_message,"@attaching party"),
+        #        (display_message,"@ ===================================="),
                 ### DEBUG
             (try_end),           
         (else_try),
@@ -57707,9 +57707,9 @@ scripts = [
             (remove_party,":party"), 
             
             ### DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@merging parties"),
-            (display_message,"@ ===================================="),
+        #   (display_message,"@ ===================================="),
+        #    (display_message,"@merging parties"),
+        #    (display_message,"@ ===================================="),
             ### DEBUG
         (else_try),
         (eq,":party_action",spvr_waiting_after_battle),    
@@ -57719,9 +57719,9 @@ scripts = [
             (party_set_ai_behavior,":party",ai_bhvr_travel_to_party),
             
             ### DEBUG
-            (display_message,"@ ===================================="),
-            (display_message,"@Sending party to center after battle"),
-            (display_message,"@ ===================================="),
+       #     (display_message,"@ ===================================="),
+       #     (display_message,"@Sending party to center after battle"),
+       #     (display_message,"@ ===================================="),
             ### DEBUG
         (try_end),
     
@@ -57750,7 +57750,7 @@ scripts = [
          (party_set_ai_behavior,":village_reinforcements_party",ai_bhvr_hold),
          (party_set_slot,":village_reinforcements_party", slot_village_reinforcements_action,spvr_waiting_after_battle),
          ### DEBUG
-         (display_message,"@Setting patrol ai to hold"),
+      #   (display_message,"@Setting patrol ai to hold"),
          ### DEBUG
      (try_end),
  ]), 
