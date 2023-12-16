@@ -1086,7 +1086,7 @@ items = [
 3002, weight(26)|abundance(100)|head_armor(0)|body_armor(58)|leg_armor(23)|difficulty(17) ,imodbits_plate ],
 
 ["heavy_gothic_armor_a", "Heavy Gothic Armor", [("variantarmor",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
-3102, weight(26.3)|abundance(100)|head_armor(0)|body_armor(59)|leg_armor(21)|difficulty(14) ,imodbits_plate ],
+3102, weight(26.3)|abundance(100)|head_armor(0)|body_armor(59)|leg_armor(21)|difficulty(17) ,imodbits_plate ],
 ["heavy_gothic_armor_b", "Black Heavy Gothic Armor", [("variantarmorblack",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
 3102, weight(26.3)|abundance(100)|head_armor(0)|body_armor(59)|leg_armor(21)|difficulty(17) ,imodbits_plate ],
 ["heavy_gothic_armor_c", "Bronze Heavy Gothic Armor", [("variantarmorbronze",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
@@ -2045,7 +2045,7 @@ items = [
 62, weight(2.0)|difficulty(8)|spd_rtng(91) | weapon_length(200)|swing_damage(16 , blunt) | thrust_damage(25 ,  pierce),imodbits_polearm ],
 ["war_spear",         "War Spear", [("spear_i_2-3m",0)], itp_type_polearm|itp_offset_lance|itp_merchandise| itp_primary|itp_wooden_parry, itc_staff|itcf_carry_spear,
 116, weight(1.5)|difficulty(9)|spd_rtng(95) | weapon_length(150)|swing_damage(20 , blunt) | thrust_damage(28 ,  pierce),imodbits_polearm ],
-["pike",         "Long Spear", [("spear_a_3m",0)], itp_type_polearm|itp_merchandise| itp_cant_use_on_horseback|itp_primary|itp_wooden_parry|itp_two_handed, itc_pike,
+["pike",         "Long Spear", [("spear_a_3m",0)], itp_type_polearm|itp_merchandise| itp_cant_use_on_horseback|itp_primary|itp_wooden_parry|itp_two_handed, itc_pike|itcf_carry_spear,
 217, weight(2)|difficulty(10)|spd_rtng(81) | weapon_length(245)|swing_damage(0 , blunt) | thrust_damage(26 ,  pierce),imodbits_polearm ],
 ##["spear_e_3-25m",         "Spear_3-25m", [("spear_e_3-25m",0)], itp_type_polearm|itp_merchandise| itp_primary|itp_penalty_with_shield|itp_wooden_parry, itc_cutting_spear|itcf_carry_spear,
 ## 150 , weight(4.5)|difficulty(0)|spd_rtng(81) | weapon_length(225)|swing_damage(19 , blunt) | thrust_damage(23 ,  pierce),imodbits_polearm ],
@@ -2057,7 +2057,7 @@ items = [
 615, weight(2.8)|difficulty(11)|spd_rtng(89) | weapon_length(185)|swing_damage(21 , blunt) | thrust_damage(32 ,  pierce),imodbits_polearm ],
 #["awlpike",         "Awlpike", [("pike",0)], itp_type_polearm|itp_offset_lance|itp_merchandise| itp_primary|itp_two_handed|itp_wooden_parry, itc_cutting_spear|itcf_carry_spear,
 # 378 , weight(3.5)|difficulty(12)|spd_rtng(92) | weapon_length(160)|swing_damage(20 ,blunt) | thrust_damage(31 ,  pierce),imodbits_polearm ],
-["pike_b",         "Pike", [("pike_long",0)], itp_type_polearm|itp_merchandise| itp_cant_use_on_horseback|itp_primary|itp_wooden_parry|itp_two_handed|itp_unbalanced, itc_spear|itcf_carry_spear,
+["pike_b",         "Pike", [("pike_long",0)], itp_type_polearm|itp_merchandise| itp_cant_use_on_horseback|itp_primary|itp_wooden_parry|itp_two_handed|itp_unbalanced, itc_pike|itcf_carry_spear,
 283, weight(4.0)|difficulty(14)|spd_rtng(69) | weapon_length(300)|swing_damage(0 , blunt) | thrust_damage(24 ,  pierce),imodbits_polearm ],
 
 
