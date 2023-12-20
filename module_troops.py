@@ -656,7 +656,7 @@ troops = [
     itm_surcoa_over_mail_and_plate_heraldic,itm_brigandine_white_a,itm_brigandine_red_b,itm_lithuanian_ducal_armor,itm_mail_chausses,itm_surcoa_over_mail_and_plate_red,itm_surcoa_over_mail_and_plate_white,itm_rus_cav_boots,itm_hose_kneecops_red,itm_lithuanian_helmet,itm_guard_helmet,itm_novogrod_helmet,itm_hourglass_gloves,itm_hourglass_gauntlets_a],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(100),knows_common|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5|knows_power_throw_3,swadian_face_middle_1, swadian_face_old_2],
  
-  ["swadian_pikeman","Polan's Pikeman","Polan's Pikemen",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet,0,0,fac_kingdom_1,
+  ["swadian_pikeman","Polan's Pikeman","Polan's Pikemen",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_polearm,0,0,fac_kingdom_1,
    [itm_pike_b,itm_nobleman_sword_b,itm_nobleman_sword_a,
     itm_transitional_heraldic,itm_polish_transitional_armor,itm_mail_boots,itm_iron_greaves,itm_sugarloaf_a,itm_klappvisier,itm_hourglass_gauntlets_a,itm_heavy_plate_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(100),knows_common|knows_power_strike_6|knows_ironflesh_3|knows_athletics_5|knows_power_throw_3,swadian_face_middle_1, swadian_face_old_2],
@@ -686,19 +686,19 @@ troops = [
     itm_lithuanian_ducal_armor,itm_surcoa_over_mail_and_plate_heraldic,itm_mail_and_plate_boots_b,itm_splinted_greaves_spurs,itm_lithuanian_helmet,itm_novogrod_helmet,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hunter,itm_courser],
    str_13 | agi_9 | int_4 | cha_4|level(20),wp_one_handed(120)|wp_two_handed(120)|wp_polearm(120)|wp_archery(10)|wp_crossbow(10)|wp_throwing(90),knows_common|knows_horse_archery_2|knows_power_throw_2|knows_power_strike_3|knows_ironflesh_3|knows_shield_2|knows_athletics_3|knows_riding_5,swadian_face_middle_1, swadian_face_old_2],
  
-  ["swadian_knight","Polan's Knight","Polan's Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield,0,0,fac_kingdom_1,
+  ["swadian_knight","Polan's Knight","Polan's Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_polearm,0,0,fac_kingdom_1,
    [itm_heavy_lance,itm_morningstar,itm_sword_medieval_d_long,itm_cav_sword,itm_great_lance,itm_lithuanian_shield,itm_tab_shield_heater_cav_b,
     itm_corrazina_red,itm_churburg_b,itm_mail_and_plate_boots_b,itm_splinted_greaves_spurs,itm_great_helmet,itm_gotland_helmet_c,itm_sugarloaf_a,itm_great_helmet_e,itm_great_helmet_f,itm_plated_charger,itm_charger,itm_warhorse,itm_gilded_hourglass_gloves,itm_hourglass_gauntlets_b],
    str_16 | agi_12 | int_4 | cha_4|level(25),wp_one_handed(150)|wp_two_handed(150)|wp_polearm(150)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_throw_3|knows_horse_archery_3|knows_power_strike_5|knows_ironflesh_5|knows_shield_4|knows_athletics_5|knows_riding_7,swadian_face_middle_1, swadian_face_older_2],
 
-  ["swadian_heavy_knight","Polan's Heavy Knight","Polan's Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves,0,0,fac_kingdom_1,
+  ["swadian_heavy_knight","Polan's Heavy Knight","Polan's Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves|tf_guarantee_polearm,0,0,fac_kingdom_1,
    [itm_heavy_lance,itm_morningstar,itm_sword_medieval_d_long,itm_cav_sword,itm_great_lance,itm_lithuanian_shield,itm_triangle_shield,itm_tab_shield_heater_cav_b,
     itm_transitional_heraldic,itm_polish_transitional_armor,itm_mail_and_plate_boots_b,itm_splinted_greaves_spurs,itm_sugarloaf_a,itm_gotland_helmet_b,itm_great_helmet_g,itm_gotland_helmet_b,itm_plated_charger,itm_charger,itm_warhorse,itm_gilded_hourglass_gloves,itm_hourglass_gauntlets_b],
    str_19 | agi_15 | int_4 | cha_4|level(29),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(140),knows_common|knows_power_throw_4|knows_horse_archery_4|knows_power_strike_7|knows_ironflesh_7|knows_shield_5|knows_athletics_6|knows_riding_9,swadian_face_young_1, swadian_face_old_2],
  
 
-  ["swadian_heavy_knight_b","Polan's Heavy Knight","Polan's Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves,0,0,fac_kingdom_1,
-   [itm_great_lance,itm_great_lance,itm_great_lance,itm_great_lance,itm_great_lance,itm_tab_shield_heater_cav_b,
+  ["swadian_heavy_knight_b","Polan's Heavy Knight","Polan's Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves|tf_guarantee_polearm,0,0,fac_kingdom_1,
+   [itm_great_lance,itm_tab_shield_heater_cav_b,itm_morningstar,itm_sword_medieval_d_long,itm_cav_sword,
     itm_transitional_heraldic,itm_polish_transitional_armor,itm_mail_and_plate_boots_b,itm_splinted_greaves_spurs,itm_sugarloaf_a,itm_gotland_helmet_b,itm_great_helmet_g,itm_gotland_helmet_b,itm_plated_charger,itm_charger,itm_warhorse,itm_gilded_hourglass_gloves,itm_hourglass_gauntlets_b],
    str_19 | agi_15 | int_4 | cha_4|level(29),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_7|knows_ironflesh_7|knows_shield_5|knows_athletics_6|knows_riding_9,swadian_face_young_1, swadian_face_old_2],
 
@@ -742,8 +742,8 @@ troops = [
     itm_kuyak_a,itm_kuyak_b,itm_norman_helmet_b,itm_norman_helmet_c,itm_norman_helmet_d,itm_pronoia_helmet,itm_rus_cav_boots,itm_mail_gloves,itm_gilded_hourglass_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(100),knows_common|knows_power_strike_7|knows_ironflesh_3|knows_shield_4|knows_athletics_5|knows_power_throw_3,vaegir_face_young_1, vaegir_face_older_2],
   
-  ["vaegir_pikeman","Grey Pikeman","Grey Pikemen",tf_mounted|tf_guarantee_boots|tf_guarantee_gloves|tf_guarantee_armor|tf_guarantee_helmet,0,0,fac_kingdom_2,
-   [itm_pike_b,itm_pike_b,itm_pike_b,itm_scimitar_b,
+  ["vaegir_pikeman","Grey Pikeman","Grey Pikemen",tf_mounted|tf_guarantee_boots|tf_guarantee_gloves|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_polearm,0,0,fac_kingdom_2,
+   [itm_pike_b,itm_scimitar_b,
     itm_norman_helmet_b,itm_norman_helmet_c,itm_norman_helmet_d,itm_kuyak_a,itm_kuyak_b,itm_rus_cav_boots,itm_mail_gloves,itm_gilded_hourglass_gloves],
    str_18 | agi_15 | int_4 | cha_4|level(25),wp_polearm(190)|wp_one_handed(140)|wp_two_handed(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_strike_9|knows_ironflesh_5|knows_athletics_7|knows_power_throw_4,vaegir_face_young_1, vaegir_face_older_2],
   
@@ -868,12 +868,12 @@ troops = [
     itm_saracen_helmet_c, itm_ghulam_helmet_a,itm_saracen_lamellar_a,itm_sarranid_cavalry_robe,itm_arabian_armor_a2,itm_sarranid_boots_c,itm_sarranid_boots_d,itm_scale_gloves_a,itm_saddle_horse,itm_courser],
    str_12 | agi_9 | int_4 | cha_4|level(15),wp_one_handed(120)|wp_two_handed(120)|wp_polearm(120)|wp_archery(10)|wp_crossbow(10)|wp_throwing(100),knows_common|knows_power_strike_3|knows_ironflesh_3|knows_shield_2|knows_athletics_3|knows_riding_3|knows_power_throw_2|knows_horse_archery_2,khergit_face_young_1, khergit_face_older_2],
   
-  ["khergit_lancer","Lancer of Tengri","Lancers of Tengri",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield,0,0,fac_kingdom_3,
+  ["khergit_lancer","Lancer of Tengri","Lancers of Tengri",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_polearm,0,0,fac_kingdom_3,
    [itm_heavy_lance,itm_arabian_sword_d,itm_scimitar_b,itm_sarranid_two_handed_axe_b,itm_tab_shield_small_round_b,itm_tab_shield_small_round_c,itm_jarid,
     itm_saracen_helmet_b,itm_saracen_helmet_d,itm_mamluke_mail,itm_sipahi_jawshan,itm_sarranid_boots_c,itm_sarranid_boots_d,itm_scale_gauntlets,itm_scale_gloves_a,itm_warhorse_b,itm_courser],
    str_15 | agi_12 | int_4 | cha_4|level(21),wp_one_handed(150)|wp_two_handed(150)|wp_polearm(150)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_throw_3|knows_horse_archery_3|knows_power_strike_5|knows_ironflesh_4|knows_shield_4|knows_athletics_5|knows_riding_5|knows_power_throw_3,khergit_face_middle_1, khergit_face_older_2],
  
-  ["khergit_heavy_lancer","Heavy Lancer of Tengri","Heavy Lancers of Tengri",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield,0,0,fac_kingdom_3,
+  ["khergit_heavy_lancer","Heavy Lancer of Tengri","Heavy Lancers of Tengri",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_polearm,0,0,fac_kingdom_3,
    [itm_heavy_lance,itm_sarranid_cavalry_sword,itm_scimitar_b,itm_sarranid_two_handed_axe_a,itm_tab_shield_small_round_c,
     itm_ottoman_chichak,itm_ottoman_elite_cavalry_chichak,itm_sarranid_elite_armor,itm_heavy_yawshan,itm_sarranid_boots_c,itm_scale_gauntlets,itm_scale_gloves_a,itm_warhorse_b,itm_courser],
    str_18 | agi_15 | int_4 | cha_4|level(27),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(140),knows_common|knows_power_throw_5|knows_horse_archery_4|knows_power_strike_7|knows_ironflesh_6|knows_shield_5|knows_athletics_6|knows_riding_7,khergit_face_middle_1, khergit_face_older_2],
@@ -920,12 +920,12 @@ troops = [
     itm_morion_a,itm_morion_b,itm_black_armor_b,itm_black_armor_c,itm_splinted_greaves_spurs,itm_plate_boots,itm_wisby_gloves,itm_bnw_gauntlets],
    str_18 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_throw_3|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_power_throw_4|knows_athletics_5,nord_face_young_1, nord_face_older_2],
   
-  ["nord_veteran","Kalmarunionen Pikeman","Kalmarunionen Pikemen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield|tf_guarantee_helmet|tf_guarantee_gloves,0,0,fac_kingdom_4,
+  ["nord_veteran","Kalmarunionen Pikeman","Kalmarunionen Pikemen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield|tf_guarantee_helmet|tf_guarantee_gloves|tf_guarantee_polearm,0,0,fac_kingdom_4,
    [itm_pike,itm_awlpike,itm_military_hammer,itm_glaive2,
     itm_morion_a,itm_morion_b,itm_black_armor_b,itm_black_armor_c,itm_splinted_greaves_spurs,itm_plate_boots,itm_wisby_gloves,itm_bnw_gauntlets],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_throw_3|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5,nord_face_young_1, nord_face_older_2],
   
-  ["nord_champion","Kalmarunionen Veteran Pikeman","Kalmarunionen Veteran Pikemen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield|tf_guarantee_helmet|tf_guarantee_gloves,0,0,fac_kingdom_4,
+  ["nord_champion","Kalmarunionen Veteran Pikeman","Kalmarunionen Veteran Pikemen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield|tf_guarantee_helmet|tf_guarantee_gloves|tf_guarantee_polearm,0,0,fac_kingdom_4,
    [itm_pike,itm_awlpike,itm_pike_b,itm_military_hammer,itm_glaive2,
     itm_great_bascinet_a,itm_plate_armor_c,itm_morion_a,itm_corrazina_grey,itm_plate_boots,itm_hourglass_gauntlets_a],
    str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(140),knows_common|knows_power_throw_4|knows_power_strike_8|knows_ironflesh_5|knows_shield_5|knows_athletics_7,nord_face_middle_1, nord_face_older_2],
@@ -1139,7 +1139,7 @@ troops = [
     itm_helmet_a,itm_crusader_face_plate_a,itm_crusader_face_plate_b,itm_crusader_face_plate_c,itm_surcoa_over_mail_and_plate_white,itm_surcoa_over_mail_and_plate_heraldic,itm_iron_greaves,itm_mail_gauntlets,itm_mail_gloves,itm_hunter,itm_barded_warhorse],
    str_18 | agi_15 | int_4 | cha_4|level(24),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(110),knows_common|knows_power_throw_3|knows_power_strike_7|knows_ironflesh_6|knows_shield_5|knows_athletics_6|knows_riding_7,swadian_face_young_1, swadian_face_old_2],
  
-  ["sarranid_knight","Templar Heavy Knight","Templar Heavy Knights",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield,0,0,fac_kingdom_6,
+  ["sarranid_knight","Templar Heavy Knight","Templar Heavy Knights",tf_mounted|tf_guarantee_armors|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_polearm,0,0,fac_kingdom_6,
    [itm_heavy_lance,itm_great_lance,itm_crusader_sword,itm_longsword_c,itm_tab_shield_kite_cav_b,
     itm_great_helmet_c,itm_crusader_helmet_a,itm_crusader_helmet_b,itm_transitional_white,itm_transitional_heraldic,itm_steel_greaves_a,itm_shynbaulds,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_barded_warhorse],
    str_21 | agi_18 | int_4 | cha_4|level(29),wp_one_handed(200)|wp_two_handed(200)|wp_polearm(200)|wp_archery(10)|wp_crossbow(10)|wp_throwing(130),knows_common|knows_power_throw_4|knows_power_strike_8|knows_ironflesh_7|knows_shield_6|knows_athletics_7|knows_riding_8,swadian_face_middle_1, swadian_face_older_2],
@@ -1367,7 +1367,7 @@ troops = [
     itm_full_helm,itm_chapel_de_fer_g,itm_surcoa_over_mail_and_plate_blue,itm_brigandine_blue_a,itm_hose_kneecops_red,itm_hose_kneecops_green,itm_hourglass_gauntlets_a,itm_hourglass_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(110),knows_common|knows_power_throw_2|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5,swadian_face_middle_1, swadian_face_old_2],
  
-  ["order_spearman","ODE Spearman","ODE Spearman",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet,0,0,fac_kingdom_9,
+  ["order_spearman","ODE Spearman","ODE Spearman",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_gloves|tf_guarantee_helmet|tf_guarantee_polearm,0,0,fac_kingdom_9,
    [itm_long_voulge,itm_bec_de_corbin_a,itm_spetum_b,itm_guisarme_a,
     itm_chapel_de_fer_g,itm_open_sallet,itm_brigandine_blue_a,itm_mail_and_plate,itm_hose_kneecops_green,itm_hose_kneecops_red,itm_hourglass_gauntlets_a,itm_hourglass_gloves],
    str_15 | agi_12 | int_4 | cha_4|level(20),wp_one_handed(140)|wp_two_handed(140)|wp_polearm(140)|wp_archery(10)|wp_crossbow(10)|wp_throwing(110),knows_common|knows_power_throw_2|knows_power_strike_6|knows_ironflesh_3|knows_shield_4|knows_athletics_5,swadian_face_middle_1, swadian_face_old_2],
@@ -1402,7 +1402,7 @@ troops = [
     itm_open_sallet,itm_open_sallet_coif,itm_surcoa_over_mail_and_plate_blue,itm_surcoat_over_mail_blue,itm_hose_kneecops_green,itm_hose_kneecops_red,itm_hourglass_gauntlets_a,itm_hourglass_gloves,itm_hunter,itm_courser],
    str_12 | agi_9 | int_4 | cha_4|level(19),wp_one_handed(110)|wp_two_handed(110)|wp_polearm(110)|wp_archery(10)|wp_crossbow(10)|wp_throwing(100),knows_common|knows_power_throw_3|knows_power_strike_4|knows_ironflesh_2|knows_shield_2|knows_athletics_3|knows_riding_5,swadian_face_middle_1, swadian_face_older_2],
 
-  ["order_heavy_knight","ODE Heavy Knight","ODE Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves,0,0,fac_kingdom_9,
+  ["order_heavy_knight","ODE Heavy Knight","ODE Heavy Knights",tf_mounted|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_horse|tf_guarantee_shield|tf_guarantee_gloves|tf_guarantee_polearm,0,0,fac_kingdom_9,
    [itm_heavy_lance,itm_great_lance,itm_french_longsword,itm_espada_eslavona_b,itm_bastard_sword_b,itm_tab_shield_heater_cav_b,
     itm_visored_sallet,itm_visored_sallet_coif,itm_churburg_a,itm_transitional_blue,itm_shynbaulds,itm_splinted_greaves_spurs,itm_gilded_hourglass_gloves,itm_hourglass_gauntlets_b,itm_warhorse,itm_hunter],
    str_16 | agi_12 | int_4 | cha_4|level(29),wp_one_handed(150)|wp_two_handed(150)|wp_polearm(150)|wp_archery(10)|wp_crossbow(10)|wp_throwing(120),knows_common|knows_power_throw_4|knows_power_strike_5|knows_ironflesh_4|knows_shield_4|knows_athletics_5|knows_riding_7,swadian_face_young_1, swadian_face_old_2],
@@ -1492,8 +1492,8 @@ troops = [
 	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
     str_18 | agi_15 | int_4 | cha_4|level(25),wp_one_handed(180)|wp_two_handed(180)|wp_polearm(180)|wp_archery(10)|wp_crossbow(10)|wp_throwing(10),knows_common|knows_power_strike_7|knows_ironflesh_6|knows_shield_5|knows_athletics_6|knows_riding_7,swadian_face_younger_1, swadian_face_middle_2],
 
-  ["player_kingsguard","King's Guard","King's Guards",tf_guarantee_all_wo_ranged|tf_mounted|tf_no_capture_alive,0,0,fac_kingdom_9,
-   [itm_one_handed_battle_axe_b,itm_tab_shield_small_round_c,
+  ["player_kingsguard","King's Guard","King's Guards",tf_guarantee_all_wo_ranged|tf_mounted|tf_no_capture_alive|tf_guarantee_polearm,0,0,fac_kingdom_9,
+   [itm_one_handed_battle_axe_b,itm_tab_shield_small_round_c,itm_great_lance,
 	itm_great_helmet_f,itm_great_helmet_g,itm_gotland_helmet_b,itm_great_helmet_h,itm_great_helmet_i,itm_transitional_blue,itm_churburg_a,itm_transitional_heraldic,itm_steel_greaves_a,itm_iron_greaves,itm_gilded_hourglass_gloves,itm_hourglass_gloves,itm_hourglass_gauntlets_a,itm_hourglass_gauntlets_b,itm_warhorse,itm_warhorse_b],
    str_24 | agi_21 | int_21 | cha_9|level(35),wp_one_handed(300)|wp_two_handed(300)|wp_polearm(300)|wp_archery(150)|wp_crossbow(150)|wp_throwing(150),knows_common|knows_power_strike_9|knows_ironflesh_10|knows_shield_8|knows_athletics_8|knows_riding_10,swadian_face_young_1, swadian_face_old_2],
  

@@ -466,8 +466,115 @@ effects_on_troops =  (
     
 	
 	])	       
-       
-       
+
+
+### removing same type items from agents (so they wont have two bardiches for instance...)   
+remove_duplicated_item_types =  (
+	 ti_on_agent_spawn, 0, 0,
+	  [],
+	  [
+		(store_trigger_param_1, ":agent"),
+		(agent_get_troop_id,":troop_no", ":agent"),
+		
+		(try_begin),
+		(agent_is_human, ":agent"),
+		(agent_is_alive, ":agent"),
+		(agent_is_non_player, ":agent"),
+		(neg|troop_is_hero,":troop_no"),
+			(array_create, ":agent_items", 0, 4),
+			(array_set_val_all, ":agent_items", -1),
+			
+			### get agents items and save it to array
+			(try_for_range, ":slot",0,4),
+				(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+				(try_begin),
+				(neq,":agent_item",-1),
+					(array_set_val, ":agent_items", ":agent_item", ":slot"),
+				(try_end),
+			(try_end),
+			
+			# ## counting items
+			# (assign,":items" ,0),
+			# (assign,":last_item",-1),
+			# (try_for_range, ":slot",0,4),
+				# (array_get_val, ":item", ":agent_items", ":slot"),
+				# (try_begin),
+				# (gt,":item",-1),
+					# (val_add,":items",1),
+					# (assign,":last_item",":item"),
+				# (try_end),
+			# (try_end),
+			
+			
+			### add 1h weapon for troops with only pikes or long spears
+			## TODO:
+			## add random item that is added for troop 
+			## in case no second item is assigned to troop, add club
+			# (try_begin),
+			# (lt,":items",2),
+				# (try_begin),
+				# (this_or_next|eq,":last_item","itm_pike"),
+				# (eq,":last_item","itm_pike_b"),
+					# (agent_equip_item, ":agent", "itm_one_handed_war_axe_b", 4),
+				# (try_end),
+			# (else_try),
+			
+				### delete duplicated items
+				(assign,":duplicated_1h",0),
+				(assign,":duplicated_2h",0),
+				(try_for_range, ":slot",0,4),
+					(array_get_val, ":item", ":agent_items", ":slot"),
+					(gt,":item",-1),
+					(item_get_type, ":item_type", ":item"),
+					(try_begin),
+					(ge,":duplicated_1h",1),
+					(eq,":item_type",itp_type_one_handed_wpn),
+						(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+						(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#	(display_message,"@Droppping duplicated 1h item"),
+					(else_try),
+					(ge,":duplicated_2h",1),
+					(eq,":item_type",itp_type_two_handed_wpn),
+						(agent_get_item_slot, ":agent_item",":agent", ":slot"),
+						(agent_unequip_item, ":agent", ":agent_item", ":slot"),
+					#	(display_message,"@Droppping duplicated 2h item"),
+					(try_end),
+					
+					(try_begin),
+					(eq,":item_type",itp_type_one_handed_wpn),
+						(val_add,":duplicated_1h",1),
+					(else_try),
+					(eq,":item_type",itp_type_two_handed_wpn),
+						(val_add,":duplicated_2h",1),
+					(try_end),
+				(try_end),
+			(try_end),
+			
+			### check if agent has only pike or longspear
+			
+			
+			
+		#	(assign,":duplicate",0),
+			
+			# (try_for_range, ":slot",0,4),
+				# (array_get_val, ":item_type", ":agent_weapons", ":slot"),
+				
+				# (try_begin),
+				# (ge,":duplicate",1),
+				# (neq,":item_type",-1),
+					# (agent_get_item_slot, ":agent_item",":agent", ":slot"),
+					# (neq,":agent_item",-1),
+					# (agent_unequip_item, ":agent", ":agent_item", ":slot"),
+				# #	(display_message,"@Droppping duplicated item"),
+				# (try_end),
+				
+				# (try_begin),
+				# (eq,":item_type",itp_type_two_handed_wpn),
+					# (val_add,":duplicate",1),
+				# (try_end),
+			# (try_end),
+		(try_end),
+  ])     
   
 #### MOD END   
 
@@ -566,6 +673,7 @@ coop_mission_templates = [
 	  lance_breaking_multiplayer,
 	  #ai_kick_enhancement_mp,
       ai_kick_enhancement,
+	  remove_duplicated_item_types,
 
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 
@@ -1580,6 +1688,7 @@ coop_mission_templates = [
       coop_store_respawn_as_bot,
 	  lance_breaking_multiplayer,
 	  ai_kick_enhancement,
+	  remove_duplicated_item_types,
 #mordr does not work in MP = SCRIPT ERROR ON OPCODE 1785: Invalid Group ID: 1;
 #      common_battle_order_panel,
 #      common_battle_order_panel_tick,
