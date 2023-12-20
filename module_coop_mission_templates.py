@@ -493,31 +493,31 @@ remove_duplicated_item_types =  (
 				(try_end),
 			(try_end),
 			
-			## counting items
-			(assign,":items" ,0),
-			(assign,":last_item",-1),
-			(try_for_range, ":slot",0,4),
-				(array_get_val, ":item", ":agent_items", ":slot"),
-				(try_begin),
-				(gt,":item",-1),
-					(val_add,":items",1),
-					(assign,":last_item",":item"),
-				(try_end),
-			(try_end),
+			# ## counting items
+			# (assign,":items" ,0),
+			# (assign,":last_item",-1),
+			# (try_for_range, ":slot",0,4),
+				# (array_get_val, ":item", ":agent_items", ":slot"),
+				# (try_begin),
+				# (gt,":item",-1),
+					# (val_add,":items",1),
+					# (assign,":last_item",":item"),
+				# (try_end),
+			# (try_end),
 			
 			
 			### add 1h weapon for troops with only pikes or long spears
 			## TODO:
 			## add random item that is added for troop 
 			## in case no second item is assigned to troop, add club
-			(try_begin),
-			(lt,":items",2),
-				(try_begin),
-				(this_or_next|eq,":last_item","itm_pike"),
-				(eq,":last_item","itm_pike_b"),
-					(agent_equip_item, ":agent", "itm_one_handed_war_axe_b", 4),
-				(try_end),
-			(else_try),
+			# (try_begin),
+			# (lt,":items",2),
+				# (try_begin),
+				# (this_or_next|eq,":last_item","itm_pike"),
+				# (eq,":last_item","itm_pike_b"),
+					# (agent_equip_item, ":agent", "itm_one_handed_war_axe_b", 4),
+				# (try_end),
+			# (else_try),
 			
 				### delete duplicated items
 				(assign,":duplicated_1h",0),
