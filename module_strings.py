@@ -4445,13 +4445,13 @@ We apologize sincerely if you contributed your suggestions and feedback but were
   ### faction descriptions
   ("faction_1_descr","Polanie. Who are known of their powerfull cavalry. Their ruler is King Dawo."),
   ("faction_2_descr","Grey Order. Who are known of their great discipline. Their ruler is Hetman."),
-  ("faction_3_descr","Warriors of Tengri. Who are known of their ... . Their rulers is Sultan Azap."),
+  ("faction_3_descr","Warriors of Tengri. Who are known of their archers and cavalry skills. Their rulers is Sultan Azap."),
   ("faction_4_descr","Kalmarunion. Who are known of their great trading skills. Their ruler is Queen Margaret."),
   ("faction_5_descr","Druzhina. Who are known of their archery skills. Their ruler is King Nebun."),
-  ("faction_6_descr","Templars. Who are known of their ... . Their ruler is King Casimir."),
-  ("faction_7_descr","Eques. Who are known of their ... . Their ruler is King Atze."),
-  ("faction_8_descr","Norse. Who are known of their ... . Their ruler is King Norr."),
-  ("faction_9_descr","Order de l'Etoile. Who are known of their ... .Their ruler is King Thorvic."),
+  ("faction_6_descr","Templars. Who are known of their discipline. Their ruler is King Casimir."),
+  ("faction_7_descr","Eques. Who are known of their skilled footsoldiers. Their ruler is King Atze."),
+  ("faction_8_descr","Norse. Who are known of their melee fight skills. Their ruler is King Norr."),
+  ("faction_9_descr","Order de l'Etoile. Who are known of their versatile military training. Their ruler is King Thorvic."),
  
 
   ("relations_prsnt_string","{s60} {s59}"),
