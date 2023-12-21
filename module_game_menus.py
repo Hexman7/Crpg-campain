@@ -142,7 +142,7 @@ game_menus = [
 
 	   
      ("tutorial_cheat",[
-	  #(eq,1,0),
+	  (eq,1,0),
 	  ],"{!}CHEAT!",
        [
          (change_screen_return),
@@ -3390,7 +3390,7 @@ game_menus = [
        [(jump_to_menu, "mnu_camp_action"),
         ]
        ),
-	  ("village_reinforcements_test",[],"Village reinforcements test.",
+	  ("village_reinforcements_test",[(eq,"$cheat_mode",1)],"Village reinforcements test.",
        [(jump_to_menu, "mnu_reinforcement_test"),
         ]
        ),
