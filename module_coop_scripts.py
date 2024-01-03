@@ -2705,7 +2705,7 @@ coop_scripts = [
           (assign, ":scene_to_use", "scn_lair_sea_raiders"),
         (try_end),
 
-      (else_try),
+      (else_try),##### here we need to add bridge battle scenes
          #if field battle or we did not find one
         (party_get_current_terrain, ":terrain_type", "p_main_party"),
         (assign, ":scene_to_use", "scn_coop_random_med_plain"),
