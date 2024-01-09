@@ -11374,10 +11374,12 @@ scripts = [
             (agent_get_position, pos1, ":cur_agent_2"),
             (get_distance_between_positions, ":dist_2", pos0, pos1),
             (try_begin),
-              (lt, ":dist_2", 300),
-              (assign, ":enemy_near_score", ":dist_2"),
+              (lt, ":dist_2", 300),   ## was 300
+           #   (assign, ":enemy_near_score", ":dist_2"),
+		   ### mod edited
+			  (store_sub,":enemy_near_score",":dist_2", 300),
             (else_try),
-              (assign, ":enemy_near_score", 300),
+              (assign, ":enemy_near_score", 100), ## was 300
             (try_end),
             (val_add, ":bot_score", ":enemy_near_score"),
           (else_try),
