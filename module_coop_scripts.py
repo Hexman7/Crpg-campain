@@ -2713,10 +2713,10 @@ coop_scripts = [
 		
 		#### mod	begin 04.01.2024
 		(call_script, "script_check_bridge_nearby"),
-		(display_message,"@getting bridge nearby"),
+		#(display_message,"@getting bridge nearby"),
 		(try_begin),## if bridge is nearby, fight on bridge
 	    (eq,reg1,1),
-		  (display_message,"@getting bridge scene"),
+		  #(display_message,"@getting bridge scene"),
 		  (set_jump_mission,"mt_lead_charge"),
 		  (assign, ":scene_to_use", reg2),## reg2  returned from - script_check_bridge_nearby
 		  (assign, ":scene_to_use_large", reg2),
