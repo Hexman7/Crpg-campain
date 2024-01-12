@@ -772,7 +772,7 @@ coop_mission_templates = [
 
         (try_begin),
           (multiplayer_is_server),
-          (assign, "$coop_reinforce_size", 25), ## was 10
+          (assign, "$coop_reinforce_size", 15), ## was 10
           (assign, "$coop_reinforce", 1),
           (assign, "$coop_alive_team1", 0),#store count for reinforcement spawn
           (assign, "$coop_alive_team2", 0),

@@ -11379,7 +11379,7 @@ scripts = [
 		   ### mod edited
 			  (store_sub,":enemy_near_score",":dist_2", 300),
             (else_try),
-              (assign, ":enemy_near_score", 100), ## was 300
+              (assign, ":enemy_near_score", 1), ## was 300
             (try_end),
             (val_add, ":bot_score", ":enemy_near_score"),
           (else_try),
