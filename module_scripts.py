@@ -5341,6 +5341,13 @@ scripts = [
                    (try_for_range, ":unused", 0, ":end_condition"),
                      (store_random_in_range, ":random_stack", 1, ":num_stacks"),
                      (party_stack_get_troop_id, ":random_stack_troop", ":attached_party", ":random_stack"),
+                     
+                     #### mod added
+                     ## - fix for adding kingsguard troops to garrisons
+                     (store_troop_faction,":troop_fac",":random_stack_troop"),
+                     (faction_get_slot, ":kingsguard_troop",":troop_fac",  slot_faction_kingsguard_troop),
+                     (neq,":kingsguard_troop",":random_stack_troop"),
+                     ##
                      (party_stack_get_size, ":stack_size", ":attached_party", ":random_stack"),
                      (ge, ":stack_size", 4),
                      (neq, ":random_stack", ":last_random_stack"),
