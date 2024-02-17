@@ -1510,7 +1510,7 @@ scripts = [
 
         #### mod begin
         # initialize item modifiers
-  #    (call_script,"script_initialize_item_modifiers"),
+      (call_script,"script_initialize_item_modifiers"),
     ## mod end
       #for multiplayer mode
       (assign, "$g_multiplayer_selected_map", multiplayer_scenes_begin),
@@ -2226,20 +2226,6 @@ scripts = [
 	  (item_set_slot, "itm_blue_hose", slot_item_multiplayer_item_class, multi_item_class_type_light_foot),
 
 	  
-
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
       #helmets
 	  
 	  
@@ -2249,7 +2235,6 @@ scripts = [
       (item_set_slot, "itm_hood_d", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_khergit_war_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_khergit_guard_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
-	  
 	  
 	  
       (item_set_slot, "itm_arming_cap", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
@@ -2262,7 +2247,6 @@ scripts = [
 	  
 	  (item_set_slot, "itm_bascinet_2", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
 	  (item_set_slot, "itm_bascinet_3", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
-
 
 	  
       (item_set_slot, "itm_flat_topped_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
@@ -2444,20 +2428,6 @@ scripts = [
       (item_set_slot, "itm_nordic_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       
 
-
-
-
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  
 	  
 	  #gloves
@@ -2487,13 +2457,7 @@ scripts = [
 	  (item_set_slot, "itm_gloves_a", slot_item_multiplayer_item_class, multi_item_class_type_glove),
 	  (item_set_slot, "itm_wisby_gauntlets_black", slot_item_multiplayer_item_class, multi_item_class_type_glove),
 	  
-	  
 
-	  
-	  
-	  
-	  
-	  
 	  
 	  
       #horses
@@ -2515,11 +2479,6 @@ scripts = [
 	  (item_set_slot, "itm_plated_charger", slot_item_multiplayer_item_class, multi_item_class_type_horse),
 	  (item_set_slot, "itm_sumpter_horse", slot_item_multiplayer_item_class, multi_item_class_type_horse),
 	  
-	  
-	  
-	  
-
-
 
 
 
@@ -56900,7 +56859,8 @@ scripts = [
             (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
             (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
             (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
-        (try_end),
+      #	(try_end),  ## after commenting this out, multiplayer grey order troops not getting all items assigned anymore
+	  # even tho its not how it should be
     (try_end),
  ]),
     
