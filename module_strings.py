@@ -2428,6 +2428,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^AndyYa - Alive Horses script\
 ^Caba'drin - bodyguards script\
 ^KnowsCount - Kicking AI script\
+^Arris - Feudal World Map\
 "), 
 
 ("credits_15","OSP Music: \
