@@ -469,6 +469,7 @@ effects_on_troops =  (
 
 
 ### removing same type items from agents (so they wont have two bardiches for instance...)   
+# by Rider of Rohirrim
 remove_duplicated_item_types =  (
 	 ti_on_agent_spawn, 0, 0,
 	  [],
