@@ -1508,10 +1508,7 @@ scripts = [
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_1_cavalry, "trp_order_nobleman"),
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_2_cavalry, "trp_order_knight"),	  
 
-        #### mod begin
-        # initialize item modifiers
-      (call_script,"script_initialize_item_modifiers"),
-    ## mod end
+
       #for multiplayer mode
       (assign, "$g_multiplayer_selected_map", multiplayer_scenes_begin),
       (assign, "$g_multiplayer_respawn_period", 5),
@@ -4141,6 +4138,21 @@ scripts = [
       (item_set_slot, "itm_javelin_bow", slot_item_ccoop_has_ammo, 1),
       #INVASION MODE END
 	  
+	  
+	  #### mod begin
+        # initialize item modifiers
+      (call_script,"script_initialize_item_modifiers"),
+    ## mod end
+	
+	  (item_get_slot,":mod1","itm_khergit_sword_two_handed_b",slot_item_modifier_first_level),
+	  (item_get_slot,":mod2","itm_khergit_sword_two_handed_b",slot_item_modifier_second_level),
+	  (item_get_slot,":mod3","itm_khergit_sword_two_handed_b",slot_item_modifier_third_level),
+	  
+	  (assign,reg17,":mod1"),
+	  (assign,reg18,":mod2"),
+	  (assign,reg19,":mod3"),
+	  
+	  (display_message,"@ mod1:{reg17} mod2:{reg18} mod3:{reg19}"),
 
 	  
       ]),
@@ -56866,7 +56878,7 @@ scripts = [
             (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
             (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
             (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
-      #	(try_end),  ## after commenting this out, multiplayer grey order troops not getting all items assigned anymore
+      	(try_end),  ## after commenting this out, multiplayer grey order troops not getting all items assigned anymore
 	  # even tho its not how it should be
     (try_end),
  ]),
@@ -56937,7 +56949,7 @@ scripts = [
     (assign,reg3,":bowyer_lvl"),
    
    #### DEBUG
-   # (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+  #  (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
     ### DEBUG
  ]),
     

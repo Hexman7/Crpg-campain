@@ -50,7 +50,7 @@ slot_item_ccoop_has_ammo                = 59 #should be set to 1 for Invasion it
 
 
 slot_item_multiplayer_item_class   = 60 #temporary, can be moved to higher values
-slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be moved to higher values
+#slot_item_multiplayer_availability_linked_list_begin = 61 #temporary, can be moved to higher values
 
 slot_selected_item = 62
 
@@ -59,6 +59,8 @@ slot_item_is_blocked = 63		### mod 21.09.2018      cant'be moved down the next o
 slot_item_modifier_first_level  = 64
 slot_item_modifier_second_level = 65 
 slot_item_modifier_third_level  = 66
+
+slot_item_multiplayer_availability_linked_list_begin = 74 #mod edited: moved to heigher value. Was bugging script that used: slot_item_modifier_first_level and others after
 
 
 ########################################################

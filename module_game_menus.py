@@ -10697,7 +10697,10 @@ game_menus = [
                   (store_mul, ":hours_takes", reg6, 24),
                   (val_add, ":hours_takes", ":cur_hours"),
                   (party_set_slot, "$g_encountered_party", slot_center_improvement_end_hour, ":hours_takes"),
-                  (jump_to_menu,"mnu_center_manage"),
+                 ## set that player is building smth
+				  (troop_set_slot,"trp_player",slot_troop_is_constructing_building,1),
+				  #
+				  (jump_to_menu,"mnu_center_manage"),
                   ]),
       ("forget_it",[(store_troop_gold, ":cur_gold", "trp_player"),
                     (ge, ":cur_gold", reg5)],

@@ -1068,22 +1068,22 @@ coop_mission_templates = [
           (multiplayer_send_int_to_server, multiplayer_event_change_troop_id, "$coop_my_troop_no"),
         (try_end),
         (agent_set_slot, ":agent_no", slot_agent_coop_spawn_party, "$coop_agent_party"), #store party of agent
-       # (assign,reg2,"$coop_agent_party"),
-       # (display_message,"@Party: {reg2}"),
+        (assign,reg12,"$coop_agent_party"),
+        (display_message,"@Party: {reg12}"),
         (try_begin),
         (gt,"$coop_agent_party",-1),
            # (party_stack_get_troop_id, ":party_leader","$coop_agent_party",0),
             (party_get_slot,":party_leader", "$coop_agent_party", coop_party_leader),
 			### DEBUG
-            # (str_store_troop_name,s2, ":party_leader"),
-            # (display_message,"@Troop: {s2}"),
+             (str_store_troop_name,s2, ":party_leader"),
+             (display_message,"@Troop: {s2}"),
 			### DEBUG
         (try_end),
         
         #(is_between,":party_leader",kings_begin, lords_end),
         (call_script,"script_check_troop_built_improvements",":party_leader"),
 		### DEBUG
-        ##(display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+        (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
         ### DEBUG
         (try_begin),
         (this_or_next|gt,reg0,0),
@@ -1101,9 +1101,10 @@ coop_mission_templates = [
                 (this_or_next|eq,":item_type",itp_type_polearm),
                 (eq,":item_type",itp_type_shield),
                     (item_get_slot,":modifier",":item_no", ":slot"),
+					(assign, reg13, ":modifier"),
                     (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
                     ###DEBUG
-                    #(display_message,"@setting melee weapon modifier"),
+                    (display_message,"@setting melee weapon modifier: {reg13}"),
                 (try_end),            
                 (store_add,":slot",reg3,slot_item_is_blocked),
                 (try_begin),## ranged weapons
@@ -1116,7 +1117,7 @@ coop_mission_templates = [
                     (item_get_slot,":modifier",":item_no", ":slot"),
                     (agent_set_item_slot_modifier, ":agent_no", ":item_slot", ":modifier"),
                     ###DEBUG
-                    #(display_message,"@setting ranged weapon modifier"),
+                    (display_message,"@setting ranged weapon modifier"),
                 (try_end),
             (try_end),
         (try_end),

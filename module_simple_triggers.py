@@ -2592,9 +2592,10 @@ simple_triggers = [
       (ge, ":cur_hours", ":cur_improvement_end_time"),
       (party_set_slot, ":center_no", ":cur_improvement", 1),
       (party_set_slot, ":center_no", slot_center_current_improvement, 0),
+	  (troop_set_slot,":center_lord",slot_troop_is_constructing_building,0), ## lord finished builing
+
       #### MOD BEGIN  -- set center lord slot according to building level
       
-      (troop_set_slot,":center_lord",slot_troop_is_constructing_building,0), ## lord finished builing
       (try_begin),
       (this_or_next|eq,":cur_improvement", slot_center_has_smithy),
       (this_or_next|eq,":cur_improvement", slot_center_has_large_smithy),
