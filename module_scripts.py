@@ -4142,19 +4142,19 @@ scripts = [
 	  #### mod begin
         # initialize item modifiers
       (call_script,"script_initialize_item_modifiers"),
-    ## mod end
-	
-	  (item_get_slot,":mod1","itm_khergit_sword_two_handed_b",slot_item_modifier_first_level),
-	  (item_get_slot,":mod2","itm_khergit_sword_two_handed_b",slot_item_modifier_second_level),
-	  (item_get_slot,":mod3","itm_khergit_sword_two_handed_b",slot_item_modifier_third_level),
+    
+	 #### DEBUG
+	  # (item_get_slot,":mod1","itm_khergit_sword_two_handed_b",slot_item_modifier_first_level),
+	  # (item_get_slot,":mod2","itm_khergit_sword_two_handed_b",slot_item_modifier_second_level),
+	  # (item_get_slot,":mod3","itm_khergit_sword_two_handed_b",slot_item_modifier_third_level),
 	  
-	  (assign,reg17,":mod1"),
-	  (assign,reg18,":mod2"),
-	  (assign,reg19,":mod3"),
+	  # (assign,reg17,":mod1"),
+	  # (assign,reg18,":mod2"),
+	  # (assign,reg19,":mod3"),
 	  
-	  (display_message,"@ mod1:{reg17} mod2:{reg18} mod3:{reg19}"),
-
-	  
+	  # (display_message,"@ mod1:{reg17} mod2:{reg18} mod3:{reg19}"),
+	 #### DEBUG
+	  ## mod end
       ]),
 
   #script_get_army_size_from_slider_value
