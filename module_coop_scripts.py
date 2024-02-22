@@ -2896,12 +2896,14 @@ coop_scripts = [
         (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
       (else_try),
         (party_stack_get_troop_id, ":leader_troop", ":party_no", 0),
+		(dict_set_int, "$coop_dict", "@p_enemy_party{reg20}leader",":leader_troop"), ### saving party leader 
+
         (troop_slot_eq, ":leader_troop", slot_troop_occupation, slto_kingdom_hero),
         (troop_get_slot, ":banner_spr", ":leader_troop", slot_troop_banner_scene_prop),
-        (dict_set_int, "$coop_dict", "@p_enemy_party{reg20}leader",":leader_troop"), ### saving party leader 
+      #  (dict_set_int, "$coop_dict", "@p_enemy_party{reg20}leader",":leader_troop"), ### saving party leader 
         ### saving buildings lvls
-        (assign,reg5, ":cur_leader"),
-        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (assign,reg5, ":leader_troop"),
+        (call_script,"script_get_lords_improvements",":leader_troop"),
         (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
         (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
         (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
@@ -3003,18 +3005,21 @@ coop_scripts = [
         (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
         (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
         (dict_set_int, "$coop_dict", "@trp_{reg5}bowyer",reg3), ### saving  bowyer lvl
-       (else_try),
+      (else_try),
         (party_stack_get_troop_id, ":leader_troop", ":party_no", 0),
+		
+		(dict_set_int, "$coop_dict", "@p_ally_party{reg20}leader",":leader_troop"), ###first troop as leader
+
         (troop_is_hero, ":leader_troop"),
         ### DEBUG
         # (assign,reg10,":leader_troop"),
         # (display_message,"@ leader troop: {reg10}"),
         ### DEBUG
         (troop_get_slot, ":banner_spr", ":leader_troop", slot_troop_banner_scene_prop),
-        (dict_set_int, "$coop_dict", "@p_ally_party{reg20}leader",":leader_troop"), ### saving party leader 
+        #(dict_set_int, "$coop_dict", "@p_ally_party{reg20}leader",":leader_troop"), ### saving party leader 
         ### saving buildings lvls
-        (assign,reg5, ":cur_leader"),
-        (call_script,"script_get_lords_improvements",":cur_leader"),
+        (assign,reg5, ":leader_troop"),
+        (call_script,"script_get_lords_improvements",":leader_troop"),
         (dict_set_int, "$coop_dict", "@trp_{reg5}smithy",reg0), ### saving  smithy level
         (dict_set_int, "$coop_dict", "@trp_{reg5}armory",reg1), ### saving armory lvl
         (dict_set_int, "$coop_dict", "@trp_{reg5}stables",reg2), ### saving stables lvl
@@ -3155,7 +3160,16 @@ coop_scripts = [
         (troop_set_slot,":leader_troop",slot_troop_built_armorer,":armory_lvl"),
         (troop_set_slot,":leader_troop",slot_troop_built_stables,":stables_lvl"),
         (troop_set_slot,":leader_troop",slot_troop_built_bowyer,":bowyer_lvl"),
-        
+       
+		 ### DEBUG
+         # (assign,reg10,":leader_troop"),
+         # (assign,reg11,":smithy_lvl"),
+         # (assign,reg12,":armory_lvl"),
+         # (assign,reg13,":stables_lvl"),
+         # (assign,reg14,":bowyer_lvl"),
+         # (display_message,"@ Reading from file: leader troop - {reg10} sm: {reg11}, ar {reg12}, st: {reg13}, bo:{reg14}"),
+       ### DEBUG
+	   
       (try_end), #end enemy parties
       # (troop_set_slot, "trp_temp_array_a", 100, ":cur_slot"),# slot 100 = 100 + number heroes + 1
       (assign, "$coop_num_bots_team_1", ":total_enemy_troops"), #count troops in battle
@@ -3207,9 +3221,13 @@ coop_scripts = [
         (troop_set_slot,":leader_troop",slot_troop_built_bowyer,":bowyer_lvl"),
         
       ### DEBUG
-        # (assign,reg10,":leader_troop"),
-        # (display_message,"@ leader troop: {reg10}"),
-        ### DEBUG
+         # (assign,reg10,":leader_troop"),
+         # (assign,reg11,":smithy_lvl"),
+         # (assign,reg12,":armory_lvl"),
+         # (assign,reg13,":stables_lvl"),
+         # (assign,reg14,":bowyer_lvl"),
+         # (display_message,"@ Reading from file: leader troop - {reg10} sm: {reg11}, ar {reg12}, st: {reg13}, bo:{reg14}"),
+        # ### DEBUG
       (try_end), #end ally parties
       # (troop_set_slot, "trp_temp_array_b", 100, ":cur_slot"),# slot 100 = 100 + number heroes + 1
       (assign, "$coop_num_bots_team_2", ":total_ally_troops"), #count troops in battle

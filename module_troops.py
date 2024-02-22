@@ -340,7 +340,7 @@ troops = [
   ["watchman","Watchman","Watchmen",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield,no_scene,reserved,fac_commoners,
    [itm_bolts,itm_spiked_club,itm_fighting_pick,itm_sword_medieval_a,itm_boar_spear,itm_hunting_crossbow,itm_light_crossbow,itm_tab_shield_round_a,itm_tab_shield_round_b,
     itm_padded_cloth,itm_leather_jerkin,itm_leather_cap,itm_padded_coif,itm_footman_helmet,itm_nomad_boots,itm_wrapping_boots],
-   str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(80)|wp_two_handed(80)|wp_polearm(80)|wp_archery(10)|wp_crossbow(70)|wp_throwing(60),knows_common|knows_power_strike_3|knows_ironflesh_1|knows_shield_1|knows_athletics_1,mercenary_face_1, mercenary_face_2],
+   str_9 | agi_7 | int_4 | cha_4|level(9),wp_one_handed(80)|wp_two_handed(80)|wp_polearm(80)|wp_archery(10)|wp_crossbow(70)|wp_throwing(60),knows_common|knows_power_strike_3|knows_ironflesh_1|knows_shield_2|knows_athletics_1,mercenary_face_1, mercenary_face_2],
 ## MOD NEW
   ["mercenary_soldier","Mercenary Soldier","Mercenary Soldiers",tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_shield,no_scene,reserved,fac_commoners,
    [itm_spiked_club,itm_fighting_pick,itm_sword_medieval_a,itm_axe,itm_shortened_spear,itm_tab_shield_round_a,itm_tab_shield_round_b,itm_light_throwing_axes,
