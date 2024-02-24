@@ -3058,7 +3058,7 @@ troops = [
     itm_tunic_with_green_cape,itm_wrapping_boots],
    def_attrib_multiplayer|str_18|agi_18|level(19),wpex(135,120,120,40,200,60),knows_common|knows_ironflesh_6|knows_athletics_6|knows_shield_3|knows_power_strike_4|knows_riding_1,vaegir_face_young_1, vaegir_face_older_2],
   ["vaegir_spearman_multiplayer","Grey Footman","Grey Footmen",tf_guarantee_ranged|tf_guarantee_boots|tf_guarantee_armor|tf_guarantee_helmet|tf_guarantee_ranged|tf_guarantee_shield,0,0,fac_kingdom_2,
-   [itm_tab_shield_kite_a, itm_mace_2,
+   [itm_tab_shield_kite_cav_a, itm_mace_2,
     itm_tunic_with_green_cape,itm_wrapping_boots],
    def_attrib_multiplayer|str_21|agi_15|level(20),wpex(200,200,200,40,60,170),knows_common|knows_ironflesh_6|knows_shield_6|knows_power_strike_7|knows_power_throw_6|knows_athletics_6|knows_riding_1,vaegir_face_young_1, vaegir_face_older_2],
   ["vaegir_horseman_multiplayer","Grey Horseman","Grey Horsemen",tf_mounted|tf_guarantee_all,0,0,fac_kingdom_2,
