@@ -2395,8 +2395,9 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^Paradox Scandinavian Distribution (Scandinavia)\
 "),
 ### mod begin
-("credits_13","Models with textures \
-^Dupre for permissions to use crpg items\
+("credits_13","CRPG-Campaign\
+^Models with textures: \
+^Dupre - for permissions to use crpg items\
 ^Zimke Zlovoljni\
 ^Raylin - crpg mod items\
 ^Shredzors\
@@ -2419,7 +2420,7 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^ \
 "), 
 
-("credits_14","OSP Scripts \
+("credits_14","OSP Scripts: \
 ^Woyeyeh - script for better handing out fiefs by kings  \
 ^Mad Vader - death camera scripts\
 ^Crossbow Pig - changing parties names script\
@@ -2427,8 +2428,22 @@ We apologize sincerely if you contributed your suggestions and feedback but were
 ^AndyYa - Alive Horses script\
 ^Caba'drin - bodyguards script\
 ^KnowsCount - Kicking AI script\
+^Arris - Feudal World Map\
 "), 
 
+("credits_15","OSP Music: \
+^Alexander Nakarada\
+^Alex-Productions\
+^Arthur Vyncke\
+^RandomMind\
+^MaxKoMusic\
+^PeriTune\
+^KevinMacLeod\
+^Ronny Hubschmid\
+^WombatNoisesAudio\
+^\
+^Licenses and detailed info: https://forums.taleworlds.com/index.php?threads/crpg-campaign.457431/\
+"), 
 ## mod end
 #### Warband added texts
 

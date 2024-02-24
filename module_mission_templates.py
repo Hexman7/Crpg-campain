@@ -1395,7 +1395,7 @@ effects_on_troops =  (
  #   (party_slot_eq, ":agent_party", slot_party_type, spt_kingdom_hero_party),
 
 #    (else_try), ### if party is town/castle/village
-    (gt,":agent_party",0),
+    (ge,":agent_party",0),
     (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_town),
     (this_or_next|party_slot_eq,":agent_party",slot_party_type, spt_village),
     (party_slot_eq,":agent_party",slot_party_type, spt_castle),
@@ -1404,23 +1404,23 @@ effects_on_troops =  (
         
         (call_script,"script_check_troop_built_improvements",":party_leader"),
         #### DEBUG
-        #(str_store_troop_name,s2,":party_leader"),
-        #(assign,reg2,":party_leader"),
-       # (display_message,"@party_leader {s2}"),
+       # (str_store_troop_name,s2,":party_leader"),
+        #(assign,reg21,":party_leader"),
+        #(display_message,"@party_leader {s2}"),
         #### DEBUG END
     (else_try),
-    (gt,":agent_party",0),
+    (ge,":agent_party",0),
         (party_stack_get_troop_id, ":party_leader",":agent_party",0),
         (is_between,":party_leader", troops_not_matching_begin, player_temp_troops_end),    ### if is between the first troop and the last in module_troops
         (call_script,"script_check_troop_built_improvements",":party_leader"),
         #### DEBUG
-        #(str_store_troop_name,s2,":party_leader"),
-        #(assign,reg0,":party_leader"),
-       # (display_message,"@party_leader {s2}"),
+       # (str_store_troop_name,s2,":party_leader"),
+       # (assign,reg10,":party_leader"),
+        #(display_message,"@party_leader {s2}"),
         #### DEBUG END
     (try_end),
 	###DEBUG
-	#(display_message,"@ reg0 {reg0}, reg1 {reg1}, reg2 {reg2}, reg3 {reg3}"),
+	#(display_message,"@ reg10 {reg10}, reg21 {reg21},reg0 {reg0}, reg1 {reg1}, reg2 {reg2}, reg3 {reg3}"),
     
     
     (try_begin),

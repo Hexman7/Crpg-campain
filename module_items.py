@@ -314,13 +314,13 @@ items = [
 
 #whalebone crossbow, yew bow, war bow, arming sword 
  ["arrows","Arrows", [("arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver", ixmesh_carry)], itp_type_arrows|itp_merchandise|itp_default_ammo, itcf_carry_quiver_back, 
-84,weight(6)|abundance(160)|weapon_length(95)|thrust_damage(4,cut)|max_ammo(24),imodbits_missile],
+84,weight(6)|abundance(160)|weapon_length(95)|thrust_damage(6,cut)|max_ammo(24),imodbits_missile],
  ["khergit_arrows","Tatar Arrows", [("arrow_b",0),("flying_missile",ixmesh_flying_ammo),("quiver_b", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-347,weight(6)|abundance(30)|weapon_length(95)|thrust_damage(6,cut)|max_ammo(22),imodbits_missile],
+347,weight(6)|abundance(30)|weapon_length(95)|thrust_damage(15,cut)|max_ammo(22),imodbits_missile],
  ["barbed_arrows","Barbed Arrows", [("barbed_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_d", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-267,weight(6)|abundance(70)|weapon_length(95)|thrust_damage(5,cut)|max_ammo(20),imodbits_missile],
+267,weight(6)|abundance(70)|weapon_length(95)|thrust_damage(10,cut)|max_ammo(20),imodbits_missile],
  ["bodkin_arrows","Bodkin Arrows", [("piercing_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_c", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(1,pierce)|max_ammo(20),imodbits_missile],
+376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(5,pierce)|max_ammo(20),imodbits_missile],
  ["bolts","Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag", ixmesh_carry),("bolt_bag_b", ixmesh_carry|imodbit_large_bag)], itp_type_bolts|itp_merchandise|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 
 218,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(8,pierce)|max_ammo(24),imodbits_missile],
  ["steel_bolts","Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_merchandise|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 
@@ -2472,11 +2472,11 @@ items = [
 
 
 ["hunting_bow",         "Hunting Bow", [("hunting_bow",0),("hunting_bow_carry",ixmesh_carry)],itp_type_bow |itp_merchandise|itp_primary|itp_two_handed,itcf_shoot_bow|itcf_carry_bow_back, 
-17 , weight(1.7)|difficulty(0)|accuracy(100)|spd_rtng(100) | shoot_speed(52) | thrust_damage(19 ,  pierce),imodbits_bow ],
+17 , weight(1.7)|difficulty(0)|accuracy(95)|spd_rtng(100) | shoot_speed(50) | thrust_damage(16 ,  pierce),imodbits_bow ],
 ["short_bow",         "Short Bow", [("short_bow",0),("short_bow_carry",ixmesh_carry)], itp_type_bow |itp_merchandise|itp_primary|itp_two_handed ,itcf_shoot_bow|itcf_carry_bow_back, 
-57 , weight(2)|difficulty(1)|accuracy(100)|spd_rtng(97) | shoot_speed(55) | thrust_damage(22 ,  pierce  ),imodbits_bow ],
+57 , weight(2)|difficulty(1)|accuracy(95)|spd_rtng(97) | shoot_speed(51) | thrust_damage(18 ,  pierce  ),imodbits_bow ],
 ["nomad_bow",         "Nomad Bow", [("nomad_bow",0),("nomad_bow_case", ixmesh_carry)], itp_type_bow |itp_merchandise|itp_primary|itp_two_handed ,itcf_shoot_bow|itcf_carry_bowcase_left|itcf_show_holster_when_drawn, 
-166 , weight(2.4)|difficulty(2)|accuracy(101)|spd_rtng(94) | shoot_speed(56) | thrust_damage(20 ,  pierce),imodbits_bow ],
+166 , weight(2.4)|difficulty(2)|accuracy(96)|spd_rtng(97) | shoot_speed(53) | thrust_damage(17 ,  pierce),imodbits_bow ],
 
 ############################       NEW           ###########
 
@@ -2498,13 +2498,13 @@ items = [
 
 
 ["long_bow",         "Long Bow", [("long_bow",0),("long_bow_carry",ixmesh_carry)], itp_type_bow |itp_merchandise|itp_primary|itp_two_handed|itp_cant_use_on_horseback ,itcf_shoot_bow|itcf_carry_bow_back, 
-145 , weight(4)|difficulty(3)|accuracy(105)|spd_rtng(79) | shoot_speed(56) | thrust_damage(29 ,  pierce),imodbits_bow ],
+145 , weight(4)|difficulty(3)|accuracy(100)|spd_rtng(79) | shoot_speed(56) | thrust_damage(24 ,  pierce),imodbits_bow ],
 ["khergit_bow",         "Tatar Bow", [("khergit_bow",0),("khergit_bow_case", ixmesh_carry)], itp_type_bow |itp_merchandise|itp_primary|itp_two_handed,itcf_shoot_bow|itcf_carry_bowcase_left|itcf_show_holster_when_drawn, 
-277 , weight(2.4)|difficulty(3)|accuracy(102)|spd_rtng(90) | shoot_speed(57) | thrust_damage(21 ,pierce),imodbits_bow ],
+277 , weight(2.4)|difficulty(3)|accuracy(97)|spd_rtng(94) | shoot_speed(59) | thrust_damage(19 ,pierce),imodbits_bow ],
 ["strong_bow",         "Strong Bow", [("strong_bow",0),("strong_bow_case", ixmesh_carry)], itp_type_bow |itp_merchandise|itp_primary|itp_two_handed ,itcf_shoot_bow|itcf_carry_bowcase_left|itcf_show_holster_when_drawn, 
-455 , weight(2.7)|difficulty(3)|accuracy(102)|spd_rtng(88) | shoot_speed(58) | thrust_damage(23 ,pierce),imodbit_cracked | imodbit_bent | imodbit_masterwork ],
+455 , weight(2.7)|difficulty(3)|accuracy(97)|spd_rtng(88) | shoot_speed(61) | thrust_damage(20 ,pierce),imodbit_cracked | imodbit_bent | imodbit_masterwork ],
 ["war_bow",         "War Bow", [("war_bow",0),("war_bow_carry",ixmesh_carry)],itp_type_bow|itp_merchandise|itp_primary|itp_two_handed|itp_cant_use_on_horseback ,itcf_shoot_bow|itcf_carry_bow_back, 
-728 , weight(3.7)|difficulty(4)|accuracy(103)|spd_rtng(84) | shoot_speed(59) | thrust_damage(27 ,pierce),imodbits_bow ],
+728 , weight(3.7)|difficulty(4)|accuracy(98)|spd_rtng(84) | shoot_speed(60) | thrust_damage(23 ,pierce),imodbits_bow ],
 ["hunting_crossbow", "Hunting Crossbow", [("crossbow_a",0)], itp_type_crossbow |itp_merchandise|itp_primary|itp_two_handed ,itcf_shoot_crossbow|itcf_carry_crossbow_back, 
 33 , weight(2.7)|difficulty(7)|accuracy(87)|spd_rtng(94) | shoot_speed(50) | thrust_damage(36 ,  pierce)|max_ammo(1),imodbits_crossbow ],
 ["light_crossbow", "Light Crossbow", [("crossbow_b",0)], itp_type_crossbow |itp_merchandise|itp_primary|itp_two_handed ,itcf_shoot_crossbow|itcf_carry_crossbow_back, 

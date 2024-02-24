@@ -1508,10 +1508,7 @@ scripts = [
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_1_cavalry, "trp_order_nobleman"),
       (faction_set_slot, "fac_kingdom_9", slot_faction_quick_battle_tier_2_cavalry, "trp_order_knight"),	  
 
-        #### mod begin
-        # initialize item modifiers
-  #    (call_script,"script_initialize_item_modifiers"),
-    ## mod end
+
       #for multiplayer mode
       (assign, "$g_multiplayer_selected_map", multiplayer_scenes_begin),
       (assign, "$g_multiplayer_respawn_period", 5),
@@ -2226,20 +2223,6 @@ scripts = [
 	  (item_set_slot, "itm_blue_hose", slot_item_multiplayer_item_class, multi_item_class_type_light_foot),
 
 	  
-
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
       #helmets
 	  
 	  
@@ -2249,7 +2232,6 @@ scripts = [
       (item_set_slot, "itm_hood_d", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_khergit_war_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       (item_set_slot, "itm_khergit_guard_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
-	  
 	  
 	  
       (item_set_slot, "itm_arming_cap", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
@@ -2262,7 +2244,6 @@ scripts = [
 	  
 	  (item_set_slot, "itm_bascinet_2", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
 	  (item_set_slot, "itm_bascinet_3", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
-
 
 	  
       (item_set_slot, "itm_flat_topped_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
@@ -2444,20 +2425,6 @@ scripts = [
       (item_set_slot, "itm_nordic_helmet", slot_item_multiplayer_item_class, multi_item_class_type_light_helm),
       
 
-
-
-
-
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
-	  
 	  
 	  
 	  #gloves
@@ -2487,13 +2454,7 @@ scripts = [
 	  (item_set_slot, "itm_gloves_a", slot_item_multiplayer_item_class, multi_item_class_type_glove),
 	  (item_set_slot, "itm_wisby_gauntlets_black", slot_item_multiplayer_item_class, multi_item_class_type_glove),
 	  
-	  
 
-	  
-	  
-	  
-	  
-	  
 	  
 	  
       #horses
@@ -2515,11 +2476,6 @@ scripts = [
 	  (item_set_slot, "itm_plated_charger", slot_item_multiplayer_item_class, multi_item_class_type_horse),
 	  (item_set_slot, "itm_sumpter_horse", slot_item_multiplayer_item_class, multi_item_class_type_horse),
 	  
-	  
-	  
-	  
-
-
 
 
 
@@ -4182,8 +4138,23 @@ scripts = [
       (item_set_slot, "itm_javelin_bow", slot_item_ccoop_has_ammo, 1),
       #INVASION MODE END
 	  
-
 	  
+	  #### mod begin
+        # initialize item modifiers
+      (call_script,"script_initialize_item_modifiers"),
+    
+	 #### DEBUG
+	  # (item_get_slot,":mod1","itm_khergit_sword_two_handed_b",slot_item_modifier_first_level),
+	  # (item_get_slot,":mod2","itm_khergit_sword_two_handed_b",slot_item_modifier_second_level),
+	  # (item_get_slot,":mod3","itm_khergit_sword_two_handed_b",slot_item_modifier_third_level),
+	  
+	  # (assign,reg17,":mod1"),
+	  # (assign,reg18,":mod2"),
+	  # (assign,reg19,":mod3"),
+	  
+	  # (display_message,"@ mod1:{reg17} mod2:{reg18} mod3:{reg19}"),
+	 #### DEBUG
+	  ## mod end
       ]),
 
   #script_get_army_size_from_slider_value
@@ -11386,7 +11357,7 @@ scripts = [
 		   ### mod edited
 			  (store_sub,":enemy_near_score",":dist_2", 300),
             (else_try),
-              (assign, ":enemy_near_score", 100), ## was 300
+              (assign, ":enemy_near_score", 1), ## was 300
             (try_end),
             (val_add, ":bot_score", ":enemy_near_score"),
           (else_try),
@@ -56907,7 +56878,8 @@ scripts = [
             (item_set_slot,":item",slot_item_modifier_first_level,imod_fine),
             (item_set_slot,":item",slot_item_modifier_second_level,imod_balanced),
             (item_set_slot,":item",slot_item_modifier_third_level,imod_masterwork),
-        (try_end),
+      	(try_end),  ## after commenting this out, multiplayer grey order troops not getting all items assigned anymore
+	  # even tho its not how it should be
     (try_end),
  ]),
     
@@ -56977,7 +56949,7 @@ scripts = [
     (assign,reg3,":bowyer_lvl"),
    
    #### DEBUG
-   # (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
+  #  (display_message,"@0:{reg0}, 1:{reg1}, 2:{reg2}, 3:{reg3}"),
     ### DEBUG
  ]),
     
