@@ -437,18 +437,60 @@ simple_triggers = [
   (24*7,
    [
        (try_for_range, ":center_no", centers_begin, centers_end),
-         (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
-         (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
-           (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
-           (neg|troop_is_hero, ":stack_troop"),
-           (party_prisoner_stack_get_size, ":stack_size",":center_no",":stack_no"),
-           (store_random_in_range, ":rand_no", 0, 40),
-           (val_mul, ":stack_size", ":rand_no"),
-           (val_div, ":stack_size", 100),
-           (party_remove_prisoners, ":center_no", ":stack_troop", ":stack_size"),
-         (try_end),
+         
+         #### MOD BEGIN - selling prisoners by AI heroes in each center (once a week)
+           (party_get_slot,":center_lord",":center_no",slot_town_lord),
+           (try_begin),
+           (gt,":center_lord","trp_player"),
+           (neq,":center_lord","trp_kingdom_neutral_lord"),
+               (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
+               (troop_get_slot, ":leader_gold", ":center_lord", slot_troop_wealth),
+               #### DEBUG
+               (assign,reg10,":leader_gold"),
+               (str_store_troop_name,s2,":center_lord"),
+               (display_message,"@{s2} gold before selling center prisoners {reg10}"),
+               (assign,":total_number_of_sold_prisoners",0),
+               #### DEBUG
+               (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
+                   (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
+                   (neg|troop_is_hero, ":stack_troop"),
+                   (party_prisoner_stack_get_size, ":stack_size",":center_no",":stack_no"),
+                   (store_div,":part",":stack_size",8),
+                   (try_begin),
+                   (eq,":part",0),
+                        (assign,":part",":stack_size"),
+                   (try_end),
+                   (store_random_in_range, ":rand_no", 0, ":part"),
+
+                   (call_script,"script_game_get_prisoner_price",":stack_troop"),
+                   (assign,":price", reg0),
+                   (store_mul,":final_gain",":rand_no",":price"),
+                   (val_add,":total_number_of_sold_prisoners",":rand_no"),
+                   (val_add,":leader_gold",":final_gain"),
+                   (party_remove_prisoners, ":center_no", ":stack_troop", ":rand_no"),
+               (try_end),
+               (troop_set_slot, ":center_lord", slot_troop_wealth, ":leader_gold"),
+               #### DEBUG
+               (assign,reg11,":leader_gold"),
+               (assign,reg12,":total_number_of_sold_prisoners"),
+               (display_message,"@{s2} gold after selling center prisoners {reg11}"),
+               #### DEBUG
+           (try_end),
+             ### MOD END
+           (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
+         
+           (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
+               (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
+               (neg|troop_is_hero, ":stack_troop"),
+               (party_prisoner_stack_get_size, ":stack_size",":center_no",":stack_no"),
+               (store_random_in_range, ":rand_no", 0, 20),
+               (val_mul, ":stack_size", ":rand_no"),
+               (val_div, ":stack_size", 100),
+               (party_remove_prisoners, ":center_no", ":stack_troop", ":stack_size"),
+            (try_end),
        (try_end),
     ]),
+    
 
   #Adding net incomes to heroes (once a week)
   #Increasing debts to heroes by 1% (once a week)
@@ -1121,6 +1163,7 @@ simple_triggers = [
         (try_end),
 
         (try_for_range, ":active_npc", active_npcs_begin, active_npcs_end),
+          (neq,":active_npc","$current_hero"),
           (call_script, "script_troop_get_relation_with_troop", ":troop_no", ":active_npc"),
           (lt, reg0, 0),
           (assign, ":relation", reg0),
