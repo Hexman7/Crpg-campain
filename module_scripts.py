@@ -23374,8 +23374,11 @@ scripts = [
       (try_end),
       (party_set_slot, ":center_no", slot_town_lord, ":lord_troop_id"),
 	### MOD - Update lords building bonuses
-	  (call_script,"script_update_lords_building_bonuses_by_center",":lord_troop_id",":center_no"),
-	### END
+	  (try_begin),
+	  (gt,":lord_troop_id",-1)
+		(call_script,"script_update_lords_building_bonuses_by_center",":lord_troop_id",":center_no"),
+	  (try_end),
+	  ### END
       (try_begin),
         (party_slot_eq, ":center_no", slot_party_type, spt_village),
         (party_get_slot, ":farmer_party_no", ":center_no", slot_village_farmer_party),
