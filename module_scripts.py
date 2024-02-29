@@ -55522,6 +55522,7 @@ scripts = [
 				(try_end),
 			(try_end),
 			(dict_free, "$coop_dict"),
+			(display_message,"@Sending file completed."),
 		(try_end),
 	 ]),
 	 

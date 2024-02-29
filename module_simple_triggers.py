@@ -465,7 +465,7 @@ simple_triggers = [
                    (call_script,"script_game_get_prisoner_price",":stack_troop"),
                    (assign,":price", reg0),
                    (store_mul,":final_gain",":rand_no",":price"),
-                   (val_add,":total_number_of_sold_prisoners",":rand_no"),
+                   #(val_add,":total_number_of_sold_prisoners",":rand_no"),
                    (val_add,":leader_gold",":final_gain"),
                    (party_remove_prisoners, ":center_no", ":stack_troop", ":rand_no"),
                (try_end),
