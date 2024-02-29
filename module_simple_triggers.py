@@ -446,10 +446,10 @@ simple_triggers = [
                (party_get_num_prisoner_stacks, ":num_prisoner_stacks",":center_no"),
                (troop_get_slot, ":leader_gold", ":center_lord", slot_troop_wealth),
                #### DEBUG
-               (assign,reg10,":leader_gold"),
-               (str_store_troop_name,s2,":center_lord"),
-               (display_message,"@{s2} gold before selling center prisoners {reg10}"),
-               (assign,":total_number_of_sold_prisoners",0),
+               # (assign,reg10,":leader_gold"),
+               # (str_store_troop_name,s2,":center_lord"),
+               # (display_message,"@{s2} gold before selling center prisoners {reg10}"),
+               # (assign,":total_number_of_sold_prisoners",0),
                #### DEBUG
                (try_for_range_backwards, ":stack_no", 0, ":num_prisoner_stacks"),
                    (party_prisoner_stack_get_troop_id, ":stack_troop",":center_no",":stack_no"),
@@ -471,9 +471,9 @@ simple_triggers = [
                (try_end),
                (troop_set_slot, ":center_lord", slot_troop_wealth, ":leader_gold"),
                #### DEBUG
-               (assign,reg11,":leader_gold"),
-               (assign,reg12,":total_number_of_sold_prisoners"),
-               (display_message,"@{s2} gold after selling center prisoners {reg11}"),
+               # (assign,reg11,":leader_gold"),
+               # (assign,reg12,":total_number_of_sold_prisoners"),
+               # (display_message,"@{s2} gold after selling center prisoners {reg11}"),
                #### DEBUG
            (try_end),
              ### MOD END

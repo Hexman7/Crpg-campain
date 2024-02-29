@@ -320,7 +320,7 @@ items = [
  ["barbed_arrows","Barbed Arrows", [("barbed_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_d", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
 267,weight(6)|abundance(70)|weapon_length(95)|thrust_damage(10,cut)|max_ammo(20),imodbits_missile],
  ["bodkin_arrows","Bodkin Arrows", [("piercing_arrow",0),("flying_missile",ixmesh_flying_ammo),("quiver_c", ixmesh_carry)], itp_type_arrows|itp_merchandise, itcf_carry_quiver_back_right, 
-376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(5,pierce)|max_ammo(20),imodbits_missile],
+376,weight(6)|abundance(50)|weapon_length(91)|thrust_damage(6,pierce)|max_ammo(20),imodbits_missile],
  ["bolts","Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag", ixmesh_carry),("bolt_bag_b", ixmesh_carry|imodbit_large_bag)], itp_type_bolts|itp_merchandise|itp_default_ammo|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 
 218,weight(2.25)|abundance(90)|weapon_length(63)|thrust_damage(8,pierce)|max_ammo(24),imodbits_missile],
  ["steel_bolts","Steel Bolts", [("bolt",0),("flying_missile",ixmesh_flying_ammo),("bolt_bag_c", ixmesh_carry)], itp_type_bolts|itp_merchandise|itp_can_penetrate_shield, itcf_carry_quiver_right_vertical, 

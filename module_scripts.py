@@ -11335,6 +11335,7 @@ scripts = [
 
         (try_begin),
           (lt, ":dist", 500),
+		  (gt, ":dist", 20), ## mod added - so player wont get insta kill after respawn as bot
           (store_sub, ":bot_score", 500, ":dist"),
         (else_try),
           (assign, ":bot_score", 0),
@@ -11365,7 +11366,7 @@ scripts = [
             (get_distance_between_positions, ":dist_2", pos0, pos1),
             (try_begin),
               (lt, ":dist_2", 300),
-              (assign, ":friend_near_score", 300, ":dist_2"),
+              (store_add, ":friend_near_score", 300, ":dist_2"),
             (else_try),
               (assign, ":friend_near_score", 0),
             (try_end),
@@ -23375,7 +23376,7 @@ scripts = [
       (party_set_slot, ":center_no", slot_town_lord, ":lord_troop_id"),
 	### MOD - Update lords building bonuses
 	  (try_begin),
-	  (gt,":lord_troop_id",-1)
+	  (gt,":lord_troop_id",-1),
 		(call_script,"script_update_lords_building_bonuses_by_center",":lord_troop_id",":center_no"),
 	  (try_end),
 	  ### END
@@ -51820,27 +51821,37 @@ scripts = [
 	  (val_add,":cur_faction","fac_kingdom_1"),
 	  (troop_add_merchandise_with_faction, ":cur_merchant", ":cur_faction", itp_type_horse, 4),
 	  
-	  ### adding horsess that would disaapear when factions stop existing
-	  # (try_begin),
-	  # (eq,":cur_town","p_town_16"),	#Dhirim
-		# (troop_add_item,":cur_merchant","itm_charger"),
-		# (troop_add_item,":cur_merchant","itm_plated_charger"),
-	  # (else_try),
-	  # (eq,":cur_town","p_town_6"), #Praven
-		# (troop_add_item,":cur_merchant","itm_warhorse_steppe"),
-		# (troop_add_item,":cur_merchant","itm_plated_charger"),
-		# (troop_add_item,":cur_merchant","itm_steppe_horse"),
-	  # (else_try),
-	  # (eq,":cur_town","p_town_17"), #Ichamur
-		# (troop_add_item,":cur_merchant","itm_steppe_horse"),
-		# (troop_add_item,":cur_merchant","itm_arabian_horse_a"),
-		# (troop_add_item,":cur_merchant","itm_warhorse_steppe"),
-	  # (else_try),
-	  # (eq,":cur_town","p_town_22"), # Bariyye
-		# (troop_add_item,":cur_merchant","itm_arabian_horse_a"),
-		# (troop_add_item,":cur_merchant","itm_arabian_horse_b"),
-		# (troop_add_item,":cur_merchant","itm_warhorse_sarranid"),
-	  # (try_end),
+	  (store_random_in_range,":quantity1", 0, 3),
+	  (store_random_in_range,":quantity2", 0, 3),
+	  (store_random_in_range,":quantity3", 0, 3),
+	  
+	  (store_random_in_range,":probability", 0, 100),
+	  
+	  ## adding horsess that would disaapear when factions stop existing
+	  (try_begin),
+	  (eq,":cur_town","p_town_16"),	#Dhirim
+	  (gt,":probability",50),
+		(troop_add_merchandise,":cur_merchant","itm_charger",":quantity1"),
+		(troop_add_merchandise,":cur_merchant","itm_plated_charger",":quantity2"),
+	  (else_try),
+	  (eq,":cur_town","p_town_6"), #Praven
+	  (gt,":probability",50),
+		(troop_add_merchandise,":cur_merchant","itm_warhorse_steppe",":quantity1"),
+		(troop_add_merchandise,":cur_merchant","itm_plated_charger",":quantity2"),
+		(troop_add_merchandise,":cur_merchant","itm_steppe_horse",":quantity3"),
+	  (else_try),
+	  (eq,":cur_town","p_town_17"), #Ichamur
+	  (gt,":probability",50),
+		(troop_add_merchandise,":cur_merchant","itm_steppe_horse",":quantity1"),
+		(troop_add_merchandise,":cur_merchant","itm_arabian_horse_a",":quantity2"),
+		(troop_add_merchandise,":cur_merchant","itm_warhorse_steppe",":quantity3"),
+	  (else_try),
+	  (eq,":cur_town","p_town_22"), # Bariyye
+	  (gt,":probability",50),
+		(troop_add_merchandise,":cur_merchant","itm_arabian_horse_a",":quantity1"),
+		(troop_add_merchandise,":cur_merchant","itm_arabian_horse_b",":quantity2"),
+		(troop_add_merchandise,":cur_merchant","itm_warhorse_sarranid",":quantity3"),
+	  (try_end),
 	  
 	  ### 
       (troop_ensure_inventory_space, ":cur_merchant", 65),
