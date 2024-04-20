@@ -142,7 +142,7 @@ game_menus = [
 
 	   
      ("tutorial_cheat",[
-	  (eq,1,0),
+	  #(eq,1,0),
 	  ],"{!}CHEAT!",
        [
          (change_screen_return),

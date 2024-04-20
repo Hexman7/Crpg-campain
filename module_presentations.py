@@ -17065,7 +17065,10 @@ presentations = [
         (position_set_y, pos1, 100),
         (overlay_set_position, "$g_presentation_reject_lord", pos1),
 
-
+		(create_button_overlay, "$g_presentation_wait_lord", "@Wait"),
+        (position_set_x, pos1, 500),
+        (position_set_y, pos1, 100),
+        (overlay_set_position, "$g_presentation_reject_lord", pos1),
           
         (create_mesh_overlay, ":banner_mesh", reg8),       ### reg0 - input from trigger   
         (position_set_x, pos1, 140),
@@ -17092,7 +17095,7 @@ presentations = [
     (ti_on_presentation_event_state_change,
       [
         (store_trigger_param_1, ":object"),
-        (store_trigger_param_2, ":value"),
+        #(store_trigger_param_2, ":value"),
         
         (try_begin),
         (eq, ":object", "$g_presentation_reject_lord"),
@@ -17119,6 +17122,9 @@ presentations = [
         (eq, ":object", "$g_presentation_accept_lord"),
             (troop_set_slot, "$g_lord_no", slot_troop_occupation, slto_kingdom_hero),
             (presentation_set_duration, 0),
+		(else_try),
+        (eq, ":object", "$g_presentation_wait_lord"),
+			(presentation_set_duration, 0),
         (try_end),
       ]),
 

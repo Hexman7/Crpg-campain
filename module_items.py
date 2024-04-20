@@ -518,15 +518,6 @@ items = [
 ["sarranid_common_dress_b", "Sarranid Dress", [("sarranid_common_dress_b",0)], itp_type_body_armor  |itp_covers_legs|itp_civilian ,0, 500 , weight(0.7)|abundance(100)|head_armor(0)|body_armor(9)|leg_armor(7)|difficulty(0) ,imodbits_cloth],
 ["courtly_outfit", "Courtly Outfit", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian   ,0, 348 , weight(0.7)|abundance(100)|head_armor(0)|body_armor(9)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
 ["nobleman_outfit", "Nobleman Outfit", [("nobleman_outfit_b_new",0)], itp_type_body_armor|itp_covers_legs|itp_civilian   ,0, 348 , weight(0.7)|abundance(100)|head_armor(0)|body_armor(9)|leg_armor(7)|difficulty(0) ,imodbits_cloth ], 
-["nomad_armor", "Nomad Armor", [("nomad_armor_new",0)], itp_merchandise| itp_type_body_armor |itp_covers_legs   ,0, 75 , weight(2.1)|abundance(100)|head_armor(0)|body_armor(19)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
-["khergit_armor", "Mongolian Skirmisher Armor", [("khergit_armor_new",0)], itp_merchandise| itp_type_body_armor | itp_covers_legs ,0, 55 , weight(1.3)|abundance(100)|head_armor(0)|body_armor(15)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
-["leather_jacket", "Leather Jacket", [("leather_jacket_new",0)], itp_merchandise| itp_type_body_armor | itp_covers_legs  |itp_civilian ,0, 50 , weight(1.5)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
-
-#NEW:
-["rawhide_coat", "Rawhide Coat", [("coat_of_plates_b",0)], itp_merchandise| itp_type_body_armor |itp_civilian |itp_covers_legs ,0, 12 , weight(0.7)|abundance(100)|head_armor(0)|body_armor(11)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
-#NEW: was lthr_armor_a
-["leather_armor", "Leather Armor", [("tattered_leather_armor_a",0)], itp_merchandise| itp_type_body_armor |itp_covers_legs  ,0, 65 , weight(2.1)|abundance(100)|head_armor(0)|body_armor(19)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
-["fur_coat", "Fur Coat", [("fur_coat",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs |itp_civilian,0, 117 , weight(1.5)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(7)|difficulty(0) ,imodbits_armor ],
 
 
 
@@ -535,8 +526,6 @@ items = [
 ["leather_coat", "Leather Coat", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
 ["mail_coat", "Coat of Mail", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
 ["long_mail_coat", "Long Coat of Mail", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
-["mail_with_tunic_red", "Mail with Tunic", [("arena_armorR_new",0)], itp_type_body_armor  |itp_covers_legs ,0, 650 , weight(16)|abundance(100)|head_armor(0)|body_armor(39)|leg_armor(8), imodbits_armor ],
-["mail_with_tunic_green", "Mail with Tunic", [("arena_armorG_new",0)], itp_type_body_armor  |itp_covers_legs ,0, 650 , weight(16)|abundance(100)|head_armor(0)|body_armor(39)|leg_armor(8), imodbits_armor ],
 ["hide_coat", "Hide Coat", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
 ["merchant_outfit", "Merchant Outfit", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
 ["homespun_dress", "Homespun Dress", [("nobleman_outf",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 348 , weight(4)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
@@ -619,6 +608,8 @@ items = [
 ["sarranid_cloth_robe_b", "Worn Robe", [("sar_robe_b",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
 24, weight(0.8)|abundance(100)|head_armor(0)|body_armor(10)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
 
+["rawhide_coat", "Rawhide Coat", [("coat_of_plates_b",0)], itp_merchandise| itp_type_body_armor |itp_civilian |itp_covers_legs ,0, 
+25 , weight(0.7)|abundance(100)|head_armor(0)|body_armor(11)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
 ["deli_robe_b", "Turkish Robe", [("bashibazouk_robe_a",0)], itp_merchandise| itp_type_body_armor |itp_covers_legs  ,0, 
 25, weight(0.8)|abundance(100)|head_armor(0)|body_armor(11)|leg_armor(3)|difficulty(0) ,imodbits_cloth ], 
 ["saracen_shirt_b", "Saracen Patterned Shirt", [("saracen_shirt_c",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
@@ -626,16 +617,21 @@ items = [
 ["saracen_shirt_c", "Saracen Padded Shirt", [("saracen_padded_a",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
 27, weight(0.9)|abundance(100)|head_armor(0)|body_armor(11)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 
+
  
 #NEW: was coarse_tunic
 ["lithuanian_shirt", "Lithuanian Shirt", [("armor_21",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
-28, weight(2.1)|abundance(100)|head_armor(0)|body_armor(12)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
+28, weight(1.1)|abundance(100)|head_armor(0)|body_armor(12)|leg_armor(6)|difficulty(0) ,imodbits_cloth ],
 ["coarse_tunic", "Tunic with vest", [("coarse_tunic_a",0)], itp_merchandise| itp_type_body_armor |itp_civilian |itp_covers_legs ,0,
 29, weight(1.1)|abundance(100)|head_armor(0)|body_armor(12)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
 
 ["leather_apron", "Leather Apron", [("leather_apron",0)], itp_merchandise| itp_type_body_armor |itp_civilian |itp_covers_legs ,0,
 30, weight(1.3)|abundance(100)|head_armor(0)|body_armor(13)|leg_armor(8)|difficulty(0) ,imodbits_cloth ],
-#NEW: was tabard_a
+
+["fur_coat", "Fur Coat", [("fur_coat",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs |itp_civilian,0, 
+44 , weight(1.5)|abundance(100)|head_armor(0)|body_armor(14)|leg_armor(7)|difficulty(0) ,imodbits_armor ],
+
+
 ["tabard", "Tabard", [("tabard_b",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs |itp_civilian,0,
 53, weight(1.7)|abundance(100)|head_armor(0)|body_armor(15)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
 ["black_kaftan", "Black Kaftan", [("raylin_black_kaftan",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
@@ -646,13 +642,17 @@ items = [
 53, weight(1.7)|abundance(100)|head_armor(0)|body_armor(15)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
 ["white_kaftan", "White Kaftan", [("raylin_white_kaftan",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
 53, weight(1.7)|abundance(100)|head_armor(0)|body_armor(15)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
+["khergit_armor", "Mongolian Skirmisher Armor", [("khergit_armor_new",0)], itp_merchandise| itp_type_body_armor | itp_covers_legs ,0, 
+53 , weight(1.4)|abundance(100)|head_armor(0)|body_armor(15)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
+
 
  
- #NEW: was leather_vest
+["leather_jacket", "Leather Jacket", [("leather_jacket_new",0)], itp_merchandise| itp_type_body_armor | itp_covers_legs  |itp_civilian ,0, 
+73 , weight(1.4)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(0)|difficulty(0) ,imodbits_cloth ],
 ["leather_vest", "Leather Vest", [("leather_vest_a",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs|itp_civilian ,0,
-73, weight(1.9)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(8)|difficulty(0) ,imodbits_cloth ],
+73, weight(1.7)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(8)|difficulty(0) ,imodbits_cloth ],
 ["skirmisher_armor", "Skirmisher Armor", [("skirmisher_armor",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
-73, weight(2.1)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
+73, weight(1.9)|abundance(100)|head_armor(0)|body_armor(16)|leg_armor(10)|difficulty(0) ,imodbits_cloth ],
 
 ["blue_kaftan", "Blue Kaftan", [("blue_kaftan",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0, 
 91, weight(1.7)|abundance(100)|head_armor(0)|body_armor(17)|leg_armor(7)|difficulty(0) ,imodbits_cloth ],
@@ -663,6 +663,12 @@ items = [
 
 ["kazakh_outfit", "Kazakh Outfit", [("new_kazakh",0)], itp_type_body_armor|itp_covers_legs|itp_civilian,0,  
 105, weight(2)|abundance(100)|head_armor(0)|body_armor(18)|leg_armor(3)|difficulty(0) ,imodbits_cloth ],
+
+["nomad_armor", "Nomad Armor", [("nomad_armor_new",0)], itp_merchandise| itp_type_body_armor |itp_covers_legs   ,0, 
+145 , weight(2.1)|abundance(100)|head_armor(0)|body_armor(19)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
+["leather_armor", "Leather Armor", [("tattered_leather_armor_a",0)], itp_merchandise| itp_type_body_armor |itp_covers_legs  ,0, 
+147 , weight(2.1)|abundance(100)|head_armor(0)|body_armor(19)|leg_armor(1)|difficulty(0) ,imodbits_cloth ],
+
 
 ["white_gambeson_a", "White Gambeson", [("white_gambeson_kovas",0)], itp_merchandise| itp_type_body_armor|itp_covers_legs|itp_civilian,0,
 170, weight(5)|abundance(100)|head_armor(0)|body_armor(20)|leg_armor(5)|difficulty(5) ,imodbits_cloth ],
@@ -777,7 +783,10 @@ items = [
 998, weight(11.3)|abundance(100)|head_armor(0)|body_armor(38)|leg_armor(20)|difficulty(10) ,imodbits_armor ],
 
  
- 
+["mail_with_tunic_red", "Mail with Tunic", [("arena_armorR_new",0)], itp_type_body_armor  |itp_covers_legs ,0, 
+1002 , weight(10.1)|abundance(100)|head_armor(0)|body_armor(39)|leg_armor(8), imodbits_armor ],
+["mail_with_tunic_green", "Mail with Tunic", [("arena_armorG_new",0)], itp_type_body_armor  |itp_covers_legs ,0, 
+1002 , weight(10.1)|abundance(100)|head_armor(0)|body_armor(39)|leg_armor(8), imodbits_armor ],
 ["saracen_mail_a", "Saracen Mail over Padded Shirt", [("saracen_mail_a",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
 1007, weight(10.2)|abundance(100)|head_armor(0)|body_armor(39)|leg_armor(9)|difficulty(10) ,imodbits_armor ],
 ["scale_armor", "Scale Armor", [("lamellar_armor_e",0)], itp_merchandise| itp_type_body_armor  |itp_covers_legs ,0,
